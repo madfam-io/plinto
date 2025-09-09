@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Play, Zap, Shield, Globe } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@plinto/ui'
 import Link from 'next/link'
 
 export function HeroSection() {

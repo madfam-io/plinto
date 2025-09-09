@@ -13,7 +13,7 @@ import {
   Lock,
   Settings
 } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { Badge } from '@plinto/ui'
 
 const features = [
   {

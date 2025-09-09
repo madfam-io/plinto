@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Calendar, FileText, CreditCard } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@plinto/ui'
 import Link from 'next/link'
 
 export function CTASection() {

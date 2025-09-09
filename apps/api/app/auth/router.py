@@ -2,11 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
+from uuid import UUID
 import structlog
 
 from app.config import settings
 from app.core.database import get_db
 from app.core.redis import get_redis, RateLimiter, SessionStore
+from app.services.auth_service import AuthService
+from app.models.user import User
 
 logger = structlog.get_logger()
 router = APIRouter()
@@ -16,7 +19,7 @@ security = HTTPBearer()
 # Request/Response models
 class SignUpRequest(BaseModel):
     email: EmailStr
-    password: str = Field(..., min_length=8)
+    password: str = Field(..., min_length=12)
     name: Optional[str] = None
     tenant_id: Optional[str] = None
 
@@ -66,28 +69,47 @@ async def signup(
             detail="Too many signup attempts"
         )
     
-    # TODO: Implement actual user creation
-    # - Check if user exists
-    # - Hash password
-    # - Create user in database
-    # - Send verification email
-    # - Create session
-    
-    # Mock response for now
-    return UserResponse(
-        id="user_123",
-        email=request.email,
-        name=request.name,
-        email_verified=False,
-        created_at="2024-01-01T00:00:00Z",
-        updated_at="2024-01-01T00:00:00Z"
-    )
+    try:
+        # Create user with real implementation
+        tenant_id = UUID(request.tenant_id) if request.tenant_id else None
+        user = await AuthService.create_user(
+            db=db,
+            email=request.email,
+            password=request.password,
+            name=request.name,
+            tenant_id=tenant_id
+        )
+        
+        # TODO: Send verification email
+        # await EmailService.send_verification_email(user.email, verification_token)
+        
+        return UserResponse(
+            id=str(user.id),
+            email=user.email,
+            name=user.name,
+            email_verified=user.email_verified,
+            created_at=user.created_at.isoformat(),
+            updated_at=user.updated_at.isoformat()
+        )
+        
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        logger.error("Signup failed", error=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Registration failed"
+        )
 
 
 @router.post("/signin", response_model=TokenResponse)
 async def signin(
     request: SignInRequest,
     response: Response,
+    req: Request,
     db=Depends(get_db),
     redis=Depends(get_redis)
 ):
@@ -106,17 +128,54 @@ async def signin(
             detail="Too many signin attempts"
         )
     
-    # TODO: Implement actual authentication
-    # - Verify user exists
-    # - Check password
-    # - Generate JWT tokens
-    # - Store session in Redis
-    # - Set secure cookies
+    # Authenticate user
+    user = await AuthService.authenticate_user(
+        db=db,
+        email=request.email,
+        password=request.password
+    )
     
-    # Mock response for now
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password"
+        )
+    
+    # Create session
+    ip_address = req.client.host if req.client else None
+    user_agent = req.headers.get("user-agent")
+    
+    access_token, refresh_token, session = await AuthService.create_session(
+        db=db,
+        user=user,
+        ip_address=ip_address,
+        user_agent=user_agent
+    )
+    
+    # Set secure cookies for web apps
+    if settings.SECURE_COOKIES:
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=True,
+            samesite="strict",
+            domain=settings.COOKIE_DOMAIN,
+            max_age=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60
+        )
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=True,
+            samesite="strict",
+            domain=settings.COOKIE_DOMAIN,
+            max_age=settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60
+        )
+    
     return TokenResponse(
-        access_token="mock_access_token",
-        refresh_token="mock_refresh_token",
+        access_token=access_token,
+        refresh_token=refresh_token,
         expires_in=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60
     )
 

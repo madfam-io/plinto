@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@plinto/ui'
 import Link from 'next/link'
 
 const navigation = [

@@ -14,8 +14,8 @@ import {
   Clock,
   Shield
 } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from '@plinto/ui'
+import { Button } from '@plinto/ui'
 
 const useCases = [
   {

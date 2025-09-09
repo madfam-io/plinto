@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Star, Quote, ArrowRight } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from '@plinto/ui'
+import { Button } from '@plinto/ui'
 
 const testimonials = [
   {

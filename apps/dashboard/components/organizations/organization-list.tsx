@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@plinto/ui'
 import { MoreHorizontal, Search, Plus, Building2, Users } from 'lucide-react'
 
 interface Organization {

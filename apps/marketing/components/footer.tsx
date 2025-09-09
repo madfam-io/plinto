@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Github, Twitter, Linkedin, Mail, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@plinto/ui'
 import Link from 'next/link'
 
 const navigation = {

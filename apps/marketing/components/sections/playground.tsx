@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Play, Code, Lock, Zap, Copy, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@plinto/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
 
 export function PlaygroundSection() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)

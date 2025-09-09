@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui'
+import { Button } from '@plinto/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
 import { 
   Users, 
   Shield, 

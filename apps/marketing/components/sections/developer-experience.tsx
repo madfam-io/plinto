@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Code, Terminal, FileCode, Package, CheckCircle } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
 
 export function DeveloperExperience() {
   const [selectedLanguage, setSelectedLanguage] = useState('typescript')

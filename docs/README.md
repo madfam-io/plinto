@@ -8,27 +8,32 @@ Welcome to the Plinto documentation. This directory contains all project documen
 
 ```
 docs/
-├── README.md                    # This file - Documentation index
-├── PROJECT_INDEX.md            # Complete project navigation map
+├── README.md                    # This file - Documentation overview
+├── INDEX.md                    # Complete documentation index
+├── PROJECT_INDEX.md            # Project navigation map
 │
-├── architecture/               # System design & architecture
-│   ├── ARCHITECTURE.md         # Core system architecture
-│   └── SUBDOMAIN_ARCHITECTURE.md # Domain mapping & deployment
+├── technical/                  # Technical documentation
+│   ├── CODEBASE_ANALYSIS.md   # Codebase structure analysis
+│   └── PROJECT_STRUCTURE.md   # Monorepo organization
 │
-├── business/                   # Business & product documentation
-│   └── BIZ_DEV.md             # Business strategy, pricing, GTM
+├── deployment/                 # Deployment guides
+│   ├── DEPLOYMENT.md          # Complete deployment guide
+│   └── VERCEL_SETUP.md        # Vercel configuration
 │
-├── technical/                  # Technical specifications
-│   ├── DATABASE_DESIGN.md     # Database schema & models
-│   └── SOFTWARE_SPEC.md       # Technical requirements
+├── api/                       # API documentation
+│   └── (coming soon)          # API specifications
 │
-├── reference/                  # API & SDK references
-│   └── API_SPECIFICATION.md   # REST API documentation
+├── guides/                    # Development guides
+│   └── (coming soon)          # Tutorials and how-tos
 │
-└── guides/                     # Development guides
-    ├── CLAUDE.md              # AI assistant guidelines
-    ├── IMPLEMENTATION_GUIDE.md # Development roadmap
-    └── MARKETING_DESIGN.md    # Marketing site design guide
+├── architecture/              # System design & architecture
+│   └── (existing docs)        # Core architecture docs
+│
+├── business/                  # Business documentation
+│   └── (existing docs)        # Strategy and planning
+│
+└── reference/                 # API & SDK references
+    └── (existing docs)        # Technical references
 ```
 
 ## 🚀 Quick Start

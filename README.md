@@ -20,7 +20,13 @@
 * [Contributing](#contributing)
 * [License](#license)
 
-> 📚 **Full documentation available in [`/docs`](./docs/README.md)** - Architecture, API specs, guides, and more.
+## 📚 Documentation
+
+* **[Documentation Hub](./docs/)** - All project documentation
+  * **[Technical Docs](./docs/technical/)** - Architecture, codebase analysis, project structure
+  * **[Deployment Guides](./docs/deployment/)** - Vercel setup, deployment instructions
+  * **[API Reference](./docs/api/)** - API specifications and endpoints
+  * **[Guides](./docs/guides/)** - Tutorials and how-to guides
 
 ---
 

@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from sqlalchemy import text
 import structlog
 import time
 
@@ -85,16 +86,51 @@ async def health_check():
 # Ready check
 @app.get("/ready")
 async def ready_check():
-    # TODO: Check database and Redis connectivity
-    return {"status": "ready"}
+    """Health check endpoint with database and Redis connectivity"""
+    from app.core.database import engine
+    from app.core.redis import redis_client
+    
+    checks = {
+        "status": "ready",
+        "database": False,
+        "redis": False
+    }
+    
+    # Check database connectivity
+    try:
+        async with engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
+            checks["database"] = True
+    except Exception as e:
+        logger.error(f"Database health check failed: {e}")
+    
+    # Check Redis connectivity
+    try:
+        if redis_client:
+            await redis_client.ping()
+            checks["redis"] = True
+    except Exception as e:
+        logger.error(f"Redis health check failed: {e}")
+    
+    # Overall status
+    if not all([checks["database"], checks["redis"]]):
+        checks["status"] = "degraded"
+    
+    return checks
 
 
 # JWKS endpoint
 @app.get("/.well-known/jwks.json")
 async def get_jwks():
-    # TODO: Implement JWKS endpoint
+    """Return JSON Web Key Set for token verification"""
+    from app.services.jwt_service import JWTService
+    jwt_service = JWTService()
+    
+    # Get the public key in JWK format
+    jwk = jwt_service.get_public_jwk()
+    
     return {
-        "keys": []
+        "keys": [jwk] if jwk else []
     }
 
 

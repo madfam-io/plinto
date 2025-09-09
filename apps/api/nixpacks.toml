@@ -1,6 +1,6 @@
 # Nixpacks configuration for FastAPI deployment
 [phases.setup]
-nixPkgs = ["python311", "postgresql15"]
+nixPkgs = ["python311", "postgresql15", "gcc"]
 
 [phases.install]
 cmds = ["pip install --upgrade pip", "pip install -r requirements.txt"]

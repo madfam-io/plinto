@@ -1,0 +1,17 @@
+# Root nixpacks configuration - Node.js monorepo
+# For deploying specific services, set the root directory in Railway dashboard
+
+[phases.setup]
+nixPkgs = ["nodejs-22_x", "yarn-1_x"]
+
+[phases.install]
+cmds = ["yarn install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["yarn build"]
+
+[start]
+cmd = "yarn start"
+
+[variables]
+NODE_ENV = "production"

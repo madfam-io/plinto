@@ -2,7 +2,7 @@
 # For deploying specific services, set the root directory in Railway dashboard
 
 [phases.setup]
-nixPkgs = ["nodejs-22_x", "yarn-1_x"]
+nixPkgs = ["nodejs", "yarn"]
 
 [phases.install]
 cmds = ["yarn install --frozen-lockfile"]

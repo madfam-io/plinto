@@ -8,8 +8,20 @@ import structlog
 from app.config import settings
 from app.core.database import get_db
 from app.core.redis import get_redis, RateLimiter, SessionStore
-from app.services.auth_service import AuthService
-from app.services.email_service import get_email_service
+# Import services with error handling for production stability
+try:
+    from app.services.auth_service import AuthService
+    AUTH_SERVICE_AVAILABLE = True
+except Exception as e:
+    logger.error(f"Failed to import AuthService: {e}")
+    AUTH_SERVICE_AVAILABLE = False
+
+try:
+    from app.services.email_service import get_email_service
+    EMAIL_SERVICE_AVAILABLE = True
+except Exception as e:
+    logger.error(f"Failed to import EmailService: {e}")
+    EMAIL_SERVICE_AVAILABLE = False
 from app.models.user import User
 
 logger = structlog.get_logger()
@@ -24,7 +36,9 @@ async def auth_status():
     return {
         "status": "auth router working",
         "endpoints": ["signup", "signin", "signout", "refresh", "me"],
-        "router_name": "auth"
+        "router_name": "auth",
+        "auth_service": "available" if AUTH_SERVICE_AVAILABLE else "unavailable",
+        "email_service": "available" if EMAIL_SERVICE_AVAILABLE else "unavailable"
     }
 
 
@@ -84,6 +98,12 @@ async def signup(
     redis=Depends(get_redis)
 ):
     """Register a new user"""
+    # Check if AuthService is available
+    if not AUTH_SERVICE_AVAILABLE:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Authentication service temporarily unavailable"
+        )
     # Check rate limit
     limiter = RateLimiter(redis)
     allowed, remaining = await limiter.check_rate_limit(
@@ -110,18 +130,21 @@ async def signup(
             tenant_id=tenant_id
         )
         
-        # Send verification email
-        email_service = get_email_service(redis)
-        try:
-            verification_token = await email_service.send_verification_email(
-                email=user.email,
-                user_name=user.name,
-                user_id=str(user.id)
-            )
-            logger.info(f"Verification email sent to {user.email}")
-        except Exception as e:
-            logger.error(f"Failed to send verification email: {e}")
-            # Continue with signup even if email fails for beta
+        # Send verification email (optional for beta)
+        if EMAIL_SERVICE_AVAILABLE:
+            try:
+                email_service = get_email_service(redis)
+                verification_token = await email_service.send_verification_email(
+                    email=user.email,
+                    user_name=user.name,
+                    user_id=str(user.id)
+                )
+                logger.info(f"Verification email sent to {user.email}")
+            except Exception as e:
+                logger.error(f"Failed to send verification email: {e}")
+                # Continue with signup even if email fails for beta
+        else:
+            logger.warning("Email service unavailable - skipping verification email")
         
         return UserResponse(
             id=str(user.id),
@@ -154,6 +177,12 @@ async def signin(
     redis=Depends(get_redis)
 ):
     """Sign in with email and password"""
+    # Check if AuthService is available
+    if not AUTH_SERVICE_AVAILABLE:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Authentication service temporarily unavailable"
+        )
     # Check rate limit
     limiter = RateLimiter(redis)
     allowed, remaining = await limiter.check_rate_limit(

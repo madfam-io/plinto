@@ -32,6 +32,7 @@ from app.middleware.rate_limit import RateLimitMiddleware
 try:
     from app.auth.router import router as auth_router
     AUTH_ROUTER_AVAILABLE = True
+    logger.info("Auth router imported successfully")
 except Exception as e:
     logger.error(f"Failed to import auth router: {e}")
     AUTH_ROUTER_AVAILABLE = False
@@ -39,6 +40,7 @@ except Exception as e:
 try:
     from app.users.router import router as users_router
     USERS_ROUTER_AVAILABLE = True
+    logger.info("Users router imported successfully")
 except Exception as e:
     logger.error(f"Failed to import users router: {e}")
     USERS_ROUTER_AVAILABLE = False
@@ -274,23 +276,27 @@ def get_openid_configuration():
 
 
 # Include routers with error handling for production deployment
+logger.info(f"Router availability - Auth: {AUTH_ROUTER_AVAILABLE}, Users: {USERS_ROUTER_AVAILABLE}")
+
 if AUTH_ROUTER_AVAILABLE:
     try:
         app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
-        logger.info("Auth router included successfully")
+        logger.info("✅ Auth router included successfully")
     except Exception as e:
-        logger.error(f"Failed to include auth router: {e}")
+        logger.error(f"❌ Failed to include auth router: {e}")
+        AUTH_ROUTER_AVAILABLE = False
 else:
-    logger.warning("Auth router not available - skipping")
+    logger.warning("⚠️ Auth router not available - authentication disabled")
 
 if USERS_ROUTER_AVAILABLE:
     try:
         app.include_router(users_router, prefix="/api/v1/users", tags=["users"])
-        logger.info("Users router included successfully")
+        logger.info("✅ Users router included successfully")
     except Exception as e:
-        logger.error(f"Failed to include users router: {e}")
+        logger.error(f"❌ Failed to include users router: {e}")
+        USERS_ROUTER_AVAILABLE = False
 else:
-    logger.warning("Users router not available - skipping")
+    logger.warning("⚠️ Users router not available - user management disabled")
 
 # API status endpoint
 @app.get("/api/status")

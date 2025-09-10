@@ -8,9 +8,8 @@ import structlog
 from app.config import settings
 from app.core.database import get_db
 from app.core.redis import get_redis, RateLimiter, SessionStore
-# Temporarily disabled for debugging
-# from app.services.auth_service import AuthService
-# from app.services.email_service import get_email_service
+from app.services.auth_service import AuthService
+from app.services.email_service import get_email_service
 from app.models.user import User
 
 logger = structlog.get_logger()
@@ -100,48 +99,37 @@ async def signup(
         )
     
     try:
-        # TODO: Create user with real implementation
-        # tenant_id = UUID(request.tenant_id) if request.tenant_id else None
-        # user = await AuthService.create_user(
-        #     db=db,
-        #     email=request.email,
-        #     password=request.password,
-        #     name=request.name,
-        #     tenant_id=tenant_id
-        # )
+        # Create user with real implementation
+        from uuid import UUID
+        tenant_id = UUID(request.tenant_id) if request.tenant_id else None
+        user = await AuthService.create_user(
+            db=db,
+            email=request.email,
+            password=request.password,
+            name=request.name,
+            tenant_id=tenant_id
+        )
         
-        # Mock user response for now
-        from datetime import datetime
-        user_mock = type('User', (), {
-            'id': 'user_123',
-            'email': request.email,
-            'name': request.name or 'New User',
-            'email_verified': False,
-            'created_at': datetime.utcnow(),
-            'updated_at': datetime.utcnow()
-        })()
-        
-        # Send verification email - temporarily disabled for debugging
-        # email_service = get_email_service(redis)
-        # try:
-        #     verification_token = await email_service.send_verification_email(
-        #         email=user_mock.email,
-        #         user_name=user_mock.name,
-        #         user_id=str(user_mock.id)
-        #     )
-        #     logger.info(f"Verification email sent to {user_mock.email}")
-        # except Exception as e:
-        #     logger.error(f"Failed to send verification email: {e}")
-        #     # Continue with signup even if email fails for alpha
-        logger.info(f"User signup successful for {user_mock.email} (email verification temporarily disabled)")
+        # Send verification email
+        email_service = get_email_service(redis)
+        try:
+            verification_token = await email_service.send_verification_email(
+                email=user.email,
+                user_name=user.name,
+                user_id=str(user.id)
+            )
+            logger.info(f"Verification email sent to {user.email}")
+        except Exception as e:
+            logger.error(f"Failed to send verification email: {e}")
+            # Continue with signup even if email fails for beta
         
         return UserResponse(
-            id=str(user_mock.id),
-            email=user_mock.email,
-            name=user_mock.name,
-            email_verified=user_mock.email_verified,
-            created_at=user_mock.created_at.isoformat(),
-            updated_at=user_mock.updated_at.isoformat()
+            id=str(user.id),
+            email=user.email,
+            name=user.name,
+            email_verified=user.email_verified,
+            created_at=user.created_at.isoformat(),
+            updated_at=user.updated_at.isoformat()
         )
         
     except ValueError as e:
@@ -180,30 +168,26 @@ async def signin(
             detail="Too many signin attempts"
         )
     
-    # TODO: Authenticate user
-    # user = await AuthService.authenticate_user(
-    #     db=db,
-    #     email=request.email,
-    #     password=request.password
-    # )
+    # Authenticate user with real implementation
+    user = await AuthService.authenticate_user(
+        db=db,
+        email=request.email,
+        password=request.password
+    )
     
-    # For alpha: Basic authentication check
-    # TODO: Implement proper authentication with database
-    # For now, we'll accept any valid email/password format
-    # This is temporary for alpha testing
-    
-    if not request.email or not request.password:
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
     
-    # Generate temporary session tokens for alpha
-    import hashlib
-    import time
-    token_base = f"{request.email}:{time.time()}"
-    access_token = hashlib.sha256(f"access_{token_base}".encode()).hexdigest()[:32]
-    refresh_token = hashlib.sha256(f"refresh_{token_base}".encode()).hexdigest()[:32]
+    # Create real session with JWT tokens
+    access_token, refresh_token, session = await AuthService.create_session(
+        db=db,
+        user=user,
+        ip_address=req.client.host if req.client else None,
+        user_agent=req.headers.get("user-agent")
+    )
     
     # Set secure cookies for web apps
     if settings.SECURE_COOKIES:
@@ -251,19 +235,27 @@ async def signout(
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh_token(
     request: RefreshTokenRequest,
+    db=Depends(get_db),
     redis=Depends(get_redis)
 ):
     """Refresh access token using refresh token"""
-    # TODO: Implement token refresh
-    # - Validate refresh token
-    # - Check if not blacklisted
-    # - Generate new access token
-    # - Optionally rotate refresh token
+    # Refresh tokens with real implementation
+    tokens = await AuthService.refresh_tokens(
+        db=db,
+        refresh_token=request.refresh_token
+    )
     
-    # Mock response for now
+    if not tokens:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired refresh token"
+        )
+    
+    access_token, refresh_token = tokens
+    
     return TokenResponse(
-        access_token="new_access_token",
-        refresh_token="new_refresh_token",
+        access_token=access_token,
+        refresh_token=refresh_token,
         expires_in=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60
     )
 
@@ -274,19 +266,30 @@ async def get_current_user(
     db=Depends(get_db)
 ):
     """Get current user information"""
-    # TODO: Implement user retrieval
-    # - Validate access token
-    # - Extract user ID from token
-    # - Fetch user from database
+    # Validate access token
+    payload = await AuthService.verify_token(credentials.credentials, token_type="access")
+    if not payload:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token"
+        )
     
-    # Mock response for now
+    # Fetch user from database
+    from uuid import UUID
+    user = await db.get(User, UUID(payload.get("sub")))
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found or inactive"
+        )
+    
     return UserResponse(
-        id="user_123",
-        email="user@example.com",
-        name="Test User",
-        email_verified=True,
-        created_at="2024-01-01T00:00:00Z",
-        updated_at="2024-01-01T00:00:00Z"
+        id=str(user.id),
+        email=user.email,
+        name=user.name,
+        email_verified=user.email_verified,
+        created_at=user.created_at.isoformat(),
+        updated_at=user.updated_at.isoformat()
     )
 
 
@@ -297,14 +300,47 @@ async def verify_email(
     redis=Depends(get_redis)
 ):
     """Verify email address with token"""
-    # Temporarily return success for all verification attempts during debugging
-    logger.info(f"Email verification temporarily disabled - returning success for token: {request.token[:10]}...")
-    
-    return {
-        "message": "Email verified successfully (temporarily disabled)",
-        "email": "user@example.com",
-        "verified_at": "2025-09-10T23:30:00Z"
-    }
+    try:
+        # Validate verification token
+        email_service = get_email_service(redis)
+        token_info = await email_service.verify_email_token(request.token)
+        
+        # Update user email_verified status in database
+        from sqlalchemy import select
+        result = await db.execute(
+            select(User).where(User.email == token_info['email'])
+        )
+        user = result.scalar_one_or_none()
+        
+        if user:
+            user.email_verified = True
+            await db.commit()
+            logger.info(f"Email verified for user {user.id}")
+        
+        # Send welcome email after verification
+        try:
+            await email_service.send_welcome_email(
+                email=token_info['email'],
+                user_name=token_info.get('user_name')
+            )
+        except Exception as e:
+            logger.error(f"Failed to send welcome email: {e}")
+            # Continue even if welcome email fails
+        
+        logger.info(f"Email verification successful for {token_info['email']}")
+        
+        return {
+            "message": "Email verified successfully",
+            "email": token_info['email'],
+            "verified_at": token_info['created_at']
+        }
+        
+    except Exception as e:
+        logger.error(f"Email verification failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired verification token"
+        )
 
 
 @router.post("/forgot-password")
@@ -327,8 +363,17 @@ async def forgot_password(
             detail="Too many password reset requests"
         )
     
-    # For alpha: Log password reset request (email service temporarily disabled)
-    logger.info(f"Password reset requested for {request.email} (email service temporarily disabled)")
+    # Send password reset email (regardless of user existence for security)
+    email_service = get_email_service(redis)
+    try:
+        reset_token = await email_service.send_password_reset_email(
+            email=request.email,
+            user_name=request.email.split("@")[0]  # Use email prefix as name
+        )
+        logger.info(f"Password reset email sent to {request.email}")
+    except Exception as e:
+        logger.error(f"Failed to send password reset email: {e}")
+        # Always return success for security (don't reveal if email exists)
     
     return {"message": "Password reset email sent if account exists"}
 

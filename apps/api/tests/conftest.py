@@ -25,10 +25,11 @@ from app.core.database import Base, get_db
 from app.core.redis import get_redis
 
 
-@pytest.fixture(scope="session")
-def event_loop():
+@pytest_asyncio.fixture(scope="session")
+async def event_loop():
     """Create an instance of the default event loop for the test session."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
+    policy = asyncio.get_event_loop_policy()
+    loop = policy.new_event_loop()
     yield loop
     loop.close()
 

@@ -14,8 +14,10 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 import redis.asyncio as redis
 
-from app.core.config import settings
-from app.core.logging import logger
+from app.config import settings
+import structlog
+
+logger = structlog.get_logger()
 
 
 class RateLimitExceeded(HTTPException):

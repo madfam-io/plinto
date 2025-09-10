@@ -13,6 +13,7 @@ from app.core.database import get_db, init_db
 class TestDatabaseFunctions:
     """Test database utility functions."""
     
+    @pytest.mark.asyncio
     async def test_get_db_success(self, test_db_session):
         """Test successful database session retrieval."""
         # Mock the AsyncSessionLocal
@@ -29,6 +30,7 @@ class TestDatabaseFunctions:
             mock_session.commit.assert_called_once()
             mock_session.close.assert_called_once()
     
+    @pytest.mark.asyncio
     async def test_get_db_rollback_on_error(self):
         """Test database session rollback on error."""
         with patch('app.core.database.AsyncSessionLocal') as mock_session_local:
@@ -47,6 +49,7 @@ class TestDatabaseFunctions:
             mock_session.rollback.assert_called_once()
             mock_session.close.assert_called_once()
     
+    @pytest.mark.asyncio
     async def test_init_db_success(self):
         """Test successful database initialization."""
         with patch('app.core.database.engine') as mock_engine, \
@@ -63,6 +66,7 @@ class TestDatabaseFunctions:
             mock_engine.begin.assert_called_once()
             mock_conn.run_sync.assert_called_once_with(mock_base.metadata.create_all)
     
+    @pytest.mark.asyncio
     async def test_init_db_no_auto_migrate(self):
         """Test database initialization without auto-migration."""
         with patch('app.core.database.engine') as mock_engine, \
@@ -80,6 +84,7 @@ class TestDatabaseFunctions:
             # Should not call create_all when AUTO_MIGRATE is False
             mock_conn.run_sync.assert_not_called()
     
+    @pytest.mark.asyncio
     async def test_init_db_error_handling(self):
         """Test database initialization error handling."""
         with patch('app.core.database.engine') as mock_engine, \

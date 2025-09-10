@@ -19,6 +19,7 @@ class TestHealthEndpoints:
         async with AsyncClient(app=app, base_url="http://test") as client:
             yield client
     
+    @pytest.mark.asyncio
     async def test_health_endpoint_success(self, test_client):
         """Test health endpoint returns success."""
         response = await test_client.get("/health")
@@ -31,6 +32,7 @@ class TestHealthEndpoints:
         assert "environment" in data
         assert data["version"] == "0.1.0"
     
+    @pytest.mark.asyncio
     async def test_ready_endpoint_all_services_healthy(self, test_client):
         """Test ready endpoint when all services are healthy."""
         with patch('app.main.engine') as mock_engine, \
@@ -53,6 +55,7 @@ class TestHealthEndpoints:
             assert data["database"] is True
             assert data["redis"] is True
     
+    @pytest.mark.asyncio
     async def test_ready_endpoint_database_unhealthy(self, test_client):
         """Test ready endpoint when database is unhealthy."""
         with patch('app.main.engine') as mock_engine, \
@@ -73,6 +76,7 @@ class TestHealthEndpoints:
             assert data["database"] is False
             assert data["redis"] is True
     
+    @pytest.mark.asyncio
     async def test_ready_endpoint_redis_unhealthy(self, test_client):
         """Test ready endpoint when Redis is unhealthy."""
         with patch('app.main.engine') as mock_engine, \
@@ -95,6 +99,7 @@ class TestHealthEndpoints:
             assert data["database"] is True
             assert data["redis"] is False
     
+    @pytest.mark.asyncio
     async def test_ready_endpoint_all_services_unhealthy(self, test_client):
         """Test ready endpoint when all services are unhealthy."""
         with patch('app.main.engine') as mock_engine, \
@@ -115,6 +120,7 @@ class TestHealthEndpoints:
             assert data["database"] is False
             assert data["redis"] is False
     
+    @pytest.mark.asyncio
     async def test_ready_endpoint_no_redis_client(self, test_client):
         """Test ready endpoint when Redis client is None."""
         with patch('app.main.engine') as mock_engine, \
@@ -144,6 +150,7 @@ class TestOpenIDEndpoints:
         async with AsyncClient(app=app, base_url="http://test") as client:
             yield client
     
+    @pytest.mark.asyncio
     async def test_openid_configuration(self, test_client):
         """Test OpenID Connect configuration endpoint."""
         response = await test_client.get("/.well-known/openid-configuration")
@@ -185,6 +192,7 @@ class TestOpenIDEndpoints:
         assert data["userinfo_endpoint"] == f"{base_url}/auth/userinfo"
         assert data["jwks_uri"] == f"{base_url}/.well-known/jwks.json"
     
+    @pytest.mark.asyncio
     async def test_jwks_endpoint(self, test_client):
         """Test JWKS endpoint."""
         response = await test_client.get("/.well-known/jwks.json")
@@ -199,6 +207,7 @@ class TestOpenIDEndpoints:
         # For now, keys array can be empty (simplified implementation)
         # In production, this would contain actual public keys
     
+    @pytest.mark.asyncio
     async def test_openid_configuration_with_custom_base_url(self, test_client):
         """Test OpenID configuration with custom BASE_URL."""
         with patch('app.config.settings') as mock_settings:
@@ -217,6 +226,7 @@ class TestOpenIDEndpoints:
             assert data["userinfo_endpoint"] == f"{base_url}/auth/userinfo"
             assert data["jwks_uri"] == f"{base_url}/.well-known/jwks.json"
     
+    @pytest.mark.asyncio
     async def test_openid_configuration_empty_base_url(self, test_client):
         """Test OpenID configuration with empty BASE_URL fallback."""
         with patch('app.config.settings') as mock_settings:
@@ -242,6 +252,7 @@ class TestTestEndpoints:
         async with AsyncClient(app=app, base_url="http://test") as client:
             yield client
     
+    @pytest.mark.asyncio
     async def test_test_endpoint(self, test_client):
         """Test the simple test endpoint."""
         response = await test_client.get("/test")
@@ -252,6 +263,7 @@ class TestTestEndpoints:
         assert data["status"] == "test endpoint working"
         assert data["auth_router_included"] is True
     
+    @pytest.mark.asyncio
     async def test_test_json_endpoint(self, test_client):
         """Test the JSON test endpoint."""
         test_data = {
@@ -268,6 +280,7 @@ class TestTestEndpoints:
         
         assert data["received"] == test_data
     
+    @pytest.mark.asyncio
     async def test_test_json_endpoint_empty_data(self, test_client):
         """Test JSON endpoint with empty data."""
         response = await test_client.post("/test-json", json={})
@@ -277,6 +290,7 @@ class TestTestEndpoints:
         
         assert data["received"] == {}
     
+    @pytest.mark.asyncio
     async def test_test_json_endpoint_invalid_json(self, test_client):
         """Test JSON endpoint with invalid JSON."""
         response = await test_client.post(

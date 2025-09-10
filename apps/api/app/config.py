@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # Application
     VERSION: str = "0.1.0"
     DEBUG: bool = Field(default=False)
-    ENVIRONMENT: str = Field(default="development", pattern="^(development|staging|production)$")
+    ENVIRONMENT: str = Field(default="development", pattern="^(development|staging|production|test)$")
     BASE_URL: str = Field(default="https://plinto.dev")
     INTERNAL_BASE_URL: Optional[str] = Field(default=None, description="Internal service URL for Railway private networking")
     

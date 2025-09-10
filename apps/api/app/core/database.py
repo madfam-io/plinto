@@ -36,14 +36,24 @@ try:
     else:
         database_url = settings.DATABASE_URL
     
-    engine = create_async_engine(
-        database_url,
-        echo=settings.DEBUG,
-        pool_size=settings.DATABASE_POOL_SIZE,
-        max_overflow=settings.DATABASE_MAX_OVERFLOW,
-        pool_timeout=settings.DATABASE_POOL_TIMEOUT,
-        pool_pre_ping=True
-    )
+    # Configure engine based on database type
+    if database_url.startswith('sqlite'):
+        # SQLite doesn't support connection pooling
+        engine = create_async_engine(
+            database_url,
+            echo=settings.DEBUG,
+            pool_pre_ping=True
+        )
+    else:
+        # PostgreSQL with connection pooling
+        engine = create_async_engine(
+            database_url,
+            echo=settings.DEBUG,
+            pool_size=settings.DATABASE_POOL_SIZE,
+            max_overflow=settings.DATABASE_MAX_OVERFLOW,
+            pool_timeout=settings.DATABASE_POOL_TIMEOUT,
+            pool_pre_ping=True
+        )
     
     # Create async session maker
     AsyncSessionLocal = async_sessionmaker(

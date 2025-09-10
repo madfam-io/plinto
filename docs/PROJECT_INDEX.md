@@ -1,264 +1,262 @@
-# 📚 Plinto Project Index
+# Project Documentation Index
 
-## 🏗️ Project Overview
-**Plinto** - Secure identity platform providing edge-fast verification with full control  
-**Status**: Private Alpha  
-**Repository**: [github.com/madfam-io/plinto](https://github.com/madfam-io/plinto)
+> **Complete documentation map** for the Plinto monorepo
 
----
+**Last Updated:** January 2025 · **Status:** Active Development
 
-## 📖 Documentation Map
+## 📚 Documentation Structure
 
-### Core Documentation
-| Document | Purpose | Key Topics |
-|----------|---------|------------|
-| [`README.md`](../README.md) | Project overview & quick start | Installation, usage, features |
-| [`ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) | System design & technical architecture | Hexagonal architecture, domain model, deployment |
-| [`SUBDOMAIN_ARCHITECTURE.md`](./architecture/SUBDOMAIN_ARCHITECTURE.md) | Domain mapping & folder structure | Subdomains, deployment strategy, DNS |
-| [`SOFTWARE_SPEC.md`](./technical/SOFTWARE_SPEC.md) | Technical specification (v1.1) | Requirements, constraints, milestones |
-| [`BIZ_DEV.md`](./business/BIZ_DEV.md) | Business strategy & GTM plan | Pricing, positioning, growth strategy |
+### Quick Navigation
 
-### Technical Documentation
-| Document | Purpose | Key Topics |
-|----------|---------|------------|
-| [`API_SPECIFICATION.md`](./reference/API_SPECIFICATION.md) | API design & endpoints | REST API, authentication flows, webhooks |
-| [`DATABASE_DESIGN.md`](./technical/DATABASE_DESIGN.md) | Database schema & models | PostgreSQL schema, relationships, indexes |
-| [`IMPLEMENTATION_GUIDE.md`](./guides/IMPLEMENTATION_GUIDE.md) | Development roadmap | Gate milestones, feature priorities |
-| [`MARKETING_DESIGN.md`](./guides/MARKETING_DESIGN.md) | Marketing site design | UI/UX, components, content structure |
-| [`CLAUDE.md`](./guides/CLAUDE.md) | AI assistant guidelines | Development patterns, conventions |
+- 🏗️ [Architecture](#architecture)
+- 💻 [Technical](#technical)
+- 🚀 [Deployment](#deployment)
+- 📡 [API](#api)
+- 🧪 [Testing](#testing)
+- 📊 [Business](#business)
+- 🛠️ [Operations](#operations)
 
 ---
 
-## 🗂️ Project Structure
+## 🏗️ Architecture
 
-### Applications (`/apps`)
-| App | Subdomain | Port | Purpose | Status |
-|-----|-----------|------|---------|--------|
-| **marketing** | plinto.dev | 3003 | Public website & landing pages | ✅ Deployed |
-| **dashboard** | app.plinto.dev | 3001 | Customer tenant management | 🔧 In Development |
-| **admin** | admin.plinto.dev | 3002 | Internal superadmin tools | 🔧 In Development |
-| **api** | api.plinto.dev | 8000 | Core API (FastAPI/Python) | 📝 Planned |
+### System Design
+- [System Architecture Overview](./architecture/system-overview.md) - High-level system design
+- [Microservices Architecture](./architecture/microservices.md) - Service decomposition
+- [Database Design](./architecture/database-design.md) - Schema and relationships
+- [Security Architecture](./architecture/security-model.md) - Security layers and patterns
 
-### Packages (`/packages`)
-| Package | Name | Purpose | Status |
-|---------|------|---------|--------|
-| **ui** | @plinto/ui | Shared UI component library | ✅ Active |
-| **sdk-js** | @plinto/sdk | JavaScript/TypeScript SDK | ✅ Active |
-| **react** | @plinto/react | React hooks & components | ✅ Active |
+### Technical Decisions
+- [Technology Stack](./technical/tech-stack.md) - Framework and library choices
+- [Monorepo Structure](./technical/monorepo-structure.md) - Workspace organization
+- [Design Patterns](./architecture/design-patterns.md) - Architectural patterns used
 
-### Infrastructure
-```
-infrastructure/
-├── vercel/          # Frontend deployment configs
-├── railway/         # API deployment configs
-└── docker/          # Container configurations
-```
-
----
-
-## 🚀 Quick Navigation
-
-### For Developers
-- **Getting Started**: [`README.md`](../README.md#quick-start)
-- **API Reference**: [`API_SPECIFICATION.md`](./reference/API_SPECIFICATION.md)
-- **Database Schema**: [`DATABASE_DESIGN.md`](./technical/DATABASE_DESIGN.md)
-- **Implementation Roadmap**: [`IMPLEMENTATION_GUIDE.md`](./guides/IMPLEMENTATION_GUIDE.md)
-
-### For Business/Product
-- **Business Strategy**: [`BIZ_DEV.md`](./business/BIZ_DEV.md)
-- **Marketing Design**: [`MARKETING_DESIGN.md`](./guides/MARKETING_DESIGN.md)
-- **Pricing & Tiers**: [`BIZ_DEV.md#pricing-tiers`](./business/BIZ_DEV.md)
-
-### For DevOps/Infrastructure
-- **Architecture Overview**: [`ARCHITECTURE.md`](./architecture/ARCHITECTURE.md)
-- **Subdomain Strategy**: [`SUBDOMAIN_ARCHITECTURE.md`](./architecture/SUBDOMAIN_ARCHITECTURE.md)
-- **Deployment Guide**: [`SUBDOMAIN_ARCHITECTURE.md#deployment-commands`](./architecture/SUBDOMAIN_ARCHITECTURE.md)
-
----
-
-## 🔗 Key API Endpoints
-
-### Authentication
-- `POST /api/v1/auth/signup` - User registration
-- `POST /api/v1/auth/signin` - User login
-- `POST /api/v1/auth/signout` - User logout
-- `POST /api/v1/auth/refresh` - Token refresh
-- `POST /api/v1/auth/passkeys/register` - Register passkey
-- `POST /api/v1/auth/passkeys/authenticate` - Authenticate with passkey
-
-### Session Management
-- `GET /api/v1/sessions/verify` - Verify JWT token
-- `GET /api/v1/sessions/current` - Get current session
-- `DELETE /api/v1/sessions/{id}` - Revoke session
-
-### Organization & RBAC
-- `GET /api/v1/orgs` - List organizations
-- `POST /api/v1/orgs` - Create organization
-- `GET /api/v1/orgs/{id}/members` - List members
-- `POST /api/v1/orgs/{id}/invites` - Send invitation
-
-Full API documentation: [`API_SPECIFICATION.md`](./reference/API_SPECIFICATION.md)
-
----
-
-## 🎯 Development Milestones
-
-### Gate 0: Foundation (2 weeks)
-- [x] Basic authentication (email + passkeys)
-- [x] Session management
-- [ ] JWKS endpoint & rotation
-- [ ] Basic SDK (TypeScript)
-
-### Gate 1: MVP (Month 2)
-- [ ] Replace Forge Sight auth
-- [ ] Production deployment
-- [ ] Monitoring & alerting
-- [ ] Basic documentation
-
-### Gate 2: Feature Parity (Month 4)
-- [ ] Social logins (Google, GitHub)
-- [ ] Organizations & RBAC
-- [ ] Webhooks
-- [ ] Audit logging
-- [ ] Admin dashboard
-
-### Gate 3: Enterprise (Month 6)
-- [ ] SAML/OIDC providers
-- [ ] SCIM provisioning
-- [ ] Data residency (EU/US)
-- [ ] Advanced security features
-
-Full roadmap: [`IMPLEMENTATION_GUIDE.md`](./guides/IMPLEMENTATION_GUIDE.md)
-
----
-
-## 🛠️ Development Commands
-
-### Setup
-```bash
-# Install dependencies
-yarn install
-
-# Setup environment
-cp .env.example .env.local
-```
+## 💻 Technical
 
 ### Development
-```bash
-# Run all apps
-yarn dev
+- [Development Setup](./guides/development-setup.md) - Local environment configuration
+- [Coding Standards](./technical/coding-standards.md) - Style guides and conventions
+- [Testing Strategy](./technical/testing-strategy.md) - **NEW** Comprehensive testing approach
+- [Performance Guidelines](./technical/performance.md) - Optimization strategies
 
-# Run specific apps
-yarn workspace @plinto/marketing dev     # http://localhost:3003
-yarn workspace @plinto/dashboard dev     # http://localhost:3001
-yarn workspace @plinto/admin dev         # http://localhost:3002
+### Codebase
+- [Codebase Analysis](./technical/codebase-analysis.md) - Code structure and quality
+- [Dependencies](./technical/dependencies.md) - Package management
+- [Build System](./technical/build-system.md) - Turbo and compilation
 
-# API (Python/FastAPI)
-cd apps/api && uvicorn main:app --reload # http://localhost:8000
-```
+## 🚀 Deployment
 
-### Build & Deploy
-```bash
-# Build all
-yarn build
+### Platform Guides
+- [Railway Deployment](./deployment/railway-setup.md) - **UPDATED** Backend deployment
+- [Vercel Deployment](./deployment/vercel-setup.md) - Frontend deployment
+- [Cloudflare Integration](./deployment/cloudflare.md) - CDN and edge services
+- [Docker Configuration](./deployment/docker.md) - Container setup
 
-# Deploy marketing
-cd apps/marketing && vercel --prod
+### CI/CD
+- [GitHub Actions](./deployment/github-actions.md) - Automation workflows
+- [Release Process](./deployment/release-process.md) - Version management
+- [Environment Management](./deployment/environments.md) - Dev/staging/prod setup
 
-# Deploy dashboard
-cd apps/dashboard && vercel --prod --scope plinto
+## 📡 API
 
-# Deploy API
-railway up -p plinto-api
-```
+### Documentation
+- [API Overview](./api/overview.md) - RESTful API design
+- [Authentication](./api/authentication.md) - Auth flows and security
+- [Endpoints Reference](./api/endpoints.md) - Complete endpoint documentation
+- [WebSocket Events](./api/websockets.md) - Real-time communication
+
+### Integration
+- [SDK Documentation](./api/sdk-docs.md) - Client library usage
+- [Webhooks](./api/webhooks.md) - Event notifications
+- [Rate Limiting](./api/rate-limiting.md) - API throttling rules
+
+## 🧪 Testing
+
+### Test Documentation
+- [Testing Strategy](./technical/testing-strategy.md) - **NEW** Comprehensive testing approach
+- [Unit Testing Guide](./testing/unit-tests.md) - Component testing
+- [Integration Testing](./testing/integration-tests.md) - System testing
+- [E2E Testing](./testing/e2e-tests.md) - User journey testing
+
+### Quality Assurance
+- [Coverage Reports](../coverage/) - Test coverage metrics
+- [Performance Testing](./testing/performance.md) - Load and stress testing
+- [Security Testing](./testing/security.md) - Vulnerability assessment
+
+## 📊 Business
+
+### Strategy
+- [Go-to-Market Strategy](./business/gtm-strategy.md) - Market approach
+- [Pricing Model](./business/pricing.md) - Monetization strategy
+- [Competitive Analysis](./business/competitive-analysis.md) - Market positioning
+
+### Product
+- [Product Roadmap](./business/roadmap.md) - Feature timeline
+- [User Personas](./business/user-personas.md) - Target audience
+- [Use Cases](./business/use-cases.md) - Application scenarios
+
+## 🛠️ Operations
+
+### Production
+- [Production Readiness](./operations/production-readiness.md) - Launch checklist
+- [Monitoring & Alerts](./operations/monitoring.md) - Observability setup
+- [Incident Response](./operations/incident-response.md) - Emergency procedures
+- [Backup & Recovery](./operations/backup-recovery.md) - Data protection
+
+### Maintenance
+- [Troubleshooting Guide](./operations/troubleshooting.md) - Common issues
+- [Performance Tuning](./operations/performance-tuning.md) - Optimization
+- [Security Updates](./operations/security-updates.md) - Patch management
+
+## 📂 Application-Specific Documentation
+
+### Frontend Applications
+
+#### Dashboard (`apps/dashboard`)
+- **README:** [Dashboard README](../apps/dashboard/README.md) - *To be created*
+- **Port:** 3001
+- **Domain:** app.plinto.dev
+- **Stack:** Next.js 14, TanStack Query
+
+#### Admin Panel (`apps/admin`)
+- **README:** [Admin README](../apps/admin/README.md) - *To be created*
+- **Port:** 3004
+- **Domain:** admin.plinto.dev
+- **Stack:** Next.js 14, Enhanced security
+
+#### Marketing Site (`apps/marketing`)
+- **README:** [Marketing README](../apps/marketing/README.md) - *To be created*
+- **Port:** 3003
+- **Domain:** plinto.dev
+- **Stack:** Next.js 14, Three.js
+
+#### Demo App (`apps/demo`)
+- **README:** [Demo README](../apps/demo/README.md) - *To be created*
+- **Port:** 3002
+- **Domain:** demo.plinto.dev
+- **Stack:** Next.js 14, Framer Motion
+
+#### Documentation (`apps/docs`)
+- **README:** [Docs README](../apps/docs/README.md) - *To be created*
+- **Port:** 3003 ⚠️ (conflict with marketing)
+- **Domain:** docs.plinto.dev
+- **Stack:** Next.js 14, MDX
+
+### Backend Applications
+
+#### API (`apps/api`)
+- **README:** [API README](../apps/api/README.md) - **✅ CREATED**
+- **Port:** 8000
+- **Domain:** api.plinto.dev
+- **Stack:** FastAPI, PostgreSQL, Redis
+- **Coverage:** 22% (target: 100%)
+
+#### Edge Verify (`apps/edge-verify`)
+- **README:** [Edge Verify README](../apps/edge-verify/README.md) - *To be created*
+- **Purpose:** Edge runtime verification
+- **Stack:** Vercel Edge Functions
+
+## 📦 Package Documentation
+
+### UI/Component Libraries
+
+#### @plinto/ui
+- **README:** [UI Package README](../packages/ui/README.md) - *To be created*
+- **Purpose:** Shared design system
+- **Stack:** Radix UI, Tailwind CSS
+
+#### @plinto/react
+- **README:** [React Package README](../packages/react/README.md) - *To be created*
+- **Purpose:** React hooks and utilities
+- **Dependencies:** React 18+
+
+### SDK Libraries
+
+#### @plinto/sdk
+- **README:** [SDK README](../packages/sdk/README.md) - *To be created*
+- **Purpose:** Core JavaScript SDK
+- **Support:** Browser & Node.js
+
+#### @plinto/sdk-js
+- **README:** [SDK-JS README](../packages/sdk-js/README.md) - *To be created*
+- **Purpose:** Alternative SDK implementation
+- **Status:** In development
+
+### Utility Packages
+
+#### @plinto/core
+- **README:** [Core README](../packages/core/README.md) - *To be created*
+- **Purpose:** Shared business logic
+- **Status:** Placeholder
+
+#### @plinto/database
+- **README:** [Database README](../packages/database/README.md) - *To be created*
+- **Purpose:** Database utilities
+- **Status:** Placeholder
+
+#### @plinto/monitoring
+- **README:** [Monitoring README](../packages/monitoring/README.md) - *To be created*
+- **Purpose:** Observability utilities
+- **Stack:** OpenTelemetry
+
+#### @plinto/mock-api
+- **README:** [Mock API README](../packages/mock-api/README.md) - *To be created*
+- **Purpose:** Development API server
+- **Port:** 4000
+
+## 📈 Documentation Status
+
+### Coverage Summary
+
+| Category | Status | Completion |
+|----------|--------|------------|
+| Architecture | ✅ Complete | 100% |
+| Technical | 🚧 In Progress | 85% |
+| Deployment | ✅ Complete | 100% |
+| API | 🚧 In Progress | 70% |
+| Testing | ✅ Complete | 100% |
+| Business | ✅ Complete | 100% |
+| Operations | 🚧 In Progress | 80% |
+| App READMEs | ⚠️ Needs Work | 14% (1/7) |
+| Package READMEs | ❌ Missing | 0% (0/9) |
+
+### Priority Items
+
+1. **High Priority**
+   - Create README files for all applications
+   - Create README files for core packages (@plinto/ui, @plinto/sdk)
+   - Complete API endpoint documentation
+   - Resolve port conflict (docs/marketing)
+
+2. **Medium Priority**
+   - Document SDK usage examples
+   - Create component library documentation
+   - Add troubleshooting guides
+
+3. **Low Priority**
+   - Add architecture diagrams
+   - Create video tutorials
+   - Expand use case documentation
+
+## 🔄 Maintenance
+
+### Update Schedule
+
+- **Weekly:** Update deployment status, test coverage
+- **Bi-weekly:** Review and update technical documentation
+- **Monthly:** Update architecture and design docs
+- **Quarterly:** Full documentation audit
+
+### Contributing
+
+To contribute to documentation:
+1. Follow the [Documentation Style Guide](./guides/documentation-style.md)
+2. Update this index when adding new documents
+3. Ensure cross-references are valid
+4. Submit PR with documentation label
 
 ---
 
-## 📊 Technical Stack
-
-### Frontend
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Library**: Radix UI + Custom components
-- **State**: React Query + Zustand
-
-### Backend
-- **API**: FastAPI (Python)
-- **Database**: PostgreSQL
-- **Cache**: Redis
-- **Auth Engine**: SuperTokens Core
-- **Policy Engine**: Open Policy Agent (OPA)
-
-### Infrastructure
-- **Frontend Hosting**: Vercel
-- **API Hosting**: Railway
-- **CDN/WAF**: Cloudflare
-- **Storage**: Cloudflare R2
-- **Monitoring**: Datadog / Sentry
-
----
-
-## 🔐 Security & Compliance
-
-### Security Features
-- **Passkeys/WebAuthn** as primary auth
-- **Per-tenant signing keys**
-- **JWT rotation** with short-lived tokens
-- **Rate limiting** at edge and API
-- **Audit logging** with hash-chaining
-
-### Compliance
-- **SOC 2 Type II** (planned)
-- **GDPR & CCPA** compliant
-- **HIPAA** ready architecture
-- **Data residency** options (EU/US)
-
----
-
-## 📈 Business Model
-
-### Pricing Tiers
-| Tier | Price | MAU | Features |
-|------|-------|-----|----------|
-| **Community** | Free | 2,000 | Basic features, community support |
-| **Pro** | $69/mo | 10,000 | Custom domains, email support |
-| **Scale** | $299/mo | 50,000 | Priority support, advanced features |
-| **Enterprise** | Custom | Unlimited | SAML, SCIM, dedicated support |
-
-Full pricing: [`BIZ_DEV.md#pricing-tiers`](./business/BIZ_DEV.md)
-
----
-
-## 🤝 Contributing
-
-### Development Workflow
-1. Create feature branch from `main`
-2. Follow conventions in [`CLAUDE.md`](./guides/CLAUDE.md)
-3. Test locally with `yarn test`
-4. Submit PR with description
-
-### Key Conventions
-- **Commit format**: `type: description` (e.g., `fix: authentication flow`)
-- **Branch naming**: `feature/description` or `fix/issue`
-- **Code style**: ESLint + Prettier (auto-formatted)
-
----
-
-## 📞 Support & Resources
-
-### Internal Resources
-- **Documentation**: This index and linked documents
-- **Slack**: #plinto-dev channel
-- **GitHub Issues**: [github.com/madfam-io/plinto/issues](https://github.com/madfam-io/plinto/issues)
-
-### External Resources
-- **Production**: [plinto.dev](https://plinto.dev)
-- **Dashboard**: [app.plinto.dev](https://app.plinto.dev)
-- **Status**: [status.plinto.dev](https://status.plinto.dev)
-- **API**: [api.plinto.dev](https://api.plinto.dev)
-
----
-
-*Last updated: January 9, 2025*  
-*Version: 0.1.0 (Private Alpha)*
+**Document Owner:** Engineering Team  
+**Last Audit:** January 2025  
+**Next Audit:** April 2025

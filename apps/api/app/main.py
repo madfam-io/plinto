@@ -190,9 +190,17 @@ async def health_check():
 
 # Test endpoints for debugging
 @app.get("/test")
-async def test_endpoint():
+def test_endpoint():
     """Simple test endpoint to verify routing works"""
-    return {"status": "test endpoint working", "auth_router_included": True}
+    try:
+        return {
+            "status": "test endpoint working", 
+            "auth_router_available": AUTH_ROUTER_AVAILABLE,
+            "users_router_available": USERS_ROUTER_AVAILABLE,
+            "timestamp": "2025-09-10T23:56:00Z"
+        }
+    except Exception as e:
+        return {"error": f"Test endpoint failed: {str(e)}"}
 
 @app.post("/test-json")
 async def test_json(data: dict):
@@ -301,13 +309,24 @@ else:
 # API status endpoint
 @app.get("/api/status")
 def api_status():
-    return {
-        "status": "API operational",
-        "auth_router": "available" if AUTH_ROUTER_AVAILABLE else "unavailable",
-        "users_router": "available" if USERS_ROUTER_AVAILABLE else "unavailable",
-        "version": settings.VERSION,
-        "environment": settings.ENVIRONMENT
-    }
+    try:
+        # Safely check router availability at runtime
+        auth_available = 'AUTH_ROUTER_AVAILABLE' in globals() and AUTH_ROUTER_AVAILABLE
+        users_available = 'USERS_ROUTER_AVAILABLE' in globals() and USERS_ROUTER_AVAILABLE
+        
+        return {
+            "status": "API operational",
+            "auth_router": "available" if auth_available else "unavailable",
+            "users_router": "available" if users_available else "unavailable",
+            "version": getattr(settings, 'VERSION', 'unknown'),
+            "environment": getattr(settings, 'ENVIRONMENT', 'unknown'),
+            "globals_check": {
+                "AUTH_ROUTER_AVAILABLE": 'AUTH_ROUTER_AVAILABLE' in globals(),
+                "USERS_ROUTER_AVAILABLE": 'USERS_ROUTER_AVAILABLE' in globals()
+            }
+        }
+    except Exception as e:
+        return {"error": f"Status check failed: {str(e)}"}
 
 
 # Register error handlers

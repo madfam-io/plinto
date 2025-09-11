@@ -207,10 +207,98 @@ def test_endpoint():
             "status": "test endpoint working", 
             "auth_router_available": AUTH_ROUTER_AVAILABLE,
             "users_router_available": USERS_ROUTER_AVAILABLE,
-            "timestamp": "2025-09-10T23:56:00Z"
+            "beta_auth_available": BETA_AUTH_AVAILABLE,
+            "timestamp": "2025-09-11T00:08:00Z"
         }
     except Exception as e:
         return {"error": f"Test endpoint failed: {str(e)}"}
+
+# Emergency beta authentication endpoints directly in main.py
+EMERGENCY_USERS = {}
+
+@app.post("/emergency-signup")
+def emergency_signup(data: dict):
+    """Emergency signup for immediate beta launch"""
+    try:
+        email = data.get("email")
+        password = data.get("password")
+        name = data.get("name", "Beta User")
+        
+        if not email or not password:
+            return {"error": "Email and password required"}
+            
+        if email in EMERGENCY_USERS:
+            return {"error": "User already exists"}
+            
+        # Simple storage
+        import hashlib
+        import secrets
+        user_id = secrets.token_hex(8)
+        
+        EMERGENCY_USERS[email] = {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "password_hash": hashlib.sha256(password.encode()).hexdigest(),
+            "created_at": "2025-09-11T00:08:00Z"
+        }
+        
+        return {
+            "id": user_id,
+            "email": email,
+            "name": name,
+            "message": "Emergency beta user created successfully"
+        }
+        
+    except Exception as e:
+        return {"error": f"Emergency signup failed: {str(e)}"}
+
+@app.post("/emergency-signin")
+def emergency_signin(data: dict):
+    """Emergency signin for immediate beta launch"""
+    try:
+        email = data.get("email")
+        password = data.get("password")
+        
+        if not email or not password:
+            return {"error": "Email and password required"}
+            
+        user = EMERGENCY_USERS.get(email)
+        if not user:
+            return {"error": "Invalid credentials"}
+            
+        # Verify password
+        import hashlib
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        
+        if user["password_hash"] != password_hash:
+            return {"error": "Invalid credentials"}
+            
+        # Create simple token
+        import secrets
+        token = secrets.token_hex(32)
+        
+        return {
+            "access_token": token,
+            "user": {
+                "id": user["id"],
+                "email": user["email"],
+                "name": user["name"]
+            },
+            "message": "Emergency beta signin successful"
+        }
+        
+    except Exception as e:
+        return {"error": f"Emergency signin failed: {str(e)}"}
+
+@app.get("/emergency-users")
+def emergency_users():
+    """List emergency beta users"""
+    return {
+        "users": list(EMERGENCY_USERS.values()),
+        "count": len(EMERGENCY_USERS),
+        "message": "Emergency beta user system active"
+    }
 
 @app.post("/test-json")
 async def test_json(data: dict):

@@ -176,17 +176,20 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
-# Root endpoint
+# Root endpoint - absolutely minimal
 @app.get("/")
 def root():
     """Root endpoint for Plinto API"""
-    return {
-        "name": "Plinto API",
-        "version": settings.VERSION,
-        "status": "operational",
-        "documentation": "https://docs.plinto.dev/api",
-        "environment": settings.ENVIRONMENT
-    }
+    try:
+        return {"status": "ok", "message": "API is running"}
+    except Exception as e:
+        return {"error": str(e)}
+
+# Minimal working endpoint for testing
+@app.get("/minimal")
+def minimal():
+    """Minimal endpoint with no dependencies"""
+    return {"working": True, "message": "Minimal endpoint operational"}
 
 # Health check
 @app.get("/health")
@@ -439,7 +442,7 @@ def api_status():
         return {"error": f"Status check failed: {str(e)}"}
 
 
-# Register error handlers
-app.add_exception_handler(PlintoAPIException, plinto_exception_handler)
-app.add_exception_handler(RequestValidationError, validation_exception_handler)
-app.add_exception_handler(Exception, generic_exception_handler)
+# Register error handlers - temporarily disabled to debug
+# app.add_exception_handler(PlintoAPIException, plinto_exception_handler)
+# app.add_exception_handler(RequestValidationError, validation_exception_handler)  
+# app.add_exception_handler(Exception, generic_exception_handler)

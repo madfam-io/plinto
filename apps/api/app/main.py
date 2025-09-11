@@ -28,6 +28,9 @@ from app.core.errors import (
 from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.middleware.rate_limit import RateLimitMiddleware
 
+# Initialize logger BEFORE using it
+logger = structlog.get_logger()
+
 # Import routers with error handling for production stability
 try:
     from app.auth.router import router as auth_router
@@ -44,8 +47,6 @@ try:
 except Exception as e:
     logger.error(f"Failed to import users router: {e}")
     USERS_ROUTER_AVAILABLE = False
-
-logger = structlog.get_logger()
 
 # Initialize Sentry for error tracking
 if SENTRY_AVAILABLE and settings.ENVIRONMENT in ["production", "staging"]:

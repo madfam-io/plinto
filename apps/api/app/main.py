@@ -1,326 +1,73 @@
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.exceptions import RequestValidationError
-from sqlalchemy import text
+from fastapi import FastAPI, HTTPException, status
+from pydantic import BaseModel, EmailStr
+import hashlib
+import secrets
+import jwt
+from datetime import datetime, timedelta
+from typing import Optional
 import structlog
-import time
-try:
-    import sentry_sdk
-    from sentry_sdk.integrations.fastapi import FastApiIntegration
-    from sentry_sdk.integrations.starlette import StarletteIntegration
-    from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
-    SENTRY_AVAILABLE = True
-except ImportError:
-    SENTRY_AVAILABLE = False
 
+# Import only the working infrastructure pieces
 from app.config import settings
-from app.core.database import init_db
-from app.core.redis import init_redis
-from app.core.errors import (
-    PlintoAPIException,
-    plinto_exception_handler,
-    validation_exception_handler,
-    generic_exception_handler
-)
-from app.middleware.security_headers import SecurityHeadersMiddleware
-from app.middleware.rate_limit import RateLimitMiddleware
+from app.core.database import get_db, AsyncSessionLocal
+from app.core.redis import get_redis
 
-# Initialize logger BEFORE using it
+# Initialize logger
 logger = structlog.get_logger()
 
-# Import routers with error handling for production stability
-try:
-    from app.auth.router import router as auth_router
-    AUTH_ROUTER_AVAILABLE = True
-    logger.info("Auth router imported successfully")
-except Exception as e:
-    logger.error(f"Failed to import auth router: {e}")
-    AUTH_ROUTER_AVAILABLE = False
-
-try:
-    from app.users.router import router as users_router
-    USERS_ROUTER_AVAILABLE = True
-    logger.info("Users router imported successfully")
-except Exception as e:
-    logger.error(f"Failed to import users router: {e}")
-    USERS_ROUTER_AVAILABLE = False
-
-# Import beta authentication system as fallback
-try:
-    from app.beta_auth import router as beta_auth_router
-    BETA_AUTH_AVAILABLE = True
-    logger.info("Beta auth router imported successfully")
-except Exception as e:
-    logger.error(f"Failed to import beta auth router: {e}")
-    BETA_AUTH_AVAILABLE = False
-
-# Initialize Sentry for error tracking
-if SENTRY_AVAILABLE and settings.ENVIRONMENT in ["production", "staging"]:
-    sentry_dsn = getattr(settings, "SENTRY_DSN", None)
-    if sentry_dsn:
-        sentry_sdk.init(
-            dsn=sentry_dsn,
-            environment=settings.ENVIRONMENT,
-            integrations=[
-                FastApiIntegration(transaction_style="endpoint"),
-                StarletteIntegration(transaction_style="endpoint"),
-                SqlalchemyIntegration(),
-            ],
-            traces_sample_rate=0.1,  # 10% of transactions for performance monitoring
-            profiles_sample_rate=0.1,  # 10% of transactions for profiling
-            send_default_pii=False,  # Don't send personally identifiable information
-            attach_stacktrace=True,
-            before_send=lambda event, hint: event if settings.ENVIRONMENT == "production" else None,
-        )
-        logger.info("Sentry error tracking initialized")
-    else:
-        logger.warning("Sentry DSN not configured - error tracking disabled")
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup
-    logger.info("Starting Plinto API", version=settings.VERSION, env=settings.ENVIRONMENT)
-    
-    # Initialize database with error handling
-    try:
-        await init_db()
-        logger.info("Database initialized successfully")
-    except Exception as e:
-        logger.error(f"Database initialization failed: {e}")
-    
-    # Initialize Redis with error handling
-    try:
-        await init_redis()
-        logger.info("Redis initialized successfully")
-    except Exception as e:
-        logger.error(f"Redis initialization failed: {e}")
-    
-    yield
-    
-    # Shutdown
-    logger.info("Shutting down Plinto API")
-
-
-# Create FastAPI app
-# Create FastAPI app with conditional docs
-docs_enabled = settings.ENABLE_DOCS or settings.ENVIRONMENT == "development"
-
+# Create minimal FastAPI app that uses your Railway infrastructure
 app = FastAPI(
     title="Plinto API",
-    description="Secure identity platform API - Beta Release",
-    version=settings.VERSION,
-    docs_url="/docs" if docs_enabled else None,
-    redoc_url="/redoc" if docs_enabled else None,
-    openapi_url="/openapi.json" if docs_enabled else None,
-    lifespan=lifespan
+    description="Beta Authentication with Railway Infrastructure",
+    version="0.1.0"
 )
 
-# Security headers middleware (add first so it applies to all responses)
-app.add_middleware(SecurityHeadersMiddleware, strict=settings.ENVIRONMENT == "production")
+# Pydantic models
+class SignUpRequest(BaseModel):
+    email: EmailStr
+    password: str
+    name: Optional[str] = None
 
-# Rate limiting middleware
-app.add_middleware(RateLimitMiddleware)
+class SignInRequest(BaseModel):
+    email: EmailStr  
+    password: str
 
-# CORS middleware - properly configured for production
-cors_origins = [
-    "https://plinto.dev",
-    "https://www.plinto.dev",
-    "https://app.plinto.dev",
-    "https://demo.plinto.dev",
-    "https://docs.plinto.dev",
-    "https://admin.plinto.dev",
-]
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int = 3600
 
-if settings.ENVIRONMENT == "development":
-    cors_origins.extend([
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://localhost:3002",
-        "http://localhost:4000",
-        "http://localhost:8000",
-    ])
+# Utility functions
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["*"],
-    expose_headers=["X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"],
-)
+def verify_password(password: str, hashed: str) -> bool:
+    return hashlib.sha256(password.encode()).hexdigest() == hashed
 
-# Configure allowed hosts - be permissive for Railway health checks
-if settings.ENVIRONMENT == "production":
-    # In production, allow Railway patterns but be permissive for health checks
-    allowed_hosts = ["*"]  # Railway health checks come from internal IPs
-else:
-    # For development
-    allowed_hosts = ["localhost", "127.0.0.1", ".plinto.dev", "*"]
+def create_access_token(data: dict) -> str:
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(hours=1)
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, "beta-secret-key", algorithm="HS256")
 
-app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=allowed_hosts
-)
-
-
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    response.headers["X-Process-Time"] = str(process_time)
-    return response
-
-
-# Root endpoint - absolutely minimal
+# Root endpoint
 @app.get("/")
 def root():
-    """Root endpoint for Plinto API"""
-    try:
-        return {"status": "ok", "message": "API is running"}
-    except Exception as e:
-        return {"error": str(e)}
-
-# Minimal working endpoint for testing
-@app.get("/minimal")
-def minimal():
-    """Minimal endpoint with no dependencies"""
-    return {"working": True, "message": "Minimal endpoint operational"}
+    return {"status": "ok", "message": "Beta API with Railway Infrastructure", "infrastructure": "postgresql+redis"}
 
 # Health check
 @app.get("/health")
-async def health_check():
-    return {
-        "status": "healthy",
-        "version": settings.VERSION,
-        "environment": settings.ENVIRONMENT
-    }
+def health_check():
+    return {"status": "healthy", "version": "0.1.0", "environment": "production"}
 
-
-# Test endpoints for debugging
-@app.get("/test")
-def test_endpoint():
-    """Simple test endpoint to verify routing works"""
-    try:
-        return {
-            "status": "test endpoint working", 
-            "auth_router_available": AUTH_ROUTER_AVAILABLE,
-            "users_router_available": USERS_ROUTER_AVAILABLE,
-            "beta_auth_available": BETA_AUTH_AVAILABLE,
-            "timestamp": "2025-09-11T00:08:00Z"
-        }
-    except Exception as e:
-        return {"error": f"Test endpoint failed: {str(e)}"}
-
-# Emergency beta authentication endpoints directly in main.py
-EMERGENCY_USERS = {}
-
-@app.post("/emergency-signup")
-def emergency_signup(data: dict):
-    """Emergency signup for immediate beta launch"""
-    try:
-        email = data.get("email")
-        password = data.get("password")
-        name = data.get("name", "Beta User")
-        
-        if not email or not password:
-            return {"error": "Email and password required"}
-            
-        if email in EMERGENCY_USERS:
-            return {"error": "User already exists"}
-            
-        # Simple storage
-        import hashlib
-        import secrets
-        user_id = secrets.token_hex(8)
-        
-        EMERGENCY_USERS[email] = {
-            "id": user_id,
-            "email": email,
-            "name": name,
-            "password_hash": hashlib.sha256(password.encode()).hexdigest(),
-            "created_at": "2025-09-11T00:08:00Z"
-        }
-        
-        return {
-            "id": user_id,
-            "email": email,
-            "name": name,
-            "message": "Emergency beta user created successfully"
-        }
-        
-    except Exception as e:
-        return {"error": f"Emergency signup failed: {str(e)}"}
-
-@app.post("/emergency-signin")
-def emergency_signin(data: dict):
-    """Emergency signin for immediate beta launch"""
-    try:
-        email = data.get("email")
-        password = data.get("password")
-        
-        if not email or not password:
-            return {"error": "Email and password required"}
-            
-        user = EMERGENCY_USERS.get(email)
-        if not user:
-            return {"error": "Invalid credentials"}
-            
-        # Verify password
-        import hashlib
-        password_hash = hashlib.sha256(password.encode()).hexdigest()
-        
-        if user["password_hash"] != password_hash:
-            return {"error": "Invalid credentials"}
-            
-        # Create simple token
-        import secrets
-        token = secrets.token_hex(32)
-        
-        return {
-            "access_token": token,
-            "user": {
-                "id": user["id"],
-                "email": user["email"],
-                "name": user["name"]
-            },
-            "message": "Emergency beta signin successful"
-        }
-        
-    except Exception as e:
-        return {"error": f"Emergency signin failed: {str(e)}"}
-
-@app.get("/emergency-users")
-def emergency_users():
-    """List emergency beta users"""
-    return {
-        "users": list(EMERGENCY_USERS.values()),
-        "count": len(EMERGENCY_USERS),
-        "message": "Emergency beta user system active"
-    }
-
-@app.post("/test-json")
-async def test_json(data: dict):
-    """Simple test endpoint to verify JSON parsing works"""
-    return {"received": data}
-
-
-# Ready check
+# Infrastructure check using your actual database and Redis
 @app.get("/ready")
 async def ready_check():
     """Health check endpoint with database and Redis connectivity"""
     from app.core.database import engine
-    from app.core.redis import redis_client
+    from sqlalchemy import text
     
-    checks = {
-        "status": "ready",
-        "database": False,
-        "redis": False
-    }
+    checks = {"status": "ready", "database": False, "redis": False}
     
     # Check database connectivity
     try:
@@ -332,117 +79,163 @@ async def ready_check():
     
     # Check Redis connectivity
     try:
+        redis_client = await get_redis()
         if redis_client:
             await redis_client.ping()
             checks["redis"] = True
     except Exception as e:
         logger.error(f"Redis health check failed: {e}")
     
-    # Overall status
     if not all([checks["database"], checks["redis"]]):
         checks["status"] = "degraded"
     
     return checks
 
-
-# JWKS endpoint - simplified implementation
-@app.get("/.well-known/jwks.json")  
-def get_jwks():
-    """Return JSON Web Key Set for token verification"""
-    # Return empty JWKS for now - this is valid according to RFC 7517
-    # In a real implementation, this would contain public keys for JWT verification
-    return {"keys": []}
-
-
-# OpenID Configuration
-@app.get("/.well-known/openid-configuration")
-def get_openid_configuration():
-    """Return OpenID Connect configuration - sync to avoid async issues"""
+# Beta authentication using Redis for storage (leveraging your Railway infrastructure)
+@app.post("/beta/signup")
+async def beta_signup(request: SignUpRequest):
+    """Beta user registration using Railway Redis storage"""
     try:
-        # Ensure proper BASE_URL with multiple fallbacks
-        base_url = getattr(settings, 'BASE_URL', 'https://api.plinto.dev')
-        if not base_url or base_url.strip() == "":
-            base_url = "https://api.plinto.dev"
-        # Remove trailing slash if present
-        base_url = base_url.rstrip("/")
+        redis_client = await get_redis()
+        
+        # Check if user exists in Redis
+        user_key = f"beta_user:{request.email}"
+        if await redis_client.exists(user_key):
+            raise HTTPException(status_code=400, detail="User already exists")
+        
+        # Validate password
+        if len(request.password) < 8:
+            raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+        
+        # Create user in Redis
+        user_id = secrets.token_hex(16)
+        user_data = {
+            "id": user_id,
+            "email": request.email,
+            "name": request.name or request.email.split("@")[0],
+            "password_hash": hash_password(request.password),
+            "created_at": datetime.utcnow().isoformat(),
+            "email_verified": True
+        }
+        
+        # Store in Redis with 30-day expiry
+        await redis_client.hset(user_key, mapping=user_data)
+        await redis_client.expire(user_key, 30 * 24 * 60 * 60)
+        
+        logger.info(f"Beta user created in Railway Redis: {request.email}")
         
         return {
-            "issuer": getattr(settings, 'JWT_ISSUER', 'https://plinto.dev'),
-            "authorization_endpoint": f"{base_url}/auth/authorize",
-            "token_endpoint": f"{base_url}/auth/token",
-            "userinfo_endpoint": f"{base_url}/auth/userinfo",
-            "jwks_uri": f"{base_url}/.well-known/jwks.json",
-            "response_types_supported": ["code", "token", "id_token"],
-            "subject_types_supported": ["public"],
-            "id_token_signing_alg_values_supported": ["RS256"],
-            "scopes_supported": ["openid", "profile", "email"],
-            "token_endpoint_auth_methods_supported": ["client_secret_basic", "client_secret_post"],
-            "claims_supported": ["sub", "name", "email", "email_verified", "picture"]
+            "id": user_id,
+            "email": request.email,
+            "name": user_data["name"],
+            "message": "Beta user created successfully using Railway Redis"
         }
+        
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"OpenID configuration error: {e}")
-        return {"error": "Configuration temporarily unavailable"}
+        logger.error(f"Beta signup failed: {e}")
+        raise HTTPException(status_code=500, detail="Signup failed")
 
-
-# Include routers with error handling for production deployment
-logger.info(f"Router availability - Auth: {AUTH_ROUTER_AVAILABLE}, Users: {USERS_ROUTER_AVAILABLE}, Beta: {BETA_AUTH_AVAILABLE}")
-
-# Include beta authentication router (priority for beta launch)
-if BETA_AUTH_AVAILABLE:
+@app.post("/beta/signin", response_model=TokenResponse)
+async def beta_signin(request: SignInRequest):
+    """Beta user authentication using Railway Redis storage"""
     try:
-        app.include_router(beta_auth_router, prefix="/api/v1/auth", tags=["beta-auth"])
-        logger.info("✅ Beta auth router included successfully")
+        redis_client = await get_redis()
+        
+        # Get user from Redis
+        user_key = f"beta_user:{request.email}"
+        user_data = await redis_client.hgetall(user_key)
+        
+        if not user_data:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Verify password
+        if not verify_password(request.password, user_data["password_hash"]):
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Create access token
+        token_data = {
+            "sub": user_data["id"],
+            "email": request.email,
+            "name": user_data["name"]
+        }
+        access_token = create_access_token(token_data)
+        
+        # Store session in Redis
+        session_key = f"beta_session:{user_data['id']}"
+        session_data = {
+            "user_id": user_data["id"],
+            "email": request.email,
+            "created_at": datetime.utcnow().isoformat()
+        }
+        await redis_client.hset(session_key, mapping=session_data)
+        await redis_client.expire(session_key, 24 * 60 * 60)  # 24 hours
+        
+        logger.info(f"Beta user signed in: {request.email}")
+        
+        return TokenResponse(access_token=access_token)
+        
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"❌ Failed to include beta auth router: {e}")
-        BETA_AUTH_AVAILABLE = False
-else:
-    logger.warning("⚠️ Beta auth router not available")
+        logger.error(f"Beta signin failed: {e}")
+        raise HTTPException(status_code=500, detail="Signin failed")
 
-# Include main auth router if available and beta is not working
-if AUTH_ROUTER_AVAILABLE and not BETA_AUTH_AVAILABLE:
+@app.get("/beta/users")
+async def beta_list_users():
+    """List beta users from Railway Redis"""
     try:
-        app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
-        logger.info("✅ Auth router included successfully")
+        redis_client = await get_redis()
+        
+        # Get all beta user keys
+        user_keys = await redis_client.keys("beta_user:*")
+        users = []
+        
+        for key in user_keys:
+            user_data = await redis_client.hgetall(key)
+            if user_data:
+                users.append({
+                    "id": user_data["id"],
+                    "email": user_data["email"], 
+                    "name": user_data["name"],
+                    "created_at": user_data["created_at"]
+                })
+        
+        return {"users": users, "total": len(users), "storage": "Railway Redis"}
+        
     except Exception as e:
-        logger.error(f"❌ Failed to include auth router: {e}")
-        AUTH_ROUTER_AVAILABLE = False
-elif not AUTH_ROUTER_AVAILABLE and not BETA_AUTH_AVAILABLE:
-    logger.warning("⚠️ No authentication system available - authentication disabled")
-
-if USERS_ROUTER_AVAILABLE:
-    try:
-        app.include_router(users_router, prefix="/api/v1/users", tags=["users"])
-        logger.info("✅ Users router included successfully")
-    except Exception as e:
-        logger.error(f"❌ Failed to include users router: {e}")
-        USERS_ROUTER_AVAILABLE = False
-else:
-    logger.warning("⚠️ Users router not available - user management disabled")
+        logger.error(f"Failed to list beta users: {e}")
+        raise HTTPException(status_code=500, detail="Failed to list users")
 
 # API status endpoint
 @app.get("/api/status")
 def api_status():
-    try:
-        # Safely check router availability at runtime
-        auth_available = 'AUTH_ROUTER_AVAILABLE' in globals() and AUTH_ROUTER_AVAILABLE
-        users_available = 'USERS_ROUTER_AVAILABLE' in globals() and USERS_ROUTER_AVAILABLE
-        beta_available = 'BETA_AUTH_AVAILABLE' in globals() and BETA_AUTH_AVAILABLE
-        
-        return {
-            "status": "API operational",
-            "auth_router": "available" if auth_available else "unavailable",
-            "users_router": "available" if users_available else "unavailable",
-            "beta_auth": "available" if beta_available else "unavailable",
-            "authentication": "beta" if beta_available else ("main" if auth_available else "none"),
-            "version": getattr(settings, 'VERSION', 'unknown'),
-            "environment": getattr(settings, 'ENVIRONMENT', 'unknown'),
-            "message": "Beta authentication active" if beta_available else "Main auth system in use"
-        }
-    except Exception as e:
-        return {"error": f"Status check failed: {str(e)}"}
+    return {
+        "status": "Beta API operational",
+        "authentication": "Redis-based beta auth",
+        "infrastructure": "Railway PostgreSQL + Redis",
+        "version": "0.1.0",
+        "environment": "production",
+        "endpoints": ["/beta/signup", "/beta/signin", "/beta/users"]
+    }
 
+# OpenID Configuration for compatibility
+@app.get("/.well-known/openid-configuration")
+def get_openid_configuration():
+    """Return OpenID Connect configuration"""
+    return {
+        "issuer": "https://api.plinto.dev",
+        "authorization_endpoint": "https://api.plinto.dev/beta/signin",
+        "token_endpoint": "https://api.plinto.dev/beta/signin",
+        "userinfo_endpoint": "https://api.plinto.dev/beta/users",
+        "jwks_uri": "https://api.plinto.dev/.well-known/jwks.json",
+        "response_types_supported": ["code", "token"],
+        "subject_types_supported": ["public"],
+        "scopes_supported": ["openid", "profile", "email"]
+    }
 
-# Register error handlers - temporarily disabled to debug
-# app.add_exception_handler(PlintoAPIException, plinto_exception_handler)
-# app.add_exception_handler(RequestValidationError, validation_exception_handler)  
-# app.add_exception_handler(Exception, generic_exception_handler)
+@app.get("/.well-known/jwks.json")  
+def get_jwks():
+    """Return JSON Web Key Set for token verification"""
+    return {"keys": []}

@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import hashlib
 import secrets
@@ -6,11 +7,35 @@ import os
 import redis.asyncio as redis
 import asyncpg
 from datetime import datetime
+import logging
 
-# Create ultra-minimal FastAPI app 
-app = FastAPI(title="Plinto Beta API", version="0.1.0")
+from app.config import settings
+from app.database import init_database
+from app.routers.v1 import auth as auth_v1
 
-# In-memory fallback storage
+# Set up logging
+logging.basicConfig(level=logging.INFO if settings.DEBUG else logging.WARNING)
+logger = logging.getLogger(__name__)
+
+# Create FastAPI app 
+app = FastAPI(
+    title="Plinto API",
+    version="1.0.0",
+    description="Modern authentication and identity platform API",
+    docs_url="/docs" if settings.ENABLE_DOCS else None,
+    redoc_url="/redoc" if settings.ENABLE_DOCS else None
+)
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins_list,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# In-memory fallback storage for beta endpoints
 BETA_USERS = {}
 
 # Simple models
@@ -238,9 +263,35 @@ async def beta_list_users():
 @app.get("/api/status")
 def api_status():
     return {
-        "status": "Ultra-minimal beta API operational",
-        "authentication": "Direct Redis + Memory fallback",
+        "status": "Plinto API v1.0.0 operational",
+        "version": "1.0.0",
+        "authentication": "JWT with refresh tokens",
         "infrastructure": "Railway PostgreSQL + Redis",
-        "endpoints": ["/beta/signup", "/beta/signin", "/beta/users"],
-        "storage": "Redis primary, memory fallback"
+        "endpoints": {
+            "beta": ["/beta/signup", "/beta/signin", "/beta/users"],
+            "v1": ["/api/v1/auth/*", "/api/v1/users/*", "/api/v1/organizations/*"]
+        },
+        "features": {
+            "signups": settings.ENABLE_SIGNUPS,
+            "magic_links": settings.ENABLE_MAGIC_LINKS,
+            "oauth": settings.ENABLE_OAUTH,
+            "mfa": settings.ENABLE_MFA,
+            "organizations": settings.ENABLE_ORGANIZATIONS
+        }
     }
+
+# Include v1 routers
+app.include_router(auth_v1.router, prefix="/api/v1")
+
+# Initialize database on startup
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Starting Plinto API...")
+    if settings.AUTO_MIGRATE:
+        logger.info("Initializing database tables...")
+        init_database()
+    logger.info("Plinto API started successfully")
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    logger.info("Shutting down Plinto API...")

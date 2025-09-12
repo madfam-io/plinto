@@ -22,7 +22,12 @@ from app.routers.v1 import (
     passkeys as passkeys_v1,
     admin as admin_v1,
     webhooks as webhooks_v1,
-    sso as sso_v1
+    sso as sso_v1,
+    migration as migration_v1,
+    white_label as white_label_v1,
+    compliance as compliance_v1,
+    iot as iot_v1,
+    localization as localization_v1
 )
 
 # Set up logging
@@ -304,6 +309,11 @@ app.include_router(passkeys_v1.router, prefix="/api/v1")
 app.include_router(admin_v1.router, prefix="/api/v1")
 app.include_router(webhooks_v1.router, prefix="/api/v1")
 app.include_router(sso_v1.router, prefix="/api/v1")
+app.include_router(migration_v1.router, prefix="/api/v1")
+app.include_router(white_label_v1.router, prefix="/api/v1")
+app.include_router(compliance_v1.router, prefix="/api/v1")
+app.include_router(iot_v1.router, prefix="/api/v1")
+app.include_router(localization_v1.router, prefix="/api/v1")
 
 # Initialize database on startup
 @app.on_event("startup")

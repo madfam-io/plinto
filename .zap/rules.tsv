@@ -1,0 +1,33 @@
+# OWASP ZAP Rules Configuration
+# Format: Rule ID	Risk Level	Confidence Level	URL Pattern
+# Risk Levels: 0=Info, 1=Low, 2=Medium, 3=High
+# Confidence Levels: 0=False Positive, 1=Low, 2=Medium, 3=High, 4=Confirmed
+
+# Disable false positives for API endpoints
+10015	0	0	.*	# Incomplete or No Cache-control Header Set (API responses shouldn't be cached)
+10017	0	0	.*	# Cross-Domain JavaScript Source File Inclusion (CDN resources)
+10020	0	0	.*	# X-Frame-Options Header (API doesn't serve HTML)
+10021	0	0	.*	# X-Content-Type-Options Header (already set in production)
+10023	0	0	.*	# Information Disclosure - Debug Error Messages (handled in error middleware)
+10027	0	0	.*	# Information Disclosure - Suspicious Comments (code comments in JS)
+10096	0	0	.*	# Timestamp Disclosure (expected in API responses)
+10109	0	0	.*	# Modern Web Application (framework detection)
+
+# Focus on critical security issues
+10010	3	3	.*	# Cookie Without Secure Flag
+10011	3	3	.*	# Cookie Without HttpOnly Flag
+10016	3	3	.*	# Web Browser XSS Protection Not Enabled
+10019	2	2	.*	# Content-Type Header Missing
+10035	3	3	.*	# Strict-Transport-Security Header Not Set
+10038	2	2	.*	# Content Security Policy (CSP) Header Not Set
+10040	2	2	.*	# Secure Pages Include Mixed Content
+10054	2	2	.*	# Cookie Without SameSite Attribute
+10055	1	1	.*	# CSP Scanner
+10094	1	1	.*	# Base64 Disclosure
+10095	1	1	.*	# Backup File Disclosure
+10104	2	2	.*	# User Agent Fuzzer
+10202	3	3	.*	# Absence of Anti-CSRF Tokens
+90001	3	3	.*	# Insecure JSF ViewState
+90011	2	2	.*	# Charset Mismatch
+90022	3	3	.*	# Application Error Disclosure
+90033	2	2	.*	# Loosely Scoped Cookie

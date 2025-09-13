@@ -2,6 +2,7 @@
   "name": "plinto",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@10.8.2",
   "description": "Secure substrate for identity - Edge-fast verification with full control",
   "workspaces": [
     "apps/*",

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "plinto.fullname" . }}-config
+  labels:
+    {{- include "plinto.labels" . | nindent 4 }}
+data:
+  # Global configuration
+  environment: {{ .Values.global.environment | quote }}
+  domain: {{ .Values.global.domain | quote }}
+  
+  # API configuration
+  jwt-algorithm: {{ .Values.api.env.JWT_ALGORITHM | quote }}
+  cors-origins: {{ .Values.api.env.CORS_ORIGINS | quote }}
+  rate-limit-enabled: {{ .Values.api.env.RATE_LIMIT_ENABLED | quote }}
+  rate-limit-per-minute: {{ .Values.api.env.RATE_LIMIT_PER_MINUTE | quote }}
+  
+  # Backup configuration
+  {{- if .Values.backup.enabled }}
+  backup-schedule: {{ .Values.backup.schedule | quote }}
+  backup-retention: {{ .Values.backup.retention | quote }}
+  backup-bucket: {{ .Values.backup.storage.bucket | quote }}
+  backup-region: {{ .Values.backup.storage.region | quote }}
+  {{- end }}
+  
+  # Monitoring configuration
+  {{- if .Values.monitoring.enabled }}
+  monitoring-enabled: "true"
+  prometheus-interval: {{ .Values.monitoring.prometheus.serviceMonitor.interval | quote }}
+  {{- end }}

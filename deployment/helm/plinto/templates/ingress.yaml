@@ -1,0 +1,105 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "plinto.fullname" . }}
+  labels:
+    {{- include "plinto.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+    {{- if .Values.api.ingress.enabled }}
+    - hosts:
+        - {{ .Values.api.ingress.host }}
+      secretName: {{ .Values.api.ingress.tls.secretName }}
+    {{- end }}
+    {{- if .Values.admin.ingress.enabled }}
+    - hosts:
+        - {{ .Values.admin.ingress.host }}
+      secretName: {{ .Values.admin.ingress.tls.secretName }}
+    {{- end }}
+    {{- if .Values.dashboard.ingress.enabled }}
+    - hosts:
+        - {{ .Values.dashboard.ingress.host }}
+      secretName: {{ .Values.dashboard.ingress.tls.secretName }}
+    {{- end }}
+    {{- if .Values.docs.ingress.enabled }}
+    - hosts:
+        - {{ .Values.docs.ingress.host }}
+      secretName: {{ .Values.docs.ingress.tls.secretName }}
+    {{- end }}
+    {{- if .Values.marketing.ingress.enabled }}
+    - hosts:
+        - {{ .Values.marketing.ingress.host }}
+      secretName: {{ .Values.marketing.ingress.tls.secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- if .Values.api.ingress.enabled }}
+    - host: {{ .Values.api.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "plinto.fullname" . }}-api
+                port:
+                  number: {{ .Values.api.service.port }}
+    {{- end }}
+    {{- if .Values.admin.ingress.enabled }}
+    - host: {{ .Values.admin.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "plinto.fullname" . }}-admin
+                port:
+                  number: {{ .Values.admin.service.port }}
+    {{- end }}
+    {{- if .Values.dashboard.ingress.enabled }}
+    - host: {{ .Values.dashboard.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "plinto.fullname" . }}-dashboard
+                port:
+                  number: {{ .Values.dashboard.service.port }}
+    {{- end }}
+    {{- if .Values.docs.ingress.enabled }}
+    - host: {{ .Values.docs.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "plinto.fullname" . }}-docs
+                port:
+                  number: {{ .Values.docs.service.port }}
+    {{- end }}
+    {{- if .Values.marketing.ingress.enabled }}
+    - host: {{ .Values.marketing.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "plinto.fullname" . }}-marketing
+                port:
+                  number: {{ .Values.marketing.service.port }}
+    {{- end }}
+{{- end }}

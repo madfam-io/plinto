@@ -28,11 +28,7 @@ export type {
   Environment,
   PlintoConfig,
   
-  // Enums
-  UserStatus,
-  OrganizationRole,
-  OAuthProvider,
-  WebhookEventType,
+
   
   // User types
   User,
@@ -177,8 +173,7 @@ export {
   // Validation utilities
   ValidationUtils,
   
-  // Webhook utilities
-  WebhookUtils,
+  // Webhook utilities removed - WebhookUtils not implemented yet
   
   // Environment utilities
   EnvUtils,
@@ -370,8 +365,8 @@ export const presets = {
  */
 export function createClientWithPreset(
   preset: keyof typeof presets,
-  overrides: Partial<PlintoConfig> = {}
-): PlintoClient {
+  overrides: Partial<import('./types').PlintoConfig> = {}
+): import('./client').PlintoClient {
   const presetConfig = presets[preset];
   const { createClient } = require('./client');
   return createClient({ ...presetConfig, ...overrides });

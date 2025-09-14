@@ -10,10 +10,10 @@ import type {
   OrganizationMember,
   OrganizationInvitation,
   OrganizationInviteRequest,
-  OrganizationRole,
   OrganizationListParams,
   PaginatedResponse
 } from './types';
+import { OrganizationRole } from './types';
 import { ValidationError } from './errors';
 import { ValidationUtils } from './utils';
 

@@ -14,6 +14,7 @@ import type {
   AuthResponse,
   TokenResponse,
   User,
+  UserUpdateRequest,
   MFAEnableRequest,
   MFAEnableResponse,
   MFAVerifyRequest,
@@ -189,7 +190,7 @@ export class Auth {
   /**
    * Update user profile
    */
-  async updateProfile(updates: UpdateProfileRequest): Promise<User> {
+  async updateProfile(updates: UserUpdateRequest): Promise<User> {
     const response = await this.http.patch<User>('/api/v1/auth/profile', updates);
     return response.data;
   }
@@ -619,7 +620,7 @@ export class Auth {
    * Update passkey name
    */
   async updatePasskey(passkeyId: string, name: string): Promise<Passkey> {
-    if (!ValidationUtils.isValidUUID(passkeyId)) {
+    if (!ValidationUtils.isValidUuid(passkeyId)) {
       throw new ValidationError('Invalid passkey ID format');
     }
 
@@ -633,7 +634,7 @@ export class Auth {
    * Delete passkey
    */
   async deletePasskey(passkeyId: string, password: string): Promise<{ message: string }> {
-    if (!ValidationUtils.isValidUUID(passkeyId)) {
+    if (!ValidationUtils.isValidUuid(passkeyId)) {
       throw new ValidationError('Invalid passkey ID format');
     }
 
@@ -647,7 +648,7 @@ export class Auth {
    * Regenerate passkey secret
    */
   async regeneratePasskeySecret(passkeyId: string): Promise<Passkey> {
-    if (!ValidationUtils.isValidUUID(passkeyId)) {
+    if (!ValidationUtils.isValidUuid(passkeyId)) {
       throw new ValidationError('Invalid passkey ID format');
     }
 

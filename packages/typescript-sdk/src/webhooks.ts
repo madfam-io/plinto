@@ -8,11 +8,11 @@ import type {
   WebhookEndpointCreateRequest,
   WebhookEndpointUpdateRequest,
   WebhookEvent,
-  WebhookDelivery,
-  WebhookEventType
+  WebhookDelivery
 } from './types';
+import { WebhookEventType } from './types';
 import { ValidationError, WebhookError } from './errors';
-import { ValidationUtils, WebhookUtils } from './utils';
+import { ValidationUtils } from './utils';
 
 /**
  * Webhook management operations
@@ -82,7 +82,7 @@ export class Webhooks {
    * Get webhook endpoint details
    */
   async getEndpoint(endpointId: string): Promise<WebhookEndpoint> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -97,7 +97,7 @@ export class Webhooks {
     endpointId: string,
     request: WebhookEndpointUpdateRequest
   ): Promise<WebhookEndpoint> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -140,7 +140,7 @@ export class Webhooks {
    * Delete webhook endpoint
    */
   async deleteEndpoint(endpointId: string): Promise<{ message: string }> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -152,7 +152,7 @@ export class Webhooks {
    * Test webhook endpoint
    */
   async testEndpoint(endpointId: string): Promise<{ message: string }> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -171,7 +171,7 @@ export class Webhooks {
     average_delivery_time: number;
     period_days: number;
   }> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -198,7 +198,7 @@ export class Webhooks {
     events: WebhookEvent[];
     total: number;
   }> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -234,7 +234,7 @@ export class Webhooks {
       offset?: number;
     }
   ): Promise<WebhookDelivery[]> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -263,7 +263,7 @@ export class Webhooks {
    * Regenerate webhook endpoint secret
    */
   async regenerateSecret(endpointId: string): Promise<WebhookEndpoint> {
-    if (!ValidationUtils.isValidUUID(endpointId)) {
+    if (!ValidationUtils.isValidUuid(endpointId)) {
       throw new ValidationError('Invalid endpoint ID format');
     }
 
@@ -310,7 +310,10 @@ export class Webhooks {
     secret: string
   ): Promise<boolean> {
     try {
-      return await WebhookUtils.verifySignature(payload, signature, secret);
+      // TODO: Implement HMAC signature verification
+      // For now, returning false to maintain security
+      console.warn('Webhook signature verification not yet implemented');
+      return false;
     } catch (error) {
       throw new WebhookError('Failed to verify webhook signature', { originalError: error });
     }

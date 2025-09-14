@@ -50,8 +50,11 @@ from app.routers.v1 import (
     white_label as white_label_v1,
     compliance as compliance_v1,
     iot as iot_v1,
-    localization as localization_v1
+    localization as localization_v1,
+    scim as scim_v1
 )
+from app.core.tenant_context import TenantMiddleware
+from app.core.webhook_dispatcher import webhook_dispatcher
 
 # Set up logging
 logging.basicConfig(level=logging.INFO if settings.DEBUG else logging.WARNING)
@@ -102,6 +105,9 @@ app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
 
 # Add security headers middleware
 app.add_middleware(SecurityHeadersMiddleware)
+
+# Add tenant context middleware for multi-tenancy
+app.add_middleware(TenantMiddleware)
 
 # Add comprehensive error handling middleware (add last so it catches everything)
 app.add_middleware(ErrorHandlingMiddleware)
@@ -380,6 +386,7 @@ app.include_router(white_label_v1.router, prefix="/api/v1")
 app.include_router(compliance_v1.router, prefix="/api/v1")
 app.include_router(iot_v1.router, prefix="/api/v1")
 app.include_router(localization_v1.router, prefix="/api/v1")
+app.include_router(scim_v1.router, prefix="/api/v1")  # SCIM 2.0 endpoints
 
 # Initialize database on startup
 @app.on_event("startup")
@@ -388,6 +395,10 @@ async def startup_event():
     try:
         await init_database()
         logger.info("Database manager initialized successfully")
+
+        # Start webhook dispatcher
+        await webhook_dispatcher.start()
+        logger.info("Webhook dispatcher started successfully")
     except Exception as e:
         logger.error(f"Failed to initialize database: {e}")
         raise
@@ -397,6 +408,10 @@ async def startup_event():
 async def shutdown_event():
     logger.info("Shutting down Plinto API...")
     try:
+        # Stop webhook dispatcher
+        await webhook_dispatcher.stop()
+        logger.info("Webhook dispatcher stopped")
+
         await close_database()
         logger.info("Database connections closed")
     except Exception as e:

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { demo-banner } from './demo-banner';
+import { DemoBanner } from './demo-banner';
 
-describe('demo-banner', () => {
+describe('DemoBanner', () => {
   it('should render without crashing', () => {
-    render(<demo-banner />);
+    render(<DemoBanner />);
     expect(screen.getByTestId('demo-banner')).toBeInTheDocument();
   });
   

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { sample-data-manager } from './sample-data-manager';
+import { SampleDataManager } from './sample-data-manager';
 
-describe('sample-data-manager', () => {
+describe('SampleDataManager', () => {
   it('should render without crashing', () => {
-    render(<sample-data-manager />);
+    render(<SampleDataManager />);
     expect(screen.getByTestId('sample-data-manager')).toBeInTheDocument();
   });
   

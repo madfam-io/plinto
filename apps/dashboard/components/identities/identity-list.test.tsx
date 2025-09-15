@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { identity-list } from './identity-list'
+import { IdentityList } from './identity-list'
 
-describe('identity-list', () => {
+describe('IdentityList', () => {
   it('should render without crashing', () => {
-    render(<identity-list />)
+    render(<IdentityList />)
     expect(screen.getByTestId('identity-list')).toBeInTheDocument()
   })
 })

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { performance-simulator } from './performance-simulator';
+import { PerformanceSimulator } from './performance-simulator';
 
-describe('performance-simulator', () => {
+describe('PerformanceSimulator', () => {
   it('should render without crashing', () => {
-    render(<performance-simulator />);
+    render(<PerformanceSimulator />);
     expect(screen.getByTestId('performance-simulator')).toBeInTheDocument();
   });
   

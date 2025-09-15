@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { organization-list } from './organization-list'
+import { OrganizationList } from './organization-list'
 
-describe('organization-list', () => {
+describe('OrganizationList', () => {
   it('should render without crashing', () => {
-    render(<organization-list />)
+    render(<OrganizationList />)
     expect(screen.getByTestId('organization-list')).toBeInTheDocument()
   })
 })

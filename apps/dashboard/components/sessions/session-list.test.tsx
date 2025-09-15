@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { session-list } from './session-list'
+import { SessionList } from './session-list'
 
-describe('session-list', () => {
+describe('SessionList', () => {
   it('should render without crashing', () => {
-    render(<session-list />)
+    render(<SessionList />)
     expect(screen.getByTestId('session-list')).toBeInTheDocument()
   })
 })

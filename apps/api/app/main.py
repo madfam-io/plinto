@@ -112,7 +112,7 @@ if not settings.DEBUG:
     app.add_middleware(HTTPSRedirectMiddleware)
 
 # Add trusted host middleware 
-allowed_hosts = ["plinto.dev", "*.plinto.dev", "plinto-api.railway.app", "localhost", "127.0.0.1"]
+allowed_hosts = ["plinto.dev", "*.plinto.dev", "plinto-api.railway.app", "healthcheck.railway.app", "*.railway.app", "localhost", "127.0.0.1"]
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
 
 # Add security headers middleware

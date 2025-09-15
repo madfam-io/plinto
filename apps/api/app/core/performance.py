@@ -184,9 +184,9 @@ class CachingManager:
     async def init_redis(self):
         """Initialize Redis connection"""
         try:
-            if settings.redis_url:
+            if settings.REDIS_URL:
                 self.redis_client = redis.from_url(
-                    settings.redis_url,
+                    settings.REDIS_URL,
                     decode_responses=True,
                     socket_timeout=1.0,
                     socket_connect_timeout=1.0

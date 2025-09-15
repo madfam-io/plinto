@@ -356,14 +356,6 @@ class AlertManager:
                 "message": "High memory usage: {value}%"
             },
             {
-                "name": "database_connection_failure",
-                "metric": "database.connections",
-                "condition": "value == 0",
-                "window": 60,
-                "severity": AlertSeverity.CRITICAL,
-                "message": "Database connection failure"
-            },
-            {
                 "name": "rate_limit_violations",
                 "metric": "rate_limit.violations",
                 "condition": "rate > 100",

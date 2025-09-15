@@ -11,7 +11,7 @@ import logging
 from app.database import get_db
 from app.models import OAuthProvider, User, OAuthAccount, ActivityLog, Passkey
 from app.services.oauth import OAuthService
-from app.routers.v1.auth import get_current_user
+from app.dependencies import get_current_user
 from app.config import settings
 
 logger = logging.getLogger(__name__)

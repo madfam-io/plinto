@@ -20,6 +20,7 @@ from app.models import User, UserStatus, EmailVerification, PasswordReset, Magic
 from app.services.auth import AuthService
 from app.services.email import EmailService
 from app.config import settings
+from app.dependencies import get_current_user
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -116,31 +117,7 @@ class SignInResponse(BaseModel):
     tokens: TokenResponse
 
 
-# Helper functions
-def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)) -> User:
-    """Get current authenticated user from JWT token"""
-    token = credentials.credentials
-    
-    # Decode token
-    payload = AuthService.decode_token(token, token_type='access')
-    if not payload:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
-    
-    # Validate session
-    session = AuthService.validate_session(db, payload['jti'])
-    if not session:
-        raise HTTPException(status_code=401, detail="Invalid session")
-    
-    # Get user
-    user = db.query(User).filter(
-        User.id == payload['sub'],
-        User.status == UserStatus.ACTIVE
-    ).first()
-    
-    if not user:
-        raise HTTPException(status_code=401, detail="User not found")
-    
-    return user
+# Helper functions (get_current_user moved to app.dependencies)
 
 
 def log_activity(db: Session, user_id: str, action: str, details: Dict = None, request: Request = None):

@@ -10,10 +10,10 @@ from pydantic import BaseModel, Field
 import logging
 import uuid
 
-from ...database import get_db
-from ...auth import get_current_user, require_admin
-from ...models import User, Organization
-from ...models.white_label import (
+from app.database import get_db
+from app.dependencies import get_current_user, require_admin
+from app.models import User, Organization
+from app.models.white_label import (
     BrandingConfiguration, BrandingLevel, ThemeMode,
     CustomDomain, EmailTemplate, PageCustomization, ThemePreset
 )

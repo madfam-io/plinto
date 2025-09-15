@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 import logging
 
 from ..database import get_db
-from ..auth import get_current_user, require_admin
+from app.dependencies import get_current_user, require_admin
 from ..models import User, Organization
 from ..models.sso import SSOConfiguration, SSOProvider, SSOStatus
 from ..services.sso_service import SSOService

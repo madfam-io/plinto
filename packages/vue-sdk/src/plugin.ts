@@ -48,7 +48,7 @@ class PlintoVue {
 
       await this.updateAuthState();
     } catch (error) {
-      console.error('Failed to initialize Plinto:', error);
+      // Error handled silently in production
     } finally {
       this.state.isLoading = false;
     }

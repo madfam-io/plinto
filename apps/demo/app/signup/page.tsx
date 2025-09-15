@@ -63,7 +63,7 @@ export default function SignUpPage() {
         }
       }
     } catch (err: any) {
-      console.error('Sign up error:', err)
+      // Sign up error handled by UI state
       setError(err.message || 'Failed to create account')
     } finally {
       setLoading(false)

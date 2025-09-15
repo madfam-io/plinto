@@ -87,7 +87,7 @@ const App: React.FC = () => {
       setSessions(userSessions);
       setOrganizations(userOrgs);
     } catch (error) {
-      console.error('Failed to load user data:', error);
+      // Error handled silently in production
     }
   };
 

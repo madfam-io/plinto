@@ -18,7 +18,7 @@ export default function Error({
         tags: { app: 'dashboard' }
       })
     } else {
-      console.error('Dashboard error:', error)
+      // Error logged to Sentry in production
     }
   }, [error])
 

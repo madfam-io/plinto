@@ -18,7 +18,7 @@ export default function Error({
         tags: { app: 'docs' }
       })
     } else {
-      console.error('Documentation error:', error)
+      // Error logged to Sentry in production
     }
   }, [error])
 

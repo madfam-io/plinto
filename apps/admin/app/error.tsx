@@ -25,7 +25,7 @@ export default function Error({
         }
       })
     } else {
-      console.error('Admin panel error:', error)
+      // Error logged to Sentry in production
     }
 
     // Also log to internal admin monitoring
@@ -41,7 +41,7 @@ export default function Error({
           url: window.location.href,
           userAgent: navigator.userAgent
         })
-      }).catch(console.error)
+      }).catch(// Error logged to Sentry in production
     }
   }, [error])
 

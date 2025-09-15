@@ -122,7 +122,7 @@ export class PlintoClient {
             })
           }
         } catch (error) {
-          console.warn('Local verification failed, falling back to API:', error)
+          // Warning logged to error service
         }
       }
 

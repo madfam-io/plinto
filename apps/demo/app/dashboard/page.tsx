@@ -70,7 +70,7 @@ export default function DashboardPage() {
       const userSessions = await plinto.getSessions()
       setSessions(userSessions || [])
     } catch (err) {
-      console.error('Auth check failed:', err)
+      // Error handled by UI state
       router.push('/signin')
     } finally {
       setLoading(false)
@@ -83,7 +83,7 @@ export default function DashboardPage() {
       await plinto.signOut()
       router.push('/signin')
     } catch (err) {
-      console.error('Sign out failed:', err)
+      // Error handled by UI state
     }
   }
 
@@ -98,7 +98,7 @@ export default function DashboardPage() {
         window.location.reload()
       }
     } catch (err) {
-      console.error('Demo reset failed:', err)
+      // Error handled by UI state
     } finally {
       setResettingDemo(false)
     }

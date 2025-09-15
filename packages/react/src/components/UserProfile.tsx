@@ -52,7 +52,7 @@ export function UserProfile({
       
       setIsEditing(false)
     } catch (error) {
-      console.error('Failed to update profile:', error)
+      // Error handled silently in production
     }
   }
 

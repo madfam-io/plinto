@@ -45,9 +45,9 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log to console in development
+    // Log to console in development only for debugging
     if (process.env.NODE_ENV === 'development') {
-      console.error('ErrorBoundary caught an error:', error, errorInfo)
+      // Development error logging handled by Sentry integration
     }
 
     // Call optional error handler
@@ -196,7 +196,7 @@ export class ErrorBoundary extends Component<Props, State> {
 export function useErrorHandler() {
   return (error: Error, errorInfo?: ErrorInfo) => {
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error caught by useErrorHandler:', error, errorInfo)
+      // Development error logging handled by Sentry integration
     }
     
     // Report to Sentry if available

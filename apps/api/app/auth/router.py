@@ -248,17 +248,47 @@ async def signin(
 
 @router.post("/signout")
 async def signout(
+    response: Response,
     credentials: HTTPAuthorizationCredentials = Depends(security),
     redis=Depends(get_redis)
 ):
     """Sign out and invalidate session"""
-    # TODO: Implement signout
-    # - Extract session from token
-    # - Delete session from Redis
-    # - Add token to blacklist
-    # - Clear cookies
-    
-    return {"message": "Successfully signed out"}
+    try:
+        token = credentials.credentials
+
+        # Extract user ID from token (assuming JWT format)
+        try:
+            import jwt
+            payload = jwt.decode(token, options={"verify_signature": False})
+            user_id = payload.get("sub")
+        except:
+            # If token parsing fails, still proceed with cleanup
+            user_id = None
+
+        # Create session store instance
+        session_store = SessionStore(redis)
+
+        # Delete session from Redis if user ID available
+        if user_id:
+            await session_store.delete_session(user_id)
+
+        # Add token to blacklist with expiration
+        blacklist_key = f"blacklist:{token}"
+        await redis.setex(blacklist_key, 86400, "1")  # 24 hour blacklist
+
+        # Clear authentication cookies
+        response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
+
+        logger.info("User signed out successfully", user_id=user_id)
+        return {"message": "Successfully signed out"}
+
+    except Exception as e:
+        logger.error("Signout failed", error=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Signout failed"
+        )
 
 
 @router.post("/refresh", response_model=TokenResponse)
@@ -413,13 +443,52 @@ async def reset_password(
     db=Depends(get_db)
 ):
     """Reset password with token"""
-    # TODO: Implement password reset
-    # - Validate reset token
-    # - Hash new password
-    # - Update user password
-    # - Invalidate all sessions
-    
-    return {"message": "Password reset successfully"}
+    try:
+        # Validate reset token from Redis
+        redis_client = get_redis()
+        stored_email = await redis_client.get(f"reset_token:{request.token}")
+
+        if not stored_email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired reset token"
+            )
+
+        # Get user by email
+        user = db.query(User).filter(User.email == stored_email.decode()).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+
+        # Hash new password
+        from passlib.context import CryptContext
+        pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        hashed_password = pwd_context.hash(request.new_password)
+
+        # Update user password
+        user.password_hash = hashed_password
+        db.commit()
+
+        # Invalidate all sessions for security
+        session_store = SessionStore(redis_client)
+        await session_store.delete_session(str(user.id))
+
+        # Remove the reset token
+        await redis_client.delete(f"reset_token:{request.token}")
+
+        logger.info("Password reset successfully", user_id=str(user.id))
+        return {"message": "Password reset successfully"}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Password reset failed", error=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Password reset failed"
+        )
 
 
 # WebAuthn/Passkeys endpoints

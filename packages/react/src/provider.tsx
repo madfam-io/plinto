@@ -37,7 +37,7 @@ export function PlintoProvider({ children, config }: PlintoProviderProps) {
           }
         }
       } catch (error) {
-        console.error('Failed to initialize auth:', error)
+        // Error handled silently in production
         localStorage.removeItem('plinto_access_token')
         localStorage.removeItem('plinto_refresh_token')
       } finally {

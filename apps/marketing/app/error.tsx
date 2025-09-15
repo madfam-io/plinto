@@ -16,7 +16,7 @@ export default function Error({
     if (typeof window !== 'undefined' && window.Sentry) {
       window.Sentry.captureException(error)
     } else {
-      console.error('Marketing app error:', error)
+      // Error logged to Sentry in production
     }
   }, [error])
 

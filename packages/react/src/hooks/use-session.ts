@@ -23,7 +23,7 @@ export function useSession() {
       
       return tokens
     } catch (error) {
-      console.error('Failed to refresh tokens:', error)
+      // Token refresh failed, removing invalid tokens
       localStorage.removeItem('plinto_access_token')
       localStorage.removeItem('plinto_refresh_token')
       return null
@@ -42,7 +42,7 @@ export function useSession() {
       const payload = await client.sessions.verify(tokenToVerify)
       return payload
     } catch (error) {
-      console.error('Token verification failed:', error)
+      // Token verification failed
       return null
     }
   }

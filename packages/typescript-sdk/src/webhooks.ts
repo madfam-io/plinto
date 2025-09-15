@@ -310,10 +310,39 @@ export class Webhooks {
     secret: string
   ): Promise<boolean> {
     try {
-      // TODO: Implement HMAC signature verification
-      // For now, returning false to maintain security
-      console.warn('Webhook signature verification not yet implemented');
-      return false;
+      // Validate inputs
+      if (!payload || !signature || !secret) {
+        return false;
+      }
+
+      // Remove 'sha256=' prefix if present
+      const cleanSignature = signature.replace(/^sha256=/, '');
+
+      // In browser environment, use Web Crypto API
+      if (typeof window !== 'undefined' && window.crypto && window.crypto.subtle) {
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(secret);
+        const payloadData = encoder.encode(payload);
+
+        const cryptoKey = await window.crypto.subtle.importKey(
+          'raw',
+          keyData,
+          { name: 'HMAC', hash: 'SHA-256' },
+          false,
+          ['sign']
+        );
+
+        const signature_buffer = await window.crypto.subtle.sign('HMAC', cryptoKey, payloadData);
+        const computed_signature = Array.from(new Uint8Array(signature_buffer))
+          .map(byte => byte.toString(16).padStart(2, '0'))
+          .join('');
+
+        return computed_signature === cleanSignature;
+      }
+
+      // In Node.js environment, delegate to server verification
+      return await this.verifyWebhookSignatureServer(payload, signature, secret);
+
     } catch (error) {
       throw new WebhookError('Failed to verify webhook signature', { originalError: error });
     }

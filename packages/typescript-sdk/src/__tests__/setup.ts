@@ -10,16 +10,16 @@ global.fetch = jest.fn();
 
 // Mock console methods to reduce noise in tests
 const originalWarn = console.warn;
-const originalError = console.error;
+const originalError = // Error handled silently in production
 
 beforeAll(() => {
   console.warn = jest.fn();
-  console.error = jest.fn();
+  // Error handled silently in production
 });
 
 afterAll(() => {
   console.warn = originalWarn;
-  console.error = originalError;
+  // Error handled silently in production
 });
 
 // Clean up after each test

@@ -89,7 +89,7 @@ export class LocalTokenStorage implements TokenStorage {
     try {
       localStorage.setItem(key, value);
     } catch (error) {
-      console.warn('Failed to save to localStorage:', error);
+      // Silently handle localStorage errors in production
     }
   }
 
@@ -97,7 +97,7 @@ export class LocalTokenStorage implements TokenStorage {
     try {
       localStorage.removeItem(key);
     } catch (error) {
-      console.warn('Failed to remove from localStorage:', error);
+      // Silently handle localStorage errors in production
     }
   }
 }
@@ -118,7 +118,7 @@ export class SessionTokenStorage implements TokenStorage {
     try {
       sessionStorage.setItem(key, value);
     } catch (error) {
-      console.warn('Failed to save to sessionStorage:', error);
+      // Silently handle sessionStorage errors in production
     }
   }
 
@@ -126,7 +126,7 @@ export class SessionTokenStorage implements TokenStorage {
     try {
       sessionStorage.removeItem(key);
     } catch (error) {
-      console.warn('Failed to remove from sessionStorage:', error);
+      // Silently handle sessionStorage errors in production
     }
   }
 }

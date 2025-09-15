@@ -38,7 +38,7 @@ export function SignInForm({
       if (onError) {
         onError(error as Error);
       } else {
-        console.error('Sign in failed:', error);
+        // Error handled silently in production
       }
     } finally {
       setIsLoading(false);
@@ -110,7 +110,7 @@ export function SignUpForm({
       if (onError) {
         onError(error as Error);
       } else {
-        console.error('Sign up failed:', error);
+        // Error handled silently in production
       }
     } finally {
       setIsLoading(false);

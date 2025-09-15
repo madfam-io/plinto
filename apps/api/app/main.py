@@ -44,14 +44,39 @@ from app.routers.v1 import (
     passkeys as passkeys_v1,
     admin as admin_v1,
     webhooks as webhooks_v1,
-    # sso as sso_v1,  # TODO: Re-enable once dependency injection is configured
-    # migration as migration_v1,  # TODO: Add migration models to models.py
-    # white_label as white_label_v1,  # TODO: Add white_label models to models.py
-    # compliance as compliance_v1,  # TODO: Add compliance models to models.py
-    # iot as iot_v1,  # TODO: Add IoT models to models.py
-    # localization as localization_v1,  # TODO: Add localization models to models.py
-    # scim as scim_v1  # TODO: Add enterprise models to models.py
 )
+
+# Enterprise routers with optional loading for production stability
+enterprise_routers = {}
+try:
+    from app.routers.v1 import sso as sso_v1
+    enterprise_routers['sso'] = sso_v1
+except Exception as e:
+    logger.warning(f"SSO router not available: {e}")
+
+try:
+    from app.routers.v1 import migration as migration_v1
+    enterprise_routers['migration'] = migration_v1
+except Exception as e:
+    logger.warning(f"Migration router not available: {e}")
+
+try:
+    from app.routers.v1 import white_label as white_label_v1
+    enterprise_routers['white_label'] = white_label_v1
+except Exception as e:
+    logger.warning(f"White label router not available: {e}")
+
+try:
+    from app.routers.v1 import compliance as compliance_v1
+    enterprise_routers['compliance'] = compliance_v1
+except Exception as e:
+    logger.warning(f"Compliance router not available: {e}")
+
+try:
+    from app.routers.v1 import scim as scim_v1
+    enterprise_routers['scim'] = scim_v1
+except Exception as e:
+    logger.warning(f"SCIM router not available: {e}")
 from app.core.tenant_context import TenantMiddleware
 from app.core.webhook_dispatcher import webhook_dispatcher
 from app.core.performance import PerformanceMonitoringMiddleware, cache_manager
@@ -505,14 +530,13 @@ app.include_router(mfa_v1.router, prefix="/api/v1")
 app.include_router(passkeys_v1.router, prefix="/api/v1")
 app.include_router(admin_v1.router, prefix="/api/v1")
 app.include_router(webhooks_v1.router, prefix="/api/v1")
-# TODO: Re-enable SSO router once dependency injection is properly configured
-# app.include_router(sso_v1.router, prefix="/api/v1")
-# app.include_router(migration_v1.router, prefix="/api/v1")  # TODO: Add migration models
-# app.include_router(white_label_v1.router, prefix="/api/v1")  # TODO: Add white_label models
-# app.include_router(compliance_v1.router, prefix="/api/v1")  # TODO: Add compliance models
-# app.include_router(iot_v1.router, prefix="/api/v1")  # TODO: Add IoT models
-# app.include_router(localization_v1.router, prefix="/api/v1")  # TODO: Add localization models
-# app.include_router(scim_v1.router, prefix="/api/v1")  # TODO: Add enterprise models
+# Register enterprise routers if available
+for router_name, router_module in enterprise_routers.items():
+    try:
+        app.include_router(router_module.router, prefix="/api/v1")
+        logger.info(f"Registered {router_name} router successfully")
+    except Exception as e:
+        logger.error(f"Failed to register {router_name} router: {e}")
 
 # Initialize database on startup
 @app.on_event("startup")

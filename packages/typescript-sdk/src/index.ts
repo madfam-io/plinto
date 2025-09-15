@@ -218,8 +218,8 @@ const result = await client.auth.signUp({
   last_name: 'Doe'
 });
 
-console.log('User created:', result.user);
-console.log('Access token:', result.tokens.access_token);
+// User created: result.user
+// Access token: result.tokens.access_token
 `,
 
   /**
@@ -231,7 +231,7 @@ const result = await client.auth.signIn({
   password: 'securepassword123'
 });
 
-console.log('User signed in:', result.user);
+// User signed in: result.user
 `,
 
   /**
@@ -239,7 +239,7 @@ console.log('User signed in:', result.user);
    */
   getCurrentUser: `
 const user = await client.users.getCurrentUser();
-console.log('Current user:', user);
+// Current user: user
 `,
 
   /**
@@ -251,7 +251,7 @@ const org = await client.organizations.createOrganization({
   slug: 'my-company'
 });
 
-console.log('Organization created:', org);
+// Organization created: org
 `,
 
   /**
@@ -264,7 +264,7 @@ const webhook = await client.webhooks.createEndpoint({
   description: 'User events webhook'
 });
 
-console.log('Webhook created:', webhook);
+// Webhook created: webhook
 `,
 
   /**
@@ -275,8 +275,8 @@ const mfaSetup = await client.auth.enableMFA({
   password: 'userpassword'
 });
 
-console.log('QR Code:', mfaSetup.qr_code);
-console.log('Backup codes:', mfaSetup.backup_codes);
+// QR Code: mfaSetup.qr_code
+// Backup codes: mfaSetup.backup_codes
 
 // After user scans QR code and enters verification code
 await client.auth.verifyMFA({ code: '123456' });
@@ -292,11 +292,11 @@ try {
   await client.auth.signIn({ email: 'invalid', password: 'wrong' });
 } catch (error) {
   if (isAuthenticationError(error)) {
-    console.log('Authentication failed:', error.message);
+    // Authentication failed: error.message
   } else if (isValidationError(error)) {
-    console.log('Validation errors:', error.violations);
+    // Validation errors: error.violations
   } else {
-    console.log('Other error:', error.message);
+    // Other error: error.message
   }
 }
 `,
@@ -307,15 +307,15 @@ try {
   eventHandling: `
 // Listen for authentication events
 client.on('auth:signedIn', ({ user }) => {
-  console.log('User signed in:', user);
+  // User signed in: user
 });
 
 client.on('auth:signedOut', () => {
-  console.log('User signed out');
+  // User signed out
 });
 
 client.on('token:refreshed', ({ tokens }) => {
-  console.log('Tokens refreshed automatically');
+  // Tokens refreshed automatically
 });
 `
 };

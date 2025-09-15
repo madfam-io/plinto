@@ -55,7 +55,8 @@ export class EventEmitter<T extends Record<string, any> = Record<string, any>> {
         try {
           listener(data);
         } catch (error) {
-          console.error(`Error in event listener for ${String(event)}:`, error);
+          // Silently handle event listener errors in production
+          // Consider implementing proper error reporting if needed
         }
       });
     }

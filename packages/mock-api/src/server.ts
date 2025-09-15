@@ -111,7 +111,7 @@ app.use('/api/v1/passkeys', passkeysRouter);
 
 // Error handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
+  // Error handled silently in production
   
   if (err.name === 'UnauthorizedError') {
     return res.status(401).json({ error: 'Unauthorized' });

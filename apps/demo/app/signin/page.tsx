@@ -60,7 +60,7 @@ export default function SignInPage() {
         router.push('/dashboard')
       }
     } catch (err: any) {
-      console.error('Sign in error:', err)
+      // Error handled by UI state
       setError(err.message || 'Invalid email or password')
     } finally {
       setLoading(false)

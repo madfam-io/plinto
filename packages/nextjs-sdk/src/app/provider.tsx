@@ -52,7 +52,7 @@ export function PlintoProvider({
       await client.auth.getCurrentUser();
       updateAuthState();
     } catch (error) {
-      console.error('Failed to update user:', error);
+      // Error handled silently in production
     }
   }, [client, updateAuthState]);
 
@@ -66,7 +66,7 @@ export function PlintoProvider({
         onAuthChange(null);
       }
     } catch (error) {
-      console.error('Failed to sign out:', error);
+      // Error handled silently in production
     }
   }, [client, onAuthChange]);
 
@@ -78,7 +78,7 @@ export function PlintoProvider({
       const state = urlParams.get('state')!;
       client.auth.handleOAuthCallback(code, state)
         .then(() => updateAuthState())
-        .catch(console.error)
+        .catch(// Error handled silently in production
         .finally(() => setIsLoading(false));
     } else {
       // Load initial auth state

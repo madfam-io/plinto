@@ -384,8 +384,24 @@ class BillingService:
             )
             session["provider"] = "fungies"
         
-        # Store checkout session in database
-        # TODO: Add CheckoutSession model and store it
+        # Store checkout session in database for tracking
+        from app.models import CheckoutSession
+        try:
+            checkout_session = CheckoutSession(
+                session_id=session.get("id", str(uuid.uuid4())),
+                organization_id=organization_id,
+                price_id=price_id,
+                provider=provider,
+                amount=amount,
+                currency=currency,
+                status="pending",
+                metadata=session.get("metadata", {})
+            )
+            db.add(checkout_session)
+            await db.commit()
+        except Exception as e:
+            logger.warning(f"Failed to store checkout session: {e}")
+            # Continue execution - session creation is still valid
         
         return session
     
@@ -417,17 +433,43 @@ class BillingService:
         if event_type == "order.paid":
             # Subscription payment successful
             customer_id = event_data.get("customer_id")
-            # TODO: Update tenant subscription status
+            # Update tenant subscription status
+            from app.models import Organization
+            org = await db.query(Organization).filter(
+                Organization.billing_customer_id == customer_id
+            ).first()
+            if org:
+                org.subscription_status = "active"
+                await db.commit()
+                logger.info(f"Updated subscription status for org {org.id}")
             
         elif event_type == "subscription.created":
             # New subscription created
             subscription_id = event_data.get("id")
-            # TODO: Update tenant with subscription ID
+            customer_id = event_data.get("customer_id")
+            # Update tenant with subscription ID
+            from app.models import Organization
+            org = await db.query(Organization).filter(
+                Organization.billing_customer_id == customer_id
+            ).first()
+            if org:
+                org.subscription_id = subscription_id
+                org.subscription_status = "active"
+                await db.commit()
+                logger.info(f"Created subscription {subscription_id} for org {org.id}")
             
         elif event_type == "subscription.canceled":
             # Subscription canceled
             subscription_id = event_data.get("id")
-            # TODO: Update tenant subscription status
+            # Update tenant subscription status
+            from app.models import Organization
+            org = await db.query(Organization).filter(
+                Organization.subscription_id == subscription_id
+            ).first()
+            if org:
+                org.subscription_status = "canceled"
+                await db.commit()
+                logger.info(f"Canceled subscription for org {org.id}")
         
         return True
     
@@ -444,17 +486,43 @@ class BillingService:
             # Checkout completed successfully
             session_id = event_data.get("id")
             customer_email = event_data.get("customer_email")
-            # TODO: Activate subscription for tenant
+            # Activate subscription for tenant
+            from app.models import Organization, User
+            if customer_email:
+                user = await db.query(User).filter(User.email == customer_email).first()
+                if user and user.organization_id:
+                    org = await db.query(Organization).filter(Organization.id == user.organization_id).first()
+                    if org:
+                        org.subscription_status = "active"
+                        await db.commit()
+                        logger.info(f"Activated subscription for org {org.id}")
             
         elif event_type == "invoice.payment_succeeded":
             # Recurring payment successful
             subscription_id = event_data.get("subscription")
-            # TODO: Update subscription status
+            # Update subscription status
+            from app.models import Organization
+            org = await db.query(Organization).filter(
+                Organization.subscription_id == subscription_id
+            ).first()
+            if org:
+                org.subscription_status = "active"
+                org.last_payment_date = datetime.utcnow()
+                await db.commit()
+                logger.info(f"Updated subscription status for org {org.id}")
             
         elif event_type == "customer.subscription.deleted":
             # Subscription canceled
             subscription_id = event_data.get("id")
-            # TODO: Update tenant subscription status
+            # Update tenant subscription status
+            from app.models import Organization
+            org = await db.query(Organization).filter(
+                Organization.subscription_id == subscription_id
+            ).first()
+            if org:
+                org.subscription_status = "canceled"
+                await db.commit()
+                logger.info(f"Canceled subscription for org {org.id}")
         
         return True
     

@@ -38,7 +38,7 @@ export class JWKSCache {
 
       return jwks
     } catch (error) {
-      console.error('Failed to fetch JWKS:', error)
+      // Error handled silently in production
       // Return stale cache if available
       return this.cache
     }

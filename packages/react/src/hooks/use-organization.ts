@@ -19,7 +19,7 @@ export function useOrganization() {
         const result = await client.organizations.list()
         setOrganizations(result.data)
       } catch (error) {
-        console.error('Failed to fetch organizations:', error)
+        // Error handled silently in production
       } finally {
         setIsLoading(false)
       }

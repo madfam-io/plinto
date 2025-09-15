@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, or_
 from sqlalchemy.orm import selectinload
 
-from app.models import User, Session, UserStatus, SessionStatus
+from ..models import User, Session, UserStatus, SessionStatus
 from app.core.performance import performance_cache, cache_manager, performance_context
 from app.core.security import verify_password, create_access_token, decode_token
 

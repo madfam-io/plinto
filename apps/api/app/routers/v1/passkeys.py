@@ -25,7 +25,7 @@ from webauthn.helpers import (
 )
 
 from app.database import get_db
-from app.models import User, Passkey, Session as UserSession, ActivityLog
+from ...models import User, Passkey, Session as UserSession, ActivityLog
 from app.routers.v1.auth import get_current_user
 from app.services.auth import AuthService
 from app.config import settings

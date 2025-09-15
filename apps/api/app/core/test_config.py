@@ -17,7 +17,7 @@ from sqlalchemy.pool import StaticPool
 
 from app.main import app
 from app.config import settings
-from app.models import Base
+from ..models import Base
 from app.core.database_manager import db_manager
 from app.core.jwt_manager import jwt_manager
 
@@ -165,7 +165,7 @@ class TestDataFactory:
     @staticmethod
     async def create_test_user(db: AsyncSession, **kwargs) -> dict:
         """Create a test user in database"""
-        from app.models import User, UserStatus
+        from ..models import User, UserStatus
         import uuid
 
         user_data = TestDataFactory.create_user_data(**kwargs)

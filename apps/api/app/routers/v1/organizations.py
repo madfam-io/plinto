@@ -13,7 +13,7 @@ import secrets
 import string
 
 from app.database import get_db
-from app.models import (
+from ...models import (
     User, Organization, OrganizationMember, OrganizationInvitation,
     OrganizationCustomRole, OrganizationRole, organization_members
 )

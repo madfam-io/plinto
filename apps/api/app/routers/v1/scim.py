@@ -12,7 +12,7 @@ from uuid import UUID
 import json
 import structlog
 
-from app.models import User
+from ...models import User
 from app.models.enterprise import (
     Organization,
     SCIMResource,

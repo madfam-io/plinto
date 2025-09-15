@@ -16,7 +16,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 
 from app.database import get_db
-from app.models import User, UserStatus, EmailVerification, PasswordReset, MagicLink, ActivityLog, Session as UserSession
+from ...models import User, UserStatus, EmailVerification, PasswordReset, MagicLink, ActivityLog, Session as UserSession
 from app.services.auth import AuthService
 from app.services.email import EmailService
 from app.config import settings

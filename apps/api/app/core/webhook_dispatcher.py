@@ -17,7 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, or_
 from sqlalchemy.sql import func
 
-from app.models import WebhookEndpoint, WebhookEvent, WebhookDelivery
+from ..models import WebhookEndpoint, WebhookEvent, WebhookDelivery
 from app.models.enterprise import WebhookStatus
 from app.core.tenant_context import TenantContext
 

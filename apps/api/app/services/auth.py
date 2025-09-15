@@ -11,7 +11,7 @@ import jwt
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
-from app.models import User, Session as UserSession, SessionStatus, UserStatus
+from ..models import User, Session as UserSession, SessionStatus, UserStatus
 from app.config import settings
 
 

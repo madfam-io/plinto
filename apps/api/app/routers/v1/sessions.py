@@ -10,7 +10,7 @@ from datetime import datetime
 import uuid
 
 from app.database import get_db
-from app.models import Session as UserSession, User
+from ...models import Session as UserSession, User
 from app.routers.v1.auth import get_current_user
 from app.services.auth import AuthService
 

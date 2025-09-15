@@ -11,7 +11,7 @@ import logging
 
 from app.database import get_db
 from app.dependencies import get_current_user, require_admin
-from app.models import User, Organization
+from ...models import User, Organization
 from app.models.sso import SSOConfiguration, SSOProvider, SSOStatus
 from app.services.sso_service import SSOService
 

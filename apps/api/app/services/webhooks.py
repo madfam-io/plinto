@@ -16,7 +16,7 @@ import asyncio
 from enum import Enum
 
 from app.config import settings
-from app.models import WebhookEndpoint, WebhookEvent, WebhookDelivery
+from ..models import WebhookEndpoint, WebhookEvent, WebhookDelivery
 
 logger = logging.getLogger(__name__)
 

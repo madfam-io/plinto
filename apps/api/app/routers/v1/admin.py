@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 import uuid
 
 from app.database import get_db
-from app.models import (
+from ...models import (
     User, UserStatus, Organization, OrganizationMember, organization_members,
     Session as UserSession, ActivityLog, OAuthAccount,
     Passkey, MagicLink, PasswordReset, EmailVerification,

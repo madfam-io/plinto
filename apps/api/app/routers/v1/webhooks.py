@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel, Field, HttpUrl
 
 from app.database import get_db
-from app.models import User, WebhookEndpoint, WebhookEvent, WebhookDelivery
+from ...models import User, WebhookEndpoint, WebhookEvent, WebhookDelivery
 from app.dependencies import get_current_user
 from app.services.webhooks import (
     webhook_service,

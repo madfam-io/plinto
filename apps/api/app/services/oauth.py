@@ -12,7 +12,7 @@ from urllib.parse import urlencode
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 
-from app.models import User, OAuthAccount, OAuthProvider, UserStatus
+from ..models import User, OAuthAccount, OAuthProvider, UserStatus
 from app.config import settings
 from app.services.auth import AuthService
 

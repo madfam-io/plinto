@@ -21,22 +21,7 @@ interface AlgoliaSearchProps {
 }
 
 interface HitProps {
-  hit: {
-    objectID: string;
-    title: string;
-    content: string;
-    url: string;
-    type: 'page' | 'api' | 'guide' | 'reference';
-    category?: string;
-    hierarchy?: {
-      lvl0?: string;
-      lvl1?: string;
-      lvl2?: string;
-      lvl3?: string;
-    };
-    _highlightResult?: any;
-    _snippetResult?: any;
-  };
+  hit: any;
 }
 
 // Custom Hit component

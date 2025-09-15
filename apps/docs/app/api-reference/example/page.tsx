@@ -6,7 +6,7 @@ import { ApiPlayground } from '@/components/ApiReference/ApiPlayground';
 import { VersionSelector } from '@/components/VersionSelector/VersionSelector';
 import { FeedbackWidget, InlineFeedback } from '@/components/Feedback/FeedbackWidget';
 import { EditOnGitHub, Contributors, LastUpdated } from '@/components/GitHubLink/EditOnGitHub';
-import { AlgoliaSearch } from '@/components/Search/AlgoliaSearch';
+import { AlgoliaSearch } from '@/components/search/AlgoliaSearch';
 
 export default function ApiReferencePage() {
   return (
@@ -64,7 +64,7 @@ export default function ApiReferencePage() {
                 type: 'boolean',
                 required: false,
                 description: 'Keep user logged in for 30 days',
-                example: true
+                example: 'true'
               }
             ]
           }}
@@ -95,7 +95,6 @@ export default function ApiReferencePage() {
           ]}
           examples={[
             {
-              title: 'Basic Login',
               language: 'javascript',
               code: `const response = await fetch('https://api.plinto.dev/api/auth/login', {
   method: 'POST',
@@ -112,7 +111,6 @@ const data = await response.json();
 console.log(data.tokens.access);`
             },
             {
-              title: 'With Remember Me',
               language: 'python',
               code: `import requests
 

@@ -161,7 +161,7 @@ NEXT_PUBLIC_ALGOLIA_INDEX_NAME=docs
 
 **Usage**:
 ```tsx
-import { AlgoliaSearch, InlineAlgoliaSearch } from '@/components/Search/AlgoliaSearch';
+import { AlgoliaSearch, InlineAlgoliaSearch } from '@/components/search/AlgoliaSearch';
 
 // In header
 <AlgoliaSearch />

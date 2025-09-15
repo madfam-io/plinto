@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from './providers';
-import { DocsLayout } from '@/components/Layout/DocsLayout';
+import { DocsLayout } from '@/components/layout/DocsLayout';
 import '@/styles/globals.css';
 import '@/styles/tokens.css';
 

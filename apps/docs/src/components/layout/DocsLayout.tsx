@@ -6,9 +6,9 @@ import { Menu, X, Search, Moon, Sun, ChevronRight, ChevronDown } from 'lucide-re
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
-import { CommandPalette } from '../Search/CommandPalette';
+import { CommandPalette } from '../search/CommandPalette';
 import { TableOfContents } from './TableOfContents';
-import { AlgoliaSearch } from '../Search/AlgoliaSearch';
+import { AlgoliaSearch } from '../search/AlgoliaSearch';
 import { VersionSelector } from '../VersionSelector/VersionSelector';
 import { FeedbackWidget } from '../Feedback/FeedbackWidget';
 
@@ -118,7 +118,7 @@ function NavItemComponent({ item, depth = 0 }: { item: NavItem; depth?: number }
         </button>
         {isOpen && (
           <div className={cn('mt-1', depth > 0 && 'ml-4')}>
-            {item.items.map((child, index) => (
+            {item.items?.map((child, index) => (
               <NavItemComponent key={index} item={child} depth={depth + 1} />
             ))}
           </div>

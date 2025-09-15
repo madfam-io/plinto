@@ -347,6 +347,7 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
 @router.post("/password/forgot")
 @limiter.limit("3/hour")  # Strict rate limiting for password reset requests
 async def forgot_password(
+    req: Request,
     request: ForgotPasswordRequest,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)
@@ -478,6 +479,7 @@ async def verify_email(
 @router.post("/email/resend-verification")
 @limiter.limit("5/hour")  # Rate limiting for email verification requests
 async def resend_verification_email(
+    request: Request,
     background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -513,6 +515,7 @@ async def resend_verification_email(
 @router.post("/magic-link")
 @limiter.limit("5/hour")  # Rate limiting for magic link requests
 async def send_magic_link(
+    req: Request,
     request: MagicLinkRequest,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)

@@ -45,16 +45,7 @@ class OAuthProvider(enum.Enum):
 
 
 # Association tables for many-to-many relationships
-organization_members = Table(
-    'organization_members',
-    Base.metadata,
-    Column('organization_id', UUID(as_uuid=True), ForeignKey('organizations.id'), primary_key=True),
-    Column('user_id', UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True),
-    Column('role', SQLEnum(OrganizationRole), default=OrganizationRole.MEMBER),
-    Column('permissions', JSON, default=list),
-    Column('joined_at', DateTime(timezone=True), server_default=func.now()),
-    Column('invited_by', UUID(as_uuid=True), ForeignKey('users.id')),
-)
+# organization_members table replaced by OrganizationMember model class
 
 
 class User(Base):
@@ -101,7 +92,8 @@ class User(Base):
     password_resets = relationship("PasswordReset", back_populates="user", cascade="all, delete-orphan")
     email_verifications = relationship("EmailVerification", back_populates="user", cascade="all, delete-orphan")
     webhook_endpoints = relationship("WebhookEndpoint", back_populates="user", cascade="all, delete-orphan")
-    organizations = relationship("Organization", secondary=organization_members, back_populates="members")
+    # organizations = relationship("Organization", secondary=organization_members, back_populates="members")
+    organization_memberships = relationship("OrganizationMember", back_populates="user")
     owned_organizations = relationship("Organization", back_populates="owner")
     invitations_sent = relationship("OrganizationInvitation", foreign_keys="OrganizationInvitation.invited_by", back_populates="inviter")
     activity_logs = relationship("ActivityLog", back_populates="user", cascade="all, delete-orphan")
@@ -279,10 +271,27 @@ class Organization(Base):
     
     # Relationships
     owner = relationship("User", back_populates="owned_organizations")
-    members = relationship("User", secondary=organization_members, back_populates="organizations")
+    members = relationship("OrganizationMember", back_populates="organization")
     invitations = relationship("OrganizationInvitation", back_populates="organization", cascade="all, delete-orphan")
     roles = relationship("OrganizationCustomRole", back_populates="organization", cascade="all, delete-orphan")
     webhook_endpoints = relationship("WebhookEndpoint", back_populates="organization", cascade="all, delete-orphan")
+
+
+class OrganizationMember(Base):
+    """Organization membership model for tracking user-organization relationships"""
+    __tablename__ = 'organization_members'
+    
+    organization_id = Column(UUID(as_uuid=True), ForeignKey('organizations.id'), primary_key=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True)
+    role = Column(SQLEnum(OrganizationRole), default=OrganizationRole.MEMBER)
+    permissions = Column(JSON, default=list)
+    joined_at = Column(DateTime(timezone=True), server_default=func.now())
+    invited_by = Column(UUID(as_uuid=True), ForeignKey('users.id'))
+    
+    # Relationships
+    organization = relationship("Organization")
+    user = relationship("User")
+    inviter = relationship("User", foreign_keys=[invited_by])
 
 
 class OrganizationInvitation(Base):

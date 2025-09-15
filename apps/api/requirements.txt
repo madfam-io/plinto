@@ -30,7 +30,7 @@ jinja2==3.1.2
 boto3==1.34.11
 cryptography==41.0.7
 # SAML/XML dependencies with compatible versions
-lxml==4.9.4
+lxml==5.1.0
 xmlsec==1.3.14
 python3-saml==1.16.0
 sendgrid==6.11.0

@@ -21,8 +21,7 @@ from onelogin.saml2.utils import OneLogin_Saml2_Utils
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from ..models.sso import SSOConfiguration, SSOSession, IDPMetadata, SSOProvider, SSOStatus
-from ..models import User, Organization
+from ..models import SSOConfiguration, SSOSession, IDPMetadata, SSOProvider, SSOStatus, User, Organization
 from ..exceptions import AuthenticationError, ValidationError
 from .jwt_service import JWTService
 from .cache import CacheService

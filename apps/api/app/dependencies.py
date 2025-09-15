@@ -1,5 +1,7 @@
 """
 Shared dependencies for FastAPI routes and services
+
+Ensures proper module structure for Railway deployment
 """
 
 from fastapi import Depends, HTTPException

@@ -25,6 +25,9 @@ import asyncpg
 from datetime import datetime
 import logging
 
+# Setup logger early
+logger = logging.getLogger(__name__)
+
 from app.config import settings
 from app.core.database_manager import init_database, close_database, get_database_health
 from app.core.error_handling import (

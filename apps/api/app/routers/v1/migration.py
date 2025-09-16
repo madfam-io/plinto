@@ -12,14 +12,14 @@ import asyncio
 import json
 from datetime import datetime
 
-from ...database import get_db
+from app.core.database_manager import get_db
 from app.dependencies import get_current_user, require_admin
-from ...models import User, Organization
-from ...models.migration import (
+from app.models import User, Organization
+from app.models.migration import (
     MigrationJob, MigrationProvider, MigrationStatus,
     MigratedUser, MigrationLog, MigrationTemplate
 )
-from ...services.migration_service import MigrationService
+from app.services.migration_service import MigrationService
 
 logger = logging.getLogger(__name__)
 

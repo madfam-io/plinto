@@ -549,19 +549,171 @@ export class MFAService extends EventEmitter {
   /**
    * Trust a device
    */
-  trustDevice(user_id: string, device_fingerprint: string, duration_days: number = 30): void {
+  /**
+   * Register a trusted device
+   */
+  async registerTrustedDevice(
+    user_id: string,
+    deviceInfo: {
+      device_fingerprint: string;
+      user_agent?: string;
+      ip?: string;
+      name?: string;
+    }
+  ): Promise<{
+    id: string;
+    user_id: string;
+    device_fingerprint: string;
+    trusted: boolean;
+    expires_at: Date;
+    created_at: Date;
+  }> {
+    const deviceId = `dev_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30); // 30 days default
+    const createdAt = new Date();
+
+    const device = {
+      id: deviceId,
+      user_id,
+      device_fingerprint: deviceInfo.device_fingerprint,
+      user_agent: deviceInfo.user_agent || '',
+      ip: deviceInfo.ip || '',
+      name: deviceInfo.name || 'Unknown Device',
+      trusted: true,
+      expires_at: expiresAt,
+      created_at: createdAt
+    };
+
+    // Store in Redis if available
+    if (this.redisService) {
+      try {
+        await this.redisService.hset(
+          `trusted_devices:${user_id}`,
+          deviceInfo.device_fingerprint,
+          JSON.stringify(device)
+        );
+        
+        // Set expiration
+        await this.redisService.expire(
+          `trusted_devices:${user_id}`,
+          30 * 24 * 60 * 60
+        );
+      } catch (error) {
+        console.error('Error registering trusted device:', error);
+      }
+    }
+
+    // Store in memory
     if (!this.trustedDevices.has(user_id)) {
       this.trustedDevices.set(user_id, new Set());
     }
-    
+    this.trustedDevices.get(user_id)!.add(deviceInfo.device_fingerprint);
+
+    this.emit('mfa:device-registered', device);
+
+    return {
+      id: deviceId,
+      user_id,
+      device_fingerprint: deviceInfo.device_fingerprint,
+      trusted: true,
+      expires_at: expiresAt,
+      created_at: createdAt
+    };
+  }
+
+  async trustDevice(user_id: string, device_fingerprint: string, duration_days: number = 30): Promise<void> {
+    // Store in memory
+    if (!this.trustedDevices.has(user_id)) {
+      this.trustedDevices.set(user_id, new Set());
+    }
     this.trustedDevices.get(user_id)!.add(device_fingerprint);
     
-    // Schedule removal
-    setTimeout(() => {
-      this.trustedDevices.get(user_id)?.delete(device_fingerprint);
-    }, duration_days * 24 * 60 * 60 * 1000);
+    // Store in Redis if available
+    if (this.redisService) {
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + duration_days);
+      
+      const deviceData = {
+        fingerprint: device_fingerprint,
+        trustedAt: new Date().toISOString(),
+        expiresAt: expiresAt.toISOString(),
+        duration_days
+      };
+
+      try {
+        await this.redisService.hset(
+          `trusted_devices:${user_id}`,
+          device_fingerprint,
+          JSON.stringify(deviceData)
+        );
+        
+        // Set expiration on the entire hash if this is the first device
+        await this.redisService.expire(
+          `trusted_devices:${user_id}`,
+          duration_days * 24 * 60 * 60
+        );
+      } catch (error) {
+        console.error('Error storing trusted device in Redis:', error);
+      }
+    } else {
+      // Schedule removal for in-memory store
+      setTimeout(() => {
+        this.trustedDevices.get(user_id)?.delete(device_fingerprint);
+      }, duration_days * 24 * 60 * 60 * 1000);
+    }
 
     this.emit('mfa:device-trusted', { user_id, device_fingerprint, duration_days });
+  }
+
+  /**
+   * Check if device is trusted
+   */
+  async isTrustedDevice(user_id: string, device_fingerprint: string): Promise<boolean> {
+    if (!this.redisService) {
+      // Fallback to in-memory check
+      return this.trustedDevices.get(user_id)?.has(device_fingerprint) || false;
+    }
+
+    try {
+      const device = await this.redisService.hget(`trusted_devices:${user_id}`, device_fingerprint);
+      if (!device) return false;
+
+      const deviceData = JSON.parse(device);
+      const expiresAt = new Date(deviceData.expiresAt);
+      
+      // Check if device trust has expired
+      if (expiresAt < new Date()) {
+        await this.redisService.hdel(`trusted_devices:${user_id}`, device_fingerprint);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error checking trusted device:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Revoke trusted device
+   */
+  async revokeTrustedDevice(user_id: string, device_fingerprint: string): Promise<boolean> {
+    // Remove from in-memory store
+    this.trustedDevices.get(user_id)?.delete(device_fingerprint);
+
+    if (!this.redisService) {
+      return true;
+    }
+
+    try {
+      const result = await this.redisService.hdel(`trusted_devices:${user_id}`, device_fingerprint);
+      this.emit('mfa:device-revoked', { user_id, device_fingerprint });
+      return result > 0;
+    } catch (error) {
+      console.error('Error revoking trusted device:', error);
+      return false;
+    }
   }
 
   /**

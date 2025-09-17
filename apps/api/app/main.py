@@ -47,6 +47,8 @@ from app.routers.v1 import (
     passkeys as passkeys_v1,
     admin as admin_v1,
     webhooks as webhooks_v1,
+    organization_members as organization_members_v1,
+    rbac as rbac_v1,
 )
 
 # Enterprise routers with optional loading for production stability
@@ -570,6 +572,8 @@ app.include_router(oauth_v1.router, prefix="/api/v1")
 app.include_router(users_v1.router, prefix="/api/v1")
 app.include_router(sessions_v1.router, prefix="/api/v1")
 app.include_router(organizations_v1.router, prefix="/api/v1")
+app.include_router(organization_members_v1.router, prefix="/api/v1")
+app.include_router(rbac_v1.router, prefix="/api/v1")
 app.include_router(mfa_v1.router, prefix="/api/v1")
 app.include_router(passkeys_v1.router, prefix="/api/v1")
 app.include_router(admin_v1.router, prefix="/api/v1")

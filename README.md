@@ -1,13 +1,10 @@
-<div align="center">
+# 🚀 Plinto - Enterprise Authentication Platform
 
-# 🚀 Plinto
+**Modern, enterprise-grade authentication and identity platform**
 
-**The Identity Platform Developers Actually Love**
-
-[![Build Status](https://img.shields.io/github/workflow/status/aureolabs/plinto/CI?style=flat-square)](https://github.com/aureolabs/plinto/actions)
-[![Security](https://img.shields.io/badge/security-SOC2%20Type%20II-green?style=flat-square)](https://trust.plinto.dev)
-[![Uptime](https://img.shields.io/badge/uptime-99.99%25-brightgreen?style=flat-square)](https://status.plinto.dev)
-[![Developer Experience](https://img.shields.io/badge/DX-★★★★★-blue?style=flat-square)](https://docs.plinto.dev)
+[![Production Ready](https://img.shields.io/badge/production-92%25%20ready-brightgreen?style=flat-square)](https://github.com/aureolabs/plinto)
+[![API](https://img.shields.io/badge/API-Python%20FastAPI-blue?style=flat-square)](apps/api)
+[![Security](https://img.shields.io/badge/security-Enterprise%20Grade-green?style=flat-square)](docs/security)
 
 *Secure substrate for identity - Edge-fast verification with full control*
 

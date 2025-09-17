@@ -1,810 +1,520 @@
 /**
- * Webhook Retry and Dead Letter Queue Service
- * Manages webhook delivery with exponential backoff, retries, and DLQ
+ * Webhook Retry Service with Dead Letter Queue
+ * Implements exponential backoff and reliable webhook delivery
  */
 
 import { EventEmitter } from 'events';
-import crypto from 'crypto';
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
+import { createHmac } from 'crypto';
+import { logger } from '../utils/logger';
 
-export interface WebhookPayload {
+export interface WebhookEvent {
   id: string;
-  webhook_id: string;
-  organization_id: string;
   url: string;
-  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  method: 'POST' | 'PUT';
   headers: Record<string, string>;
-  body: any;
-  event_type: string;
-  event_id: string;
-  timestamp: Date;
-  signature?: string;
-  metadata?: Record<string, any>;
-}
-
-export interface WebhookAttempt {
-  id: string;
-  payload_id: string;
-  attempt_number: number;
-  status: 'pending' | 'success' | 'failed' | 'timeout' | 'dlq';
-  status_code?: number;
-  response_body?: any;
-  error_message?: string;
-  latency_ms?: number;
-  attempted_at: Date;
-  next_retry_at?: Date;
+  payload: any;
+  secret?: string;
+  metadata: {
+    eventType: string;
+    organizationId?: string;
+    userId?: string;
+    timestamp: Date;
+  };
 }
 
 export interface WebhookDelivery {
   id: string;
-  payload: WebhookPayload;
-  attempts: WebhookAttempt[];
-  status: 'pending' | 'delivered' | 'failed' | 'dlq';
-  created_at: Date;
-  delivered_at?: Date;
-  failed_at?: Date;
-  dlq_at?: Date;
-  dlq_reason?: string;
-}
-
-export interface DeadLetterEntry {
-  id: string;
-  delivery_id: string;
-  payload: WebhookPayload;
-  attempts: WebhookAttempt[];
-  reason: string;
-  error_summary: string;
-  entered_dlq_at: Date;
-  expires_at: Date;
-  can_retry: boolean;
-  retry_count: number;
-  metadata?: Record<string, any>;
+  eventId: string;
+  attempt: number;
+  status: 'pending' | 'success' | 'failed' | 'dlq';
+  statusCode?: number;
+  responseBody?: string;
+  error?: string;
+  latency?: number;
+  nextRetryAt?: Date;
+  completedAt?: Date;
 }
 
 export interface RetryConfig {
-  max_attempts: number;
-  initial_delay_ms: number;
-  max_delay_ms: number;
-  multiplier: number;
-  jitter: boolean;
-  timeout_ms: number;
-  retry_on_status: number[];
-  dlq_after_attempts: number;
-  dlq_ttl_days: number;
-}
-
-export interface CircuitBreakerConfig {
-  failure_threshold: number;
-  success_threshold: number;
-  timeout_ms: number;
-  monitoring_period_ms: number;
-  half_open_max_attempts: number;
-}
-
-export interface WebhookMetrics {
-  total_deliveries: number;
-  successful_deliveries: number;
-  failed_deliveries: number;
-  dlq_entries: number;
-  avg_latency_ms: number;
-  p95_latency_ms: number;
-  p99_latency_ms: number;
-  success_rate: number;
-  retry_rate: number;
-}
-
-class CircuitBreaker {
-  private state: 'closed' | 'open' | 'half-open' = 'closed';
-  private failures: number = 0;
-  private successes: number = 0;
-  private lastFailureTime?: Date;
-  private halfOpenAttempts: number = 0;
-
-  constructor(private config: CircuitBreakerConfig) {}
-
-  async execute<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.state === 'open') {
-      if (this.shouldAttemptReset()) {
-        this.state = 'half-open';
-        this.halfOpenAttempts = 0;
-      } else {
-        throw new Error('Circuit breaker is open');
-      }
-    }
-
-    if (this.state === 'half-open' && this.halfOpenAttempts >= this.config.half_open_max_attempts) {
-      throw new Error('Circuit breaker is half-open, max attempts reached');
-    }
-
-    try {
-      const result = await fn();
-      this.onSuccess();
-      return result;
-    } catch (error) {
-      this.onFailure();
-      throw error;
-    }
-  }
-
-  private onSuccess(): void {
-    this.failures = 0;
-    
-    if (this.state === 'half-open') {
-      this.successes++;
-      if (this.successes >= this.config.success_threshold) {
-        this.state = 'closed';
-        this.successes = 0;
-        this.halfOpenAttempts = 0;
-      }
-    }
-  }
-
-  private onFailure(): void {
-    this.failures++;
-    this.lastFailureTime = new Date();
-
-    if (this.state === 'half-open') {
-      this.state = 'open';
-      this.successes = 0;
-      this.halfOpenAttempts++;
-    } else if (this.failures >= this.config.failure_threshold) {
-      this.state = 'open';
-    }
-  }
-
-  private shouldAttemptReset(): boolean {
-    return (
-      this.lastFailureTime &&
-      Date.now() - this.lastFailureTime.getTime() >= this.config.timeout_ms
-    );
-  }
-
-  getState(): string {
-    return this.state;
-  }
+  maxRetries: number;
+  initialDelayMs: number;
+  maxDelayMs: number;
+  backoffMultiplier: number;
+  timeout: number;
+  dlqThreshold: number;
 }
 
 export class WebhookRetryService extends EventEmitter {
-  private deliveries: Map<string, WebhookDelivery> = new Map();
-  private deadLetterQueue: Map<string, DeadLetterEntry> = new Map();
-  private retryQueue: Array<{ delivery_id: string; execute_at: Date }> = [];
-  private circuitBreakers: Map<string, CircuitBreaker> = new Map();
-  private metrics: Map<string, number[]> = new Map(); // For latency tracking
-  private processingInterval?: NodeJS.Timeout;
+  private queue: Map<string, WebhookEvent> = new Map();
+  private deliveries: Map<string, WebhookDelivery[]> = new Map();
+  private dlq: Map<string, WebhookEvent> = new Map();
+  private retryTimers: Map<string, NodeJS.Timeout> = new Map();
+  private config: RetryConfig;
+  private redisService: any;
 
-  constructor(
-    private readonly config: {
-      retry?: Partial<RetryConfig>;
-      circuit_breaker?: Partial<CircuitBreakerConfig>;
-      batch_size?: number;
-      process_interval_ms?: number;
-      enable_signature?: boolean;
-      signature_header?: string;
-      signature_secret?: string;
-    } = {}
-  ) {
+  constructor(config?: Partial<RetryConfig>, redisService?: any) {
     super();
-    this.startProcessing();
-  }
-
-  /**
-   * Send a webhook with retry logic
-   */
-  async sendWebhook(payload: WebhookPayload): Promise<WebhookDelivery> {
-    const delivery: WebhookDelivery = {
-      id: crypto.randomUUID(),
-      payload,
-      attempts: [],
-      status: 'pending',
-      created_at: new Date()
+    this.config = {
+      maxRetries: config?.maxRetries || 5,
+      initialDelayMs: config?.initialDelayMs || 1000, // 1 second
+      maxDelayMs: config?.maxDelayMs || 3600000, // 1 hour
+      backoffMultiplier: config?.backoffMultiplier || 2,
+      timeout: config?.timeout || 30000, // 30 seconds
+      dlqThreshold: config?.dlqThreshold || 3, // Move to DLQ after 3 consecutive failures
+      ...config,
     };
-
-    this.deliveries.set(delivery.id, delivery);
-
-    // Execute first attempt immediately
-    await this.executeDelivery(delivery);
-
-    return delivery;
+    this.redisService = redisService;
+    this.startQueueProcessor();
   }
 
   /**
-   * Bulk send webhooks
+   * Send webhook with retry logic
    */
-  async sendBulkWebhooks(payloads: WebhookPayload[]): Promise<WebhookDelivery[]> {
-    const deliveries: WebhookDelivery[] = [];
+  async sendWebhook(event: WebhookEvent): Promise<WebhookDelivery> {
+    // Add to queue
+    this.queue.set(event.id, event);
 
-    // Process in batches to avoid overwhelming the system
-    const batchSize = this.config.batch_size || 10;
-    
-    for (let i = 0; i < payloads.length; i += batchSize) {
-      const batch = payloads.slice(i, i + batchSize);
-      const batchDeliveries = await Promise.all(
-        batch.map(payload => this.sendWebhook(payload))
-      );
-      deliveries.push(...batchDeliveries);
+    // Initialize delivery tracking
+    if (!this.deliveries.has(event.id)) {
+      this.deliveries.set(event.id, []);
     }
 
-    return deliveries;
+    // Create initial delivery attempt
+    const delivery: WebhookDelivery = {
+      id: this.generateDeliveryId(),
+      eventId: event.id,
+      attempt: 1,
+      status: 'pending',
+    };
+
+    this.deliveries.get(event.id)!.push(delivery);
+
+    // Store in Redis for persistence
+    if (this.redisService) {
+      await this.storeEventInRedis(event);
+    }
+
+    // Attempt delivery
+    const result = await this.attemptDelivery(event, delivery);
+
+    if (result.status === 'failed') {
+      // Schedule retry
+      this.scheduleRetry(event, result);
+    }
+
+    return result;
   }
 
   /**
-   * Execute webhook delivery
+   * Attempt webhook delivery
    */
-  private async executeDelivery(delivery: WebhookDelivery): Promise<void> {
-    const retryConfig = this.getRetryConfig();
-    const attemptNumber = delivery.attempts.length + 1;
+  private async attemptDelivery(
+    event: WebhookEvent,
+    delivery: WebhookDelivery
+  ): Promise<WebhookDelivery> {
+    const startTime = Date.now();
 
-    if (attemptNumber > retryConfig.max_attempts) {
-      await this.moveToDeadLetterQueue(delivery, 'Max retries exceeded');
+    try {
+      // Prepare headers
+      const headers = {
+        ...event.headers,
+        'Content-Type': 'application/json',
+        'X-Webhook-Id': event.id,
+        'X-Webhook-Timestamp': event.metadata.timestamp.toISOString(),
+        'X-Webhook-Attempt': delivery.attempt.toString(),
+      };
+
+      // Add signature if secret provided
+      if (event.secret) {
+        const signature = this.generateSignature(event.payload, event.secret);
+        headers['X-Webhook-Signature'] = signature;
+      }
+
+      // Make request
+      const response = await axios({
+        method: event.method,
+        url: event.url,
+        data: event.payload,
+        headers,
+        timeout: this.config.timeout,
+        validateStatus: () => true, // Don't throw on any status
+      });
+
+      const latency = Date.now() - startTime;
+
+      // Update delivery
+      delivery.status = response.status >= 200 && response.status < 300 ? 'success' : 'failed';
+      delivery.statusCode = response.status;
+      delivery.responseBody = JSON.stringify(response.data).substring(0, 1000); // Limit response size
+      delivery.latency = latency;
+      delivery.completedAt = new Date();
+
+      // Success
+      if (delivery.status === 'success') {
+        this.queue.delete(event.id);
+        this.emit('webhook:delivered', {
+          event,
+          delivery,
+        });
+
+        logger.info('Webhook delivered successfully', {
+          eventId: event.id,
+          url: event.url,
+          attempt: delivery.attempt,
+          statusCode: response.status,
+          latency,
+        });
+      } else {
+        // Non-2xx response
+        logger.warn('Webhook delivery failed with non-2xx status', {
+          eventId: event.id,
+          url: event.url,
+          statusCode: response.status,
+          attempt: delivery.attempt,
+        });
+      }
+
+      return delivery;
+    } catch (error) {
+      const latency = Date.now() - startTime;
+      const axiosError = error as AxiosError;
+
+      // Update delivery with error
+      delivery.status = 'failed';
+      delivery.error = axiosError.message;
+      delivery.latency = latency;
+
+      if (axiosError.response) {
+        delivery.statusCode = axiosError.response.status;
+        delivery.responseBody = JSON.stringify(axiosError.response.data).substring(0, 1000);
+      }
+
+      logger.error('Webhook delivery failed', error as Error, {
+        eventId: event.id,
+        url: event.url,
+        attempt: delivery.attempt,
+      });
+
+      return delivery;
+    }
+  }
+
+  /**
+   * Schedule retry with exponential backoff
+   */
+  private scheduleRetry(event: WebhookEvent, lastDelivery: WebhookDelivery): void {
+    const attempts = this.deliveries.get(event.id)?.length || 1;
+
+    // Check if should move to DLQ
+    if (attempts >= this.config.dlqThreshold) {
+      const consecutiveFailures = this.getConsecutiveFailures(event.id);
+      if (consecutiveFailures >= this.config.dlqThreshold) {
+        this.moveToDeadLetterQueue(event, 'Max consecutive failures reached');
+        return;
+      }
+    }
+
+    // Check max retries
+    if (attempts >= this.config.maxRetries) {
+      this.moveToDeadLetterQueue(event, 'Max retries exceeded');
       return;
     }
 
-    const attempt: WebhookAttempt = {
-      id: crypto.randomUUID(),
-      payload_id: delivery.payload.id,
-      attempt_number: attemptNumber,
-      status: 'pending',
-      attempted_at: new Date()
-    };
-
-    delivery.attempts.push(attempt);
-
-    try {
-      // Get or create circuit breaker for this URL
-      const breaker = this.getCircuitBreaker(delivery.payload.url);
-
-      // Execute with circuit breaker
-      const startTime = Date.now();
-      const response = await breaker.execute(() => this.makeHttpRequest(delivery.payload));
-      const latency = Date.now() - startTime;
-
-      // Record success
-      attempt.status = 'success';
-      attempt.status_code = response.status;
-      attempt.response_body = response.data;
-      attempt.latency_ms = latency;
-
-      delivery.status = 'delivered';
-      delivery.delivered_at = new Date();
-
-      this.recordLatency(delivery.payload.url, latency);
-      this.emit('webhook:delivered', { delivery_id: delivery.id, attempt_number: attemptNumber });
-
-    } catch (error: any) {
-      // Handle failure
-      attempt.status = 'failed';
-      
-      if (error.response) {
-        attempt.status_code = error.response.status;
-        attempt.response_body = error.response.data;
-        attempt.error_message = error.response.statusText;
-      } else if (error.code === 'ECONNABORTED') {
-        attempt.status = 'timeout';
-        attempt.error_message = 'Request timeout';
-      } else {
-        attempt.error_message = error.message;
-      }
-
-      // Check if we should retry
-      if (this.shouldRetry(attempt, retryConfig)) {
-        const delay = this.calculateDelay(attemptNumber, retryConfig);
-        attempt.next_retry_at = new Date(Date.now() + delay);
-        
-        this.scheduleRetry(delivery.id, attempt.next_retry_at);
-        
-        this.emit('webhook:retry-scheduled', {
-          delivery_id: delivery.id,
-          attempt_number: attemptNumber,
-          next_retry_at: attempt.next_retry_at
-        });
-      } else {
-        // Move to DLQ if retries exhausted or non-retryable error
-        const reason = attemptNumber >= retryConfig.dlq_after_attempts
-          ? 'DLQ threshold reached'
-          : 'Non-retryable error';
-        
-        await this.moveToDeadLetterQueue(delivery, reason);
-      }
-    }
-  }
-
-  /**
-   * Make HTTP request
-   */
-  private async makeHttpRequest(payload: WebhookPayload): Promise<any> {
-    const retryConfig = this.getRetryConfig();
-
-    // Prepare headers
-    const headers = { ...payload.headers };
-
-    // Add signature if configured
-    if (this.config.enable_signature && this.config.signature_secret) {
-      const signature = this.generateSignature(payload);
-      headers[this.config.signature_header || 'X-Webhook-Signature'] = signature;
-    }
-
-    // Add standard webhook headers
-    headers['X-Webhook-ID'] = payload.id;
-    headers['X-Webhook-Event'] = payload.event_type;
-    headers['X-Webhook-Timestamp'] = payload.timestamp.toISOString();
-
-    const axiosConfig: AxiosRequestConfig = {
-      method: payload.method,
-      url: payload.url,
-      headers,
-      data: payload.body,
-      timeout: retryConfig.timeout_ms,
-      validateStatus: (status) => status < 500 // Don't throw on 4xx
-    };
-
-    return await axios(axiosConfig);
-  }
-
-  /**
-   * Generate webhook signature
-   */
-  private generateSignature(payload: WebhookPayload): string {
-    if (!this.config.signature_secret) {
-      throw new Error('Signature secret not configured');
-    }
-
-    const timestamp = Math.floor(payload.timestamp.getTime() / 1000);
-    const message = `${timestamp}.${JSON.stringify(payload.body)}`;
-    
-    const hmac = crypto.createHmac('sha256', this.config.signature_secret);
-    hmac.update(message);
-    
-    return `t=${timestamp},v1=${hmac.digest('hex')}`;
-  }
-
-  /**
-   * Verify webhook signature (for receivers)
-   */
-  verifySignature(signature: string, body: any, secret: string): boolean {
-    const parts = signature.split(',');
-    const timestamp = parts[0]?.replace('t=', '');
-    const hash = parts[1]?.replace('v1=', '');
-
-    if (!timestamp || !hash) return false;
-
-    // Check timestamp is within 5 minutes
-    const currentTime = Math.floor(Date.now() / 1000);
-    if (Math.abs(currentTime - parseInt(timestamp)) > 300) {
-      return false;
-    }
-
-    // Verify signature
-    const message = `${timestamp}.${JSON.stringify(body)}`;
-    const expectedHash = crypto.createHmac('sha256', secret)
-      .update(message)
-      .digest('hex');
-
-    return crypto.timingSafeEqual(
-      Buffer.from(hash),
-      Buffer.from(expectedHash)
+    // Calculate delay with exponential backoff
+    const delay = Math.min(
+      this.config.initialDelayMs * Math.pow(this.config.backoffMultiplier, attempts - 1),
+      this.config.maxDelayMs
     );
-  }
 
-  /**
-   * Move delivery to Dead Letter Queue
-   */
-  private async moveToDeadLetterQueue(
-    delivery: WebhookDelivery,
-    reason: string
-  ): Promise<void> {
-    delivery.status = 'dlq';
-    delivery.dlq_at = new Date();
-    delivery.dlq_reason = reason;
+    const nextRetryAt = new Date(Date.now() + delay);
 
-    const retryConfig = this.getRetryConfig();
-    
-    const dlqEntry: DeadLetterEntry = {
-      id: crypto.randomUUID(),
-      delivery_id: delivery.id,
-      payload: delivery.payload,
-      attempts: delivery.attempts,
-      reason,
-      error_summary: this.summarizeErrors(delivery.attempts),
-      entered_dlq_at: new Date(),
-      expires_at: new Date(Date.now() + retryConfig.dlq_ttl_days * 86400000),
-      can_retry: true,
-      retry_count: 0
-    };
+    // Update delivery
+    lastDelivery.nextRetryAt = nextRetryAt;
 
-    this.deadLetterQueue.set(dlqEntry.id, dlqEntry);
+    // Schedule retry
+    const timer = setTimeout(async () => {
+      this.retryTimers.delete(event.id);
+      await this.retry(event);
+    }, delay);
 
-    this.emit('webhook:dlq', {
-      delivery_id: delivery.id,
-      dlq_id: dlqEntry.id,
-      reason
+    this.retryTimers.set(event.id, timer);
+
+    logger.info('Webhook retry scheduled', {
+      eventId: event.id,
+      attempt: attempts + 1,
+      delayMs: delay,
+      nextRetryAt,
+    });
+
+    this.emit('webhook:retry-scheduled', {
+      event,
+      attempt: attempts + 1,
+      nextRetryAt,
     });
   }
 
   /**
-   * Retry delivery from DLQ
+   * Retry webhook delivery
    */
-  async retryFromDLQ(dlq_id: string): Promise<WebhookDelivery | null> {
-    const dlqEntry = this.deadLetterQueue.get(dlq_id);
-    
-    if (!dlqEntry) {
-      throw new Error('DLQ entry not found');
-    }
+  private async retry(event: WebhookEvent): Promise<void> {
+    const deliveries = this.deliveries.get(event.id) || [];
+    const attempt = deliveries.length + 1;
 
-    if (!dlqEntry.can_retry) {
-      throw new Error('DLQ entry cannot be retried');
-    }
-
-    // Create new delivery from DLQ entry
     const delivery: WebhookDelivery = {
-      id: crypto.randomUUID(),
-      payload: dlqEntry.payload,
-      attempts: [],
+      id: this.generateDeliveryId(),
+      eventId: event.id,
+      attempt,
       status: 'pending',
-      created_at: new Date()
     };
 
-    this.deliveries.set(delivery.id, delivery);
+    deliveries.push(delivery);
+
+    const result = await this.attemptDelivery(event, delivery);
+
+    if (result.status === 'failed') {
+      this.scheduleRetry(event, result);
+    }
+  }
+
+  /**
+   * Move event to Dead Letter Queue
+   */
+  private moveToDeadLetterQueue(event: WebhookEvent, reason: string): void {
+    this.dlq.set(event.id, event);
+    this.queue.delete(event.id);
+
+    // Cancel any pending retries
+    const timer = this.retryTimers.get(event.id);
+    if (timer) {
+      clearTimeout(timer);
+      this.retryTimers.delete(event.id);
+    }
+
+    // Update last delivery status
+    const deliveries = this.deliveries.get(event.id);
+    if (deliveries && deliveries.length > 0) {
+      deliveries[deliveries.length - 1].status = 'dlq';
+    }
+
+    // Store in Redis DLQ
+    if (this.redisService) {
+      this.redisService.set(
+        `webhook:dlq:${event.id}`,
+        JSON.stringify({
+          event,
+          reason,
+          movedAt: new Date().toISOString(),
+          deliveries: this.deliveries.get(event.id),
+        })
+      );
+    }
+
+    logger.warn('Webhook moved to Dead Letter Queue', {
+      eventId: event.id,
+      url: event.url,
+      reason,
+      attempts: deliveries?.length || 0,
+    });
+
+    this.emit('webhook:dlq', {
+      event,
+      reason,
+      deliveries: this.deliveries.get(event.id),
+    });
+  }
+
+  /**
+   * Retry event from Dead Letter Queue
+   */
+  async retryFromDLQ(eventId: string): Promise<WebhookDelivery> {
+    const event = this.dlq.get(eventId);
     
-    // Update DLQ entry
-    dlqEntry.retry_count++;
-    if (dlqEntry.retry_count >= 3) {
-      dlqEntry.can_retry = false;
+    if (!event) {
+      throw new Error(`Event ${eventId} not found in Dead Letter Queue`);
     }
 
-    // Execute delivery
-    await this.executeDelivery(delivery);
+    // Move back to active queue
+    this.dlq.delete(eventId);
+    this.queue.set(eventId, event);
 
-    // Remove from DLQ if successful
-    if (delivery.status === 'delivered') {
-      this.deadLetterQueue.delete(dlq_id);
-    }
+    // Reset deliveries for this retry attempt
+    this.deliveries.set(eventId, []);
 
-    return delivery;
+    // Attempt delivery
+    return this.sendWebhook(event);
   }
 
   /**
-   * Bulk retry from DLQ
+   * Get Dead Letter Queue items
    */
-  async bulkRetryFromDLQ(
-    filter?: (entry: DeadLetterEntry) => boolean
-  ): Promise<{ successful: number; failed: number }> {
-    const entries = Array.from(this.deadLetterQueue.values());
-    const toRetry = filter ? entries.filter(filter) : entries;
+  async getDLQItems(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<{
+    items: Array<{
+      event: WebhookEvent;
+      deliveries: WebhookDelivery[];
+    }>;
+    total: number;
+  }> {
+    const items: Array<{
+      event: WebhookEvent;
+      deliveries: WebhookDelivery[];
+    }> = [];
 
-    let successful = 0;
-    let failed = 0;
+    const dlqArray = Array.from(this.dlq.values());
+    const total = dlqArray.length;
 
-    for (const entry of toRetry) {
-      if (!entry.can_retry) continue;
+    const page = params?.page || 1;
+    const limit = params?.limit || 20;
+    const start = (page - 1) * limit;
+    const end = start + limit;
 
-      try {
-        const delivery = await this.retryFromDLQ(entry.id);
-        if (delivery?.status === 'delivered') {
-          successful++;
-        } else {
-          failed++;
+    const pageItems = dlqArray.slice(start, end);
+
+    for (const event of pageItems) {
+      items.push({
+        event,
+        deliveries: this.deliveries.get(event.id) || [],
+      });
+    }
+
+    return { items, total };
+  }
+
+  /**
+   * Clear Dead Letter Queue
+   */
+  async clearDLQ(filter?: (event: WebhookEvent) => boolean): Promise<number> {
+    let cleared = 0;
+
+    for (const [id, event] of this.dlq.entries()) {
+      if (!filter || filter(event)) {
+        this.dlq.delete(id);
+        this.deliveries.delete(id);
+        
+        if (this.redisService) {
+          await this.redisService.del(`webhook:dlq:${id}`);
         }
-      } catch {
-        failed++;
+
+        cleared++;
       }
     }
 
-    return { successful, failed };
+    logger.info('Dead Letter Queue cleared', { cleared });
+
+    return cleared;
   }
 
   /**
-   * Get DLQ entries
+   * Get webhook delivery history
    */
-  getDLQEntries(
-    filters?: {
-      organization_id?: string;
-      event_type?: string;
-      can_retry?: boolean;
-      since?: Date;
-    }
-  ): DeadLetterEntry[] {
-    let entries = Array.from(this.deadLetterQueue.values());
-
-    if (filters) {
-      if (filters.organization_id) {
-        entries = entries.filter(e => e.payload.organization_id === filters.organization_id);
-      }
-      if (filters.event_type) {
-        entries = entries.filter(e => e.payload.event_type === filters.event_type);
-      }
-      if (filters.can_retry !== undefined) {
-        entries = entries.filter(e => e.can_retry === filters.can_retry);
-      }
-      if (filters.since) {
-        entries = entries.filter(e => e.entered_dlq_at >= filters.since);
-      }
-    }
-
-    return entries.sort((a, b) => b.entered_dlq_at.getTime() - a.entered_dlq_at.getTime());
+  getDeliveryHistory(eventId: string): WebhookDelivery[] {
+    return this.deliveries.get(eventId) || [];
   }
 
   /**
-   * Purge expired DLQ entries
+   * Get queue statistics
    */
-  purgeExpiredDLQEntries(): number {
-    const now = new Date();
-    let purged = 0;
+  getStatistics(): {
+    queueSize: number;
+    dlqSize: number;
+    pendingRetries: number;
+    totalDeliveries: number;
+    successRate: number;
+  } {
+    let totalDeliveries = 0;
+    let successfulDeliveries = 0;
 
-    for (const [id, entry] of this.deadLetterQueue) {
-      if (entry.expires_at < now) {
-        this.deadLetterQueue.delete(id);
-        purged++;
-      }
+    for (const deliveries of this.deliveries.values()) {
+      totalDeliveries += deliveries.length;
+      successfulDeliveries += deliveries.filter(d => d.status === 'success').length;
     }
 
-    if (purged > 0) {
-      this.emit('dlq:purged', { count: purged });
-    }
-
-    return purged;
-  }
-
-  /**
-   * Get delivery status
-   */
-  getDelivery(delivery_id: string): WebhookDelivery | null {
-    return this.deliveries.get(delivery_id) || null;
-  }
-
-  /**
-   * Get metrics
-   */
-  getMetrics(): WebhookMetrics {
-    const deliveries = Array.from(this.deliveries.values());
-    
-    const metrics: WebhookMetrics = {
-      total_deliveries: deliveries.length,
-      successful_deliveries: deliveries.filter(d => d.status === 'delivered').length,
-      failed_deliveries: deliveries.filter(d => d.status === 'failed').length,
-      dlq_entries: this.deadLetterQueue.size,
-      avg_latency_ms: 0,
-      p95_latency_ms: 0,
-      p99_latency_ms: 0,
-      success_rate: 0,
-      retry_rate: 0
-    };
-
-    // Calculate latency metrics
-    const allLatencies: number[] = [];
-    for (const latencies of this.metrics.values()) {
-      allLatencies.push(...latencies);
-    }
-
-    if (allLatencies.length > 0) {
-      allLatencies.sort((a, b) => a - b);
-      metrics.avg_latency_ms = allLatencies.reduce((a, b) => a + b, 0) / allLatencies.length;
-      metrics.p95_latency_ms = allLatencies[Math.floor(allLatencies.length * 0.95)] || 0;
-      metrics.p99_latency_ms = allLatencies[Math.floor(allLatencies.length * 0.99)] || 0;
-    }
-
-    // Calculate rates
-    if (metrics.total_deliveries > 0) {
-      metrics.success_rate = metrics.successful_deliveries / metrics.total_deliveries;
-      
-      const retriedDeliveries = deliveries.filter(d => d.attempts.length > 1).length;
-      metrics.retry_rate = retriedDeliveries / metrics.total_deliveries;
-    }
-
-    return metrics;
-  }
-
-  /**
-   * Get metrics by organization
-   */
-  getOrganizationMetrics(organization_id: string): WebhookMetrics {
-    const deliveries = Array.from(this.deliveries.values())
-      .filter(d => d.payload.organization_id === organization_id);
-
-    // Similar calculation as getMetrics but filtered by organization
-    return this.calculateMetrics(deliveries);
-  }
-
-  /**
-   * Private: Calculate metrics for a set of deliveries
-   */
-  private calculateMetrics(deliveries: WebhookDelivery[]): WebhookMetrics {
-    const metrics: WebhookMetrics = {
-      total_deliveries: deliveries.length,
-      successful_deliveries: deliveries.filter(d => d.status === 'delivered').length,
-      failed_deliveries: deliveries.filter(d => d.status === 'failed').length,
-      dlq_entries: 0, // Count from DLQ
-      avg_latency_ms: 0,
-      p95_latency_ms: 0,
-      p99_latency_ms: 0,
-      success_rate: 0,
-      retry_rate: 0
-    };
-
-    // Count DLQ entries for these deliveries
-    for (const entry of this.deadLetterQueue.values()) {
-      if (deliveries.some(d => d.id === entry.delivery_id)) {
-        metrics.dlq_entries++;
-      }
-    }
-
-    // Calculate latencies
-    const latencies: number[] = [];
-    for (const delivery of deliveries) {
-      for (const attempt of delivery.attempts) {
-        if (attempt.latency_ms) {
-          latencies.push(attempt.latency_ms);
-        }
-      }
-    }
-
-    if (latencies.length > 0) {
-      latencies.sort((a, b) => a - b);
-      metrics.avg_latency_ms = latencies.reduce((a, b) => a + b, 0) / latencies.length;
-      metrics.p95_latency_ms = latencies[Math.floor(latencies.length * 0.95)] || 0;
-      metrics.p99_latency_ms = latencies[Math.floor(latencies.length * 0.99)] || 0;
-    }
-
-    // Calculate rates
-    if (metrics.total_deliveries > 0) {
-      metrics.success_rate = metrics.successful_deliveries / metrics.total_deliveries;
-      
-      const retriedDeliveries = deliveries.filter(d => d.attempts.length > 1).length;
-      metrics.retry_rate = retriedDeliveries / metrics.total_deliveries;
-    }
-
-    return metrics;
-  }
-
-  /**
-   * Private: Get retry configuration
-   */
-  private getRetryConfig(): RetryConfig {
     return {
-      max_attempts: 5,
-      initial_delay_ms: 1000,
-      max_delay_ms: 60000,
-      multiplier: 2,
-      jitter: true,
-      timeout_ms: 30000,
-      retry_on_status: [429, 500, 502, 503, 504],
-      dlq_after_attempts: 3,
-      dlq_ttl_days: 30,
-      ...this.config.retry
+      queueSize: this.queue.size,
+      dlqSize: this.dlq.size,
+      pendingRetries: this.retryTimers.size,
+      totalDeliveries,
+      successRate: totalDeliveries > 0 ? (successfulDeliveries / totalDeliveries) * 100 : 0,
     };
   }
 
   /**
-   * Private: Get circuit breaker for URL
+   * Helper methods
    */
-  private getCircuitBreaker(url: string): CircuitBreaker {
-    const host = new URL(url).host;
-    
-    if (!this.circuitBreakers.has(host)) {
-      const config: CircuitBreakerConfig = {
-        failure_threshold: 5,
-        success_threshold: 3,
-        timeout_ms: 60000,
-        monitoring_period_ms: 300000,
-        half_open_max_attempts: 3,
-        ...this.config.circuit_breaker
-      };
-      
-      this.circuitBreakers.set(host, new CircuitBreaker(config));
+
+  private generateDeliveryId(): string {
+    return `delivery_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+  }
+
+  private generateSignature(payload: any, secret: string): string {
+    const hmac = createHmac('sha256', secret);
+    hmac.update(JSON.stringify(payload));
+    return `sha256=${hmac.digest('hex')}`;
+  }
+
+  private getConsecutiveFailures(eventId: string): number {
+    const deliveries = this.deliveries.get(eventId) || [];
+    let consecutive = 0;
+
+    for (let i = deliveries.length - 1; i >= 0; i--) {
+      if (deliveries[i].status === 'failed') {
+        consecutive++;
+      } else {
+        break;
+      }
     }
 
-    return this.circuitBreakers.get(host)!;
+    return consecutive;
   }
 
-  /**
-   * Private: Should retry attempt
-   */
-  private shouldRetry(attempt: WebhookAttempt, config: RetryConfig): boolean {
-    if (attempt.status === 'timeout') return true;
-    if (attempt.status_code && config.retry_on_status.includes(attempt.status_code)) return true;
-    if (attempt.status_code && attempt.status_code >= 500) return true;
-    return false;
+  private async storeEventInRedis(event: WebhookEvent): Promise<void> {
+    if (!this.redisService) return;
+
+    await this.redisService.set(
+      `webhook:event:${event.id}`,
+      JSON.stringify(event),
+      86400 // 24 hours
+    );
   }
 
-  /**
-   * Private: Calculate retry delay
-   */
-  private calculateDelay(attemptNumber: number, config: RetryConfig): number {
-    let delay = config.initial_delay_ms * Math.pow(config.multiplier, attemptNumber - 1);
-    
-    // Apply max delay cap
-    delay = Math.min(delay, config.max_delay_ms);
-
-    // Add jitter
-    if (config.jitter) {
-      delay = delay * (0.5 + Math.random() * 0.5);
-    }
-
-    return Math.floor(delay);
+  private startQueueProcessor(): void {
+    // Process queue every 10 seconds for any orphaned events
+    setInterval(() => {
+      this.processOrphanedEvents();
+    }, 10000);
   }
 
-  /**
-   * Private: Schedule retry
-   */
-  private scheduleRetry(delivery_id: string, execute_at: Date): void {
-    this.retryQueue.push({ delivery_id, execute_at });
-    this.retryQueue.sort((a, b) => a.execute_at.getTime() - b.execute_at.getTime());
-  }
+  private async processOrphanedEvents(): Promise<void> {
+    for (const [eventId, event] of this.queue.entries()) {
+      // Check if event has a pending retry
+      if (!this.retryTimers.has(eventId)) {
+        const deliveries = this.deliveries.get(eventId) || [];
+        const lastDelivery = deliveries[deliveries.length - 1];
 
-  /**
-   * Private: Process retry queue
-   */
-  private async processRetryQueue(): Promise<void> {
-    const now = new Date();
-    
-    while (this.retryQueue.length > 0 && this.retryQueue[0].execute_at <= now) {
-      const item = this.retryQueue.shift()!;
-      const delivery = this.deliveries.get(item.delivery_id);
-      
-      if (delivery && delivery.status === 'pending') {
-        await this.executeDelivery(delivery);
+        if (lastDelivery && lastDelivery.status === 'failed') {
+          // Check if we should retry
+          const now = Date.now();
+          const nextRetryTime = lastDelivery.nextRetryAt?.getTime() || now;
+
+          if (nextRetryTime <= now) {
+            await this.retry(event);
+          }
+        }
       }
     }
   }
 
   /**
-   * Private: Record latency
+   * Cleanup resources
    */
-  private recordLatency(url: string, latency: number): void {
-    const host = new URL(url).host;
-    
-    if (!this.metrics.has(host)) {
-      this.metrics.set(host, []);
+  destroy(): void {
+    // Clear all retry timers
+    for (const timer of this.retryTimers.values()) {
+      clearTimeout(timer);
     }
-
-    const latencies = this.metrics.get(host)!;
-    latencies.push(latency);
-
-    // Keep only last 1000 measurements
-    if (latencies.length > 1000) {
-      latencies.shift();
-    }
+    this.retryTimers.clear();
   }
-
-  /**
-   * Private: Summarize errors
-   */
-  private summarizeErrors(attempts: WebhookAttempt[]): string {
-    const errors = attempts
-      .filter(a => a.status === 'failed')
-      .map(a => a.error_message || `HTTP ${a.status_code}`)
-      .filter((e, i, arr) => arr.indexOf(e) === i); // Unique
-
-    return errors.join(', ');
-  }
-
-  /**
-   * Private: Start processing
-   */
-  private startProcessing(): void {
-    const interval = this.config.process_interval_ms || 5000;
-    
-    this.processingInterval = setInterval(async () => {
-      await this.processRetryQueue();
-      
-      // Purge expired DLQ entries periodically
-      if (Math.random() < 0.01) { // 1% chance each interval
-        this.purgeExpiredDLQEntries();
-      }
-    }, interval);
-  }
-
-  /**
-   * Stop processing
-   */
-  stop(): void {
-    if (this.processingInterval) {
-      clearInterval(this.processingInterval);
-      this.processingInterval = undefined;
-    }
-  }
-}
-
-// Export factory function
-export function createWebhookRetryService(config?: any): WebhookRetryService {
-  return new WebhookRetryService(config);
 }

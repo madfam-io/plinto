@@ -598,6 +598,63 @@ class DataRetentionService:
         policy = policy_result.scalar_one_or_none()
 
         if not policy:
+            raise ValueError(f"Policy {policy_id} not found")
+
+        expired_items = await self.check_expired_data()
+        deleted_count = 0
+        anonymized_count = 0
+        errors = []
+
+        for item in expired_items:
+            if item['policy_id'] != str(policy_id):
+                continue
+
+            try:
+                if dry_run:
+                    logger.info(f"DRY RUN: Would delete/anonymize {item['data_type']} {item['data_id']}")
+                else:
+                    if policy.deletion_method == 'anonymize':
+                        await self._anonymize_data(item['data_type'], item['data_id'])
+                        anonymized_count += 1
+                    else:
+                        await self._delete_data(item['data_type'], item['data_id'])
+                        deleted_count += 1
+            except Exception as e:
+                errors.append({"item": item['data_id'], "error": str(e)})
+
+        return {
+            "policy_id": str(policy_id),
+            "dry_run": dry_run,
+            "deleted": deleted_count,
+            "anonymized": anonymized_count,
+            "errors": errors,
+            "execution_time": datetime.utcnow().isoformat()
+        }
+
+    async def _anonymize_data(self, data_type: str, data_id: str):
+        """Anonymize sensitive data"""
+        if data_type == "user":
+            user_result = await self.db.execute(
+                select(User).where(User.id == UUID(data_id))
+            )
+            user = user_result.scalar_one_or_none()
+            if user:
+                user.email = f"anon_{uuid.uuid4().hex[:8]}@anonymized.local"
+                user.first_name = "REDACTED"
+                user.last_name = "REDACTED"
+                user.phone = None
+                await self.db.commit()
+
+    async def _delete_data(self, data_type: str, data_id: str):
+        """Delete data permanently"""
+        if data_type == "user":
+            await self.db.execute(
+                text(f"DELETE FROM users WHERE id = :id"),
+                {"id": data_id}
+            )
+            await self.db.commit()
+
+        if not policy:
             raise ValueError("Policy not found")
 
         cutoff_date = datetime.utcnow() - timedelta(days=policy.retention_period_days)

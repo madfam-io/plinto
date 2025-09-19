@@ -92,8 +92,13 @@ from app.services.monitoring import MetricsCollector, HealthChecker, AlertManage
 logging.basicConfig(level=logging.INFO if settings.DEBUG else logging.WARNING)
 logger = logging.getLogger(__name__)
 
-# Initialize rate limiter
+# Initialize rate limiter (kept for backward compatibility with existing endpoints)
 limiter = Limiter(key_func=get_remote_address)
+
+# Import global rate limiting middleware
+from app.middleware.global_rate_limit import create_rate_limit_middleware
+# Import comprehensive input validation middleware
+from app.middleware.input_validation import create_input_validation_middleware
 
 # Initialize monitoring components
 metrics_collector = MetricsCollector()
@@ -150,6 +155,15 @@ app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
 
 # Add security headers middleware
 app.add_middleware(SecurityHeadersMiddleware)
+
+# Add GLOBAL RATE LIMITING for 100% endpoint coverage
+# This ensures ALL endpoints have rate limiting, not just those with @limiter.limit decorators
+redis_url = os.getenv("REDIS_URL", settings.REDIS_URL if hasattr(settings, 'REDIS_URL') else None)
+app.add_middleware(create_rate_limit_middleware(app, redis_url))
+
+# Add COMPREHENSIVE INPUT VALIDATION for all endpoints
+# This provides defense-in-depth against injection attacks and malformed input
+app.add_middleware(create_input_validation_middleware(app, strict_mode=not settings.DEBUG))
 
 # Add tenant context middleware for multi-tenancy
 app.add_middleware(TenantMiddleware)

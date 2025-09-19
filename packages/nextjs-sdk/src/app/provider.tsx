@@ -33,15 +33,15 @@ export function PlintoProvider({
   const [isLoading, setIsLoading] = useState(true);
 
   const updateAuthState = useCallback(async () => {
-    const currentUser = await client.getCurrentUser();
+    const currentUser = await client.auth.getCurrentUser();
     const currentSession = {
       accessToken: await client.getAccessToken(),
       refreshToken: await client.getRefreshToken()
     };
-    
+
     setUser(currentUser);
     setSession(currentSession as any);
-    
+
     if (onAuthChange) {
       onAuthChange(currentUser);
     }
@@ -58,10 +58,10 @@ export function PlintoProvider({
 
   const signOut = useCallback(async () => {
     try {
-      await client.signOut();
+      await client.auth.signOut();
       setUser(null);
       setSession(null);
-      
+
       if (onAuthChange) {
         onAuthChange(null);
       }
@@ -78,7 +78,9 @@ export function PlintoProvider({
       const state = urlParams.get('state')!;
       client.auth.handleOAuthCallback(code, state)
         .then(() => updateAuthState())
-        .catch(// Error handled silently in production
+        .catch(() => {
+          // Error handled silently in production
+        })
         .finally(() => setIsLoading(false));
     } else {
       // Load initial auth state
@@ -88,7 +90,7 @@ export function PlintoProvider({
 
     // Set up auth state listener
     const checkInterval = setInterval(async () => {
-      const currentUser = await client.getCurrentUser();
+      const currentUser = await client.auth.getCurrentUser();
       if (currentUser !== user) {
         updateAuthState();
       }

@@ -17,7 +17,7 @@ from slowapi.util import get_remote_address
 
 from app.database import get_db
 from ...models import User, UserStatus, EmailVerification, PasswordReset, MagicLink, ActivityLog, Session as UserSession
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 from app.services.email import EmailService
 from app.config import settings
 from app.dependencies import get_current_user
@@ -289,7 +289,7 @@ async def refresh_token(
     db: Session = Depends(get_db)
 ):
     """Refresh access token using refresh token"""
-    result = AuthService.refresh_access_token(db, request.refresh_token)
+    result = await AuthService.refresh_tokens(db, request.refresh_token)
     
     if not result:
         raise HTTPException(status_code=401, detail="Invalid or expired refresh token")

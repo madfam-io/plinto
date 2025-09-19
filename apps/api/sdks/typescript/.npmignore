@@ -1,0 +1,40 @@
+# Source files (only ship compiled code)
+src/
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Development files
+tsconfig.json
+jest.config.js
+.eslintrc.js
+.gitignore
+
+# Build tools
+webpack.config.js
+rollup.config.js
+
+# Coverage and testing
+coverage/
+.nyc_output
+
+# Environment files
+.env*
+
+# Development dependencies
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# OpenAPI source
+openapi.json
+openapi-generated/

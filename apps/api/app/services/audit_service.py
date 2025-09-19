@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_
 
 from ..models import User, Organization
-from ..models.compliance import AuditLog
+from ..models import AuditLog
 from ..database import get_db
 
 logger = logging.getLogger(__name__)

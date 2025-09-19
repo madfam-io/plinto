@@ -59,7 +59,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = Field(default="HS256")
     
     # Security
-    SECRET_KEY: str = Field(default="change-this-in-production")
+    SECRET_KEY: str = Field(default="development-secret-key-change-in-production")
     BCRYPT_ROUNDS: int = Field(default=12)
     PASSWORD_MIN_LENGTH: int = Field(default=12)
     PASSWORD_REQUIRE_UPPERCASE: bool = Field(default=True)

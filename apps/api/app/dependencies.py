@@ -23,22 +23,23 @@ async def get_current_user(
     db: AsyncSession = Depends(get_db)
 ) -> User:
     """Get current authenticated user from JWT token"""
+    from app.core.jwt_manager import jwt_manager
+    
     token = credentials.credentials
     
-    # Decode token
-    payload = AuthService.decode_token(token, token_type='access')
+    # Decode token using JWT manager
+    payload = jwt_manager.verify_token(token, token_type='access')
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     
-    # Validate session
-    session_valid = await AuthService.validate_session(db, payload['jti'])
-    if not session_valid:
-        raise HTTPException(status_code=401, detail="Invalid session")
+    user_id = payload.get('sub')
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token payload")
     
     # Get user using async session
     result = await db.execute(
         select(User).where(
-            User.id == payload['sub'],
+            User.id == user_id,
             User.status == UserStatus.ACTIVE
         )
     )

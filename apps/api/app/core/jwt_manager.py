@@ -255,3 +255,52 @@ def verify_refresh_token(token: str) -> Optional[Dict[str, Any]]:
 async def refresh_tokens(refresh_token: str, db: AsyncSession) -> Optional[Tuple[str, str]]:
     """Refresh token pair - convenience function"""
     return await jwt_manager.refresh_token_pair(refresh_token, db)
+
+
+async def get_current_user(
+    token: str,
+    db: AsyncSession
+) -> Optional[Dict[str, Any]]:
+    """
+    Get current user from JWT token with database validation
+    This is the core function used by FastAPI dependencies
+    """
+    # Verify the access token
+    payload = jwt_manager.verify_token(token, "access")
+    if not payload:
+        return None
+
+    user_id = payload.get("sub")
+    if not user_id:
+        return None
+
+    try:
+        # Import here to avoid circular imports
+        from app.models import User, UserStatus
+        from sqlalchemy import select
+
+        # Get user from database
+        result = await db.execute(
+            select(User).where(
+                User.id == user_id,
+                User.status == UserStatus.ACTIVE
+            )
+        )
+        user = result.scalar_one_or_none()
+
+        if not user:
+            logger.warning("User not found or inactive", user_id=user_id)
+            return None
+
+        # Return user data with token info
+        return {
+            "user": user,
+            "token_payload": payload,
+            "user_id": user_id,
+            "email": payload.get("email"),
+            "jti": payload.get("jti")
+        }
+
+    except Exception as e:
+        logger.error("Error getting current user", error=str(e), user_id=user_id)
+        return None

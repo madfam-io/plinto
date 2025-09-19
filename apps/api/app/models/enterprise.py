@@ -14,6 +14,23 @@ from . import Base
 from . import Organization, OrganizationMember, OrganizationRole, WebhookEndpoint, WebhookDelivery, WebhookStatus, AuditLog
 
 
+class SSOProvider(str, enum.Enum):
+    """SSO provider types"""
+    SAML = "saml"
+    OIDC = "oidc"
+    OAUTH2 = "oauth2"
+    LDAP = "ldap"
+    ACTIVE_DIRECTORY = "active_directory"
+
+
+class SSOStatus(str, enum.Enum):
+    """SSO configuration status"""
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    PENDING = "pending"
+    ERROR = "error"
+
+
 class AuditEventType(str, enum.Enum):
     USER_LOGIN = "user.login"
     USER_LOGOUT = "user.logout"

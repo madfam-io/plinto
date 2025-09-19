@@ -226,3 +226,7 @@ async def init_database() -> None:
 async def close_database() -> None:
     """Close database connections on shutdown"""
     await db_manager.close()
+
+
+# Alias for backward compatibility
+get_db = get_db_session

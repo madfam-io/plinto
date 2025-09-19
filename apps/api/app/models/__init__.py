@@ -364,6 +364,10 @@ class CheckoutSession(Base):
     expires_at = Column(DateTime, nullable=True)
     session_metadata = Column(Text)  # JSON string for additional data
 
+# Import enterprise models
+from .enterprise import SSOConfiguration, SSOProvider, SSOStatus
+from .white_label import WhiteLabelConfiguration, BrandingLevel, ThemeMode, CustomDomain, EmailTemplate
+
 # Import compliance models
 from .compliance import (
     ComplianceFramework,

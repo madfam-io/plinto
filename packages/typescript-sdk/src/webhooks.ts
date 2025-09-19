@@ -12,7 +12,7 @@ import type {
 } from './types';
 import { WebhookEventType } from './types';
 import { ValidationError, WebhookError } from './errors';
-import { ValidationUtils } from './utils';
+import { ValidationUtils, WebhookUtils } from './utils';
 
 /**
  * Webhook management operations

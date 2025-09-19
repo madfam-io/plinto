@@ -10,7 +10,7 @@ import type {
   User,
   TokenResponse
 } from './types';
-import { HttpClient, AxiosHttpClient, createHttpClient } from './http-client';
+import { HttpClient, createHttpClient } from './http-client';
 import { TokenManager, EnvUtils, EventEmitter } from './utils';
 import { ConfigurationError } from './errors';
 import { Auth } from './auth';
@@ -63,8 +63,8 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
     this.auth = new Auth(
       this.httpClient,
       this.tokenManager,
-      () => this.emit('auth:signIn', {}),
-      () => this.emit('auth:signOut', {})
+      () => this.emit('auth:signedIn', { user: {} as any }),
+      () => this.emit('auth:signedOut', {})
     );
     this.users = new Users(this.httpClient);
     this.sessions = new Sessions(this.httpClient);

@@ -186,6 +186,30 @@ class Settings(BaseSettings):
     # Compliance reporting
     COMPLIANCE_REPORTS_ENABLED: bool = Field(default=True, description="Enable compliance reporting")
     COMPLIANCE_DASHBOARD_ENABLED: bool = Field(default=True, description="Enable compliance dashboard")
+
+    # Enterprise compliance infrastructure
+    EVIDENCE_STORAGE_PATH: str = Field(default="/var/compliance/evidence", description="Path for compliance evidence storage")
+    DATA_EXPORT_PATH: str = Field(default="/var/compliance/exports", description="Path for GDPR data exports")
+
+    # Policy management
+    POLICY_ACKNOWLEDGMENT_REQUIRED: bool = Field(default=True, description="Require policy acknowledgments")
+    POLICY_TRAINING_ENABLED: bool = Field(default=True, description="Enable policy training tracking")
+    POLICY_VIOLATION_DETECTION: bool = Field(default=True, description="Enable automated policy violation detection")
+
+    # Support system
+    SUPPORT_SLA_MONITORING: bool = Field(default=True, description="Enable SLA monitoring for support")
+    SUPPORT_ESCALATION_ENABLED: bool = Field(default=True, description="Enable automatic support escalation")
+    SUPPORT_METRICS_COLLECTION: bool = Field(default=True, description="Enable support metrics collection")
+
+    # Enterprise features
+    ENTERPRISE_AUDIT_TRAIL: bool = Field(default=True, description="Enable enterprise audit trail")
+    ENTERPRISE_POLICY_MANAGEMENT: bool = Field(default=True, description="Enable enterprise policy management")
+    ENTERPRISE_PRIVACY_AUTOMATION: bool = Field(default=True, description="Enable privacy automation features")
+
+    # Compliance monitoring
+    COMPLIANCE_REAL_TIME_MONITORING: bool = Field(default=True, description="Enable real-time compliance monitoring")
+    COMPLIANCE_ALERT_THRESHOLD_MINUTES: int = Field(default=15, description="Minutes before SLA breach alert")
+    COMPLIANCE_DASHBOARD_CACHE_MINUTES: int = Field(default=5, description="Dashboard data cache duration")
     
     @field_validator("JWT_SECRET_KEY", mode="before")
     @classmethod

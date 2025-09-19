@@ -227,6 +227,10 @@ class Webhook(Base):
     events = Column(JSONB, default=[])
     secret = Column(String(255))
     active = Column(Boolean, default=True)
+    
+    @property
+    def is_active(self):
+        return self.active
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -364,8 +368,140 @@ class CheckoutSession(Base):
     expires_at = Column(DateTime, nullable=True)
     session_metadata = Column(Text)  # JSON string for additional data
 
+# Additional enterprise models
+class Role(Base):
+    __tablename__ = "roles"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
+    name = Column(String(255), nullable=False)
+    description = Column(Text)
+    permissions = Column(JSONB, default=[])
+    is_system = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Permission(Base):
+    __tablename__ = "permissions"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
+    name = Column(String(255), nullable=False)
+    resource = Column(String(255), nullable=False)
+    action = Column(String(255), nullable=False)
+    conditions = Column(JSONB, default={})
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class ApiKey(Base):
+    __tablename__ = "api_keys"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
+    name = Column(String(255), nullable=False)
+    key_hash = Column(String(255), nullable=False)
+    prefix = Column(String(20), nullable=False)
+    scopes = Column(JSONB, default=[])
+    is_active = Column(Boolean, default=True)
+    last_used = Column(DateTime)
+    expires_at = Column(DateTime)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Invoice(Base):
+    __tablename__ = "invoices"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
+    subscription_id = Column(UUID(as_uuid=True), ForeignKey("subscriptions.id"))
+    invoice_number = Column(String(255), unique=True, nullable=False)
+    amount = Column(Integer, nullable=False)  # Amount in cents
+    currency = Column(String(3), default="USD")
+    status = Column(String(50), default="pending")
+    due_date = Column(DateTime, nullable=False)
+    paid_at = Column(DateTime)
+    stripe_invoice_id = Column(String(255), unique=True)
+    invoice_data = Column(JSONB, default={})
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Payment(Base):
+    __tablename__ = "payments"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
+    invoice_id = Column(UUID(as_uuid=True), ForeignKey("invoices.id"))
+    amount = Column(Integer, nullable=False)  # Amount in cents
+    currency = Column(String(3), default="USD")
+    status = Column(String(50), default="pending")
+    payment_method = Column(String(100))
+    stripe_payment_id = Column(String(255), unique=True)
+    processed_at = Column(DateTime)
+    payment_data = Column(JSONB, default={})
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Notification(Base):
+    __tablename__ = "notifications"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"))
+    title = Column(String(255), nullable=False)
+    message = Column(Text, nullable=False)
+    type = Column(String(100), default="info")
+    is_read = Column(Boolean, default=False)
+    read_at = Column(DateTime)
+    data = Column(JSONB, default={})
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+# Additional missing models
+class OrganizationSettings(Base):
+    __tablename__ = "organization_settings"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
+    settings_data = Column(JSONB, default={})
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class SessionType(str, enum.Enum):
+    WEB = "web"
+    MOBILE = "mobile"
+    API = "api"
+    SSO = "sso"
+
+class RolePermission(Base):
+    __tablename__ = "role_permissions"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    role_id = Column(UUID(as_uuid=True), ForeignKey("roles.id"), nullable=False)
+    permission_id = Column(UUID(as_uuid=True), ForeignKey("permissions.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class Plan(Base):
+    __tablename__ = "plans"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(255), nullable=False)
+    description = Column(Text)
+    price_monthly = Column(Integer, default=0)  # Price in cents
+    price_yearly = Column(Integer, default=0)   # Price in cents
+    features = Column(JSONB, default=[])
+    max_users = Column(Integer)
+    max_organizations = Column(Integer)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
 # Import enterprise models
-from .enterprise import SSOConfiguration, SSOProvider, SSOStatus
+from .enterprise import (
+    SSOConfiguration, SSOProvider, SSOStatus, Subscription, 
+    EnterpriseFeature as Feature, BillingUsage as UsageMetric,
+    AuditEventType
+)
 from .white_label import WhiteLabelConfiguration, BrandingLevel, ThemeMode, CustomDomain, EmailTemplate
 
 # Import compliance models

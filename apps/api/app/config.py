@@ -234,3 +234,13 @@ class Settings(BaseSettings):
 
 # Create settings instance
 settings = Settings()
+
+
+def get_settings() -> Settings:
+    """
+    Get application settings instance.
+
+    Returns:
+        Settings: Application settings with environment variable support
+    """
+    return settings

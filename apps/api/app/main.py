@@ -660,3 +660,35 @@ async def shutdown_event():
     except Exception as e:
         logger.error(f"Error during shutdown: {e}")
     logger.info("Plinto API shutdown complete")
+
+
+def create_app(
+    title: str = "Plinto API",
+    description: str = "Modern authentication and identity platform API",
+    version: str = "1.0.0",
+    **kwargs
+) -> FastAPI:
+    """
+    Create and configure a FastAPI application with Plinto authentication.
+
+    Args:
+        title: Application title
+        description: Application description
+        version: Application version
+        **kwargs: Additional FastAPI constructor arguments
+
+    Returns:
+        FastAPI: Configured FastAPI application
+    """
+    # Return the existing configured app instance
+    # In a production package, this would be refactored to create a new instance
+    app.title = title
+    app.description = description
+    app.version = version
+
+    # Apply any additional kwargs
+    for key, value in kwargs.items():
+        if hasattr(app, key):
+            setattr(app, key, value)
+
+    return app

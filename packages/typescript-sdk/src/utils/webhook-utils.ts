@@ -191,8 +191,8 @@ export class WebhookUtils {
   static parseHeaders(headers: Record<string, string | string[] | undefined>): {
     signature?: string;
     timestamp?: string;
-    event?: string;
-    id?: string;
+    eventType?: string;
+    webhookId?: string;
   } {
     const getHeader = (key: string): string | undefined => {
       const value = headers[key] || headers[key.toLowerCase()] || 
@@ -203,8 +203,8 @@ export class WebhookUtils {
     return {
       signature: getHeader('X-Webhook-Signature'),
       timestamp: getHeader('X-Webhook-Timestamp'),
-      event: getHeader('X-Webhook-Event'),
-      id: getHeader('X-Webhook-Id')
+      eventType: getHeader('X-Webhook-Event'),
+      webhookId: getHeader('X-Webhook-Id')
     };
   }
   
@@ -244,7 +244,7 @@ export class WebhookUtils {
     
     // Verify timestamp
     if (!this.verifyTimestamp(parsed.timestamp, options?.maxAge)) {
-      return { valid: false, error: 'Timestamp too old' };
+      return { valid: false, error: 'Webhook timestamp too old' };
     }
     
     // Construct and verify payload
@@ -266,28 +266,36 @@ export class WebhookUtils {
    * Create test webhook payload
    */
   static createTestPayload(
+    eventType: string,
     data: any,
     options?: {
       timestamp?: number;
       webhookId?: string;
-      event?: string;
     }
   ): {
-    body: object;
-    timestamp: number;
-    id: string;
+    headers: Record<string, string>;
+    body: string;
   } {
     const timestamp = options?.timestamp || Math.floor(Date.now() / 1000);
     const id = options?.webhookId || this.generateWebhookId();
     
-    const body = {
+    const bodyObj = {
       id,
-      timestamp,
-      event: options?.event || 'test.event',
+      type: eventType,
+      created_at: new Date(timestamp * 1000).toISOString(),
       data
     };
     
-    return { body, timestamp, id };
+    const headers = {
+      'x-webhook-id': id,
+      'x-webhook-event': eventType,
+      'x-webhook-timestamp': timestamp.toString()
+    };
+    
+    return { 
+      headers,
+      body: JSON.stringify(bodyObj)
+    };
   }
   
   /**

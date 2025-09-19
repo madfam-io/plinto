@@ -351,7 +351,8 @@ export class Webhooks {
       return signature === expectedSignature;
 
     } catch (error) {
-      throw new WebhookError('Failed to verify webhook signature', { originalError: error });
+      // Return false on verification failure instead of throwing
+      return false;
     }
   }
 

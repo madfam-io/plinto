@@ -41,8 +41,9 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
 };
 
-// Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
+// Mock matchMedia (only in browser environment)
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
     matches: false,
@@ -55,15 +56,17 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+}
 
 // Mock window.scrollTo
-Object.defineProperty(window, 'scrollTo', {
-  value: jest.fn(),
-  writable: true
-});
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'scrollTo', {
+    value: jest.fn(),
+    writable: true
+  });
 
-// Mock localStorage
-Object.defineProperty(window, 'localStorage', {
+  // Mock localStorage
+  Object.defineProperty(window, 'localStorage', {
   value: {
     getItem: jest.fn(),
     setItem: jest.fn(),
@@ -71,10 +74,10 @@ Object.defineProperty(window, 'localStorage', {
     clear: jest.fn(),
   },
   writable: true,
-});
+  });
 
-// Mock sessionStorage
-Object.defineProperty(window, 'sessionStorage', {
+  // Mock sessionStorage
+  Object.defineProperty(window, 'sessionStorage', {
   value: {
     getItem: jest.fn(),
     setItem: jest.fn(),
@@ -82,7 +85,8 @@ Object.defineProperty(window, 'sessionStorage', {
     clear: jest.fn(),
   },
   writable: true,
-});
+  });
+}
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({

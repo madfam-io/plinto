@@ -1,290 +1,477 @@
-"""
-Webhook management module for the Plinto SDK
-"""
+"""Webhook management module for the Plinto SDK."""
 
-from typing import Dict, List, Optional, Any
+from typing import Optional, Dict, Any, List
+from datetime import datetime
 
 from .http_client import HTTPClient
 from .types import (
     WebhookEndpoint,
-    WebhookEndpointCreateRequest,
-    WebhookEndpointUpdateRequest,
     WebhookEvent,
     WebhookDelivery,
     WebhookEventType,
-    WebhookEndpointListResponse,
+    ListResponse,
+    PlintoConfig,
 )
-from .utils import build_query_params, validate_webhook_signature
+from .exceptions import (
+    NotFoundError,
+    ValidationError,
+    AuthorizationError,
+    PlintoError,
+)
+from .utils import validate_webhook_signature
 
 
-class WebhooksModule:
-    """Webhook management operations"""
+class WebhooksClient:
+    """Client for webhook management operations."""
     
-    def __init__(self, http_client: HTTPClient):
-        self.http = http_client
+    def __init__(self, http: HTTPClient, config: PlintoConfig):
+        """
+        Initialize the webhooks client.
+        
+        Args:
+            http: HTTP client instance
+            config: Plinto configuration
+        """
+        self.http = http
+        self.config = config
     
-    async def create_endpoint(
+    # Endpoint management
+    
+    def create_endpoint(
         self,
-        request: WebhookEndpointCreateRequest
+        url: str,
+        events: List[WebhookEventType],
+        description: Optional[str] = None,
+        enabled: bool = True,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> WebhookEndpoint:
         """
-        Create a new webhook endpoint
+        Create a new webhook endpoint.
         
         Args:
-            request: Webhook endpoint creation request
+            url: Webhook endpoint URL
+            events: List of event types to subscribe to
+            description: Endpoint description
+            enabled: Whether the endpoint is enabled
+            metadata: Additional metadata
             
         Returns:
-            Created webhook endpoint
-        """
-        response = await self.http.post(
-            "/api/v1/webhooks/",
-            json_data=request.dict()
-        )
-        return WebhookEndpoint(**response.json())
-    
-    async def list_endpoints(
-        self,
-        is_active: Optional[bool] = None
-    ) -> WebhookEndpointListResponse:
-        """
-        List webhook endpoints for current user
-        
-        Args:
-            is_active: Filter by active status
+            Created WebhookEndpoint object
             
-        Returns:
-            List of webhook endpoints
+        Raises:
+            ValidationError: If URL is invalid or events are empty
+            AuthorizationError: If not authorized
+            PlintoError: If creation fails
         """
-        params = build_query_params({"is_active": is_active})
-        
-        response = await self.http.get("/api/v1/webhooks/", params=params)
-        data = response.json()
-        
-        return WebhookEndpointListResponse(
-            endpoints=[WebhookEndpoint(**ep) for ep in data["endpoints"]],
-            meta={
-                "page": 1,
-                "per_page": data["total"],
-                "total": data["total"],
-                "total_pages": 1
-            }
-        )
-    
-    async def get_endpoint(self, endpoint_id: str) -> WebhookEndpoint:
-        """
-        Get webhook endpoint details
-        
-        Args:
-            endpoint_id: Webhook endpoint ID
-            
-        Returns:
-            Webhook endpoint data
-        """
-        response = await self.http.get(f"/api/v1/webhooks/{endpoint_id}")
-        return WebhookEndpoint(**response.json())
-    
-    async def update_endpoint(
-        self,
-        endpoint_id: str,
-        request: WebhookEndpointUpdateRequest
-    ) -> WebhookEndpoint:
-        """
-        Update webhook endpoint configuration
-        
-        Args:
-            endpoint_id: Webhook endpoint ID
-            request: Update request data
-            
-        Returns:
-            Updated webhook endpoint
-        """
-        response = await self.http.patch(
-            f"/api/v1/webhooks/{endpoint_id}",
-            json_data=request.dict(exclude_unset=True)
-        )
-        return WebhookEndpoint(**response.json())
-    
-    async def delete_endpoint(self, endpoint_id: str) -> Dict[str, str]:
-        """
-        Delete webhook endpoint
-        
-        Args:
-            endpoint_id: Webhook endpoint ID
-            
-        Returns:
-            Success message
-        """
-        response = await self.http.delete(f"/api/v1/webhooks/{endpoint_id}")
-        return response.json()
-    
-    async def test_endpoint(self, endpoint_id: str) -> Dict[str, str]:
-        """
-        Send test webhook to endpoint
-        
-        Args:
-            endpoint_id: Webhook endpoint ID
-            
-        Returns:
-            Success message
-        """
-        response = await self.http.post(f"/api/v1/webhooks/{endpoint_id}/test")
-        return response.json()
-    
-    async def get_endpoint_stats(
-        self,
-        endpoint_id: str,
-        days: int = 7
-    ) -> Dict[str, Any]:
-        """
-        Get webhook endpoint delivery statistics
-        
-        Args:
-            endpoint_id: Webhook endpoint ID
-            days: Number of days to include in stats
-            
-        Returns:
-            Delivery statistics
-        """
-        params = build_query_params({"days": days})
-        
-        response = await self.http.get(
-            f"/api/v1/webhooks/{endpoint_id}/stats",
-            params=params
-        )
-        return response.json()
-    
-    async def list_events(
-        self,
-        endpoint_id: str,
-        limit: int = 100,
-        offset: int = 0
-    ) -> Dict[str, Any]:
-        """
-        List webhook events for an endpoint
-        
-        Args:
-            endpoint_id: Webhook endpoint ID
-            limit: Maximum events to return (1-1000)
-            offset: Offset for pagination
-            
-        Returns:
-            List of webhook events
-        """
-        params = build_query_params({
-            "limit": limit,
-            "offset": offset
-        })
-        
-        response = await self.http.get(
-            f"/api/v1/webhooks/{endpoint_id}/events",
-            params=params
-        )
-        data = response.json()
-        
-        return {
-            "events": [WebhookEvent(**event) for event in data["events"]],
-            "total": data["total"]
+        payload = {
+            'url': url,
+            'events': [e.value for e in events],
+            'enabled': enabled,
+            'metadata': metadata or {},
         }
+        
+        if description:
+            payload['description'] = description
+        
+        response = self.http.post('/webhooks/endpoints', json=payload)
+        data = response.json()
+        return WebhookEndpoint(**data)
     
-    async def list_deliveries(
+    def get_endpoint(self, endpoint_id: str) -> WebhookEndpoint:
+        """
+        Get a webhook endpoint by ID.
+        
+        Args:
+            endpoint_id: Endpoint ID
+            
+        Returns:
+            WebhookEndpoint object
+            
+        Raises:
+            NotFoundError: If endpoint not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(f'/webhooks/endpoints/{endpoint_id}')
+        data = response.json()
+        return WebhookEndpoint(**data)
+    
+    def list_endpoints(
+        self,
+        enabled: Optional[bool] = None,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> ListResponse[WebhookEndpoint]:
+        """
+        List webhook endpoints.
+        
+        Args:
+            enabled: Filter by enabled status
+            limit: Number of endpoints to return (max 100)
+            offset: Number of endpoints to skip
+            
+        Returns:
+            ListResponse containing endpoints and pagination info
+            
+        Raises:
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        params = {
+            'limit': min(limit, 100),
+            'offset': offset,
+        }
+        
+        if enabled is not None:
+            params['enabled'] = enabled
+        
+        response = self.http.get('/webhooks/endpoints', params=params)
+        data = response.json()
+        
+        return ListResponse[WebhookEndpoint](
+            items=[WebhookEndpoint(**item) for item in data['items']],
+            total=data['total'],
+            limit=data['limit'],
+            offset=data['offset'],
+        )
+    
+    def update_endpoint(
         self,
         endpoint_id: str,
-        limit: int = 100,
-        offset: int = 0
-    ) -> List[WebhookDelivery]:
+        url: Optional[str] = None,
+        events: Optional[List[WebhookEventType]] = None,
+        description: Optional[str] = None,
+        enabled: Optional[bool] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> WebhookEndpoint:
         """
-        List webhook delivery attempts for an endpoint
+        Update a webhook endpoint.
         
         Args:
-            endpoint_id: Webhook endpoint ID
-            limit: Maximum deliveries to return (1-1000)
-            offset: Offset for pagination
+            endpoint_id: Endpoint ID
+            url: New webhook URL
+            events: New list of events to subscribe to
+            description: New description
+            enabled: New enabled status
+            metadata: Updated metadata
             
         Returns:
-            List of webhook deliveries
+            Updated WebhookEndpoint object
+            
+        Raises:
+            NotFoundError: If endpoint not found
+            ValidationError: If input validation fails
+            AuthorizationError: If not authorized
+            PlintoError: If update fails
         """
-        params = build_query_params({
-            "limit": limit,
-            "offset": offset
-        })
+        payload = {}
         
-        response = await self.http.get(
-            f"/api/v1/webhooks/{endpoint_id}/deliveries",
-            params=params
+        if url is not None:
+            payload['url'] = url
+        if events is not None:
+            payload['events'] = [e.value for e in events]
+        if description is not None:
+            payload['description'] = description
+        if enabled is not None:
+            payload['enabled'] = enabled
+        if metadata is not None:
+            payload['metadata'] = metadata
+        
+        response = self.http.patch(
+            f'/webhooks/endpoints/{endpoint_id}',
+            json=payload
         )
-        return [WebhookDelivery(**delivery) for delivery in response.json()]
+        data = response.json()
+        return WebhookEndpoint(**data)
     
-    async def regenerate_secret(self, endpoint_id: str) -> WebhookEndpoint:
+    def delete_endpoint(self, endpoint_id: str) -> None:
         """
-        Regenerate webhook endpoint secret
+        Delete a webhook endpoint.
         
         Args:
-            endpoint_id: Webhook endpoint ID
+            endpoint_id: Endpoint ID
+            
+        Raises:
+            NotFoundError: If endpoint not found
+            AuthorizationError: If not authorized
+            PlintoError: If deletion fails
+        """
+        self.http.delete(f'/webhooks/endpoints/{endpoint_id}')
+    
+    def rotate_secret(self, endpoint_id: str) -> WebhookEndpoint:
+        """
+        Rotate the signing secret for a webhook endpoint.
+        
+        Args:
+            endpoint_id: Endpoint ID
             
         Returns:
-            Updated webhook endpoint with new secret
+            Updated WebhookEndpoint with new secret
+            
+        Raises:
+            NotFoundError: If endpoint not found
+            AuthorizationError: If not authorized
+            PlintoError: If rotation fails
         """
-        response = await self.http.post(
-            f"/api/v1/webhooks/{endpoint_id}/regenerate-secret"
+        response = self.http.post(
+            f'/webhooks/endpoints/{endpoint_id}/rotate-secret'
         )
-        return WebhookEndpoint(**response.json())
+        data = response.json()
+        return WebhookEndpoint(**data)
     
-    async def get_available_event_types(self) -> List[WebhookEventType]:
-        """
-        List all available webhook event types
-        
-        Returns:
-            List of available event types
-        """
-        response = await self.http.get("/api/v1/webhooks/events/types")
-        return [WebhookEventType(event_type) for event_type in response.json()]
-    
-    async def verify_signature(
+    def test_endpoint(
         self,
-        secret: str,
-        payload: str,
-        signature: str
-    ) -> Dict[str, bool]:
+        endpoint_id: str,
+        event_type: Optional[WebhookEventType] = None,
+    ) -> WebhookDelivery:
         """
-        Verify webhook signature for testing
+        Send a test webhook to an endpoint.
         
         Args:
-            secret: Webhook endpoint secret
-            payload: Raw webhook payload
-            signature: Signature to verify
+            endpoint_id: Endpoint ID
+            event_type: Event type to test (defaults to ping)
             
         Returns:
-            Verification result
+            WebhookDelivery object with test results
+            
+        Raises:
+            NotFoundError: If endpoint not found
+            AuthorizationError: If not authorized
+            PlintoError: If test fails
         """
-        response = await self.http.post(
-            "/api/v1/webhooks/verify-signature",
-            json_data={
-                "secret": secret,
-                "payload": payload,
-                "signature": signature
-            }
+        payload = {}
+        if event_type:
+            payload['event_type'] = event_type.value
+        
+        response = self.http.post(
+            f'/webhooks/endpoints/{endpoint_id}/test',
+            json=payload
         )
-        return response.json()
+        data = response.json()
+        return WebhookDelivery(**data)
     
-    @staticmethod
-    def validate_webhook_signature(
-        payload: str,
+    # Event management
+    
+    def list_events(
+        self,
+        endpoint_id: Optional[str] = None,
+        event_type: Optional[WebhookEventType] = None,
+        limit: int = 20,
+        offset: int = 0,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+    ) -> ListResponse[WebhookEvent]:
+        """
+        List webhook events.
+        
+        Args:
+            endpoint_id: Filter by endpoint
+            event_type: Filter by event type
+            limit: Number of events to return (max 100)
+            offset: Number of events to skip
+            start_date: Filter events after this date
+            end_date: Filter events before this date
+            
+        Returns:
+            ListResponse containing events and pagination info
+            
+        Raises:
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        params = {
+            'limit': min(limit, 100),
+            'offset': offset,
+        }
+        
+        if endpoint_id:
+            params['endpoint_id'] = endpoint_id
+        if event_type:
+            params['event_type'] = event_type.value
+        if start_date:
+            params['start_date'] = start_date.isoformat()
+        if end_date:
+            params['end_date'] = end_date.isoformat()
+        
+        response = self.http.get('/webhooks/events', params=params)
+        data = response.json()
+        
+        return ListResponse[WebhookEvent](
+            items=[WebhookEvent(**item) for item in data['items']],
+            total=data['total'],
+            limit=data['limit'],
+            offset=data['offset'],
+        )
+    
+    def get_event(self, event_id: str) -> WebhookEvent:
+        """
+        Get a webhook event by ID.
+        
+        Args:
+            event_id: Event ID
+            
+        Returns:
+            WebhookEvent object
+            
+        Raises:
+            NotFoundError: If event not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(f'/webhooks/events/{event_id}')
+        data = response.json()
+        return WebhookEvent(**data)
+    
+    def replay_event(
+        self,
+        event_id: str,
+        endpoint_id: Optional[str] = None,
+    ) -> WebhookDelivery:
+        """
+        Replay a webhook event.
+        
+        Args:
+            event_id: Event ID to replay
+            endpoint_id: Specific endpoint to replay to (optional)
+            
+        Returns:
+            WebhookDelivery object with replay results
+            
+        Raises:
+            NotFoundError: If event not found
+            AuthorizationError: If not authorized
+            PlintoError: If replay fails
+        """
+        payload = {}
+        if endpoint_id:
+            payload['endpoint_id'] = endpoint_id
+        
+        response = self.http.post(
+            f'/webhooks/events/{event_id}/replay',
+            json=payload
+        )
+        data = response.json()
+        return WebhookDelivery(**data)
+    
+    # Delivery management
+    
+    def list_deliveries(
+        self,
+        endpoint_id: Optional[str] = None,
+        event_id: Optional[str] = None,
+        status: Optional[str] = None,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> ListResponse[WebhookDelivery]:
+        """
+        List webhook deliveries.
+        
+        Args:
+            endpoint_id: Filter by endpoint
+            event_id: Filter by event
+            status: Filter by delivery status (pending, success, failed)
+            limit: Number of deliveries to return (max 100)
+            offset: Number of deliveries to skip
+            
+        Returns:
+            ListResponse containing deliveries and pagination info
+            
+        Raises:
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        params = {
+            'limit': min(limit, 100),
+            'offset': offset,
+        }
+        
+        if endpoint_id:
+            params['endpoint_id'] = endpoint_id
+        if event_id:
+            params['event_id'] = event_id
+        if status:
+            params['status'] = status
+        
+        response = self.http.get('/webhooks/deliveries', params=params)
+        data = response.json()
+        
+        return ListResponse[WebhookDelivery](
+            items=[WebhookDelivery(**item) for item in data['items']],
+            total=data['total'],
+            limit=data['limit'],
+            offset=data['offset'],
+        )
+    
+    def get_delivery(self, delivery_id: str) -> WebhookDelivery:
+        """
+        Get a webhook delivery by ID.
+        
+        Args:
+            delivery_id: Delivery ID
+            
+        Returns:
+            WebhookDelivery object
+            
+        Raises:
+            NotFoundError: If delivery not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(f'/webhooks/deliveries/{delivery_id}')
+        data = response.json()
+        return WebhookDelivery(**data)
+    
+    def retry_delivery(self, delivery_id: str) -> WebhookDelivery:
+        """
+        Retry a failed webhook delivery.
+        
+        Args:
+            delivery_id: Delivery ID to retry
+            
+        Returns:
+            Updated WebhookDelivery object
+            
+        Raises:
+            NotFoundError: If delivery not found
+            ValidationError: If delivery was successful
+            AuthorizationError: If not authorized
+            PlintoError: If retry fails
+        """
+        response = self.http.post(f'/webhooks/deliveries/{delivery_id}/retry')
+        data = response.json()
+        return WebhookDelivery(**data)
+    
+    # Utility methods
+    
+    def validate_signature(
+        self,
+        payload: Any,
         signature: str,
         secret: str,
-        timestamp: Optional[str] = None,
-        tolerance: int = 300
     ) -> bool:
         """
-        Validate webhook signature locally
+        Validate a webhook signature.
         
         Args:
-            payload: Raw webhook payload string
-            signature: Signature from X-Plinto-Signature header
-            secret: Webhook endpoint secret
-            timestamp: Timestamp from X-Plinto-Timestamp header
-            tolerance: Maximum age of webhook in seconds
+            payload: Webhook payload (as string, bytes, or dict)
+            signature: Signature from webhook headers
+            secret: Webhook signing secret
             
         Returns:
             True if signature is valid, False otherwise
         """
-        return validate_webhook_signature(payload, signature, secret, timestamp, tolerance)
+        return validate_webhook_signature(payload, signature, secret)
+    
+    def get_event_types(self) -> List[Dict[str, str]]:
+        """
+        Get all available webhook event types.
+        
+        Returns:
+            List of event types with descriptions
+            
+        Raises:
+            PlintoError: If request fails
+        """
+        response = self.http.get('/webhooks/event-types')
+        data = response.json()
+        return data.get('event_types', [])

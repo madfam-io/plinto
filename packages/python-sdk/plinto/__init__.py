@@ -1,178 +1,184 @@
 """
 Plinto Python SDK
-Official SDK for Plinto Authentication and Identity Platform
 
-A comprehensive Python SDK for the Plinto API providing authentication,
-user management, organization management, webhooks, and admin operations.
+A comprehensive Python SDK for the Plinto authentication and user management platform.
 """
 
-from .client import PlintoClient
-from .exceptions import (
-    PlintoError,
-    AuthenticationError,
-    ValidationError,
-    NotFoundError,
-    PermissionError,
-    RateLimitError,
-    NetworkError,
-    ServerError,
-    ConfigurationError,
-)
+__version__ = "1.0.0"
+__author__ = "Plinto Team"
+__email__ = "support@plinto.dev"
+
+# Main client
+from .client import PlintoClient, create_client
+
+# Service clients
+from .auth import AuthClient
+from .users import UsersClient
+from .organizations import OrganizationsClient
+from .sessions import SessionsClient
+from .webhooks import WebhooksClient
+from .mfa import MFAClient
+from .passkeys import PasskeysClient
+
+# Types and models
 from .types import (
-    # Base types
-    User,
-    Session,
-    Organization,
-    OrganizationMember,
-    OrganizationInvitation,
-    
-    # Authentication types
-    SignUpRequest,
-    SignInRequest,
-    SignInResponse,
-    TokenResponse,
-    AuthResponse,
-    RefreshTokenRequest,
-    ForgotPasswordRequest,
-    ResetPasswordRequest,
-    ChangePasswordRequest,
-    MagicLinkRequest,
-    
     # User types
-    UserUpdateRequest,
-    UserListResponse,
-    SessionListResponse,
+    User,
+    UserProfile,
+    UserPreferences,
+    UserRole,
+    UserStatus,
+    
+    # Auth types
+    Session,
+    AuthTokens,
+    SignInRequest,
+    SignUpRequest,
+    PasswordResetRequest,
+    EmailVerificationRequest,
+    OAuthProvider,
     
     # Organization types
-    OrganizationCreateRequest,
-    OrganizationUpdateRequest,
-    OrganizationInviteRequest,
-    OrganizationListResponse,
+    Organization,
+    OrganizationMember,
+    OrganizationRole,
+    OrganizationInvite,
+    OrganizationSettings,
     
     # MFA types
-    MFAStatusResponse,
-    MFAEnableRequest,
-    MFAEnableResponse,
-    MFAVerifyRequest,
-    MFADisableRequest,
+    MFASettings,
+    MFAMethod,
+    MFAChallenge,
+    TOTPSetup,
+    SMSSetup,
+    BackupCodes,
     
     # Passkey types
-    PasskeyResponse,
-    PasskeyRegisterRequest,
-    PasskeyUpdateRequest,
+    Passkey,
+    PasskeyChallenge,
+    PasskeyCredential,
     
     # Webhook types
     WebhookEndpoint,
-    WebhookEndpointCreateRequest,
-    WebhookEndpointUpdateRequest,
     WebhookEvent,
     WebhookDelivery,
-    WebhookEndpointListResponse,
-    
-    # Admin types
-    AdminStatsResponse,
-    SystemHealthResponse,
-    
-    # OAuth types
-    OAuthProviderInfo,
-    OAuthAccount,
-    
-    # Enums
-    UserStatus,
-    OrganizationRole,
-    OAuthProvider,
     WebhookEventType,
-)
-from .utils import (
-    validate_webhook_signature,
-    parse_jwt_without_verification,
-    is_token_expired,
-    TokenValidator,
+    
+    # Session types
+    SessionDevice,
+    SessionActivity,
+    
+    # Common types
+    ListResponse,
+    BaseResponse,
+    PlintoConfig,
 )
 
-__version__ = "1.0.0"
+# Exceptions
+from .exceptions import (
+    PlintoError,
+    APIError,
+    AuthenticationError,
+    AuthorizationError,
+    NotFoundError,
+    ValidationError,
+    RateLimitError,
+    ServerError,
+    ConfigurationError,
+    NetworkConnectionError,
+)
+
+# Utilities
+from .utils import (
+    validate_webhook_signature,
+    decode_jwt_claims,
+    generate_code_verifier,
+    generate_code_challenge,
+)
+
 __all__ = [
+    # Version info
+    "__version__",
+    
     # Main client
     "PlintoClient",
+    "create_client",
     
-    # Exceptions
-    "PlintoError",
-    "AuthenticationError",
-    "ValidationError",
-    "NotFoundError",
-    "PermissionError",
-    "RateLimitError",
-    "NetworkError",
-    "ServerError",
-    "ConfigurationError",
-    
-    # Base types
-    "User",
-    "Session",
-    "Organization",
-    "OrganizationMember",
-    "OrganizationInvitation",
-    
-    # Authentication types
-    "SignUpRequest",
-    "SignInRequest",
-    "SignInResponse",
-    "TokenResponse",
-    "AuthResponse",
-    "RefreshTokenRequest",
-    "ForgotPasswordRequest",
-    "ResetPasswordRequest",
-    "ChangePasswordRequest",
-    "MagicLinkRequest",
+    # Service clients
+    "AuthClient",
+    "UsersClient",
+    "OrganizationsClient",
+    "SessionsClient",
+    "WebhooksClient",
+    "MFAClient",
+    "PasskeysClient",
     
     # User types
-    "UserUpdateRequest",
-    "UserListResponse",
-    "SessionListResponse",
+    "User",
+    "UserProfile",
+    "UserPreferences",
+    "UserRole",
+    "UserStatus",
+    
+    # Auth types
+    "Session",
+    "AuthTokens",
+    "SignInRequest",
+    "SignUpRequest",
+    "PasswordResetRequest",
+    "EmailVerificationRequest",
+    "OAuthProvider",
     
     # Organization types
-    "OrganizationCreateRequest",
-    "OrganizationUpdateRequest",
-    "OrganizationInviteRequest",
-    "OrganizationListResponse",
+    "Organization",
+    "OrganizationMember",
+    "OrganizationRole",
+    "OrganizationInvite",
+    "OrganizationSettings",
     
     # MFA types
-    "MFAStatusResponse",
-    "MFAEnableRequest",
-    "MFAEnableResponse",
-    "MFAVerifyRequest",
-    "MFADisableRequest",
+    "MFASettings",
+    "MFAMethod",
+    "MFAChallenge",
+    "TOTPSetup",
+    "SMSSetup",
+    "BackupCodes",
     
     # Passkey types
-    "PasskeyResponse",
-    "PasskeyRegisterRequest",
-    "PasskeyUpdateRequest",
+    "Passkey",
+    "PasskeyChallenge",
+    "PasskeyCredential",
     
     # Webhook types
     "WebhookEndpoint",
-    "WebhookEndpointCreateRequest",
-    "WebhookEndpointUpdateRequest",
     "WebhookEvent",
     "WebhookDelivery",
-    "WebhookEndpointListResponse",
-    
-    # Admin types
-    "AdminStatsResponse",
-    "SystemHealthResponse",
-    
-    # OAuth types
-    "OAuthProviderInfo",
-    "OAuthAccount",
-    
-    # Enums
-    "UserStatus",
-    "OrganizationRole",
-    "OAuthProvider",
     "WebhookEventType",
+    
+    # Session types
+    "SessionDevice",
+    "SessionActivity",
+    
+    # Common types
+    "ListResponse",
+    "BaseResponse",
+    "PlintoConfig",
+    
+    # Exceptions
+    "PlintoError",
+    "APIError",
+    "AuthenticationError",
+    "AuthorizationError",
+    "NotFoundError",
+    "ValidationError",
+    "RateLimitError",
+    "ServerError",
+    "ConfigurationError",
+    "NetworkConnectionError",
     
     # Utilities
     "validate_webhook_signature",
-    "parse_jwt_without_verification",
-    "is_token_expired",
-    "TokenValidator",
+    "decode_jwt_claims",
+    "generate_code_verifier",
+    "generate_code_challenge",
 ]

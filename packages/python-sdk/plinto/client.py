@@ -1,270 +1,244 @@
-"""
-Main Plinto SDK client
-"""
+"""Main Plinto SDK client for authentication and user management."""
 
 import os
-from typing import Optional
+from typing import Optional, Dict, Any, List
 from urllib.parse import urljoin
 
 from .http_client import HTTPClient
-from .auth import AuthModule
-from .users import UsersModule
-from .organizations import OrganizationsModule
-from .webhooks import WebhooksModule
-from .admin import AdminModule
-from .exceptions import ConfigurationError
-from .enterprise import EnterpriseFeatures, Features, LicenseInfo, require_license
+from .auth import AuthClient
+from .users import UsersClient
+from .organizations import OrganizationsClient
+from .sessions import SessionsClient
+from .webhooks import WebhooksClient
+from .mfa import MFAClient
+from .passkeys import PasskeysClient
+from .types import (
+    User,
+    Session,
+    Organization,
+    MFASettings,
+    Passkey,
+    WebhookEndpoint,
+    PlintoConfig,
+)
+from .exceptions import PlintoError, ConfigurationError
 
 
 class PlintoClient:
     """
-    Main Plinto SDK client
+    Main client for interacting with the Plinto API.
     
-    Example usage:
-        # Initialize client
-        client = PlintoClient(base_url="https://api.plinto.com")
+    This client provides access to all Plinto services including authentication,
+    user management, organizations, sessions, MFA, passkeys, and webhooks.
+    
+    Example:
+        ```python
+        from plinto import PlintoClient
         
-        # Sign in
-        response = await client.auth.sign_in(SignInRequest(
-            email="user@example.com",
-            password="password123"
-        ))
+        # Initialize with API key
+        client = PlintoClient(api_key="your_api_key")
         
-        # Get current user
-        user = await client.users.get_current_user()
-        
-        # Create organization
-        org = await client.organizations.create_organization(
-            OrganizationCreateRequest(
-                name="My Organization",
-                slug="my-org"
-            )
+        # Or with custom configuration
+        client = PlintoClient(
+            api_key="your_api_key",
+            base_url="https://api.plinto.dev",
+            timeout=30.0,
+            max_retries=3
         )
         
-        # Don't forget to close the client
-        await client.close()
-        
-        # Or use as context manager
-        async with PlintoClient(base_url="https://api.plinto.com") as client:
-            # Use client here
-            pass
+        # Use the client
+        user = client.auth.sign_in(
+            email="user@example.com",
+            password="secure_password"
+        )
+        ```
     """
+    
+    DEFAULT_BASE_URL = "https://api.plinto.dev"
+    DEFAULT_TIMEOUT = 30.0
+    DEFAULT_MAX_RETRIES = 3
     
     def __init__(
         self,
-        base_url: Optional[str] = None,
         api_key: Optional[str] = None,
-        license_key: Optional[str] = None,
-        timeout: int = 30,
-        max_retries: int = 3,
-        retry_delay: float = 1.0,
+        base_url: Optional[str] = None,
+        timeout: Optional[float] = None,
+        max_retries: Optional[int] = None,
+        environment: Optional[str] = None,
+        debug: bool = False,
+        custom_headers: Optional[Dict[str, str]] = None,
     ):
         """
-        Initialize Plinto client
+        Initialize the Plinto client.
         
         Args:
-            base_url: Base URL for the Plinto API (can also use PLINTO_BASE_URL env var)
-            api_key: API key for authentication (can also use PLINTO_API_KEY env var)
-            timeout: Request timeout in seconds
-            max_retries: Maximum number of retries for failed requests
-            retry_delay: Delay between retries in seconds
+            api_key: Your Plinto API key. Can also be set via PLINTO_API_KEY env var
+            base_url: Base URL for the API. Defaults to https://api.plinto.dev
+            timeout: Request timeout in seconds. Defaults to 30
+            max_retries: Maximum number of retry attempts. Defaults to 3
+            environment: Environment name (production, staging, development)
+            debug: Enable debug mode for detailed logging
+            custom_headers: Additional headers to include in all requests
+            
+        Raises:
+            ConfigurationError: If API key is not provided and not in environment
         """
-        # Get base URL from parameter or environment
-        self.base_url = base_url or os.getenv("PLINTO_BASE_URL")
-        if not self.base_url:
+        # Get API key from parameter or environment
+        self.api_key = api_key or os.environ.get('PLINTO_API_KEY')
+        if not self.api_key:
             raise ConfigurationError(
-                "Base URL is required. Provide it as a parameter or set PLINTO_BASE_URL environment variable."
+                "API key is required. Provide it as a parameter or set PLINTO_API_KEY environment variable"
             )
         
-        # Ensure base URL doesn't end with slash
-        self.base_url = self.base_url.rstrip('/')
+        # Get base URL from parameter, environment, or default
+        self.base_url = (
+            base_url or 
+            os.environ.get('PLINTO_BASE_URL') or 
+            self.DEFAULT_BASE_URL
+        )
         
-        # Get API key from parameter or environment
-        self.api_key = api_key or os.getenv("PLINTO_API_KEY")
+        # Configure client settings
+        self.timeout = timeout or self.DEFAULT_TIMEOUT
+        self.max_retries = max_retries or self.DEFAULT_MAX_RETRIES
+        self.environment = environment or os.environ.get('PLINTO_ENVIRONMENT', 'production')
+        self.debug = debug
+        
+        # Create configuration object
+        self.config = PlintoConfig(
+            api_key=self.api_key,
+            base_url=self.base_url,
+            timeout=self.timeout,
+            max_retries=self.max_retries,
+            environment=self.environment,
+            debug=self.debug,
+        )
         
         # Initialize HTTP client
         self.http = HTTPClient(
             base_url=self.base_url,
             api_key=self.api_key,
-            timeout=timeout,
-            max_retries=max_retries,
-            retry_delay=retry_delay,
+            timeout=self.timeout,
+            max_retries=self.max_retries,
+            custom_headers=custom_headers,
         )
-
-        # Initialize enterprise features
-        self._license_key = license_key or os.getenv("PLINTO_LICENSE_KEY")
-        self._enterprise = EnterpriseFeatures(
-            license_key=self._license_key,
-            api_url=self.base_url
-        )
-        self._license_info = None
-
-        # Initialize modules
-        self.auth = AuthModule(self.http)
-        self.users = UsersModule(self.http)
-        self.organizations = OrganizationsModule(self.http)
-        self.webhooks = WebhooksModule(self.http)
-        self.admin = AdminModule(self.http)
-
-        # Attach enterprise manager to modules that need it
-        self.auth._enterprise = self._enterprise
-        self.organizations._enterprise = self._enterprise
-        self.admin._enterprise = self._enterprise
+        
+        # Initialize service clients
+        self._init_service_clients()
     
-    async def __aenter__(self):
-        """Async context manager entry"""
+    def _init_service_clients(self) -> None:
+        """Initialize all service clients."""
+        self.auth = AuthClient(self.http, self.config)
+        self.users = UsersClient(self.http, self.config)
+        self.organizations = OrganizationsClient(self.http, self.config)
+        self.sessions = SessionsClient(self.http, self.config)
+        self.webhooks = WebhooksClient(self.http, self.config)
+        self.mfa = MFAClient(self.http, self.config)
+        self.passkeys = PasskeysClient(self.http, self.config)
+    
+    def set_api_key(self, api_key: str) -> None:
+        """
+        Update the API key used for authentication.
+        
+        Args:
+            api_key: The new API key
+        """
+        self.api_key = api_key
+        self.config.api_key = api_key
+        self.http.api_key = api_key
+        self.http.headers['Authorization'] = f'Bearer {api_key}'
+    
+    def set_environment(self, environment: str) -> None:
+        """
+        Set the environment for the client.
+        
+        Args:
+            environment: Environment name (production, staging, development)
+        """
+        self.environment = environment
+        self.config.environment = environment
+    
+    def enable_debug(self) -> None:
+        """Enable debug mode for detailed logging."""
+        self.debug = True
+        self.config.debug = True
+    
+    def disable_debug(self) -> None:
+        """Disable debug mode."""
+        self.debug = False
+        self.config.debug = False
+    
+    def health_check(self) -> Dict[str, Any]:
+        """
+        Check the health status of the Plinto API.
+        
+        Returns:
+            Dictionary containing health status information
+            
+        Raises:
+            PlintoError: If health check fails
+        """
+        response = self.http.get('/health')
+        return response.json()
+    
+    def get_api_version(self) -> str:
+        """
+        Get the current API version.
+        
+        Returns:
+            API version string
+            
+        Raises:
+            PlintoError: If request fails
+        """
+        response = self.http.get('/version')
+        data = response.json()
+        return data.get('version', 'unknown')
+    
+    def close(self) -> None:
+        """Close the client and release resources."""
+        self.http.close()
+    
+    def __enter__(self):
+        """Context manager entry."""
         return self
     
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        """Async context manager exit"""
-        await self.close()
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit."""
+        self.close()
     
-    async def close(self):
-        """Close the HTTP client and clean up resources"""
-        await self.http.close()
-    
-    def set_tokens(
-        self,
-        access_token: str,
-        refresh_token: str,
-        expires_in: int,
-    ) -> None:
-        """
-        Set authentication tokens manually
-        
-        Args:
-            access_token: JWT access token
-            refresh_token: JWT refresh token
-            expires_in: Token expiration time in seconds
-        """
-        self.http.set_tokens(access_token, refresh_token, expires_in)
-    
-    def clear_tokens(self) -> None:
-        """Clear stored authentication tokens"""
-        self.http.clear_tokens()
-    
-    def get_access_token(self) -> Optional[str]:
-        """
-        Get current access token if valid
-        
-        Returns:
-            Access token or None if expired/missing
-        """
-        return self.http.token_storage.get_access_token()
-    
-    def get_refresh_token(self) -> Optional[str]:
-        """
-        Get current refresh token
-        
-        Returns:
-            Refresh token or None if missing
-        """
-        return self.http.token_storage.get_refresh_token()
-    
-    def is_authenticated(self) -> bool:
-        """
-        Check if client is authenticated
-        
-        Returns:
-            True if client has valid tokens
-        """
-        return self.http.token_storage.get_access_token() is not None
-    
-    def is_token_expired(self) -> bool:
-        """
-        Check if access token is expired
-        
-        Returns:
-            True if token is expired or missing
-        """
-        return self.http.token_storage.is_expired()
-    
-    @classmethod
-    def from_environment(cls) -> "PlintoClient":
-        """
-        Create client from environment variables
-        
-        Environment variables:
-            PLINTO_BASE_URL: Base URL for the API
-            PLINTO_API_KEY: API key for authentication
-            PLINTO_TIMEOUT: Request timeout (default: 30)
-            PLINTO_MAX_RETRIES: Maximum retries (default: 3)
-            PLINTO_RETRY_DELAY: Retry delay (default: 1.0)
-        
-        Returns:
-            Configured Plinto client
-        """
-        return cls(
-            base_url=os.getenv("PLINTO_BASE_URL"),
-            api_key=os.getenv("PLINTO_API_KEY"),
-            timeout=int(os.getenv("PLINTO_TIMEOUT", "30")),
-            max_retries=int(os.getenv("PLINTO_MAX_RETRIES", "3")),
-            retry_delay=float(os.getenv("PLINTO_RETRY_DELAY", "1.0")),
+    def __repr__(self) -> str:
+        """String representation of the client."""
+        return (
+            f"PlintoClient("
+            f"base_url={self.base_url}, "
+            f"environment={self.environment}, "
+            f"debug={self.debug}"
+            f")"
         )
+
+
+# Convenience function for quick initialization
+def create_client(
+    api_key: Optional[str] = None,
+    **kwargs
+) -> PlintoClient:
+    """
+    Create a Plinto client instance.
     
-    def get_api_url(self, path: str = "") -> str:
-        """
-        Get full API URL for a given path
-
-        Args:
-            path: API path
-
-        Returns:
-            Full URL
-        """
-        return urljoin(f"{self.base_url}/", path.lstrip('/'))
-
-    # Enterprise Methods
-
-    def set_license_key(self, key: str) -> None:
-        """Set or update license key"""
-        self._license_key = key
-        self._enterprise.set_license_key(key)
-        self._license_info = None
-
-    async def validate_license(self) -> LicenseInfo:
-        """Validate current license"""
-        self._license_info = await self._enterprise.validate_license()
-        return self._license_info
-
-    def get_license_info(self) -> Optional[LicenseInfo]:
-        """Get current license info"""
-        return self._license_info
-
-    async def has_feature(self, feature: str) -> bool:
-        """Check if a feature is available"""
-        return await self._enterprise.has_feature(feature)
-
-    @require_license(Features.SSO_SAML)
-    async def enable_sso_saml(self, config: dict) -> dict:
-        """Enable SAML SSO (Enterprise feature)"""
-        return await self.http.post("/v1/enterprise/sso/saml/configure", json=config)
-
-    @require_license(Features.SSO_OIDC)
-    async def enable_sso_oidc(self, config: dict) -> dict:
-        """Enable OIDC SSO (Enterprise feature)"""
-        return await self.http.post("/v1/enterprise/sso/oidc/configure", json=config)
-
-    @require_license(Features.AUDIT_LOGS)
-    async def get_audit_logs(self, params: Optional[dict] = None) -> dict:
-        """Get audit logs (Enterprise feature)"""
-        return await self.http.get("/v1/enterprise/audit-logs", params=params)
-
-    @require_license(Features.CUSTOM_ROLES)
-    async def create_custom_role(self, role: dict) -> dict:
-        """Create custom role (Enterprise feature)"""
-        return await self.http.post("/v1/enterprise/roles", json=role)
-
-    @require_license(Features.WHITE_LABELING)
-    async def configure_white_labeling(self, config: dict) -> dict:
-        """Configure white labeling (Enterprise feature)"""
-        return await self.http.post("/v1/enterprise/white-label", json=config)
-
-    @require_license(Features.COMPLIANCE_REPORTS)
-    async def get_compliance_report(self, report_type: str) -> dict:
-        """Get compliance report (Enterprise feature)"""
-        return await self.http.get(f"/v1/enterprise/compliance/{report_type}")
-
-    async def check_rate_limit(self, operation: str) -> dict:
-        """Check rate limits for current operation"""
-        return await self._enterprise.check_rate_limit(operation)
+    This is a convenience function for quickly creating a client.
+    
+    Args:
+        api_key: Your Plinto API key
+        **kwargs: Additional arguments to pass to PlintoClient
+        
+    Returns:
+        Configured PlintoClient instance
+        
+    Example:
+        ```python
+        from plinto import create_client
+        
+        client = create_client("your_api_key")
+        ```
+    """
+    return PlintoClient(api_key=api_key, **kwargs)

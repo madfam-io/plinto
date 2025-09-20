@@ -1,294 +1,515 @@
-"""
-User management module for the Plinto SDK
-"""
+"""User management module for the Plinto SDK."""
 
-from typing import Dict, List, Optional, Any
-from io import BytesIO
+from typing import Optional, Dict, Any, List
+from uuid import UUID
+from datetime import datetime
 
 from .http_client import HTTPClient
 from .types import (
     User,
-    UserUpdateRequest,
-    UserListResponse,
-    Session,
-    SessionListResponse,
+    UserProfile,
+    UserPreferences,
+    UserRole,
+    ListResponse,
+    PlintoConfig,
 )
-from .utils import build_query_params
+from .exceptions import (
+    NotFoundError,
+    ValidationError,
+    AuthorizationError,
+    PlintoError,
+)
 
 
-class UsersModule:
-    """User management operations"""
+class UsersClient:
+    """Client for user management operations."""
     
-    def __init__(self, http_client: HTTPClient):
-        self.http = http_client
-    
-    async def get_current_user(self) -> User:
+    def __init__(self, http: HTTPClient, config: PlintoConfig):
         """
-        Get current user's profile
-        
-        Returns:
-            Current user data
-        """
-        response = await self.http.get("/api/v1/users/me")
-        return User(**response.json())
-    
-    async def update_current_user(self, request: UserUpdateRequest) -> User:
-        """
-        Update current user's profile
+        Initialize the users client.
         
         Args:
-            request: User update request data
+            http: HTTP client instance
+            config: Plinto configuration
+        """
+        self.http = http
+        self.config = config
+    
+    def get(self, user_id: str) -> User:
+        """
+        Get a user by ID.
+        
+        Args:
+            user_id: User ID (UUID string)
             
         Returns:
-            Updated user data
+            User object
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
         """
-        response = await self.http.patch(
-            "/api/v1/users/me",
-            json_data=request.dict(exclude_unset=True)
-        )
-        return User(**response.json())
+        response = self.http.get(f'/users/{user_id}')
+        data = response.json()
+        return User(**data)
     
-    async def upload_avatar(
+    def get_by_email(self, email: str) -> User:
+        """
+        Get a user by email address.
+        
+        Args:
+            email: User's email address
+            
+        Returns:
+            User object
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get('/users/by-email', params={'email': email})
+        data = response.json()
+        return User(**data)
+    
+    def list(
         self,
-        file_data: bytes,
-        filename: str,
-        content_type: str = "image/jpeg"
-    ) -> Dict[str, str]:
+        limit: int = 20,
+        offset: int = 0,
+        search: Optional[str] = None,
+        organization_id: Optional[str] = None,
+        email_verified: Optional[bool] = None,
+        role: Optional[UserRole] = None,
+        sort_by: str = 'created_at',
+        sort_order: str = 'desc',
+    ) -> ListResponse[User]:
         """
-        Upload user avatar
+        List users with pagination and filtering.
         
         Args:
-            file_data: Image file bytes
-            filename: Original filename
-            content_type: MIME type of the image
+            limit: Number of users to return (max 100)
+            offset: Number of users to skip
+            search: Search query for name or email
+            organization_id: Filter by organization
+            email_verified: Filter by email verification status
+            role: Filter by user role
+            sort_by: Field to sort by
+            sort_order: Sort order (asc or desc)
             
         Returns:
-            Avatar URL
+            ListResponse containing users and pagination info
+            
+        Raises:
+            ValidationError: If parameters are invalid
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
         """
-        # Create file-like object
-        file_obj = BytesIO(file_data)
-        file_obj.name = filename
-        
-        files = {
-            "file": (filename, file_obj, content_type)
+        params = {
+            'limit': min(limit, 100),
+            'offset': offset,
+            'sort_by': sort_by,
+            'sort_order': sort_order,
         }
         
-        response = await self.http.post(
-            "/api/v1/users/me/avatar",
-            files=files
-        )
-        return response.json()
-    
-    async def delete_avatar(self) -> Dict[str, str]:
-        """
-        Delete user avatar
+        if search:
+            params['search'] = search
+        if organization_id:
+            params['organization_id'] = organization_id
+        if email_verified is not None:
+            params['email_verified'] = email_verified
+        if role:
+            params['role'] = role.value
         
-        Returns:
-            Success message
-        """
-        response = await self.http.delete("/api/v1/users/me/avatar")
-        return response.json()
-    
-    async def get_user_by_id(self, user_id: str) -> User:
-        """
-        Get user by ID (admin only or same organization)
-        
-        Args:
-            user_id: User ID to retrieve
-            
-        Returns:
-            User data
-        """
-        response = await self.http.get(f"/api/v1/users/{user_id}")
-        return User(**response.json())
-    
-    async def list_users(
-        self,
-        page: int = 1,
-        per_page: int = 20,
-        search: Optional[str] = None,
-        status: Optional[str] = None
-    ) -> UserListResponse:
-        """
-        List users (admin only or same organization)
-        
-        Args:
-            page: Page number (1-based)
-            per_page: Items per page (1-100)
-            search: Search query for email, name, username
-            status: Filter by user status
-            
-        Returns:
-            Paginated list of users
-        """
-        params = build_query_params({
-            "page": page,
-            "per_page": per_page,
-            "search": search,
-            "status": status,
-        })
-        
-        response = await self.http.get("/api/v1/users/", params=params)
+        response = self.http.get('/users', params=params)
         data = response.json()
         
-        return UserListResponse(
-            users=[User(**user) for user in data["users"]],
-            meta={
-                "page": data["page"],
-                "per_page": data["per_page"],
-                "total": data["total"],
-                "total_pages": (data["total"] + data["per_page"] - 1) // data["per_page"]
-            }
+        return ListResponse[User](
+            items=[User(**item) for item in data['items']],
+            total=data['total'],
+            limit=data['limit'],
+            offset=data['offset'],
         )
     
-    async def delete_current_user(self, password: str) -> Dict[str, str]:
+    def create(
+        self,
+        email: str,
+        password: Optional[str] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        role: UserRole = UserRole.USER,
+        email_verified: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> User:
         """
-        Delete current user account
+        Create a new user (admin only).
         
         Args:
-            password: User password for verification
+            email: User's email address
+            password: User's password (optional, can be set later)
+            first_name: User's first name
+            last_name: User's last name
+            role: User's role
+            email_verified: Whether email is pre-verified
+            metadata: Additional user metadata
             
         Returns:
-            Success message
+            Created User object
+            
+        Raises:
+            ValidationError: If input validation fails
+            AuthorizationError: If not authorized (admin only)
+            PlintoError: If creation fails
         """
-        response = await self.http.delete(
-            "/api/v1/users/me",
-            json_data={"password": password}
-        )
+        payload = {
+            'email': email,
+            'role': role.value,
+            'email_verified': email_verified,
+            'metadata': metadata or {},
+        }
         
-        # Clear tokens after account deletion
-        self.http.clear_tokens()
+        if password:
+            payload['password'] = password
+        if first_name:
+            payload['first_name'] = first_name
+        if last_name:
+            payload['last_name'] = last_name
         
-        return response.json()
+        response = self.http.post('/users', json=payload)
+        data = response.json()
+        return User(**data)
     
-    async def suspend_user(
+    def update(
         self,
         user_id: str,
-        reason: Optional[str] = None
-    ) -> Dict[str, str]:
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        phone_number: Optional[str] = None,
+        profile_image_url: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> User:
         """
-        Suspend a user (admin only)
+        Update a user's information.
         
         Args:
-            user_id: User ID to suspend
+            user_id: User ID
+            first_name: New first name
+            last_name: New last name
+            phone_number: New phone number
+            profile_image_url: New profile image URL
+            metadata: Updated metadata
+            
+        Returns:
+            Updated User object
+            
+        Raises:
+            NotFoundError: If user not found
+            ValidationError: If input validation fails
+            AuthorizationError: If not authorized
+            PlintoError: If update fails
+        """
+        payload = {}
+        
+        if first_name is not None:
+            payload['first_name'] = first_name
+        if last_name is not None:
+            payload['last_name'] = last_name
+        if phone_number is not None:
+            payload['phone_number'] = phone_number
+        if profile_image_url is not None:
+            payload['profile_image_url'] = profile_image_url
+        if metadata is not None:
+            payload['metadata'] = metadata
+        
+        response = self.http.patch(f'/users/{user_id}', json=payload)
+        data = response.json()
+        return User(**data)
+    
+    def update_email(
+        self,
+        user_id: str,
+        new_email: str,
+        require_verification: bool = True,
+    ) -> User:
+        """
+        Update a user's email address.
+        
+        Args:
+            user_id: User ID
+            new_email: New email address
+            require_verification: Whether to require email verification
+            
+        Returns:
+            Updated User object
+            
+        Raises:
+            NotFoundError: If user not found
+            ValidationError: If email is invalid or already taken
+            AuthorizationError: If not authorized
+            PlintoError: If update fails
+        """
+        response = self.http.post(
+            f'/users/{user_id}/email',
+            json={
+                'email': new_email,
+                'require_verification': require_verification,
+            }
+        )
+        data = response.json()
+        return User(**data)
+    
+    def update_role(
+        self,
+        user_id: str,
+        role: UserRole,
+    ) -> User:
+        """
+        Update a user's role (admin only).
+        
+        Args:
+            user_id: User ID
+            role: New role
+            
+        Returns:
+            Updated User object
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized (admin only)
+            PlintoError: If update fails
+        """
+        response = self.http.post(
+            f'/users/{user_id}/role',
+            json={'role': role.value}
+        )
+        data = response.json()
+        return User(**data)
+    
+    def delete(self, user_id: str) -> None:
+        """
+        Delete a user.
+        
+        Args:
+            user_id: User ID
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If deletion fails
+        """
+        self.http.delete(f'/users/{user_id}')
+    
+    def suspend(
+        self,
+        user_id: str,
+        reason: Optional[str] = None,
+    ) -> User:
+        """
+        Suspend a user account.
+        
+        Args:
+            user_id: User ID
             reason: Reason for suspension
             
         Returns:
-            Success message
+            Updated User object
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If suspension fails
         """
-        json_data = {}
+        payload = {}
         if reason:
-            json_data["reason"] = reason
+            payload['reason'] = reason
         
-        response = await self.http.post(
-            f"/api/v1/users/{user_id}/suspend",
-            json_data=json_data
-        )
-        return response.json()
+        response = self.http.post(f'/users/{user_id}/suspend', json=payload)
+        data = response.json()
+        return User(**data)
     
-    async def reactivate_user(self, user_id: str) -> Dict[str, str]:
+    def unsuspend(self, user_id: str) -> User:
         """
-        Reactivate a suspended user (admin only)
+        Unsuspend a user account.
         
         Args:
-            user_id: User ID to reactivate
+            user_id: User ID
             
         Returns:
-            Success message
+            Updated User object
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If unsuspension fails
         """
-        response = await self.http.post(f"/api/v1/users/{user_id}/reactivate")
-        return response.json()
+        response = self.http.post(f'/users/{user_id}/unsuspend')
+        data = response.json()
+        return User(**data)
     
-    # Session Management
-    async def list_sessions(self) -> SessionListResponse:
+    def get_profile(self, user_id: str) -> UserProfile:
         """
-        List all active sessions for current user
+        Get a user's profile.
         
+        Args:
+            user_id: User ID
+            
         Returns:
-            List of user sessions
+            UserProfile object
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
         """
-        response = await self.http.get("/api/v1/sessions/")
+        response = self.http.get(f'/users/{user_id}/profile')
+        data = response.json()
+        return UserProfile(**data)
+    
+    def update_profile(
+        self,
+        user_id: str,
+        bio: Optional[str] = None,
+        location: Optional[str] = None,
+        website: Optional[str] = None,
+        company: Optional[str] = None,
+        job_title: Optional[str] = None,
+    ) -> UserProfile:
+        """
+        Update a user's profile.
+        
+        Args:
+            user_id: User ID
+            bio: User biography
+            location: User location
+            website: User website
+            company: User's company
+            job_title: User's job title
+            
+        Returns:
+            Updated UserProfile object
+            
+        Raises:
+            NotFoundError: If user not found
+            ValidationError: If input validation fails
+            AuthorizationError: If not authorized
+            PlintoError: If update fails
+        """
+        payload = {}
+        
+        if bio is not None:
+            payload['bio'] = bio
+        if location is not None:
+            payload['location'] = location
+        if website is not None:
+            payload['website'] = website
+        if company is not None:
+            payload['company'] = company
+        if job_title is not None:
+            payload['job_title'] = job_title
+        
+        response = self.http.patch(f'/users/{user_id}/profile', json=payload)
+        data = response.json()
+        return UserProfile(**data)
+    
+    def get_preferences(self, user_id: str) -> UserPreferences:
+        """
+        Get a user's preferences.
+        
+        Args:
+            user_id: User ID
+            
+        Returns:
+            UserPreferences object
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(f'/users/{user_id}/preferences')
+        data = response.json()
+        return UserPreferences(**data)
+    
+    def update_preferences(
+        self,
+        user_id: str,
+        language: Optional[str] = None,
+        timezone: Optional[str] = None,
+        date_format: Optional[str] = None,
+        time_format: Optional[str] = None,
+        email_notifications: Optional[bool] = None,
+        sms_notifications: Optional[bool] = None,
+        push_notifications: Optional[bool] = None,
+    ) -> UserPreferences:
+        """
+        Update a user's preferences.
+        
+        Args:
+            user_id: User ID
+            language: Preferred language (e.g., 'en', 'es', 'fr')
+            timezone: Preferred timezone (e.g., 'America/New_York')
+            date_format: Date format preference
+            time_format: Time format preference (12h or 24h)
+            email_notifications: Enable email notifications
+            sms_notifications: Enable SMS notifications
+            push_notifications: Enable push notifications
+            
+        Returns:
+            Updated UserPreferences object
+            
+        Raises:
+            NotFoundError: If user not found
+            ValidationError: If input validation fails
+            AuthorizationError: If not authorized
+            PlintoError: If update fails
+        """
+        payload = {}
+        
+        if language is not None:
+            payload['language'] = language
+        if timezone is not None:
+            payload['timezone'] = timezone
+        if date_format is not None:
+            payload['date_format'] = date_format
+        if time_format is not None:
+            payload['time_format'] = time_format
+        if email_notifications is not None:
+            payload['email_notifications'] = email_notifications
+        if sms_notifications is not None:
+            payload['sms_notifications'] = sms_notifications
+        if push_notifications is not None:
+            payload['push_notifications'] = push_notifications
+        
+        response = self.http.patch(f'/users/{user_id}/preferences', json=payload)
+        data = response.json()
+        return UserPreferences(**data)
+    
+    def get_sessions(
+        self,
+        user_id: str,
+        active_only: bool = False,
+    ) -> List[Session]:
+        """
+        Get all sessions for a user.
+        
+        Args:
+            user_id: User ID
+            active_only: Only return active sessions
+            
+        Returns:
+            List of Session objects
+            
+        Raises:
+            NotFoundError: If user not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        params = {}
+        if active_only:
+            params['active_only'] = True
+        
+        response = self.http.get(f'/users/{user_id}/sessions', params=params)
         data = response.json()
         
-        return SessionListResponse(
-            sessions=[Session(**session) for session in data["sessions"]],
-            meta={
-                "page": 1,
-                "per_page": data["total"],
-                "total": data["total"],
-                "total_pages": 1
-            }
-        )
-    
-    async def get_session(self, session_id: str) -> Session:
-        """
-        Get specific session details
-        
-        Args:
-            session_id: Session ID to retrieve
-            
-        Returns:
-            Session data
-        """
-        response = await self.http.get(f"/api/v1/sessions/{session_id}")
-        return Session(**response.json())
-    
-    async def revoke_session(self, session_id: str) -> Dict[str, str]:
-        """
-        Revoke a specific session
-        
-        Args:
-            session_id: Session ID to revoke
-            
-        Returns:
-            Success message
-        """
-        response = await self.http.delete(f"/api/v1/sessions/{session_id}")
-        return response.json()
-    
-    async def revoke_all_sessions(self) -> Dict[str, Any]:
-        """
-        Revoke all sessions except current
-        
-        Returns:
-            Number of sessions revoked
-        """
-        response = await self.http.delete("/api/v1/sessions/")
-        return response.json()
-    
-    async def refresh_session(self, session_id: str) -> Dict[str, str]:
-        """
-        Refresh a session's expiration
-        
-        Args:
-            session_id: Session ID to refresh
-            
-        Returns:
-            Success message
-        """
-        response = await self.http.post(f"/api/v1/sessions/{session_id}/refresh")
-        return response.json()
-    
-    async def get_recent_activity(self, limit: int = 10) -> Dict[str, Any]:
-        """
-        Get recent session activity
-        
-        Args:
-            limit: Number of activities to return (1-50)
-            
-        Returns:
-            Recent session activities
-        """
-        params = build_query_params({"limit": limit})
-        response = await self.http.get("/api/v1/sessions/activity/recent", params=params)
-        return response.json()
-    
-    async def get_security_alerts(self) -> Dict[str, Any]:
-        """
-        Get security alerts for sessions
-        
-        Returns:
-            Security alerts and warnings
-        """
-        response = await self.http.get("/api/v1/sessions/security/alerts")
-        return response.json()
+        from .types import Session
+        return [Session(**item) for item in data['sessions']]

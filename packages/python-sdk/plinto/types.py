@@ -1,21 +1,32 @@
 """
-Type definitions and Pydantic models for the Plinto SDK
+Type definitions for the Plinto Python SDK.
+
+This module contains all the data models and type definitions used throughout
+the SDK, implemented using Pydantic for validation and serialization.
 """
 
-from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field, validator
 from enum import Enum
+from typing import Any, Dict, List, Optional, Union
+from uuid import UUID
+
+from pydantic import BaseModel, EmailStr, Field, HttpUrl, ConfigDict
 
 
-# Enums
+# ====================
+# Enumerations
+# ====================
+
 class UserStatus(str, Enum):
+    """User account status."""
     ACTIVE = "active"
     SUSPENDED = "suspended"
     DELETED = "deleted"
+    PENDING = "pending"
 
 
 class OrganizationRole(str, Enum):
+    """Organization member roles."""
     OWNER = "owner"
     ADMIN = "admin"
     MEMBER = "member"
@@ -23,430 +34,520 @@ class OrganizationRole(str, Enum):
 
 
 class OAuthProvider(str, Enum):
+    """Supported OAuth providers."""
     GOOGLE = "google"
     GITHUB = "github"
-    APPLE = "apple"
     MICROSOFT = "microsoft"
+    DISCORD = "discord"
+    TWITTER = "twitter"
+    FACEBOOK = "facebook"
+    LINKEDIN = "linkedin"
+    APPLE = "apple"
 
 
 class WebhookEventType(str, Enum):
+    """Webhook event types."""
     USER_CREATED = "user.created"
     USER_UPDATED = "user.updated"
     USER_DELETED = "user.deleted"
     USER_SIGNED_IN = "user.signed_in"
     USER_SIGNED_OUT = "user.signed_out"
+    SESSION_CREATED = "session.created"
+    SESSION_EXPIRED = "session.expired"
     ORGANIZATION_CREATED = "organization.created"
     ORGANIZATION_UPDATED = "organization.updated"
     ORGANIZATION_DELETED = "organization.deleted"
-    MEMBER_ADDED = "member.added"
-    MEMBER_REMOVED = "member.removed"
-    MEMBER_ROLE_UPDATED = "member.role_updated"
+    ORGANIZATION_MEMBER_ADDED = "organization.member_added"
+    ORGANIZATION_MEMBER_REMOVED = "organization.member_removed"
+    ORGANIZATION_MEMBER_UPDATED = "organization.member_updated"
 
 
+class SessionStatus(str, Enum):
+    """Session status."""
+    ACTIVE = "active"
+    EXPIRED = "expired"
+    REVOKED = "revoked"
+
+
+# ====================
 # Base Models
+# ====================
+
 class BaseResponse(BaseModel):
-    """Base response model"""
-    
-    class Config:
-        from_attributes = True
+    """Base response model with common fields."""
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
 
+class PaginationParams(BaseModel):
+    """Pagination parameters."""
+    page: int = Field(1, ge=1, description="Page number")
+    limit: int = Field(10, ge=1, le=100, description="Items per page")
+    sort_by: Optional[str] = Field(None, description="Sort field")
+    sort_order: Optional[str] = Field("asc", pattern="^(asc|desc)$")
+
+
+class PaginatedResponse(BaseResponse):
+    """Base paginated response."""
+    total: int = Field(..., description="Total number of items")
+    page: int = Field(..., description="Current page")
+    limit: int = Field(..., description="Items per page")
+    pages: int = Field(..., description="Total number of pages")
+    has_next: bool = Field(..., description="Has next page")
+    has_prev: bool = Field(..., description="Has previous page")
+
+
+# ====================
 # User Models
+# ====================
+
 class User(BaseResponse):
-    """User model"""
-    id: str
-    email: str
-    email_verified: bool
-    username: Optional[str] = None
+    """User model."""
+    id: UUID
+    email: EmailStr
+    email_verified: bool = False
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     display_name: Optional[str] = None
-    profile_image_url: Optional[str] = None
-    bio: Optional[str] = None
+    avatar_url: Optional[HttpUrl] = None
     phone_number: Optional[str] = None
     phone_verified: bool = False
-    timezone: Optional[str] = None
-    locale: Optional[str] = None
-    status: UserStatus
-    mfa_enabled: bool = False
-    is_admin: bool = False
+    status: UserStatus = UserStatus.ACTIVE
+    metadata: Dict[str, Any] = Field(default_factory=dict)
     created_at: datetime
     updated_at: datetime
     last_sign_in_at: Optional[datetime] = None
-    user_metadata: Dict[str, Any] = Field(default_factory=dict)
+    mfa_enabled: bool = False
+    passkeys_enabled: bool = False
+    oauth_accounts: List["OAuthAccount"] = Field(default_factory=list)
 
 
 class UserUpdateRequest(BaseModel):
-    """User profile update request"""
-    first_name: Optional[str] = Field(None, max_length=100)
-    last_name: Optional[str] = Field(None, max_length=100)
-    display_name: Optional[str] = Field(None, max_length=200)
-    bio: Optional[str] = Field(None, max_length=1000)
-    phone_number: Optional[str] = Field(None, max_length=20)
-    timezone: Optional[str] = Field(None, max_length=50)
-    locale: Optional[str] = Field(None, max_length=10)
-    user_metadata: Optional[Dict[str, Any]] = None
+    """User update request."""
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    display_name: Optional[str] = None
+    avatar_url: Optional[HttpUrl] = None
+    phone_number: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
 
 
+class UserListResponse(PaginatedResponse):
+    """User list response."""
+    users: List[User]
+
+
+# ====================
 # Authentication Models
+# ====================
+
 class SignUpRequest(BaseModel):
-    """Sign up request model"""
+    """Sign up request."""
     email: EmailStr
-    password: str = Field(..., min_length=8)
-    first_name: Optional[str] = Field(None, max_length=100)
-    last_name: Optional[str] = Field(None, max_length=100)
-    username: Optional[str] = Field(None, min_length=3, max_length=50)
-    
-    @validator('username')
-    def validate_username(cls, v):
-        if v and not v.replace('_', '').replace('-', '').isalnum():
-            raise ValueError('Username can only contain letters, numbers, underscores, and hyphens')
-        return v
+    password: str = Field(..., min_length=8, description="Password must be at least 8 characters")
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
+    invite_code: Optional[str] = None
 
 
 class SignInRequest(BaseModel):
-    """Sign in request model"""
-    email: Optional[EmailStr] = None
-    username: Optional[str] = None
+    """Sign in request."""
+    email: EmailStr
     password: str
-    
-    @validator('username')
-    def validate_credentials(cls, v, values):
-        if not v and not values.get('email'):
-            raise ValueError('Either email or username must be provided')
-        return v
+    remember_me: bool = False
 
 
-class TokenResponse(BaseModel):
-    """Token response model"""
+class TokenResponse(BaseResponse):
+    """Token response."""
     access_token: str
-    refresh_token: str
-    token_type: str = "bearer"
+    refresh_token: Optional[str] = None
+    id_token: Optional[str] = None
+    token_type: str = "Bearer"
     expires_in: int
-
-
-class SignInResponse(BaseResponse):
-    """Sign in response model"""
-    user: User
-    tokens: TokenResponse
+    scope: Optional[str] = None
 
 
 class AuthResponse(BaseResponse):
-    """Generic auth response model"""
+    """Authentication response."""
     user: User
     tokens: TokenResponse
+    session: Optional["Session"] = None
+
+
+class SignInResponse(AuthResponse):
+    """Sign in response with user and tokens."""
+    pass
 
 
 class RefreshTokenRequest(BaseModel):
-    """Refresh token request"""
+    """Refresh token request."""
     refresh_token: str
 
 
 class ForgotPasswordRequest(BaseModel):
-    """Forgot password request"""
+    """Forgot password request."""
     email: EmailStr
+    redirect_url: Optional[HttpUrl] = None
 
 
 class ResetPasswordRequest(BaseModel):
-    """Reset password request"""
+    """Reset password request."""
     token: str
     new_password: str = Field(..., min_length=8)
 
 
 class ChangePasswordRequest(BaseModel):
-    """Change password request"""
+    """Change password request."""
     current_password: str
     new_password: str = Field(..., min_length=8)
 
 
 class MagicLinkRequest(BaseModel):
-    """Magic link request"""
+    """Magic link request."""
     email: EmailStr
-    redirect_url: Optional[str] = None
+    redirect_url: Optional[HttpUrl] = None
+    expires_in: Optional[int] = Field(3600, ge=300, le=86400, description="Expiration in seconds")
 
 
+# ====================
 # Session Models
+# ====================
+
 class Session(BaseResponse):
-    """Session model"""
-    id: str
-    user_id: str
+    """Session model."""
+    id: UUID
+    user_id: UUID
+    token: str
+    status: SessionStatus = SessionStatus.ACTIVE
     ip_address: Optional[str] = None
     user_agent: Optional[str] = None
-    device_name: Optional[str] = None
-    device_type: Optional[str] = None
-    browser: Optional[str] = None
-    os: Optional[str] = None
-    is_current: bool = False
+    device_info: Optional[Dict[str, Any]] = None
+    location: Optional[Dict[str, Any]] = None
     created_at: datetime
-    last_activity_at: datetime
+    updated_at: datetime
     expires_at: datetime
-    revoked: bool = False
+    last_activity_at: datetime
 
 
+class SessionListResponse(PaginatedResponse):
+    """Session list response."""
+    sessions: List[Session]
+
+
+# ====================
 # Organization Models
+# ====================
+
 class Organization(BaseResponse):
-    """Organization model"""
-    id: str
+    """Organization model."""
+    id: UUID
     name: str
     slug: str
     description: Optional[str] = None
-    logo_url: Optional[str] = None
-    owner_id: str
+    logo_url: Optional[HttpUrl] = None
+    website_url: Optional[HttpUrl] = None
+    metadata: Dict[str, Any] = Field(default_factory=dict)
     settings: Dict[str, Any] = Field(default_factory=dict)
-    org_metadata: Dict[str, Any] = Field(default_factory=dict)
-    billing_email: Optional[str] = None
-    billing_plan: str = "free"
     created_at: datetime
     updated_at: datetime
     member_count: int = 0
-    is_owner: bool = False
-    user_role: Optional[OrganizationRole] = None
-
-
-class OrganizationCreateRequest(BaseModel):
-    """Organization creation request"""
-    name: str = Field(..., min_length=1, max_length=200)
-    slug: str = Field(..., min_length=1, max_length=100, pattern="^[a-z0-9-]+$")
-    description: Optional[str] = Field(None, max_length=1000)
-    billing_email: Optional[str] = None
-    
-    @validator('slug')
-    def validate_slug(cls, v):
-        return v.lower()
-
-
-class OrganizationUpdateRequest(BaseModel):
-    """Organization update request"""
-    name: Optional[str] = Field(None, min_length=1, max_length=200)
-    description: Optional[str] = Field(None, max_length=1000)
-    logo_url: Optional[str] = Field(None, max_length=500)
-    billing_email: Optional[str] = None
-    settings: Optional[Dict[str, Any]] = None
+    owner_id: UUID
 
 
 class OrganizationMember(BaseResponse):
-    """Organization member model"""
-    user_id: str
-    email: str
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    display_name: Optional[str] = None
-    profile_image_url: Optional[str] = None
+    """Organization member model."""
+    id: UUID
+    organization_id: UUID
+    user_id: UUID
+    user: Optional[User] = None
     role: OrganizationRole
     permissions: List[str] = Field(default_factory=list)
     joined_at: datetime
-    invited_by: Optional[str] = None
-
-
-class OrganizationInviteRequest(BaseModel):
-    """Organization invitation request"""
-    email: EmailStr
-    role: OrganizationRole = OrganizationRole.MEMBER
-    permissions: Optional[List[str]] = Field(default_factory=list)
-    message: Optional[str] = None
+    updated_at: datetime
 
 
 class OrganizationInvitation(BaseResponse):
-    """Organization invitation model"""
-    id: str
-    organization_id: str
-    organization_name: str
-    email: str
+    """Organization invitation model."""
+    id: UUID
+    organization_id: UUID
+    organization: Optional[Organization] = None
+    email: EmailStr
     role: OrganizationRole
-    permissions: List[str] = Field(default_factory=list)
-    invited_by: str
-    inviter_name: Optional[str] = None
-    status: str
-    created_at: datetime
+    invited_by_id: UUID
+    invited_by: Optional[User] = None
+    accepted: bool = False
     expires_at: datetime
+    created_at: datetime
+    accepted_at: Optional[datetime] = None
 
 
+class OrganizationCreateRequest(BaseModel):
+    """Organization create request."""
+    name: str = Field(..., min_length=1, max_length=100)
+    slug: Optional[str] = Field(None, min_length=3, max_length=50, pattern="^[a-z0-9-]+$")
+    description: Optional[str] = None
+    logo_url: Optional[HttpUrl] = None
+    website_url: Optional[HttpUrl] = None
+    metadata: Optional[Dict[str, Any]] = None
+
+
+class OrganizationUpdateRequest(BaseModel):
+    """Organization update request."""
+    name: Optional[str] = Field(None, min_length=1, max_length=100)
+    description: Optional[str] = None
+    logo_url: Optional[HttpUrl] = None
+    website_url: Optional[HttpUrl] = None
+    metadata: Optional[Dict[str, Any]] = None
+    settings: Optional[Dict[str, Any]] = None
+
+
+class OrganizationInviteRequest(BaseModel):
+    """Organization invite request."""
+    email: EmailStr
+    role: OrganizationRole = OrganizationRole.MEMBER
+    send_email: bool = True
+
+
+class OrganizationListResponse(PaginatedResponse):
+    """Organization list response."""
+    organizations: List[Organization]
+
+
+class OrganizationMemberListResponse(PaginatedResponse):
+    """Organization member list response."""
+    members: List[OrganizationMember]
+
+
+# ====================
 # MFA Models
+# ====================
+
 class MFAStatusResponse(BaseResponse):
-    """MFA status response"""
+    """MFA status response."""
     enabled: bool
-    verified: bool
-    backup_codes_remaining: int
-    last_used_at: Optional[datetime] = None
+    methods: List[str] = Field(default_factory=list)
+    backup_codes_remaining: int = 0
+    last_verified_at: Optional[datetime] = None
 
 
 class MFAEnableRequest(BaseModel):
-    """MFA enable request"""
-    password: str
+    """MFA enable request."""
+    method: str = Field("totp", description="MFA method to enable")
+    password: str = Field(..., description="Current password for verification")
 
 
 class MFAEnableResponse(BaseResponse):
-    """MFA enable response"""
+    """MFA enable response."""
     secret: str
     qr_code: str
     backup_codes: List[str]
-    provisioning_uri: str
+    recovery_codes: List[str]
 
 
 class MFAVerifyRequest(BaseModel):
-    """MFA verification request"""
-    code: str = Field(..., min_length=6, max_length=6)
+    """MFA verify request."""
+    code: str = Field(..., min_length=6, max_length=6, pattern="^[0-9]+$")
+    method: str = Field("totp")
 
 
 class MFADisableRequest(BaseModel):
-    """MFA disable request"""
+    """MFA disable request."""
     password: str
     code: Optional[str] = Field(None, min_length=6, max_length=6)
 
 
+# ====================
 # Passkey Models
+# ====================
+
 class PasskeyResponse(BaseResponse):
-    """Passkey response model"""
-    id: str
-    name: Optional[str] = None
-    authenticator_attachment: Optional[str] = None
+    """Passkey response."""
+    id: UUID
+    user_id: UUID
+    name: str
+    credential_id: str
+    public_key: str
+    sign_count: int
+    transports: List[str]
     created_at: datetime
     last_used_at: Optional[datetime] = None
-    sign_count: int = 0
 
 
 class PasskeyRegisterRequest(BaseModel):
-    """Passkey registration request"""
+    """Passkey register request."""
+    name: str = Field(..., min_length=1, max_length=100)
     credential: Dict[str, Any]
-    name: Optional[str] = Field(None, max_length=100)
 
 
 class PasskeyUpdateRequest(BaseModel):
-    """Passkey update request"""
+    """Passkey update request."""
     name: str = Field(..., min_length=1, max_length=100)
 
 
+class PasskeyListResponse(PaginatedResponse):
+    """Passkey list response."""
+    passkeys: List[PasskeyResponse]
+
+
+# ====================
 # Webhook Models
+# ====================
+
 class WebhookEndpoint(BaseResponse):
-    """Webhook endpoint model"""
-    id: str
-    url: str
-    secret: str
-    events: List[WebhookEventType]
-    is_active: bool = True
+    """Webhook endpoint model."""
+    id: UUID
+    url: HttpUrl
     description: Optional[str] = None
-    headers: Optional[Dict[str, str]] = None
+    events: List[WebhookEventType]
+    enabled: bool = True
+    secret: str
+    metadata: Dict[str, Any] = Field(default_factory=dict)
     created_at: datetime
     updated_at: datetime
+    failure_count: int = 0
+    last_error: Optional[str] = None
+    last_error_at: Optional[datetime] = None
 
 
 class WebhookEndpointCreateRequest(BaseModel):
-    """Webhook endpoint creation request"""
-    url: str
+    """Webhook endpoint create request."""
+    url: HttpUrl
     events: List[WebhookEventType]
     description: Optional[str] = None
-    headers: Optional[Dict[str, str]] = None
+    enabled: bool = True
+    metadata: Optional[Dict[str, Any]] = None
 
 
 class WebhookEndpointUpdateRequest(BaseModel):
-    """Webhook endpoint update request"""
-    url: Optional[str] = None
+    """Webhook endpoint update request."""
+    url: Optional[HttpUrl] = None
     events: Optional[List[WebhookEventType]] = None
-    is_active: Optional[bool] = None
     description: Optional[str] = None
-    headers: Optional[Dict[str, str]] = None
+    enabled: Optional[bool] = None
+    metadata: Optional[Dict[str, Any]] = None
 
 
 class WebhookEvent(BaseResponse):
-    """Webhook event model"""
-    id: str
-    type: WebhookEventType
-    data: Dict[str, Any]
+    """Webhook event model."""
+    id: UUID
+    endpoint_id: UUID
+    event_type: WebhookEventType
+    payload: Dict[str, Any]
     created_at: datetime
+    delivered_at: Optional[datetime] = None
+    attempts: int = 0
+    status: str
+    response_status: Optional[int] = None
+    response_body: Optional[str] = None
+    next_retry_at: Optional[datetime] = None
 
 
 class WebhookDelivery(BaseResponse):
-    """Webhook delivery model"""
-    id: str
-    webhook_endpoint_id: str
-    webhook_event_id: str
-    status_code: Optional[int] = None
+    """Webhook delivery model."""
+    id: UUID
+    event_id: UUID
+    endpoint_id: UUID
+    status: str
+    attempt: int
+    response_status: Optional[int] = None
+    response_headers: Optional[Dict[str, str]] = None
     response_body: Optional[str] = None
     error: Optional[str] = None
-    attempt: int = 1
     delivered_at: Optional[datetime] = None
-    created_at: datetime
+    duration_ms: Optional[int] = None
 
 
+class WebhookEndpointListResponse(PaginatedResponse):
+    """Webhook endpoint list response."""
+    endpoints: List[WebhookEndpoint]
+
+
+class WebhookEventListResponse(PaginatedResponse):
+    """Webhook event list response."""
+    events: List[WebhookEvent]
+
+
+# ====================
 # Admin Models
+# ====================
+
 class AdminStatsResponse(BaseResponse):
-    """Admin statistics response"""
+    """Admin statistics response."""
     total_users: int
     active_users: int
-    suspended_users: int
-    deleted_users: int
     total_organizations: int
     total_sessions: int
     active_sessions: int
     mfa_enabled_users: int
-    oauth_accounts: int
-    passkeys_registered: int
-    users_last_24h: int
-    sessions_last_24h: int
+    passkey_enabled_users: int
+    oauth_connected_users: int
+    period_start: datetime
+    period_end: datetime
+    user_growth: float
+    organization_growth: float
 
 
 class SystemHealthResponse(BaseResponse):
-    """System health response"""
+    """System health response."""
     status: str
-    database: str
-    cache: str
-    storage: str
-    email: str
-    uptime: float
     version: str
-    environment: str
+    uptime: int
+    database_status: str
+    cache_status: str
+    queue_status: str
+    storage_status: str
+    services: Dict[str, str]
+    last_checked_at: datetime
 
 
+# ====================
 # OAuth Models
+# ====================
+
 class OAuthProviderInfo(BaseResponse):
-    """OAuth provider information"""
+    """OAuth provider information."""
     provider: OAuthProvider
-    name: str
     enabled: bool
-    linked: bool = False
-    provider_email: Optional[str] = None
-    linked_at: Optional[datetime] = None
-    last_updated: Optional[datetime] = None
+    client_id: str
+    authorization_url: str
+    token_url: str
+    scopes: List[str]
 
 
 class OAuthAccount(BaseResponse):
-    """OAuth account model"""
+    """OAuth account model."""
+    id: UUID
+    user_id: UUID
     provider: OAuthProvider
-    provider_id: str
-    provider_email: str
+    provider_user_id: str
+    email: Optional[EmailStr] = None
+    name: Optional[str] = None
+    avatar_url: Optional[HttpUrl] = None
+    access_token: Optional[str] = None
+    refresh_token: Optional[str] = None
+    expires_at: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
 
 
-# Pagination Models
-class PaginationMeta(BaseModel):
-    """Pagination metadata"""
-    page: int
-    per_page: int
-    total: int
-    total_pages: int
+class OAuthAuthorizeRequest(BaseModel):
+    """OAuth authorize request."""
+    provider: OAuthProvider
+    redirect_url: HttpUrl
+    state: Optional[str] = None
+    code_challenge: Optional[str] = None
 
 
-class PaginatedResponse(BaseResponse):
-    """Paginated response base"""
-    meta: PaginationMeta
+class OAuthCallbackRequest(BaseModel):
+    """OAuth callback request."""
+    provider: OAuthProvider
+    code: str
+    state: Optional[str] = None
+    code_verifier: Optional[str] = None
 
 
-class UserListResponse(PaginatedResponse):
-    """User list response"""
-    users: List[User]
-
-
-class OrganizationListResponse(PaginatedResponse):
-    """Organization list response"""
-    organizations: List[Organization]
-
-
-class SessionListResponse(PaginatedResponse):
-    """Session list response"""
-    sessions: List[Session]
-
-
-class WebhookEndpointListResponse(PaginatedResponse):
-    """Webhook endpoint list response"""
-    endpoints: List[WebhookEndpoint]
+# Update forward references
+User.model_rebuild()
+AuthResponse.model_rebuild()
+OrganizationInvitation.model_rebuild()
+OrganizationMember.model_rebuild()

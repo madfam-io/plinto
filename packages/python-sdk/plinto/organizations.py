@@ -1,323 +1,593 @@
-"""
-Organization management module for the Plinto SDK
-"""
+"""Organization management module for the Plinto SDK."""
 
-from typing import Dict, List, Optional, Any
+from typing import Optional, Dict, Any, List
+from uuid import UUID
+from datetime import datetime
 
 from .http_client import HTTPClient
 from .types import (
     Organization,
-    OrganizationCreateRequest,
-    OrganizationUpdateRequest,
     OrganizationMember,
-    OrganizationInviteRequest,
-    OrganizationInvitation,
     OrganizationRole,
+    OrganizationInvite,
+    OrganizationSettings,
+    ListResponse,
+    PlintoConfig,
 )
-from .utils import build_query_params
+from .exceptions import (
+    NotFoundError,
+    ValidationError,
+    AuthorizationError,
+    PlintoError,
+)
 
 
-class OrganizationsModule:
-    """Organization management operations"""
+class OrganizationsClient:
+    """Client for organization management operations."""
     
-    def __init__(self, http_client: HTTPClient):
-        self.http = http_client
+    def __init__(self, http: HTTPClient, config: PlintoConfig):
+        """
+        Initialize the organizations client.
+        
+        Args:
+            http: HTTP client instance
+            config: Plinto configuration
+        """
+        self.http = http
+        self.config = config
     
-    async def create_organization(
+    def get(self, organization_id: str) -> Organization:
+        """
+        Get an organization by ID.
+        
+        Args:
+            organization_id: Organization ID
+            
+        Returns:
+            Organization object
+            
+        Raises:
+            NotFoundError: If organization not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(f'/organizations/{organization_id}')
+        data = response.json()
+        return Organization(**data)
+    
+    def get_by_slug(self, slug: str) -> Organization:
+        """
+        Get an organization by slug.
+        
+        Args:
+            slug: Organization slug
+            
+        Returns:
+            Organization object
+            
+        Raises:
+            NotFoundError: If organization not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(f'/organizations/by-slug/{slug}')
+        data = response.json()
+        return Organization(**data)
+    
+    def list(
         self,
-        request: OrganizationCreateRequest
+        user_id: Optional[str] = None,
+        limit: int = 20,
+        offset: int = 0,
+        search: Optional[str] = None,
+        sort_by: str = 'created_at',
+        sort_order: str = 'desc',
+    ) -> ListResponse[Organization]:
+        """
+        List organizations with pagination and filtering.
+        
+        Args:
+            user_id: Filter by user membership
+            limit: Number of organizations to return (max 100)
+            offset: Number of organizations to skip
+            search: Search query for name
+            sort_by: Field to sort by
+            sort_order: Sort order (asc or desc)
+            
+        Returns:
+            ListResponse containing organizations and pagination info
+            
+        Raises:
+            ValidationError: If parameters are invalid
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        params = {
+            'limit': min(limit, 100),
+            'offset': offset,
+            'sort_by': sort_by,
+            'sort_order': sort_order,
+        }
+        
+        if user_id:
+            params['user_id'] = user_id
+        if search:
+            params['search'] = search
+        
+        response = self.http.get('/organizations', params=params)
+        data = response.json()
+        
+        return ListResponse[Organization](
+            items=[Organization(**item) for item in data['items']],
+            total=data['total'],
+            limit=data['limit'],
+            offset=data['offset'],
+        )
+    
+    def create(
+        self,
+        name: str,
+        slug: Optional[str] = None,
+        description: Optional[str] = None,
+        logo_url: Optional[str] = None,
+        website: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> Organization:
         """
-        Create a new organization
+        Create a new organization.
         
         Args:
-            request: Organization creation request data
+            name: Organization name
+            slug: Organization slug (auto-generated if not provided)
+            description: Organization description
+            logo_url: Organization logo URL
+            website: Organization website
+            metadata: Additional metadata
             
         Returns:
-            Created organization
-        """
-        response = await self.http.post(
-            "/api/v1/organizations/",
-            json_data=request.dict()
-        )
-        return Organization(**response.json())
-    
-    async def list_organizations(self) -> List[Organization]:
-        """
-        List user's organizations
-        
-        Returns:
-            List of organizations user belongs to
-        """
-        response = await self.http.get("/api/v1/organizations/")
-        return [Organization(**org) for org in response.json()]
-    
-    async def get_organization(self, org_id: str) -> Organization:
-        """
-        Get organization details
-        
-        Args:
-            org_id: Organization ID
+            Created Organization object
             
-        Returns:
-            Organization data
+        Raises:
+            ValidationError: If input validation fails
+            AuthorizationError: If not authorized
+            PlintoError: If creation fails
         """
-        response = await self.http.get(f"/api/v1/organizations/{org_id}")
-        return Organization(**response.json())
+        payload = {
+            'name': name,
+            'metadata': metadata or {},
+        }
+        
+        if slug:
+            payload['slug'] = slug
+        if description:
+            payload['description'] = description
+        if logo_url:
+            payload['logo_url'] = logo_url
+        if website:
+            payload['website'] = website
+        
+        response = self.http.post('/organizations', json=payload)
+        data = response.json()
+        return Organization(**data)
     
-    async def update_organization(
+    def update(
         self,
-        org_id: str,
-        request: OrganizationUpdateRequest
+        organization_id: str,
+        name: Optional[str] = None,
+        slug: Optional[str] = None,
+        description: Optional[str] = None,
+        logo_url: Optional[str] = None,
+        website: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> Organization:
         """
-        Update organization details
+        Update an organization.
         
         Args:
-            org_id: Organization ID
-            request: Organization update request data
+            organization_id: Organization ID
+            name: New organization name
+            slug: New organization slug
+            description: New description
+            logo_url: New logo URL
+            website: New website
+            metadata: Updated metadata
             
         Returns:
-            Updated organization
+            Updated Organization object
+            
+        Raises:
+            NotFoundError: If organization not found
+            ValidationError: If input validation fails
+            AuthorizationError: If not authorized
+            PlintoError: If update fails
         """
-        response = await self.http.patch(
-            f"/api/v1/organizations/{org_id}",
-            json_data=request.dict(exclude_unset=True)
-        )
-        return Organization(**response.json())
+        payload = {}
+        
+        if name is not None:
+            payload['name'] = name
+        if slug is not None:
+            payload['slug'] = slug
+        if description is not None:
+            payload['description'] = description
+        if logo_url is not None:
+            payload['logo_url'] = logo_url
+        if website is not None:
+            payload['website'] = website
+        if metadata is not None:
+            payload['metadata'] = metadata
+        
+        response = self.http.patch(f'/organizations/{organization_id}', json=payload)
+        data = response.json()
+        return Organization(**data)
     
-    async def delete_organization(self, org_id: str) -> Dict[str, str]:
+    def delete(self, organization_id: str) -> None:
         """
-        Delete an organization (owner only)
+        Delete an organization.
         
         Args:
-            org_id: Organization ID
+            organization_id: Organization ID
             
-        Returns:
-            Success message
+        Raises:
+            NotFoundError: If organization not found
+            AuthorizationError: If not authorized (must be owner)
+            PlintoError: If deletion fails
         """
-        response = await self.http.delete(f"/api/v1/organizations/{org_id}")
-        return response.json()
+        self.http.delete(f'/organizations/{organization_id}')
     
-    # Member Management
-    async def list_members(self, org_id: str) -> List[OrganizationMember]:
-        """
-        List organization members
-        
-        Args:
-            org_id: Organization ID
-            
-        Returns:
-            List of organization members
-        """
-        response = await self.http.get(f"/api/v1/organizations/{org_id}/members")
-        return [OrganizationMember(**member) for member in response.json()]
+    # Member management
     
-    async def update_member_role(
+    def list_members(
         self,
-        org_id: str,
+        organization_id: str,
+        limit: int = 20,
+        offset: int = 0,
+        role: Optional[OrganizationRole] = None,
+    ) -> ListResponse[OrganizationMember]:
+        """
+        List organization members.
+        
+        Args:
+            organization_id: Organization ID
+            limit: Number of members to return (max 100)
+            offset: Number of members to skip
+            role: Filter by role
+            
+        Returns:
+            ListResponse containing members and pagination info
+            
+        Raises:
+            NotFoundError: If organization not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        params = {
+            'limit': min(limit, 100),
+            'offset': offset,
+        }
+        
+        if role:
+            params['role'] = role.value
+        
+        response = self.http.get(
+            f'/organizations/{organization_id}/members',
+            params=params
+        )
+        data = response.json()
+        
+        return ListResponse[OrganizationMember](
+            items=[OrganizationMember(**item) for item in data['items']],
+            total=data['total'],
+            limit=data['limit'],
+            offset=data['offset'],
+        )
+    
+    def get_member(
+        self,
+        organization_id: str,
         user_id: str,
-        role: OrganizationRole
-    ) -> Dict[str, str]:
+    ) -> OrganizationMember:
         """
-        Update member role
+        Get a specific organization member.
         
         Args:
-            org_id: Organization ID
+            organization_id: Organization ID
+            user_id: User ID
+            
+        Returns:
+            OrganizationMember object
+            
+        Raises:
+            NotFoundError: If organization or member not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(
+            f'/organizations/{organization_id}/members/{user_id}'
+        )
+        data = response.json()
+        return OrganizationMember(**data)
+    
+    def add_member(
+        self,
+        organization_id: str,
+        user_id: str,
+        role: OrganizationRole = OrganizationRole.MEMBER,
+    ) -> OrganizationMember:
+        """
+        Add a member to an organization.
+        
+        Args:
+            organization_id: Organization ID
+            user_id: User ID to add
+            role: Member's role in the organization
+            
+        Returns:
+            Created OrganizationMember object
+            
+        Raises:
+            NotFoundError: If organization or user not found
+            ValidationError: If user is already a member
+            AuthorizationError: If not authorized
+            PlintoError: If addition fails
+        """
+        response = self.http.post(
+            f'/organizations/{organization_id}/members',
+            json={
+                'user_id': user_id,
+                'role': role.value,
+            }
+        )
+        data = response.json()
+        return OrganizationMember(**data)
+    
+    def update_member_role(
+        self,
+        organization_id: str,
+        user_id: str,
+        role: OrganizationRole,
+    ) -> OrganizationMember:
+        """
+        Update a member's role in an organization.
+        
+        Args:
+            organization_id: Organization ID
             user_id: User ID
             role: New role
             
         Returns:
-            Success message
+            Updated OrganizationMember object
+            
+        Raises:
+            NotFoundError: If organization or member not found
+            AuthorizationError: If not authorized
+            PlintoError: If update fails
         """
-        response = await self.http.put(
-            f"/api/v1/organizations/{org_id}/members/{user_id}/role",
-            json_data={"role": role.value}
+        response = self.http.patch(
+            f'/organizations/{organization_id}/members/{user_id}',
+            json={'role': role.value}
         )
-        return response.json()
+        data = response.json()
+        return OrganizationMember(**data)
     
-    async def remove_member(
+    def remove_member(
         self,
-        org_id: str,
-        user_id: str
-    ) -> Dict[str, str]:
+        organization_id: str,
+        user_id: str,
+    ) -> None:
         """
-        Remove member from organization
+        Remove a member from an organization.
         
         Args:
-            org_id: Organization ID
+            organization_id: Organization ID
             user_id: User ID to remove
             
-        Returns:
-            Success message
+        Raises:
+            NotFoundError: If organization or member not found
+            AuthorizationError: If not authorized
+            ValidationError: If trying to remove the last owner
+            PlintoError: If removal fails
         """
-        response = await self.http.delete(
-            f"/api/v1/organizations/{org_id}/members/{user_id}"
-        )
-        return response.json()
+        self.http.delete(f'/organizations/{organization_id}/members/{user_id}')
     
-    # Invitation Management
-    async def invite_member(
+    # Invite management
+    
+    def list_invites(
         self,
-        org_id: str,
-        request: OrganizationInviteRequest
-    ) -> Dict[str, Any]:
+        organization_id: str,
+        status: Optional[str] = None,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> ListResponse[OrganizationInvite]:
         """
-        Invite a new member to organization
+        List organization invites.
         
         Args:
-            org_id: Organization ID
-            request: Invitation request data
+            organization_id: Organization ID
+            status: Filter by invite status (pending, accepted, expired)
+            limit: Number of invites to return (max 100)
+            offset: Number of invites to skip
             
         Returns:
-            Invitation details
-        """
-        response = await self.http.post(
-            f"/api/v1/organizations/{org_id}/invite",
-            json_data=request.dict()
-        )
-        return response.json()
-    
-    async def accept_invitation(self, token: str) -> Dict[str, Any]:
-        """
-        Accept an organization invitation
-        
-        Args:
-            token: Invitation token
+            ListResponse containing invites and pagination info
             
-        Returns:
-            Organization details after joining
+        Raises:
+            NotFoundError: If organization not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
         """
-        response = await self.http.post(
-            f"/api/v1/organizations/invitations/{token}/accept"
-        )
-        return response.json()
-    
-    async def list_invitations(
-        self,
-        org_id: str,
-        status: Optional[str] = None
-    ) -> List[OrganizationInvitation]:
-        """
-        List organization invitations
-        
-        Args:
-            org_id: Organization ID
-            status: Filter by status (pending, accepted, expired)
-            
-        Returns:
-            List of invitations
-        """
-        params = build_query_params({"status": status})
-        
-        response = await self.http.get(
-            f"/api/v1/organizations/{org_id}/invitations",
-            params=params
-        )
-        return [OrganizationInvitation(**inv) for inv in response.json()]
-    
-    async def revoke_invitation(
-        self,
-        org_id: str,
-        invitation_id: str
-    ) -> Dict[str, str]:
-        """
-        Revoke an invitation
-        
-        Args:
-            org_id: Organization ID
-            invitation_id: Invitation ID
-            
-        Returns:
-            Success message
-        """
-        response = await self.http.delete(
-            f"/api/v1/organizations/{org_id}/invitations/{invitation_id}"
-        )
-        return response.json()
-    
-    # Custom Roles Management
-    async def create_custom_role(
-        self,
-        org_id: str,
-        name: str,
-        description: Optional[str] = None,
-        permissions: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
-        """
-        Create a custom role for organization
-        
-        Args:
-            org_id: Organization ID
-            name: Role name
-            description: Role description
-            permissions: List of permissions
-            
-        Returns:
-            Created role data
-        """
-        json_data = {
-            "name": name,
-            "description": description,
-            "permissions": permissions or []
+        params = {
+            'limit': min(limit, 100),
+            'offset': offset,
         }
         
-        response = await self.http.post(
-            f"/api/v1/organizations/{org_id}/roles",
-            json_data=json_data
-        )
-        return response.json()
-    
-    async def list_custom_roles(self, org_id: str) -> List[Dict[str, Any]]:
-        """
-        List organization's custom roles
+        if status:
+            params['status'] = status
         
-        Args:
-            org_id: Organization ID
-            
-        Returns:
-            List of roles (built-in and custom)
-        """
-        response = await self.http.get(f"/api/v1/organizations/{org_id}/roles")
-        return response.json()
+        response = self.http.get(
+            f'/organizations/{organization_id}/invites',
+            params=params
+        )
+        data = response.json()
+        
+        return ListResponse[OrganizationInvite](
+            items=[OrganizationInvite(**item) for item in data['items']],
+            total=data['total'],
+            limit=data['limit'],
+            offset=data['offset'],
+        )
     
-    async def delete_custom_role(
+    def create_invite(
         self,
-        org_id: str,
-        role_id: str
-    ) -> Dict[str, str]:
+        organization_id: str,
+        email: str,
+        role: OrganizationRole = OrganizationRole.MEMBER,
+        message: Optional[str] = None,
+        expires_in_days: int = 7,
+    ) -> OrganizationInvite:
         """
-        Delete a custom role
+        Create an organization invite.
         
         Args:
-            org_id: Organization ID
-            role_id: Role ID
+            organization_id: Organization ID
+            email: Email address to invite
+            role: Role to assign when accepted
+            message: Optional invitation message
+            expires_in_days: Days until invite expires
             
         Returns:
-            Success message
+            Created OrganizationInvite object
+            
+        Raises:
+            NotFoundError: If organization not found
+            ValidationError: If email is invalid or already a member
+            AuthorizationError: If not authorized
+            PlintoError: If creation fails
         """
-        response = await self.http.delete(
-            f"/api/v1/organizations/{org_id}/roles/{role_id}"
+        payload = {
+            'email': email,
+            'role': role.value,
+            'expires_in_days': expires_in_days,
+        }
+        
+        if message:
+            payload['message'] = message
+        
+        response = self.http.post(
+            f'/organizations/{organization_id}/invites',
+            json=payload
         )
-        return response.json()
+        data = response.json()
+        return OrganizationInvite(**data)
     
-    async def transfer_ownership(
+    def cancel_invite(
         self,
-        org_id: str,
-        new_owner_id: str
-    ) -> Dict[str, str]:
+        organization_id: str,
+        invite_id: str,
+    ) -> None:
         """
-        Transfer organization ownership
+        Cancel an organization invite.
         
         Args:
-            org_id: Organization ID
-            new_owner_id: New owner user ID
+            organization_id: Organization ID
+            invite_id: Invite ID
+            
+        Raises:
+            NotFoundError: If organization or invite not found
+            AuthorizationError: If not authorized
+            PlintoError: If cancellation fails
+        """
+        self.http.delete(f'/organizations/{organization_id}/invites/{invite_id}')
+    
+    def accept_invite(
+        self,
+        invite_token: str,
+    ) -> Organization:
+        """
+        Accept an organization invite.
+        
+        Args:
+            invite_token: Invite token from invitation email
             
         Returns:
-            Success message
+            Organization that was joined
+            
+        Raises:
+            NotFoundError: If invite not found
+            ValidationError: If invite is expired or already used
+            PlintoError: If acceptance fails
         """
-        response = await self.http.post(
-            f"/api/v1/organizations/{org_id}/transfer-ownership",
-            json_data={"new_owner_id": new_owner_id}
+        response = self.http.post(
+            '/organizations/invites/accept',
+            json={'token': invite_token}
         )
-        return response.json()
+        data = response.json()
+        return Organization(**data)
+    
+    # Settings management
+    
+    def get_settings(
+        self,
+        organization_id: str,
+    ) -> OrganizationSettings:
+        """
+        Get organization settings.
+        
+        Args:
+            organization_id: Organization ID
+            
+        Returns:
+            OrganizationSettings object
+            
+        Raises:
+            NotFoundError: If organization not found
+            AuthorizationError: If not authorized
+            PlintoError: If request fails
+        """
+        response = self.http.get(f'/organizations/{organization_id}/settings')
+        data = response.json()
+        return OrganizationSettings(**data)
+    
+    def update_settings(
+        self,
+        organization_id: str,
+        require_mfa: Optional[bool] = None,
+        allowed_email_domains: Optional[List[str]] = None,
+        session_duration: Optional[int] = None,
+        password_policy: Optional[Dict[str, Any]] = None,
+    ) -> OrganizationSettings:
+        """
+        Update organization settings.
+        
+        Args:
+            organization_id: Organization ID
+            require_mfa: Require MFA for all members
+            allowed_email_domains: Allowed email domains for members
+            session_duration: Default session duration in seconds
+            password_policy: Password policy settings
+            
+        Returns:
+            Updated OrganizationSettings object
+            
+        Raises:
+            NotFoundError: If organization not found
+            ValidationError: If settings are invalid
+            AuthorizationError: If not authorized (admin/owner only)
+            PlintoError: If update fails
+        """
+        payload = {}
+        
+        if require_mfa is not None:
+            payload['require_mfa'] = require_mfa
+        if allowed_email_domains is not None:
+            payload['allowed_email_domains'] = allowed_email_domains
+        if session_duration is not None:
+            payload['session_duration'] = session_duration
+        if password_policy is not None:
+            payload['password_policy'] = password_policy
+        
+        response = self.http.patch(
+            f'/organizations/{organization_id}/settings',
+            json=payload
+        )
+        data = response.json()
+        return OrganizationSettings(**data)

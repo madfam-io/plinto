@@ -40,17 +40,28 @@ export function CTASection() {
           </div>
         </div>
 
-        {/* Primary CTA Button */}
+        {/* Primary CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.3, delay: 0.1 }}
+          className="flex flex-wrap gap-4 justify-center"
         >
           <Link href="https://app.plinto.dev/auth/signup">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="text-lg px-10 py-6 bg-white text-blue-600 hover:bg-gray-100"
+            >
+              Get Started
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
+          <Link href="https://app.plinto.dev/auth/signup">
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-10 py-6 border-white text-white hover:bg-white/10"
             >
               Create Free Account
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -66,20 +77,20 @@ export function CTASection() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-8 flex flex-wrap gap-6 justify-center text-sm"
         >
-          <Link 
-            href="https://demo.plinto.dev" 
+          <Link
+            href="https://demo.plinto.dev"
             className="text-white/80 hover:text-white underline underline-offset-4"
           >
             Schedule a demo
           </Link>
-          <Link 
-            href="https://docs.plinto.dev" 
+          <Link
+            href="https://docs.plinto.dev"
             className="text-white/80 hover:text-white underline underline-offset-4"
           >
             Read documentation
           </Link>
-          <Link 
-            href="/pricing" 
+          <Link
+            href="/pricing"
             className="text-white/80 hover:text-white underline underline-offset-4"
           >
             View pricing details

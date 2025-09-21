@@ -6,6 +6,7 @@ import { ArrowRight, Zap, Shield, Code2, GitBranch, AlertCircle, CheckCircle2, C
 import { Button } from '@plinto/ui'
 import { Badge } from '@plinto/ui'
 import Link from 'next/link'
+import { getCoveragePercentage } from '@/lib/coverage'
 
 interface ActualMetrics {
   testCoverage: number
@@ -18,14 +19,26 @@ interface ActualMetrics {
 
 export function HonestHeroSection() {
   // These are ACTUAL metrics from the codebase analysis
-  const [actualMetrics] = useState<ActualMetrics>({
-    testCoverage: 31.3, // Real test coverage from the API
-    sdkCount: 13, // Actually implemented SDKs
+  const [actualMetrics, setActualMetrics] = useState<ActualMetrics>({
+    testCoverage: 19.6, // Real test coverage from pytest --cov (updated dynamically)
+    sdkCount: 8, // Actually implemented SDKs (verified from packages/)
     edgeLocations: 100, // Via Cloudflare/Vercel Edge Network
     theoreticalLatency: '<30ms', // Based on edge architecture, not benchmarked at scale
     openSourceStatus: true, // Core is actually open source
     securityAuditStatus: 'pending' // Honest about security audit status
   })
+
+  // Load real coverage data on component mount
+  useEffect(() => {
+    getCoveragePercentage().then((coverage) => {
+      setActualMetrics(prev => ({
+        ...prev,
+        testCoverage: coverage
+      }))
+    }).catch(() => {
+      // Keep fallback value if fetch fails
+    })
+  }, [])
 
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
@@ -109,6 +122,13 @@ export function HonestHeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
+            <Button size="lg" className="group" asChild>
+              <Link href="https://app.plinto.dev/auth/signup">
+                Get Started
+                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
+
             <Button size="lg" className="group">
               View Live Demo
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -192,20 +212,23 @@ export function HonestHeroSection() {
                   <div className="w-32 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-emerald-500"
-                      style={{ width: `${(actualMetrics.sdkCount / 15) * 100}%` }}
+                      style={{ width: `${(actualMetrics.sdkCount / 10) * 100}%` }}
                     />
                   </div>
                   <span className="text-sm font-mono text-slate-900 dark:text-white">
-                    {actualMetrics.sdkCount}/15
+                    {actualMetrics.sdkCount}/10
                   </span>
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-600 dark:text-slate-400">Security Audit</span>
-                <Badge variant="secondary" className="text-xs">
-                  Scheduled Q1 2025
-                </Badge>
+                <span className="text-sm text-slate-600 dark:text-slate-400">Edge Deployment</span>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-500" />
+                  <span className="text-sm text-slate-900 dark:text-white">
+                    Active ({actualMetrics.edgeLocations}+ locations)
+                  </span>
+                </div>
               </div>
             </div>
           </motion.div>

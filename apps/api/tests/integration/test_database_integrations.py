@@ -1,4 +1,6 @@
 
+import pytest
+
 pytestmark = pytest.mark.asyncio
 
 """
@@ -41,7 +43,7 @@ class TestDatabaseModelRelationships:
             email_verified=True
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Create test organization
         org = Organization(
@@ -51,7 +53,7 @@ class TestDatabaseModelRelationships:
             owner_id=user.id
         )
         test_db_session.add(org)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Create organization member relationship
         member = OrganizationMember(
@@ -61,17 +63,17 @@ class TestDatabaseModelRelationships:
             joined_at=datetime.utcnow()
         )
         test_db_session.add(member)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Test relationship queries
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.id == user.id)
         )
         found_user = result.scalar_one()
         assert found_user.email == "test@example.com"
 
         # Test organization query
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(Organization).where(Organization.id == org.id)
         )
         found_org = result.scalar_one()
@@ -79,7 +81,7 @@ class TestDatabaseModelRelationships:
         assert found_org.owner_id == user.id
 
         # Test member relationship
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(OrganizationMember).where(
                 and_(
                     OrganizationMember.user_id == user.id,
@@ -104,7 +106,7 @@ class TestDatabaseModelRelationships:
             email_verified=True
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Create multiple sessions for the user
         sessions = []
@@ -121,10 +123,10 @@ class TestDatabaseModelRelationships:
             sessions.append(session)
             test_db_session.add(session)
 
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Test querying user's sessions
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(Session).where(Session.user_id == user.id)
         )
         user_sessions = result.scalars().all()
@@ -148,7 +150,7 @@ class TestDatabaseModelRelationships:
             email_verified=False
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Create email verification
         verification = EmailVerification(
@@ -158,10 +160,10 @@ class TestDatabaseModelRelationships:
             expires_at=datetime.utcnow() + timedelta(hours=24)
         )
         test_db_session.add(verification)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Test relationship
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(EmailVerification).where(EmailVerification.user_id == user.id)
         )
         found_verification = result.scalar_one()
@@ -182,7 +184,7 @@ class TestDatabaseModelRelationships:
             email_verified=True
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Create activity logs
         activities = [
@@ -201,10 +203,10 @@ class TestDatabaseModelRelationships:
 
         for activity in activities:
             test_db_session.add(activity)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Test querying user activities
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(ActivityLog)
             .where(ActivityLog.user_id == user.id)
             .order_by(ActivityLog.timestamp.desc())
@@ -231,7 +233,7 @@ class TestDatabaseConstraints:
             status=UserStatus.ACTIVE
         )
         test_db_session.add(user1)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Try to create second user with same email
         user2 = User(
@@ -246,7 +248,7 @@ class TestDatabaseConstraints:
 
         # Should raise integrity error
         with pytest.raises(IntegrityError):
-            await await test_db_session.commit()
+            await test_db_session.commit()
 
     @pytest.mark.asyncio
     async def test_organization_name_constraint(self, test_db_session: AsyncSession):
@@ -261,7 +263,7 @@ class TestDatabaseConstraints:
             status=UserStatus.ACTIVE
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Create organization with empty name (should fail validation)
         with pytest.raises((IntegrityError, ValueError)):
@@ -271,7 +273,7 @@ class TestDatabaseConstraints:
                 owner_id=user.id
             )
             test_db_session.add(org)
-            await await test_db_session.commit()
+            await test_db_session.commit()
 
     @pytest.mark.asyncio
     async def test_foreign_key_constraints(self, test_db_session: AsyncSession):
@@ -284,7 +286,7 @@ class TestDatabaseConstraints:
                 role=OrganizationRole.MEMBER
             )
             test_db_session.add(member)
-            await await test_db_session.commit()
+            await test_db_session.commit()
 
     @pytest.mark.asyncio
     async def test_cascade_deletion(self, test_db_session: AsyncSession):
@@ -299,7 +301,7 @@ class TestDatabaseConstraints:
             status=UserStatus.ACTIVE
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Create session for user
         session = Session(
@@ -311,14 +313,14 @@ class TestDatabaseConstraints:
             expires_at=datetime.utcnow() + timedelta(days=30)
         )
         test_db_session.add(session)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Delete user
         await test_db_session.delete(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Check if session is also deleted (depends on cascade configuration)
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(Session).where(Session.user_id == user.id)
         )
         remaining_sessions = result.scalars().all()
@@ -345,16 +347,16 @@ class TestDatabaseTransactions:
         test_db_session.add(user)
 
         # Verify user is not yet committed
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(func.count(User.id)).where(User.email == "transaction_test@example.com")
         )
         count_before_commit = result.scalar()
 
         # Commit transaction
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Verify user is now committed
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(func.count(User.id)).where(User.email == "transaction_test@example.com")
         )
         count_after_commit = result.scalar()
@@ -375,7 +377,7 @@ class TestDatabaseTransactions:
         test_db_session.add(user)
 
         # Get count before rollback
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(func.count(User.id)).where(User.email == "rollback_test@example.com")
         )
         count_before_rollback = result.scalar()
@@ -384,7 +386,7 @@ class TestDatabaseTransactions:
         await test_db_session.rollback()
 
         # Verify user was not persisted
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(func.count(User.id)).where(User.email == "rollback_test@example.com")
         )
         count_after_rollback = result.scalar()
@@ -409,7 +411,7 @@ class TestDatabaseTransactions:
                     status=UserStatus.ACTIVE
                 )
                 session.add(user)
-                await await session.commit()
+                await session.commit()
                 return user.id
 
         # Create multiple users concurrently
@@ -422,7 +424,7 @@ class TestDatabaseTransactions:
 
         # Verify users exist in database
         async with async_session() as session:
-            result = await await session.execute(
+            result = await session.execute(
                 select(func.count(User.id)).where(
                     User.email.like("concurrent_%@example.com")
                 )
@@ -466,10 +468,10 @@ class TestDatabaseQueries:
         )
         test_db_session.add(member)
 
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Complex query: Get users with their organization roles
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User.email, Organization.name, OrganizationMember.role)
             .join(OrganizationMember, User.id == OrganizationMember.user_id)
             .join(Organization, OrganizationMember.organization_id == Organization.id)
@@ -500,10 +502,10 @@ class TestDatabaseQueries:
             users.append(user)
             test_db_session.add(user)
 
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Aggregation query: Count users by status
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User.status, func.count(User.id))
             .group_by(User.status)
         )
@@ -513,7 +515,7 @@ class TestDatabaseQueries:
         assert status_counts[UserStatus.INACTIVE] == 5
 
         # Aggregation query: Count verified vs unverified users
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User.email_verified, func.count(User.id))
             .group_by(User.email_verified)
         )
@@ -539,14 +541,14 @@ class TestDatabaseQueries:
             )
             test_db_session.add(user)
 
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Test pagination
         page_size = 10
         offset = 0
 
         # First page
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User)
             .where(User.email.like("page_user_%@example.com"))
             .order_by(User.created_at.desc())
@@ -558,7 +560,7 @@ class TestDatabaseQueries:
 
         # Second page
         offset = 10
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User)
             .where(User.email.like("page_user_%@example.com"))
             .order_by(User.created_at.desc())
@@ -570,7 +572,7 @@ class TestDatabaseQueries:
 
         # Third page (partial)
         offset = 20
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User)
             .where(User.email.like("page_user_%@example.com"))
             .order_by(User.created_at.desc())
@@ -604,24 +606,24 @@ class TestDatabaseQueries:
             )
             test_db_session.add(user)
 
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Search by first name
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.first_name.ilike("%john%"))
         )
         john_users = result.scalars().all()
         assert len(john_users) == 2
 
         # Search by email domain
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.email.like("%@example.com"))
         )
         example_users = result.scalars().all()
         assert len(example_users) >= 5
 
         # Complex search (first name OR last name)
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(
                 or_(
                     User.first_name.ilike("%alice%"),
@@ -653,17 +655,17 @@ class TestDatabaseIndexes:
             )
             test_db_session.add(user)
 
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Query by email (should use email index)
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.email == "index_test_50@example.com")
         )
         user = result.scalar_one()
         assert user.first_name == "IndexUser50"
 
         # Query by status (should use status index if exists)
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(func.count(User.id)).where(User.status == UserStatus.ACTIVE)
         )
         active_count = result.scalar()
@@ -689,12 +691,12 @@ class TestDatabaseIndexes:
             users_batch.append(user)
 
         test_db_session.add_all(users_batch)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Measure query performance
         start_time = time.time()
 
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(func.count(User.id)).where(User.status == UserStatus.ACTIVE)
         )
         count = result.scalar()
@@ -723,10 +725,10 @@ class TestDatabaseEdgeCases:
             # first_name and last_name are optional (nullable)
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Verify user was created successfully
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.email == "null_test@example.com")
         )
         found_user = result.scalar_one()
@@ -746,10 +748,10 @@ class TestDatabaseEdgeCases:
             status=UserStatus.ACTIVE
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Verify unicode data was stored correctly
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.email == "unicode_test@example.com")
         )
         found_user = result.scalar_one()
@@ -772,10 +774,10 @@ class TestDatabaseEdgeCases:
             bio=large_bio
         )
         test_db_session.add(user)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Verify large text was stored correctly
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.email == "large_text@example.com")
         )
         found_user = result.scalar_one()
@@ -813,10 +815,10 @@ class TestDatabaseEdgeCases:
             expires_at=future
         )
         test_db_session.add(session)
-        await await test_db_session.commit()
+        await test_db_session.commit()
 
         # Verify datetime handling
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(User).where(User.email == "datetime_test@example.com")
         )
         found_user = result.scalar_one()
@@ -826,7 +828,7 @@ class TestDatabaseEdgeCases:
         assert time_diff < 1  # Less than 1 second difference
 
         # Test datetime queries
-        result = await await test_db_session.execute(
+        result = await test_db_session.execute(
             select(Session).where(Session.expires_at > datetime.utcnow())
         )
         future_sessions = result.scalars().all()

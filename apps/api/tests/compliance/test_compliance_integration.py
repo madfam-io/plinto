@@ -1,5 +1,5 @@
-from fixtures.async_fixtures import async_db_session, async_redis_client
-
+from tests.fixtures.async_fixtures import async_db_session, async_redis_client
+import pytest
 
 pytestmark = pytest.mark.asyncio
 
@@ -228,7 +228,7 @@ class TestComplianceIntegration:
             tenant_id=sample_tenant_id
         )
         async_db_session.add(privacy_settings)
-        await await async_db_session.commit()
+        await async_db_session.commit()
         await async_db_session.refresh(privacy_settings)
 
         # 2. Verify privacy-by-default values
@@ -366,7 +366,7 @@ class TestComplianceIntegration:
             tenant_id=sample_tenant_id
         )
         async_db_session.add(test_user)
-        await await async_db_session.commit()
+        await async_db_session.commit()
 
         # 2. Create and process erasure request
         erasure_request = await compliance_service.data_subject_rights_service.create_request(

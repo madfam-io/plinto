@@ -1,4 +1,6 @@
 
+import pytest
+
 pytestmark = pytest.mark.asyncio
 
 """
@@ -42,7 +44,7 @@ class TestAuthenticationFlows:
         ]
 
         for endpoint in auth_endpoints:
-            response = self.await client.post(endpoint, json={})
+            response = await client.post(endpoint, json={})
             # Router should be mounted and endpoint should exist
             assert response.status_code in [200, 400, 401, 422, 429]
 
@@ -66,7 +68,7 @@ class TestAuthenticationFlows:
                 "name": "Test User"
             }
 
-            response = self.await client.post("/api/v1/auth/register", json=registration_payload)
+            response = await client.post("/api/v1/auth/register", json=registration_payload)
 
             # Registration should execute
             assert response.status_code in [200, 201, 400, 422]
@@ -92,7 +94,7 @@ class TestAuthenticationFlows:
                 "password": "TestPassword123!"
             }
 
-            response = self.await client.post("/api/v1/auth/login", json=login_payload)
+            response = await client.post("/api/v1/auth/login", json=login_payload)
 
             # Login should execute JWT creation flow
             assert response.status_code in [200, 400, 401, 422]
@@ -115,7 +117,7 @@ class TestAuthenticationFlows:
             }
 
             # Test protected endpoint with valid token
-            response = self.await client.get(
+            response = await client.get(
                 "/api/v1/users/me",
                 headers={"Authorization": "Bearer fake-valid-token"}
             )
@@ -140,7 +142,7 @@ class TestAuthenticationFlows:
                 "refresh_token": "valid-refresh-token"
             }
 
-            response = self.await client.post("/api/v1/auth/refresh", json=refresh_payload)
+            response = await client.post("/api/v1/auth/refresh", json=refresh_payload)
 
             # Refresh token exchange should execute
             assert response.status_code in [200, 400, 401, 422]
@@ -157,7 +159,7 @@ class TestAuthenticationFlows:
 
             # Initiate password reset
             reset_request = {"email": "test@example.com"}
-            response = self.await client.post("/api/v1/auth/forgot-password", json=reset_request)
+            response = await client.post("/api/v1/auth/forgot-password", json=reset_request)
 
             assert response.status_code in [200, 400, 404, 422]
 
@@ -166,7 +168,7 @@ class TestAuthenticationFlows:
                 "token": "reset-token-123",
                 "new_password": "NewPassword123!"
             }
-            response = self.await client.post("/api/v1/auth/reset-password", json=reset_complete)
+            response = await client.post("/api/v1/auth/reset-password", json=reset_complete)
 
             assert response.status_code in [200, 400, 401, 422]
 
@@ -182,7 +184,7 @@ class TestAuthenticationFlows:
                 "token": "email-verification-token"
             }
 
-            response = self.await client.post("/api/v1/auth/verify-email", json=verification_payload)
+            response = await client.post("/api/v1/auth/verify-email", json=verification_payload)
 
             # Email verification should execute
             assert response.status_code in [200, 400, 401, 422]
@@ -204,7 +206,7 @@ class TestAuthenticationFlows:
             }
 
             # Test OAuth initiation
-            response = self.await client.get("/api/v1/oauth/google/authorize")
+            response = await client.get("/api/v1/oauth/google/authorize")
             assert response.status_code in [200, 302, 400, 404]
 
             # Test OAuth callback
@@ -212,7 +214,7 @@ class TestAuthenticationFlows:
                 "code": "oauth-code-123",
                 "state": "state-token"
             }
-            response = self.await client.post("/api/v1/oauth/google/callback", json=callback_data)
+            response = await client.post("/api/v1/oauth/google/callback", json=callback_data)
             assert response.status_code in [200, 400, 401, 422]
 
     def test_session_management_flow(self):
@@ -236,15 +238,15 @@ class TestAuthenticationFlows:
                 "user_id": "test-user-id",
                 "device_info": "test-device"
             }
-            response = self.await client.post("/api/v1/sessions", json=session_data)
+            response = await client.post("/api/v1/sessions", json=session_data)
             assert response.status_code in [200, 201, 400, 401, 422]
 
             # Test session validation
-            response = self.await client.get("/api/v1/sessions/session-123")
+            response = await client.get("/api/v1/sessions/session-123")
             assert response.status_code in [200, 401, 404]
 
             # Test session termination
-            response = self.await client.delete("/api/v1/sessions/session-123")
+            response = await client.delete("/api/v1/sessions/session-123")
             assert response.status_code in [200, 204, 401, 404]
 
     def test_mfa_authentication_flow(self):
@@ -261,13 +263,13 @@ class TestAuthenticationFlows:
             mock_verify.return_value = {"valid": True}
 
             # Test MFA setup
-            response = self.await client.post("/api/v1/mfa/setup",
+            response = await client.post("/api/v1/mfa/setup",
                                       headers={"Authorization": "Bearer fake-token"})
             assert response.status_code in [200, 401, 403, 422]
 
             # Test MFA verification
             verify_data = {"code": "123456"}
-            response = self.await client.post("/api/v1/mfa/verify",
+            response = await client.post("/api/v1/mfa/verify",
                                       json=verify_data,
                                       headers={"Authorization": "Bearer fake-token"})
             assert response.status_code in [200, 400, 401, 403, 422]
@@ -286,7 +288,7 @@ class TestAuthenticationFlows:
             mock_verify.return_value = {"credential_id": "credential-123"}
 
             # Test passkey registration initiation
-            response = self.await client.post("/api/v1/passkeys/register/begin",
+            response = await client.post("/api/v1/passkeys/register/begin",
                                       headers={"Authorization": "Bearer fake-token"})
             assert response.status_code in [200, 401, 403, 422]
 
@@ -295,7 +297,7 @@ class TestAuthenticationFlows:
                 "credential": {"id": "cred-123", "response": {}},
                 "challenge": "passkey-challenge-123"
             }
-            response = self.await client.post("/api/v1/passkeys/register/complete",
+            response = await client.post("/api/v1/passkeys/register/complete",
                                       json=reg_data,
                                       headers={"Authorization": "Bearer fake-token"})
             assert response.status_code in [200, 400, 401, 422]
@@ -342,7 +344,7 @@ class TestAuthenticationFlows:
 
             for endpoint, method in protected_endpoints:
                 if method == "GET":
-                    response = self.await client.get(endpoint,
+                    response = await client.get(endpoint,
                                              headers={"Authorization": "Bearer fake-token"})
                 else:
                     response = self.client.request(method, endpoint,
@@ -367,7 +369,7 @@ class TestAuthenticationFlows:
             }
 
             for _ in range(6):  # Exceed typical rate limit
-                response = self.await client.post("/api/v1/auth/login", json=login_payload)
+                response = await client.post("/api/v1/auth/login", json=login_payload)
                 # Rate limiting should be applied
                 assert response.status_code in [200, 400, 401, 422, 429]
 
@@ -399,7 +401,7 @@ class TestAuthenticationFlows:
         ]
 
         for scenario in error_scenarios:
-            response = self.await client.post(scenario["endpoint"], json=scenario["payload"])
+            response = await client.post(scenario["endpoint"], json=scenario["payload"])
             # Error handling should execute
             assert response.status_code in [400, 401, 422]
 
@@ -414,7 +416,7 @@ class TestAuthenticationFlows:
                 mock_auth.return_value = {"id": "user-123"}
 
                 login_payload = {"email": "test@example.com", "password": "Test123!"}
-                return self.await client.post("/api/v1/auth/login", json=login_payload)
+                return await client.post("/api/v1/auth/login", json=login_payload)
 
         # Create multiple threads
         threads = []
@@ -447,7 +449,7 @@ class TestAuthenticationErrorScenarios:
 
         with patch('app.database.get_db', side_effect=Exception("Database connection failed")):
             login_payload = {"email": "test@example.com", "password": "Test123!"}
-            response = self.await client.post("/api/v1/auth/login", json=login_payload)
+            response = await client.post("/api/v1/auth/login", json=login_payload)
 
             # Should handle database failures gracefully
             assert response.status_code in [500, 502, 503]
@@ -463,7 +465,7 @@ class TestAuthenticationErrorScenarios:
                 mock_auth.return_value = {"id": "user-123"}
 
                 login_payload = {"email": "test@example.com", "password": "Test123!"}
-                response = self.await client.post("/api/v1/auth/login", json=login_payload)
+                response = await client.post("/api/v1/auth/login", json=login_payload)
 
                 # Should handle JWT service failures
                 assert response.status_code in [500, 502, 503]
@@ -473,7 +475,7 @@ class TestAuthenticationErrorScenarios:
         # This covers external service timeout handling
 
         with patch('httpx.AsyncClient.get', side_effect=asyncio.TimeoutError("OAuth service timeout")):
-            response = self.await client.get("/api/v1/oauth/google/authorize")
+            response = await client.get("/api/v1/oauth/google/authorize")
 
             # Should handle external service failures
             assert response.status_code in [500, 502, 503, 504]
@@ -494,7 +496,7 @@ class TestAuthenticationErrorScenarios:
                 "name": "Test User"
             }
 
-            response = self.await client.post("/api/v1/auth/register", json=registration_payload)
+            response = await client.post("/api/v1/auth/register", json=registration_payload)
 
             # Should handle email service failures gracefully
             assert response.status_code in [200, 201, 500, 502, 503]

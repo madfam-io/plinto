@@ -1,3 +1,4 @@
+import pytest
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 pytestmark = pytest.mark.asyncio

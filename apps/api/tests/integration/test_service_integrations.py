@@ -1,4 +1,6 @@
 
+import pytest
+
 pytestmark = pytest.mark.asyncio
 
 """
@@ -537,7 +539,7 @@ class TestAuthServiceIntegration:
             mock_user.status = UserStatus.ACTIVE
             mock_create.return_value = mock_user
 
-            result = await await auth_service.create_user(
+            result = await auth_service.create_user(
                 user_data["email"],
                 user_data["password"],
                 user_data["first_name"],

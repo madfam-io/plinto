@@ -152,6 +152,7 @@ jobs:
     name: Security Scanning
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: read
       security-events: write
 

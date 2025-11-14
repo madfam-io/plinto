@@ -85,8 +85,9 @@ container-scan:
   name: Container Security Scan
   runs-on: ubuntu-latest
   permissions:  # ✅ Added permissions block
-    contents: read
-    security-events: write
+    actions: read           # Required for workflow run information
+    contents: read          # Required for repository checkout
+    security-events: write  # Required for SARIF upload
 
   steps:
     # ... Trivy scan and upload steps
@@ -98,8 +99,9 @@ security-scanning:
   name: Security Scanning
   runs-on: ubuntu-latest
   permissions:  # ✅ Added permissions block
-    contents: read
-    security-events: write
+    actions: read           # Required for workflow run information
+    contents: read          # Required for repository checkout
+    security-events: write  # Required for SARIF upload
 
   steps:
     # ... Trivy scan and upload steps
@@ -286,6 +288,7 @@ GitHub Security Tab → Code Scanning Alerts → Trivy Scan Results
 1. **Always Specify Permissions**:
    ```yaml
    permissions:
+     actions: read
      contents: read
      security-events: write
    ```

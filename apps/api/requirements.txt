@@ -19,6 +19,12 @@ pyotp==2.9.0
 qrcode==7.4.2
 python-decouple==3.8
 
+# SSO Libraries
+python3-saml==1.16.0
+lxml==5.1.0
+xmlsec==1.3.13
+cryptography==41.0.7
+
 # Redis
 redis==5.0.1
 aioredis==2.0.1

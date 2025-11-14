@@ -164,6 +164,7 @@ jobs:
       
       - name: Upload Trivy results to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
+        continue-on-error: true  # Code Scanning must be enabled in repo settings
         with:
           sarif_file: 'trivy-results.sarif'
 

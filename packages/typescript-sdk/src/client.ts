@@ -13,6 +13,7 @@ import type {
 } from './types';
 import { HttpClient, createHttpClient } from './http-client';
 import { TokenManager, EnvUtils, EventEmitter, type TokenStorage } from './utils';
+import { logger } from './utils/logger';
 import { ConfigurationError } from './errors';
 import { Auth } from './auth';
 import { Users } from './users';
@@ -78,7 +79,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
 
     // Validate license on initialization if provided
     if ((config as any).licenseKey) {
-      this.validateLicense().catch(console.warn);
+      this.validateLicense().catch((err) => logger.warn('License validation failed:', err));
     }
     
     // Auto-refresh tokens if enabled

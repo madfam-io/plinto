@@ -623,7 +623,7 @@ yarn build
 - [React Hooks Documentation](https://docs.plinto.dev/react/hooks)
 - [Component Reference](https://docs.plinto.dev/react/components)
 - [SSR Guide](https://docs.plinto.dev/react/ssr)
-- [Examples](https://github.com/plinto/react-examples)
+- [Examples](https://github.com/madfam-io/plinto/tree/main/examples/react)
 
 ## 🎯 Roadmap
 

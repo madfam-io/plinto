@@ -3,6 +3,8 @@
  * This module handles license validation and feature gating for enterprise features
  */
 
+import { logger } from '../utils/logger';
+
 export interface LicenseInfo {
   valid: boolean;
   plan: 'community' | 'pro' | 'enterprise';
@@ -91,7 +93,7 @@ export class EnterpriseFeatures {
 
     } catch (error) {
       // Fallback to community if can't validate
-      console.warn('License validation failed, falling back to community features', error);
+      logger.warn('License validation failed, falling back to community features', error);
       return this.getCommunityLicense();
     }
   }

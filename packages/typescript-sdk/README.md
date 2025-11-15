@@ -500,7 +500,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - Documentation: [https://docs.plinto.dev](https://docs.plinto.dev)
-- GitHub Issues: [https://github.com/plinto/plinto/issues](https://github.com/plinto/plinto/issues)
+- GitHub Issues: [https://github.com/madfam-io/plinto/issues](https://github.com/madfam-io/plinto/issues)
 - Discord: [https://discord.gg/plinto](https://discord.gg/plinto)
 - Email: support@plinto.dev
 

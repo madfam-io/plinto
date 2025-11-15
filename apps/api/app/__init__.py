@@ -5,7 +5,7 @@ A comprehensive authentication platform providing SSO, RBAC, multi-tenancy,
 and enterprise security features for modern applications.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.0-beta.1"
 __author__ = "Plinto Team"
 __email__ = "team@plinto.dev"
 __license__ = "MIT"

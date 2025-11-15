@@ -1,6 +1,6 @@
 {
   "name": "@plinto/nextjs",
-  "version": "1.0.0",
+  "version": "0.1.0-beta.1",
   "description": "Official Plinto SDK for Next.js applications with App Router and Pages Router support",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -52,12 +52,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/plinto/plinto",
+    "url": "https://github.com/madfam-io/plinto.git",
     "directory": "packages/nextjs-sdk"
   },
   "homepage": "https://plinto.dev",
   "bugs": {
-    "url": "https://github.com/plinto/plinto/issues"
+    "url": "https://github.com/madfam-io/plinto/issues"
   },
   "dependencies": {
     "@plinto/typescript-sdk": "*",

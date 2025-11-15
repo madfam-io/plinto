@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/plinto/plinto",
+    "url": "https://github.com/madfam-io/plinto.git",
     "directory": "packages/jwt-utils"
   },
   "keywords": [

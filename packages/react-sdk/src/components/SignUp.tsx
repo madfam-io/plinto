@@ -43,8 +43,7 @@ export function SignUp({
         email: formData.email,
         password: formData.password,
         given_name: formData.firstName,
-        family_name: formData.lastName,
-        name: `${formData.firstName} ${formData.lastName}`.trim()
+        family_name: formData.lastName
       })
 
       // If email verification is not required, sign in immediately

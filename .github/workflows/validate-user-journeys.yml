@@ -63,11 +63,37 @@ jobs:
           cd apps/api
           pip install -r requirements.txt
 
-      - name: Start test environment
-        run: docker compose -f docker-compose.test.yml up -d
+      - name: Start database services only
+        run: |
+          docker compose -f docker-compose.test.yml up -d postgres redis
+          echo "Database services starting..."
 
-      - name: Wait for services
-        run: bash scripts/wait-for-services.sh
+      - name: Wait for databases to be healthy
+        run: |
+          echo "Waiting for PostgreSQL..."
+          timeout 120s bash -c 'until docker exec plinto-postgres-test pg_isready -U test_user -d plinto_test; do sleep 2; done'
+          echo "PostgreSQL is healthy"
+
+          echo "Waiting for Redis..."
+          timeout 60s bash -c 'until docker exec plinto-redis-test redis-cli ping | grep -q PONG; do sleep 2; done'
+          echo "Redis is healthy"
+
+      - name: Start API server
+        run: |
+          cd apps/api
+          ENVIRONMENT=test \
+          DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/plinto_test" \
+          REDIS_URL="redis://localhost:6379/0" \
+          JWT_SECRET_KEY="test_jwt_secret_github_actions" \
+          python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+          echo $! > /tmp/api.pid
+          echo "API server started in background"
+
+      - name: Wait for API to be ready
+        run: |
+          echo "Waiting for API health check..."
+          timeout 120s bash -c 'until curl -f http://localhost:8000/health; do sleep 2; done'
+          echo "API is healthy and ready"
 
       - name: Run journey validation tests
         run: npx playwright test tests/e2e/journeys --reporter=github
@@ -104,7 +130,15 @@ jobs:
           echo "Please review the Playwright report for details."
           exit 1
 
-      - name: Cleanup test environment
+      - name: Stop API server
+        if: always()
+        run: |
+          if [ -f /tmp/api.pid ]; then
+            kill $(cat /tmp/api.pid) 2>/dev/null || true
+          fi
+          pkill -f "uvicorn app.main:app" || true
+
+      - name: Cleanup database services
         if: always()
         run: docker compose -f docker-compose.test.yml down -v
 
@@ -175,11 +209,53 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps chromium
 
-      - name: Start test environment
-        run: docker compose -f docker-compose.test.yml up -d
+      - name: Setup Python (for API)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Wait for services
-        run: bash scripts/wait-for-services.sh
+      - name: Install system dependencies for xmlsec
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxmlsec1-dev pkg-config
+
+      - name: Install Python dependencies
+        run: |
+          cd apps/api
+          pip install -r requirements.txt
+
+      - name: Start database services only
+        run: |
+          docker compose -f docker-compose.test.yml up -d postgres redis
+          echo "Database services starting..."
+
+      - name: Wait for databases to be healthy
+        run: |
+          echo "Waiting for PostgreSQL..."
+          timeout 120s bash -c 'until docker exec plinto-postgres-test pg_isready -U test_user -d plinto_test; do sleep 2; done'
+          echo "PostgreSQL is healthy"
+
+          echo "Waiting for Redis..."
+          timeout 60s bash -c 'until docker exec plinto-redis-test redis-cli ping | grep -q PONG; do sleep 2; done'
+          echo "Redis is healthy"
+
+      - name: Start API server
+        run: |
+          cd apps/api
+          ENVIRONMENT=test \
+          DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/plinto_test" \
+          REDIS_URL="redis://localhost:6379/0" \
+          JWT_SECRET_KEY="test_jwt_secret_github_actions" \
+          python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+          echo $! > /tmp/api.pid
+          echo "API server started in background"
+
+      - name: Wait for API to be ready
+        run: |
+          echo "Waiting for API health check..."
+          timeout 120s bash -c 'until curl -f http://localhost:8000/health; do sleep 2; done'
+          echo "API is healthy and ready"
 
       - name: Run performance tests
         run: |
@@ -187,7 +263,15 @@ jobs:
             -g "Performance meets documented expectations" \
             --reporter=github
 
-      - name: Cleanup
+      - name: Stop API server
+        if: always()
+        run: |
+          if [ -f /tmp/api.pid ]; then
+            kill $(cat /tmp/api.pid) 2>/dev/null || true
+          fi
+          pkill -f "uvicorn app.main:app" || true
+
+      - name: Cleanup database services
         if: always()
         run: docker compose -f docker-compose.test.yml down -v
 

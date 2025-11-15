@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Marketing Site Functionality', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3003');
+    await page.goto('http://localhost:3002');
     await page.waitForLoadState('networkidle');
   });
 

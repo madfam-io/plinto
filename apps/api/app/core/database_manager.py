@@ -169,21 +169,37 @@ class DatabaseManager:
             return {}
 
         pool = self._engine.pool
-        stats = {
-            "size": pool.size(),
-            "checked_in": pool.checkedin(),
-            "checked_out": pool.checkedout(),
-            "overflow": pool.overflow(),
-        }
-        
-        # The 'invalid' method doesn't exist on async pools
-        # Use 'total' instead which gives total connections
-        if hasattr(pool, 'invalid'):
-            stats["invalid"] = pool.invalid()
-        else:
-            stats["total"] = pool.size() + pool.overflow()
-        
-        return stats
+
+        # StaticPool (used in tests) doesn't have pool metrics
+        if isinstance(pool, StaticPool):
+            return {
+                "pool_type": "StaticPool",
+                "info": "In-memory test database"
+            }
+
+        # For async pools with metrics
+        try:
+            stats = {
+                "size": pool.size(),
+                "checked_in": pool.checkedin(),
+                "checked_out": pool.checkedout(),
+                "overflow": pool.overflow(),
+            }
+
+            # The 'invalid' method doesn't exist on async pools
+            # Use 'total' instead which gives total connections
+            if hasattr(pool, 'invalid'):
+                stats["invalid"] = pool.invalid()
+            else:
+                stats["total"] = pool.size() + pool.overflow()
+
+            return stats
+        except AttributeError as e:
+            # Fallback for pools without these metrics
+            return {
+                "pool_type": type(pool).__name__,
+                "metrics_unavailable": str(e)
+            }
 
     async def close(self) -> None:
         """Clean shutdown of database connections"""

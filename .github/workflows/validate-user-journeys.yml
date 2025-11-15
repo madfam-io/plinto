@@ -196,6 +196,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [validate-journeys, validate-content-alignment, performance-validation]
     if: failure()
+    permissions:
+      issues: write
+      contents: read
 
     steps:
       - name: Create issue for journey validation failure

@@ -23,6 +23,7 @@ import { Webhooks } from './webhooks';
 import { Admin } from './admin';
 import { SSO } from './sso';
 import { Invitations } from './invitations';
+import { Payments } from './payments';
 import { EnterpriseFeatures, FEATURES, type LicenseInfo } from './enterprise';
 
 /**
@@ -42,6 +43,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   public readonly admin: Admin;
   public readonly sso: SSO;
   public readonly invitations: Invitations;
+  public readonly payments: Payments;
 
   // Enterprise features
   private enterprise: EnterpriseFeatures;
@@ -79,6 +81,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
     this.admin = new Admin(this.httpClient);
     this.sso = new SSO(this.httpClient);
     this.invitations = new Invitations(this.httpClient);
+    this.payments = new Payments(this);
 
     // Set up event forwarding
     this.setupEventForwarding();

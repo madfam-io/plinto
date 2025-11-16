@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}New SSO login to your account{% endblock %}
+
+{% block content %}
+<h1>New Login Detected</h1>
+
+<p>We detected a new login to your Plinto account using Single Sign-On (SSO).</p>
+
+<div class="details-table">
+    <table class="details-table">
+        <tr>
+            <td>Time</td>
+            <td>{{ timestamp }}</td>
+        </tr>
+        <tr>
+            <td>IP Address</td>
+            <td>{{ ip_address }}</td>
+        </tr>
+        <tr>
+            <td>Location</td>
+            <td>{{ location }}</td>
+        </tr>
+        <tr>
+            <td>Device</td>
+            <td>{{ device_info }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="info-box">
+    <p><strong>Was this you?</strong></p>
+    <p>If you recognize this activity, you can safely ignore this email. This is just a security notification to keep you informed.</p>
+</div>
+
+<div class="warning-box">
+    <p><strong>⚠️ Didn't recognize this login?</strong></p>
+    <p>If this wasn't you, your account may be compromised. Please secure your account immediately by reviewing your active sessions and changing your password.</p>
+</div>
+
+<p style="text-align: center;">
+    <a href="{{ security_link }}" class="button">Review Security Settings</a>
+</p>
+
+<p style="margin-top: 32px; font-size: 14px; color: #6b7280;">
+    This is an automated security notification. We send these emails whenever your account is accessed via SSO from a new device or location.
+</p>
+{% endblock %}

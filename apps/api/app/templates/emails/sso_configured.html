@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}SSO configured for {{ organization_name }}{% endblock %}
+
+{% block content %}
+<h1>SSO Successfully Configured</h1>
+
+<p>Hi Admin,</p>
+
+<p><strong>{{ configured_by }}</strong> has successfully configured {{ provider_type }} Single Sign-On for <strong>{{ organization_name }}</strong>.</p>
+
+<div class="details-table">
+    <table class="details-table">
+        <tr>
+            <td>SSO Provider</td>
+            <td>{{ provider_name }}</td>
+        </tr>
+        <tr>
+            <td>Protocol</td>
+            <td>{{ provider_type }}</td>
+        </tr>
+        <tr>
+            <td>Configured By</td>
+            <td>{{ configured_by }}</td>
+        </tr>
+        <tr>
+            <td>Organization</td>
+            <td>{{ organization_name }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="info-box">
+    <p><strong>What's Next?</strong></p>
+    <p>Your team can now sign in using {{ provider_name }} authentication. We recommend testing the SSO configuration before rolling it out to all users.</p>
+</div>
+
+<p style="text-align: center;">
+    <a href="{{ test_link }}" class="button">Test SSO Configuration</a>
+</p>
+
+<p><strong>Important Security Notes:</strong></p>
+<ul style="color: #374151; line-height: 1.8;">
+    <li>Ensure all team members are aware of the new login method</li>
+    <li>Review your identity provider's user access controls</li>
+    <li>Keep your SSO configuration details secure</li>
+</ul>
+{% endblock %}

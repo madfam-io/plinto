@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ invitee_name }} accepted your invitation{% endblock %}
+
+{% block content %}
+<h1>Invitation Accepted!</h1>
+
+<p>Good news! <strong>{{ invitee_name }}</strong> ({{ invitee_email }}) has accepted your invitation to join <strong>{{ organization_name }}</strong>.</p>
+
+<div class="details-table">
+    <table class="details-table">
+        <tr>
+            <td>New Member</td>
+            <td>{{ invitee_name }}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{ invitee_email }}</td>
+        </tr>
+        <tr>
+            <td>Organization</td>
+            <td>{{ organization_name }}</td>
+        </tr>
+    </table>
+</div>
+
+<p>They can now access your organization and collaborate with your team.</p>
+
+<p style="text-align: center;">
+    <a href="https://app.plinto.dev/organization/members" class="button">View Team Members</a>
+</p>
+{% endblock %}

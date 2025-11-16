@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Payment failed for invoice {{ invoice_number }}{% endblock %}
+
+{% block content %}
+<h1>Payment Failed</h1>
+
+<p>Hi there,</p>
+
+<p>We were unable to process the payment for your <strong>{{ organization_name }}</strong> subscription.</p>
+
+<div class="details-table">
+    <table class="details-table">
+        <tr>
+            <td>Invoice Number</td>
+            <td>#{{ invoice_number }}</td>
+        </tr>
+        <tr>
+            <td>Amount</td>
+            <td><strong>{{ amount }}</strong></td>
+        </tr>
+        <tr>
+            <td>Payment Method</td>
+            <td>Card ending in {{ payment_method_last4 }}</td>
+        </tr>
+        <tr>
+            <td>Organization</td>
+            <td>{{ organization_name }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="warning-box">
+    <p><strong>Action Required</strong></p>
+    <p>Please update your payment method or retry the payment to avoid service interruption.</p>
+</div>
+
+<p style="text-align: center;">
+    <a href="{{ retry_link }}" class="button">Retry Payment</a>
+</p>
+
+<p><strong>Common reasons for payment failures:</strong></p>
+<ul style="color: #374151; line-height: 1.8;">
+    <li>Insufficient funds in the account</li>
+    <li>Expired or invalid payment method</li>
+    <li>Card declined by your bank</li>
+    <li>Incorrect billing information</li>
+</ul>
+
+<p><strong>Need help?</strong> Contact your bank or our support team if you continue to experience issues.</p>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}You've been invited to {{ organization_name }}{% endblock %}
+
+{% block content %}
+<h1>You've been invited!</h1>
+
+<p>Hi there,</p>
+
+<p><strong>{{ inviter_name }}</strong> has invited you to join <strong>{{ organization_name }}</strong> on Plinto as a <strong>{{ role }}</strong>.</p>
+
+<p style="text-align: center;">
+    <a href="{{ invitation_link }}" class="button">Accept Invitation</a>
+</p>
+
+<div class="info-box">
+    <p><strong>What is Plinto?</strong></p>
+    <p>Plinto is an enterprise authentication platform that provides secure access management, SSO integration, and comprehensive user authentication features.</p>
+</div>
+
+<p><strong>Your role:</strong> {{ role }}</p>
+
+<div class="warning-box">
+    <p><strong>⏰ This invitation expires on {{ expiration_date }}</strong></p>
+    <p>Please accept the invitation before it expires.</p>
+</div>
+
+<p>If you have any questions, feel free to reach out to {{ inviter_name }} or our support team.</p>
+
+<p style="margin-top: 32px; font-size: 14px; color: #6b7280;">
+    If the button above doesn't work, copy and paste this URL into your browser:<br>
+    <span style="word-break: break-all;">{{ invitation_link }}</span>
+</p>
+{% endblock %}

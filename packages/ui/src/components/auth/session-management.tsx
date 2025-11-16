@@ -32,10 +32,10 @@ export interface Session {
 export interface SessionManagementProps {
   /** Optional custom class name */
   className?: string
-  /** List of active sessions */
-  sessions: Session[]
-  /** Current session ID */
-  currentSessionId: string
+  /** List of active sessions (optional if plintoClient provided) */
+  sessions?: Session[]
+  /** Current session ID (optional if plintoClient provided) */
+  currentSessionId?: string
   /** Callback to revoke a session */
   onRevokeSession?: (sessionId: string) => Promise<void>
   /** Callback to revoke all other sessions */
@@ -44,29 +44,81 @@ export interface SessionManagementProps {
   onError?: (error: Error) => void
   /** Custom logo URL */
   logoUrl?: string
+  /** Plinto client instance for API integration */
+  plintoClient?: any
+  /** API URL for direct fetch calls (fallback if no client provided) */
+  apiUrl?: string
 }
 
 export function SessionManagement({
   className,
-  sessions,
-  currentSessionId,
+  sessions: initialSessions,
+  currentSessionId: initialCurrentSessionId,
   onRevokeSession,
   onRevokeAllOthers,
   onError,
   logoUrl,
+  plintoClient,
+  apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: SessionManagementProps) {
+  const [sessions, setSessions] = React.useState<Session[]>(initialSessions || [])
+  const [currentSessionId, setCurrentSessionId] = React.useState<string | undefined>(initialCurrentSessionId)
+  const [isLoading, setIsLoading] = React.useState(false)
   const [revokingSessionId, setRevokingSessionId] = React.useState<string | null>(null)
   const [revokingAll, setRevokingAll] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
 
-  const handleRevokeSession = async (sessionId: string) => {
-    if (!onRevokeSession) return
+  // Fetch sessions from SDK on mount if client provided
+  React.useEffect(() => {
+    if (plintoClient && !initialSessions) {
+      setIsLoading(true)
+      const fetchSessions = async () => {
+        try {
+          const response = await plintoClient.sessions.listSessions()
+          const currentSession = await plintoClient.sessions.getCurrentSession()
 
+          setSessions(response.data || response)
+          setCurrentSessionId(currentSession.id)
+        } catch (err) {
+          const error = err instanceof Error ? err : new Error('Failed to load sessions')
+          setError(error.message)
+          onError?.(error)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
+      fetchSessions()
+    }
+  }, [plintoClient, initialSessions, onError])
+
+  const handleRevokeSession = async (sessionId: string) => {
     setRevokingSessionId(sessionId)
     setError(null)
 
     try {
-      await onRevokeSession(sessionId)
+      if (plintoClient) {
+        // Use Plinto SDK client for real API integration
+        await plintoClient.sessions.revokeSession(sessionId)
+        // Update local state to remove the revoked session
+        setSessions(sessions.filter((s) => s.id !== sessionId))
+      } else if (onRevokeSession) {
+        // Use custom callback
+        await onRevokeSession(sessionId)
+      } else {
+        // Fallback to direct fetch if SDK client not provided
+        const response = await fetch(`${apiUrl}/api/v1/sessions/${sessionId}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to revoke session')
+        }
+
+        // Update local state
+        setSessions(sessions.filter((s) => s.id !== sessionId))
+      }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to revoke session')
       setError(error.message)
@@ -77,13 +129,32 @@ export function SessionManagement({
   }
 
   const handleRevokeAllOthers = async () => {
-    if (!onRevokeAllOthers) return
-
     setRevokingAll(true)
     setError(null)
 
     try {
-      await onRevokeAllOthers()
+      if (plintoClient) {
+        // Use Plinto SDK client for real API integration
+        await plintoClient.sessions.revokeAllSessions()
+        // Keep only the current session
+        setSessions(sessions.filter((s) => s.id === currentSessionId))
+      } else if (onRevokeAllOthers) {
+        // Use custom callback
+        await onRevokeAllOthers()
+      } else {
+        // Fallback to direct fetch if SDK client not provided
+        const response = await fetch(`${apiUrl}/api/v1/sessions/revoke-all`, {
+          method: 'POST',
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to revoke sessions')
+        }
+
+        // Keep only current session
+        setSessions(sessions.filter((s) => s.id === currentSessionId))
+      }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to revoke sessions')
       setError(error.message)
@@ -182,8 +253,18 @@ export function SessionManagement({
         </div>
       )}
 
-      {/* Revoke All Others Button */}
-      {otherSessions.length > 0 && onRevokeAllOthers && (
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      )}
+
+      {/* Content (hidden during initial load) */}
+      {!isLoading && (
+        <>
+          {/* Revoke All Others Button */}
+          {otherSessions.length > 0 && (
         <div className="mb-4">
           <Button
             variant="outline"
@@ -320,6 +401,8 @@ export function SessionManagement({
           <li>• Your current session cannot be revoked from here</li>
         </ul>
       </div>
+        </>
+      )}
     </Card>
   )
 }

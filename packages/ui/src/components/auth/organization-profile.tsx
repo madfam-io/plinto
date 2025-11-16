@@ -39,7 +39,7 @@ export interface OrganizationProfileProps {
   }
   /** Current user's role in the organization */
   userRole: 'owner' | 'admin' | 'member'
-  /** Organization members */
+  /** Organization members (optional if plintoClient provided) */
   members?: OrganizationMember[]
   /** Callback to update organization */
   onUpdateOrganization?: (data: {
@@ -61,6 +61,10 @@ export interface OrganizationProfileProps {
   onDeleteOrganization?: () => Promise<void>
   /** Callback on error */
   onError?: (error: Error) => void
+  /** Plinto client instance for API integration */
+  plintoClient?: any
+  /** API URL for direct fetch calls (fallback if no client provided) */
+  apiUrl?: string
 }
 
 export function OrganizationProfile({
@@ -76,6 +80,8 @@ export function OrganizationProfile({
   onRemoveMember,
   onDeleteOrganization,
   onError,
+  plintoClient,
+  apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: OrganizationProfileProps) {
   const [activeTab, setActiveTab] = React.useState<'general' | 'members' | 'danger'>('general')
   const [members, setMembers] = React.useState(initialMembers)
@@ -101,34 +107,84 @@ export function OrganizationProfile({
   const canManageMembers = userRole === 'owner' || userRole === 'admin'
   const canDeleteOrg = userRole === 'owner'
 
-  // Fetch members on mount if not provided
+  // Fetch members from SDK or callback when members tab is active
   React.useEffect(() => {
-    if (!members && onFetchMembers && activeTab === 'members') {
+    if (!members && activeTab === 'members') {
       setIsLoading(true)
-      onFetchMembers()
-        .then(setMembers)
-        .catch((err) => {
+      const fetchMembers = async () => {
+        try {
+          if (plintoClient) {
+            // Use Plinto SDK client for real API integration
+            const response = await plintoClient.organizations.listMembers(organization.id)
+            setMembers(response.data || response)
+          } else if (onFetchMembers) {
+            // Use custom callback
+            const membersList = await onFetchMembers()
+            setMembers(membersList)
+          } else {
+            // Fallback to direct fetch if SDK client not provided
+            const response = await fetch(`${apiUrl}/api/v1/organizations/${organization.id}/members`, {
+              credentials: 'include',
+            })
+
+            if (!response.ok) {
+              throw new Error('Failed to fetch members')
+            }
+
+            const data = await response.json()
+            setMembers(data.data || data)
+          }
+        } catch (err) {
           const error = err instanceof Error ? err : new Error('Failed to fetch members')
           setError(error.message)
           onError?.(error)
-        })
-        .finally(() => setIsLoading(false))
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
+      fetchMembers()
     }
-  }, [members, onFetchMembers, onError, activeTab])
+  }, [members, onFetchMembers, onError, activeTab, plintoClient, apiUrl, organization.id])
 
   const handleSaveGeneral = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!onUpdateOrganization) return
 
     setIsSavingGeneral(true)
     setError(null)
 
     try {
-      await onUpdateOrganization({
-        name: orgName,
-        slug: orgSlug,
-        description: orgDescription,
-      })
+      if (plintoClient) {
+        // Use Plinto SDK client for real API integration
+        await plintoClient.organizations.updateOrganization(organization.id, {
+          name: orgName,
+          slug: orgSlug,
+          description: orgDescription,
+        })
+      } else if (onUpdateOrganization) {
+        // Use custom callback
+        await onUpdateOrganization({
+          name: orgName,
+          slug: orgSlug,
+          description: orgDescription,
+        })
+      } else {
+        // Fallback to direct fetch if SDK client not provided
+        const response = await fetch(`${apiUrl}/api/v1/organizations/${organization.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            name: orgName,
+            slug: orgSlug,
+            description: orgDescription,
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to update organization')
+        }
+      }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to update organization')
       setError(error.message)
@@ -158,20 +214,55 @@ export function OrganizationProfile({
 
   const handleInviteMember = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!onInviteMember || !inviteEmail) return
+    if (!inviteEmail) return
 
     setIsInviting(true)
     setError(null)
 
     try {
-      await onInviteMember(inviteEmail, inviteRole)
+      if (plintoClient) {
+        // Use Plinto SDK client for real API integration
+        await plintoClient.organizations.inviteMember(organization.id, {
+          email: inviteEmail,
+          role: inviteRole,
+        })
+        // Refresh members list
+        const response = await plintoClient.organizations.listMembers(organization.id)
+        setMembers(response.data || response)
+      } else if (onInviteMember) {
+        // Use custom callback
+        await onInviteMember(inviteEmail, inviteRole)
+        // Refresh members list
+        if (onFetchMembers) {
+          const updatedMembers = await onFetchMembers()
+          setMembers(updatedMembers)
+        }
+      } else {
+        // Fallback to direct fetch if SDK client not provided
+        const response = await fetch(`${apiUrl}/api/v1/organizations/${organization.id}/members/invite`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            email: inviteEmail,
+            role: inviteRole,
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to invite member')
+        }
+
+        // Refresh members list
+        const membersResponse = await fetch(`${apiUrl}/api/v1/organizations/${organization.id}/members`, {
+          credentials: 'include',
+        })
+        const data = await membersResponse.json()
+        setMembers(data.data || data)
+      }
+
       setInviteEmail('')
       setInviteRole('member')
-      // Refresh members list
-      if (onFetchMembers) {
-        const updatedMembers = await onFetchMembers()
-        setMembers(updatedMembers)
-      }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to invite member')
       setError(error.message)
@@ -182,14 +273,39 @@ export function OrganizationProfile({
   }
 
   const handleUpdateMemberRole = async (memberId: string, role: 'admin' | 'member') => {
-    if (!onUpdateMemberRole) return
-
     try {
-      await onUpdateMemberRole(memberId, role)
-      // Update local state
-      setMembers((prev) =>
-        prev?.map((m) => (m.id === memberId ? { ...m, role } : m))
-      )
+      if (plintoClient) {
+        // Use Plinto SDK client for real API integration
+        await plintoClient.organizations.updateMemberRole(organization.id, memberId, role)
+        // Update local state
+        setMembers((prev) =>
+          prev?.map((m) => (m.id === memberId ? { ...m, role } : m))
+        )
+      } else if (onUpdateMemberRole) {
+        // Use custom callback
+        await onUpdateMemberRole(memberId, role)
+        // Update local state
+        setMembers((prev) =>
+          prev?.map((m) => (m.id === memberId ? { ...m, role } : m))
+        )
+      } else {
+        // Fallback to direct fetch if SDK client not provided
+        const response = await fetch(`${apiUrl}/api/v1/organizations/${organization.id}/members/${memberId}/role`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ role }),
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to update member role')
+        }
+
+        // Update local state
+        setMembers((prev) =>
+          prev?.map((m) => (m.id === memberId ? { ...m, role } : m))
+        )
+      }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to update member role')
       setError(error.message)
@@ -198,12 +314,31 @@ export function OrganizationProfile({
   }
 
   const handleRemoveMember = async (memberId: string) => {
-    if (!onRemoveMember) return
-
     try {
-      await onRemoveMember(memberId)
-      // Update local state
-      setMembers((prev) => prev?.filter((m) => m.id !== memberId))
+      if (plintoClient) {
+        // Use Plinto SDK client for real API integration
+        await plintoClient.organizations.removeMember(organization.id, memberId)
+        // Update local state
+        setMembers((prev) => prev?.filter((m) => m.id !== memberId))
+      } else if (onRemoveMember) {
+        // Use custom callback
+        await onRemoveMember(memberId)
+        // Update local state
+        setMembers((prev) => prev?.filter((m) => m.id !== memberId))
+      } else {
+        // Fallback to direct fetch if SDK client not provided
+        const response = await fetch(`${apiUrl}/api/v1/organizations/${organization.id}/members/${memberId}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to remove member')
+        }
+
+        // Update local state
+        setMembers((prev) => prev?.filter((m) => m.id !== memberId))
+      }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to remove member')
       setError(error.message)
@@ -212,13 +347,29 @@ export function OrganizationProfile({
   }
 
   const handleDeleteOrganization = async () => {
-    if (!onDeleteOrganization || deleteConfirmation !== organization.slug) return
+    if (deleteConfirmation !== organization.slug) return
 
     setIsDeleting(true)
     setError(null)
 
     try {
-      await onDeleteOrganization()
+      if (plintoClient) {
+        // Use Plinto SDK client for real API integration
+        await plintoClient.organizations.deleteOrganization(organization.id)
+      } else if (onDeleteOrganization) {
+        // Use custom callback
+        await onDeleteOrganization()
+      } else {
+        // Fallback to direct fetch if SDK client not provided
+        const response = await fetch(`${apiUrl}/api/v1/organizations/${organization.id}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to delete organization')
+        }
+      }
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to delete organization')
       setError(error.message)

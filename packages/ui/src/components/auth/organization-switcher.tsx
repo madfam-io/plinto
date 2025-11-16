@@ -21,9 +21,9 @@ export interface Organization {
 export interface OrganizationSwitcherProps {
   /** Optional custom class name */
   className?: string
-  /** Currently active organization */
+  /** Currently active organization (optional if plintoClient provided) */
   currentOrganization?: Organization
-  /** List of organizations user belongs to */
+  /** List of organizations user belongs to (optional if plintoClient provided) */
   organizations?: Organization[]
   /** Callback to fetch organizations */
   onFetchOrganizations?: () => Promise<Organization[]>
@@ -42,6 +42,10 @@ export interface OrganizationSwitcherProps {
     id: string
     name: string
   }
+  /** Plinto client instance for API integration */
+  plintoClient?: any
+  /** API URL for direct fetch calls (fallback if no client provided) */
+  apiUrl?: string
 }
 
 export function OrganizationSwitcher({
@@ -55,26 +59,53 @@ export function OrganizationSwitcher({
   showCreateOrganization = true,
   showPersonalWorkspace = true,
   personalWorkspace,
+  plintoClient,
+  apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: OrganizationSwitcherProps) {
   const [organizations, setOrganizations] = React.useState(initialOrganizations)
   const [isOpen, setIsOpen] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
 
-  // Fetch organizations on mount if not provided
+  // Fetch organizations from SDK or callback when dropdown opens
   React.useEffect(() => {
-    if (!organizations && onFetchOrganizations && isOpen) {
+    if (!organizations && isOpen) {
       setIsLoading(true)
-      onFetchOrganizations()
-        .then(setOrganizations)
-        .catch((err) => {
+      const fetchOrganizations = async () => {
+        try {
+          if (plintoClient) {
+            // Use Plinto SDK client for real API integration
+            const response = await plintoClient.organizations.listOrganizations()
+            setOrganizations(response.data || response)
+          } else if (onFetchOrganizations) {
+            // Use custom callback
+            const orgs = await onFetchOrganizations()
+            setOrganizations(orgs)
+          } else {
+            // Fallback to direct fetch if SDK client not provided
+            const response = await fetch(`${apiUrl}/api/v1/organizations`, {
+              credentials: 'include',
+            })
+
+            if (!response.ok) {
+              throw new Error('Failed to fetch organizations')
+            }
+
+            const data = await response.json()
+            setOrganizations(data.data || data)
+          }
+        } catch (err) {
           const error = err instanceof Error ? err : new Error('Failed to fetch organizations')
           setError(error.message)
           onError?.(error)
-        })
-        .finally(() => setIsLoading(false))
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
+      fetchOrganizations()
     }
-  }, [organizations, onFetchOrganizations, onError, isOpen])
+  }, [organizations, onFetchOrganizations, onError, isOpen, plintoClient, apiUrl])
 
   const handleSwitchOrganization = (org: Organization) => {
     onSwitchOrganization?.(org)

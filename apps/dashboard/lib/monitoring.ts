@@ -2,9 +2,20 @@
  * Frontend monitoring utilities for dashboard application
  */
 
-import { createLogger } from '@plinto/core/utils/logger'
-
-const logger = createLogger('DashboardMonitoring')
+// Simple logger utility for dashboard monitoring
+const logger = {
+  debug: (message: string, ...args: any[]) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.debug(`[DashboardMonitoring] ${message}`, ...args)
+    }
+  },
+  warn: (message: string, ...args: any[]) => {
+    console.warn(`[DashboardMonitoring] ${message}`, ...args)
+  },
+  error: (message: string, ...args: any[]) => {
+    console.error(`[DashboardMonitoring] ${message}`, ...args)
+  }
+}
 
 interface MetricData {
   type: 'pageView' | 'apiCall' | 'error' | 'userAction'

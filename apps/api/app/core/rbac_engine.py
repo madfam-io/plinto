@@ -18,6 +18,7 @@ from app.models.enterprise import (
     PermissionScope,
     RoleType
 )
+from app.models import OrganizationCustomRole
 from app.core.tenant_context import TenantContext
 
 logger = structlog.get_logger()
@@ -239,7 +240,7 @@ class RBACEngine:
 
         # Get role
         result = await session.execute(
-            select(OrganizationRole).where(OrganizationRole.id == role_id)
+            select(OrganizationCustomRole).where(OrganizationCustomRole.id == role_id)
         )
         role = result.scalar_one_or_none()
 
@@ -501,15 +502,10 @@ async def initialize_default_roles(session: AsyncSession, organization_id: str):
     ]
 
     for role_data in default_roles:
-        role = OrganizationRole(
+        role = OrganizationCustomRole(
             organization_id=organization_id,
             name=role_data["name"],
-            description=role_data["description"],
-            permissions=role_data["permissions"],
-            type=role_data["type"],
-            priority=role_data["priority"],
-            is_system=True,
-            is_default=(role_data["name"] == "Member")  # Member is default role
+            permissions=role_data["permissions"]
         )
         session.add(role)
 

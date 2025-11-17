@@ -193,6 +193,7 @@ class OrganizationCustomRole(Base):
     organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
     name = Column(String(255), nullable=False)
     permissions = Column(JSONB, default=[])
+    parent_role_id = Column(UUID(as_uuid=True), ForeignKey("organization_custom_roles.id"), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

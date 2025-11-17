@@ -812,3 +812,151 @@ class TestResourceSpecificPermissions:
         )
 
         assert result is False
+
+
+class TestRoleInheritance:
+    """Test role permission inheritance functionality"""
+
+    @pytest.fixture
+    def rbac_engine(self):
+        """Create RBACEngine instance for testing"""
+        return RBACEngine()
+
+    @pytest.fixture
+    def mock_session(self):
+        """Mock database session"""
+        return AsyncMock()
+
+    @pytest.mark.asyncio
+    async def test_get_role_permissions_without_parent(self, rbac_engine, mock_session):
+        """Test getting permissions for role without parent"""
+        role_id = str(uuid4())
+        
+        # Mock role without parent
+        mock_role = Mock()
+        mock_role.permissions = ["user:read", "user:list"]
+        mock_role.parent_role_id = None
+        
+        mock_result = Mock()
+        mock_result.scalar_one_or_none.return_value = mock_role
+        mock_session.execute = AsyncMock(return_value=mock_result)
+        
+        permissions = await rbac_engine._get_role_permissions(mock_session, role_id)
+        
+        assert permissions == {"user:read", "user:list"}
+        assert mock_session.execute.called
+
+    @pytest.mark.asyncio
+    async def test_get_role_permissions_with_parent(self, rbac_engine, mock_session):
+        """Test getting permissions with parent role inheritance"""
+        child_role_id = str(uuid4())
+        parent_role_id = str(uuid4())
+        
+        # Mock child role with parent
+        mock_child_role = Mock()
+        mock_child_role.permissions = ["user:create", "user:update"]
+        mock_child_role.parent_role_id = parent_role_id
+        
+        # Mock parent role
+        mock_parent_role = Mock()
+        mock_parent_role.permissions = ["user:read", "user:list"]
+        mock_parent_role.parent_role_id = None
+        
+        # Setup mock returns for both queries
+        call_count = [0]
+        
+        async def mock_execute(query):
+            result = Mock()
+            call_count[0] += 1
+            
+            if call_count[0] == 1:
+                result.scalar_one_or_none.return_value = mock_child_role
+            else:
+                result.scalar_one_or_none.return_value = mock_parent_role
+            return result
+        
+        mock_session.execute = mock_execute
+        
+        permissions = await rbac_engine._get_role_permissions(mock_session, child_role_id)
+        
+        # Should include both child and parent permissions
+        assert "user:create" in permissions
+        assert "user:update" in permissions
+        assert "user:read" in permissions
+        assert "user:list" in permissions
+        assert len(permissions) == 4
+
+    @pytest.mark.asyncio
+    async def test_get_role_permissions_nonexistent_role(self, rbac_engine, mock_session):
+        """Test getting permissions for non-existent role returns empty set"""
+        role_id = str(uuid4())
+        
+        mock_result = Mock()
+        mock_result.scalar_one_or_none.return_value = None
+        mock_session.execute = AsyncMock(return_value=mock_result)
+        
+        permissions = await rbac_engine._get_role_permissions(mock_session, role_id)
+        
+        assert permissions == set()
+
+    @pytest.mark.asyncio
+    async def test_role_inheritance_caching(self, rbac_engine, mock_session):
+        """Test that role permissions are cached"""
+        role_id = str(uuid4())
+        
+        # Mock role
+        mock_role = Mock()
+        mock_role.permissions = ["user:read"]
+        mock_role.parent_role_id = None
+        
+        mock_result = Mock()
+        mock_result.scalar_one_or_none.return_value = mock_role
+        
+        call_count = [0]
+        async def mock_execute(query):
+            call_count[0] += 1
+            return mock_result
+        
+        mock_session.execute = mock_execute
+        
+        # First call - should hit database
+        permissions1 = await rbac_engine._get_role_permissions(mock_session, role_id)
+        
+        # Second call - should use cache
+        permissions2 = await rbac_engine._get_role_permissions(mock_session, role_id)
+        
+        # Should return same permissions
+        assert permissions1 == permissions2
+        assert permissions1 == {"user:read"}
+        
+        # Should only call database once (cached second time)
+        assert call_count[0] == 1
+
+    @pytest.mark.asyncio
+    async def test_initialize_default_roles(self, mock_session):
+        """Test initialization of default roles for organization"""
+        org_id = str(uuid4())
+        
+        # Track what roles were added
+        added_roles = []
+        
+        def capture_add(role):
+            added_roles.append(role)
+        
+        mock_session.add = Mock(side_effect=capture_add)
+        mock_session.commit = AsyncMock()
+        
+        from app.core.rbac_engine import initialize_default_roles
+        await initialize_default_roles(mock_session, org_id)
+        
+        # Should create 4 default roles (OWNER, ADMIN, MEMBER, VIEWER)
+        assert len(added_roles) == 4
+        
+        # Verify roles have correct organization_id
+        for role in added_roles:
+            assert role.organization_id == org_id
+            assert hasattr(role, 'name')
+            assert hasattr(role, 'permissions')
+        
+        # Verify commit was called
+        assert mock_session.commit.called

@@ -1,4 +1,5 @@
 import pytest
+
 pytestmark = pytest.mark.asyncio
 
 
@@ -6,19 +7,20 @@ pytestmark = pytest.mark.asyncio
 Working unit tests for AuthService - matches actual implementation
 """
 
-import pytest
-from unittest.mock import Mock, patch, AsyncMock
-from uuid import uuid4, UUID
 from datetime import datetime, timedelta
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+from uuid import UUID, uuid4
 
+import pytest
+
+from app.models import AuditLog, Session, User
 from app.services.auth_service import AuthService
-from app.models import User, Session, AuditLog
 
 
 @pytest.fixture(autouse=True)
 def mock_settings():
     """Mock settings for auth service tests."""
-    with patch('app.services.auth_service.settings') as mock_settings:
+    with patch("app.services.auth_service.settings") as mock_settings:
         mock_settings.JWT_SECRET_KEY = "test_secret_key"
         mock_settings.JWT_ALGORITHM = "HS256"
         mock_settings.JWT_ISSUER = "test_issuer"
@@ -119,17 +121,14 @@ class TestUserCreation:
         mock_db = AsyncMock()
 
         # Mock database execute result for user existence check
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = None  # No existing user
         mock_db.execute.return_value = mock_result
 
         # Mock user creation
-        with patch.object(AuthService, 'create_audit_log') as mock_audit:
+        with patch.object(AuthService, "create_audit_log") as mock_audit:
             user = await AuthService.create_user(
-                db=mock_db,
-                email="test@example.com",
-                password="TestPassword123!",
-                name="Test User"
+                db=mock_db, email="test@example.com", password="TestPassword123!", name="Test User"
             )
 
             # Verify user was created
@@ -145,10 +144,7 @@ class TestUserCreation:
 
         with pytest.raises(ValueError, match="at least 12 characters"):
             await AuthService.create_user(
-                db=mock_db,
-                email="test@example.com",
-                password="weak",
-                name="Test User"
+                db=mock_db, email="test@example.com", password="weak", name="Test User"
             )
 
     @pytest.mark.asyncio
@@ -158,7 +154,7 @@ class TestUserCreation:
 
         # Mock existing user
         existing_user = Mock()
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = existing_user  # User exists
         mock_db.execute = AsyncMock(return_value=mock_result)
 
@@ -166,10 +162,7 @@ class TestUserCreation:
 
         with pytest.raises(ConflictError, match="already exists"):
             await AuthService.create_user(
-                db=mock_db,
-                email="test@example.com",
-                password="TestPassword123!",
-                name="Test User"
+                db=mock_db, email="test@example.com", password="TestPassword123!", name="Test User"
             )
 
     @pytest.mark.asyncio
@@ -178,19 +171,19 @@ class TestUserCreation:
         mock_db = AsyncMock()
 
         # Mock no existing user
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = None
         mock_db.execute.return_value = mock_result
 
         tenant_id = uuid4()
 
-        with patch.object(AuthService, 'create_audit_log') as mock_audit:
+        with patch.object(AuthService, "create_audit_log") as mock_audit:
             user = await AuthService.create_user(
                 db=mock_db,
                 email="test@example.com",
                 password="TestPassword123!",
                 name="Test User",
-                tenant_id=tenant_id
+                tenant_id=tenant_id,
             )
 
             # Should not query for tenant
@@ -215,15 +208,13 @@ class TestUserAuthentication:
         mock_user.password_hash = AuthService.hash_password("TestPassword123!")
 
         # Mock database execute result
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = mock_user
         mock_db.execute.return_value = mock_result
 
-        with patch.object(AuthService, 'create_audit_log') as mock_audit:
+        with patch.object(AuthService, "create_audit_log") as mock_audit:
             result = await AuthService.authenticate_user(
-                db=mock_db,
-                email="test@example.com",
-                password="TestPassword123!"
+                db=mock_db, email="test@example.com", password="TestPassword123!"
             )
 
             assert result == mock_user
@@ -237,14 +228,12 @@ class TestUserAuthentication:
         mock_db = AsyncMock()
 
         # Mock no user found
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = None
         mock_db.execute.return_value = mock_result
 
         result = await AuthService.authenticate_user(
-            db=mock_db,
-            email="test@example.com",
-            password="TestPassword123!"
+            db=mock_db, email="test@example.com", password="TestPassword123!"
         )
 
         assert result is None
@@ -259,14 +248,12 @@ class TestUserAuthentication:
         mock_user.is_active = False
         mock_user.is_suspended = False
 
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = mock_user
         mock_db.execute.return_value = mock_result
 
         result = await AuthService.authenticate_user(
-            db=mock_db,
-            email="test@example.com",
-            password="TestPassword123!"
+            db=mock_db, email="test@example.com", password="TestPassword123!"
         )
 
         assert result is None
@@ -281,14 +268,12 @@ class TestUserAuthentication:
         mock_user.is_active = True
         mock_user.is_suspended = True
 
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = mock_user
         mock_db.execute.return_value = mock_result
 
         result = await AuthService.authenticate_user(
-            db=mock_db,
-            email="test@example.com",
-            password="TestPassword123!"
+            db=mock_db, email="test@example.com", password="TestPassword123!"
         )
 
         assert result is None
@@ -306,15 +291,13 @@ class TestUserAuthentication:
         mock_user.is_suspended = False
         mock_user.password_hash = AuthService.hash_password("CorrectPassword123!")
 
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = mock_user
         mock_db.execute.return_value = mock_result
 
-        with patch.object(AuthService, 'create_audit_log') as mock_audit:
+        with patch.object(AuthService, "create_audit_log") as mock_audit:
             result = await AuthService.authenticate_user(
-                db=mock_db,
-                email="test@example.com",
-                password="WrongPassword123!"
+                db=mock_db, email="test@example.com", password="WrongPassword123!"
             )
 
             assert result is None
@@ -347,9 +330,7 @@ class TestTokenCreation:
         tenant_id = str(uuid4())
         org_id = str(uuid4())
 
-        token, jti, expires_at = AuthService.create_access_token(
-            user_id, tenant_id, org_id
-        )
+        token, jti, expires_at = AuthService.create_access_token(user_id, tenant_id, org_id)
 
         assert isinstance(token, str)
         assert isinstance(jti, str)
@@ -403,15 +384,16 @@ class TestSessionManagement:
         mock_redis = AsyncMock()
         mock_session_store = AsyncMock()
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis), \
-             patch('app.services.auth_service.SessionStore', return_value=mock_session_store):
-
+        with (
+            patch("app.services.auth_service.get_redis", return_value=mock_redis),
+            patch("app.services.auth_service.SessionStore", return_value=mock_session_store),
+        ):
             access_token, refresh_token, session = await AuthService.create_session(
                 db=mock_db,
                 user=mock_user,
                 ip_address="127.0.0.1",
                 user_agent="Test Agent",
-                device_name="Test Device"
+                device_name="Test Device",
             )
 
             assert isinstance(access_token, str)
@@ -439,7 +421,7 @@ class TestSessionManagement:
         mock_redis = AsyncMock()
         mock_redis.get.return_value = None  # Not blacklisted
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis):
+        with patch("app.services.auth_service.get_redis", return_value=mock_redis):
             payload = await AuthService.verify_token(token, "access")
 
             assert payload is not None
@@ -460,7 +442,7 @@ class TestSessionManagement:
         mock_redis = AsyncMock()
         mock_redis.get.return_value = "1"  # Blacklisted
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis):
+        with patch("app.services.auth_service.get_redis", return_value=mock_redis):
             payload = await AuthService.verify_token(token, "access")
 
             assert payload is None
@@ -478,7 +460,7 @@ class TestSessionManagement:
         mock_redis = AsyncMock()
         mock_redis.get.return_value = None
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis):
+        with patch("app.services.auth_service.get_redis", return_value=mock_redis):
             payload = await AuthService.verify_token(token, "refresh")  # Wrong type
 
             assert payload is None
@@ -491,7 +473,7 @@ class TestSessionManagement:
         # Mock Redis
         mock_redis = AsyncMock()
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis):
+        with patch("app.services.auth_service.get_redis", return_value=mock_redis):
             payload = await AuthService.verify_token(invalid_token, "access")
 
             assert payload is None
@@ -517,7 +499,7 @@ class TestTokenRefresh:
         mock_session.refresh_token_jti = refresh_jti
         mock_session.is_active = True
 
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = mock_session
         mock_db.execute.return_value = mock_result
 
@@ -533,7 +515,7 @@ class TestTokenRefresh:
         mock_redis = AsyncMock()
         mock_redis.get.return_value = None  # Not blacklisted
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis):
+        with patch("app.services.auth_service.get_redis", return_value=mock_redis):
             result = await AuthService.refresh_tokens(mock_db, refresh_token)
 
             assert result is not None
@@ -556,7 +538,7 @@ class TestTokenRefresh:
         # Mock Redis
         mock_redis = AsyncMock()
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis):
+        with patch("app.services.auth_service.get_redis", return_value=mock_redis):
             result = await AuthService.refresh_tokens(mock_db, invalid_token)
 
             assert result is None
@@ -574,7 +556,7 @@ class TestTokenRefresh:
         )
 
         # Mock no session found
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = None
         mock_db.execute.return_value = mock_result
 
@@ -582,9 +564,10 @@ class TestTokenRefresh:
         mock_redis = AsyncMock()
         mock_redis.get.return_value = None
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis), \
-             patch.object(AuthService, 'revoke_token_family') as mock_revoke:
-
+        with (
+            patch("app.services.auth_service.get_redis", return_value=mock_redis),
+            patch.object(AuthService, "revoke_token_family") as mock_revoke,
+        ):
             result = await AuthService.refresh_tokens(mock_db, refresh_token)
 
             assert result is None
@@ -617,10 +600,11 @@ class TestLogout:
         mock_redis = AsyncMock()
         mock_session_store = AsyncMock()
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis), \
-             patch('app.services.auth_service.SessionStore', return_value=mock_session_store), \
-             patch.object(AuthService, 'create_audit_log') as mock_audit:
-
+        with (
+            patch("app.services.auth_service.get_redis", return_value=mock_redis),
+            patch("app.services.auth_service.SessionStore", return_value=mock_session_store),
+            patch.object(AuthService, "create_audit_log") as mock_audit,
+        ):
             result = await AuthService.logout(mock_db, session_id, user_id)
 
             assert result is True
@@ -682,7 +666,7 @@ class TestAuditLogging:
         tenant_id = uuid4()
 
         # Mock no previous log
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = None
         mock_db.execute.return_value = mock_result
 
@@ -693,7 +677,7 @@ class TestAuditLogging:
             event_type="test_event",
             event_data={"test": "data"},
             ip_address="127.0.0.1",
-            user_agent="Test Agent"
+            user_agent="Test Agent",
         )
 
         # Verify audit log created
@@ -718,7 +702,7 @@ class TestAuditLogging:
         mock_previous_log = AsyncMock()
         mock_previous_log.current_hash = "previous_hash_123"
 
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalar_one_or_none.return_value = mock_previous_log
         mock_db.execute.return_value = mock_result
 
@@ -727,7 +711,7 @@ class TestAuditLogging:
             user_id=user_id,
             tenant_id=tenant_id,
             event_type="test_event",
-            event_data={"test": "data"}
+            event_data={"test": "data"},
         )
 
         # Verify audit log created with chain
@@ -758,16 +742,16 @@ class TestTokenFamilyRevocation:
         session2.refresh_token_jti = "refresh_jti_2"
 
         # Mock database execute result for sessions query
-        mock_scalars = AsyncMock()
+        mock_scalars = MagicMock()
         mock_scalars.all.return_value = [session1, session2]
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.scalars.return_value = mock_scalars
         mock_db.execute.return_value = mock_result
 
         # Mock Redis
         mock_redis = AsyncMock()
 
-        with patch('app.services.auth_service.get_redis', return_value=mock_redis):
+        with patch("app.services.auth_service.get_redis", return_value=mock_redis):
             await AuthService.revoke_token_family(mock_db, family)
 
             # Verify sessions revoked
@@ -795,10 +779,7 @@ class TestErrorHandling:
 
         with pytest.raises(Exception):
             await AuthService.create_user(
-                db=mock_db,
-                email="test@example.com",
-                password="TestPassword123!",
-                name="Test User"
+                db=mock_db, email="test@example.com", password="TestPassword123!", name="Test User"
             )
 
     @pytest.mark.asyncio
@@ -811,9 +792,7 @@ class TestErrorHandling:
 
         with pytest.raises(Exception):
             await AuthService.authenticate_user(
-                db=mock_db,
-                email="test@example.com",
-                password="TestPassword123!"
+                db=mock_db, email="test@example.com", password="TestPassword123!"
             )
 
     @pytest.mark.asyncio
@@ -827,9 +806,6 @@ class TestErrorHandling:
         mock_user.tenant_id = uuid4()
 
         # Mock Redis error
-        with patch('app.services.auth_service.get_redis', side_effect=Exception("Redis error")):
+        with patch("app.services.auth_service.get_redis", side_effect=Exception("Redis error")):
             with pytest.raises(Exception):
-                await AuthService.create_session(
-                    db=mock_db,
-                    user=mock_user
-                )
+                await AuthService.create_session(db=mock_db, user=mock_user)

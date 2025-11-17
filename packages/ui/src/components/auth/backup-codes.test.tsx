@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor, act } from '@/test/test-utils'
+import { render, screen, waitFor, fireEvent } from '@/test/test-utils'
 import userEvent from '@testing-library/user-event'
 import { BackupCodes } from './backup-codes'
 
@@ -273,7 +273,6 @@ describe('BackupCodes', () => {
     })
 
     it('should show confirmation before regenerating', async () => {
-      const user = userEvent.setup()
       render(
         <BackupCodes
           backupCodes={mockBackupCodes}
@@ -283,11 +282,7 @@ describe('BackupCodes', () => {
       )
 
       const regenerateButton = screen.getByRole('button', { name: /regenerate codes/i })
-
-      // FIX: Wrap state-changing action in act()
-      await act(async () => {
-        await user.click(regenerateButton)
-      })
+      fireEvent.click(regenerateButton)
 
       // Now query for elements that should appear after state update
       expect(await screen.findByRole('button', { name: /confirm regenerate/i })).toBeInTheDocument()
@@ -295,7 +290,6 @@ describe('BackupCodes', () => {
     })
 
     it('should allow canceling regeneration', async () => {
-      const user = userEvent.setup()
       render(
         <BackupCodes
           backupCodes={mockBackupCodes}
@@ -305,18 +299,10 @@ describe('BackupCodes', () => {
       )
 
       const regenerateButton = screen.getByRole('button', { name: /regenerate codes/i })
-
-      // FIX: Wrap first click in act()
-      await act(async () => {
-        await user.click(regenerateButton)
-      })
+      fireEvent.click(regenerateButton)
 
       const cancelButton = await screen.findByRole('button', { name: /cancel/i })
-
-      // FIX: Wrap cancel click in act()
-      await act(async () => {
-        await user.click(cancelButton)
-      })
+      fireEvent.click(cancelButton)
 
       // Wait for confirmation to disappear
       await waitFor(() => {
@@ -325,7 +311,6 @@ describe('BackupCodes', () => {
     })
 
     it('should regenerate codes on confirmation', async () => {
-      const user = userEvent.setup()
       const newCodes = [{ code: 'NEWCODE1', used: false }]
       mockOnRegenerateCodes.mockResolvedValue(newCodes)
 
@@ -338,18 +323,10 @@ describe('BackupCodes', () => {
       )
 
       const regenerateButton = screen.getByRole('button', { name: /regenerate codes/i })
-
-      // FIX: Wrap regenerate click in act()
-      await act(async () => {
-        await user.click(regenerateButton)
-      })
+      fireEvent.click(regenerateButton)
 
       const confirmButton = await screen.findByRole('button', { name: /confirm regenerate/i })
-
-      // FIX: Wrap confirm click in act()
-      await act(async () => {
-        await user.click(confirmButton)
-      })
+      fireEvent.click(confirmButton)
 
       await waitFor(() => {
         expect(mockOnRegenerateCodes).toHaveBeenCalled()
@@ -358,7 +335,6 @@ describe('BackupCodes', () => {
     })
 
     it('should show loading state during regeneration', async () => {
-      const user = userEvent.setup()
       mockOnRegenerateCodes.mockImplementation(
         () => new Promise((resolve) => setTimeout(() => resolve([]), 100))
       )
@@ -372,25 +348,16 @@ describe('BackupCodes', () => {
       )
 
       const regenerateButton = screen.getByRole('button', { name: /regenerate codes/i })
-
-      // FIX: Wrap regenerate click in act()
-      await act(async () => {
-        await user.click(regenerateButton)
-      })
+      fireEvent.click(regenerateButton)
 
       const confirmButton = await screen.findByRole('button', { name: /confirm regenerate/i })
-
-      // FIX: Wrap confirm click in act()
-      await act(async () => {
-        await user.click(confirmButton)
-      })
+      fireEvent.click(confirmButton)
 
       // Wait for loading state
       expect(await screen.findByText(/regenerating/i)).toBeInTheDocument()
     })
 
     it('should handle regeneration error', async () => {
-      const user = userEvent.setup()
       mockOnRegenerateCodes.mockRejectedValue(new Error('Regeneration failed'))
 
       render(
@@ -403,18 +370,10 @@ describe('BackupCodes', () => {
       )
 
       const regenerateButton = screen.getByRole('button', { name: /regenerate codes/i })
-
-      // FIX: Wrap regenerate click in act()
-      await act(async () => {
-        await user.click(regenerateButton)
-      })
+      fireEvent.click(regenerateButton)
 
       const confirmButton = await screen.findByRole('button', { name: /confirm regenerate/i })
-
-      // FIX: Wrap confirm click in act()
-      await act(async () => {
-        await user.click(confirmButton)
-      })
+      fireEvent.click(confirmButton)
 
       // Wait for error message
       expect(await screen.findByText(/regeneration failed/i)).toBeInTheDocument()
@@ -549,7 +508,6 @@ describe('BackupCodes', () => {
     })
 
     it('should clear error on successful operation', async () => {
-      const user = userEvent.setup()
       mockOnRegenerateCodes
         .mockRejectedValueOnce(new Error('First error'))
         .mockResolvedValueOnce([{ code: 'NEW1', used: false }])
@@ -564,37 +522,23 @@ describe('BackupCodes', () => {
 
       // First attempt - error
       const regenerateButton = screen.getByRole('button', { name: /regenerate codes/i })
-
-      // FIX: Wrap regenerate click in act()
-      await act(async () => {
-        await user.click(regenerateButton)
-      })
+      fireEvent.click(regenerateButton)
 
       const confirmButton = await screen.findByRole('button', { name: /confirm regenerate/i })
-
-      // FIX: Wrap confirm click in act()
-      await act(async () => {
-        await user.click(confirmButton)
-      })
+      fireEvent.click(confirmButton)
 
       // Wait for error message
       expect(await screen.findByText(/first error/i)).toBeInTheDocument()
 
       // Close confirmation dialog
       const cancelButton = await screen.findByRole('button', { name: /cancel/i })
-      await act(async () => {
-        await user.click(cancelButton)
-      })
+      fireEvent.click(cancelButton)
 
       // Second attempt - success
-      await act(async () => {
-        await user.click(regenerateButton)
-      })
+      fireEvent.click(regenerateButton)
 
       const confirmButton2 = await screen.findByRole('button', { name: /confirm regenerate/i })
-      await act(async () => {
-        await user.click(confirmButton2)
-      })
+      fireEvent.click(confirmButton2)
 
       // Error should be cleared on successful operation
       await waitFor(() => {

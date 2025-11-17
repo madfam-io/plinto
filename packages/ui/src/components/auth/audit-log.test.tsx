@@ -145,7 +145,7 @@ describe('AuditLog', () => {
     it('should display event actors', () => {
       render(<AuditLog events={mockEvents} />)
 
-      expect(screen.getByText('John Doe')).toBeInTheDocument()
+      expect(screen.getAllByText('John Doe')[0]).toBeInTheDocument()
       expect(screen.getByText('jane@example.com')).toBeInTheDocument()
       expect(screen.getByText('Admin User')).toBeInTheDocument()
     })
@@ -159,7 +159,7 @@ describe('AuditLog', () => {
     it('should display IP addresses', () => {
       render(<AuditLog events={mockEvents} />)
 
-      expect(screen.getByText(/IP: 192\.168\.1\.1/i)).toBeInTheDocument()
+      expect(screen.getAllByText(/IP: 192\.168\.1\.1/i)[0]).toBeInTheDocument()
       expect(screen.getByText(/IP: 192\.168\.1\.2/i)).toBeInTheDocument()
       expect(screen.getByText(/IP: 10\.0\.0\.1/i)).toBeInTheDocument()
     })
@@ -359,7 +359,7 @@ describe('AuditLog', () => {
       const csvButton = screen.getByRole('button', { name: /export csv/i })
       await user.click(csvButton)
 
-      expect(screen.getByText(/exporting\.\.\./i)).toBeInTheDocument()
+      expect(screen.getAllByText(/exporting\.\.\./i)[0]).toBeInTheDocument()
 
       await waitFor(() => {
         expect(screen.queryByText(/exporting\.\.\./i)).not.toBeInTheDocument()

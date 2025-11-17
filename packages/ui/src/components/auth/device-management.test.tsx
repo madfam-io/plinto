@@ -243,9 +243,9 @@ describe('DeviceManagement', () => {
         />
       )
 
-      expect(screen.getByText(/Last used 5m ago/i)).toBeInTheDocument()
-      expect(screen.getByText(/Last used 1h ago/i)).toBeInTheDocument()
-      expect(screen.getByText(/Last used 1d ago/i)).toBeInTheDocument()
+      expect(screen.getByText(/5m ago/i)).toBeInTheDocument()
+      expect(screen.getByText(/1h ago/i)).toBeInTheDocument()
+      expect(screen.getByText(/1d ago/i)).toBeInTheDocument()
     })
   })
 

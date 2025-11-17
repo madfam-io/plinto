@@ -51,6 +51,8 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@asamuzakjp/css-color": "^4.0.5",
+    "@csstools/css-syntax-patches-for-csstree": "^1.0.16",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
     "@storybook/addon-links": "^8.6.14",
@@ -68,6 +70,7 @@
     "jsdom": "^27.2.0",
     "psl": "^1.15.0",
     "storybook": "^8.6.14",
+    "tldts": "^7.0.17",
     "typescript": "^5.3.0",
     "vitest": "^3.2.4"
   }

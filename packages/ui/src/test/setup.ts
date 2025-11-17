@@ -8,6 +8,8 @@ expect.extend(matchers)
 // Cleanup after each test
 afterEach(() => {
   cleanup()
+  vi.clearAllMocks()
+  vi.clearAllTimers()
 })
 
 // Mock window.matchMedia
@@ -43,3 +45,7 @@ global.ResizeObserver = class ResizeObserver {
   observe() {}
   unobserve() {}
 } as any
+
+// Mock Navigator.clipboard (for copy/paste functionality)
+// Note: Individual tests should mock this if needed using Object.defineProperty
+// in their beforeEach hooks to ensure proper spy tracking

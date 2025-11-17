@@ -196,6 +196,24 @@ export {
 export { WebAuthnHelper, checkWebAuthnSupport } from './webauthn-helper';
 export type { WebAuthnSupport } from './webauthn-helper';
 
+// GraphQL exports
+export { GraphQL, createGraphQLClient } from './graphql';
+export type {
+  GraphQLConfig,
+  GraphQLQueryOptions,
+  GraphQLMutationOptions,
+  GraphQLSubscriptionOptions,
+} from './graphql';
+
+// WebSocket exports
+export { WebSocket, createWebSocketClient } from './websocket';
+export type {
+  WebSocketConfig,
+  WebSocketMessage,
+  WebSocketEventMap,
+  WebSocketStatus,
+} from './websocket';
+
 // Version and metadata
 export const SDK_VERSION = '1.0.0';
 export const SDK_NAME = 'plinto-typescript-sdk';

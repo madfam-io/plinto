@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { Redis } from 'ioredis';
 import { ConektaProvider } from '../src/services/providers/conekta.provider';
-import { FungiesProvider } from '../src/services/providers/fungies.provider';
 import { StripeProvider } from '../src/services/providers/stripe.provider';
 import { PaymentGatewayService } from '../src/services/payment-gateway.service';
 import { PaymentRoutingService } from '../src/services/payment-routing.service';
@@ -11,7 +10,6 @@ import { Currency } from '../src/types/payment.types';
 describe('Payment Integration Tests', () => {
   let redis: Redis;
   let conektaProvider: ConektaProvider;
-  let fungiesProvider: FungiesProvider;
   let stripeProvider: StripeProvider;
   let paymentGateway: PaymentGatewayService;
   let routingService: PaymentRoutingService;
@@ -36,21 +34,6 @@ describe('Payment Integration Tests', () => {
       redis
     );
 
-    fungiesProvider = new FungiesProvider(
-      {
-        apiKey: process.env.FUNGIES_TEST_KEY || 'test_key',
-        merchantId: process.env.FUNGIES_TEST_MERCHANT || 'test_merchant',
-        webhookSecret: 'test_webhook_secret',
-        environment: 'sandbox',
-        taxSettings: {
-          autoCalculateVAT: true,
-          includeVATInPrice: true,
-          defaultTaxRate: 16
-        }
-      },
-      redis
-    );
-
     stripeProvider = new StripeProvider(
       {
         secretKey: process.env.STRIPE_TEST_KEY || 'sk_test_123',
@@ -64,11 +47,10 @@ describe('Payment Integration Tests', () => {
     // Initialize services
     paymentGateway = new PaymentGatewayService(redis);
     paymentGateway.registerProvider(conektaProvider);
-    paymentGateway.registerProvider(fungiesProvider);
     paymentGateway.registerProvider(stripeProvider);
 
     routingService = new PaymentRoutingService(
-      { conekta: conektaProvider, fungies: fungiesProvider, stripe: stripeProvider },
+      { conekta: conektaProvider, stripe: stripeProvider },
       redis
     );
 
@@ -96,24 +78,7 @@ describe('Payment Integration Tests', () => {
       expect(decision.confidence).toBeGreaterThan(0.7);
     });
 
-    it('should select Fungies for EU customers with VAT requirements', async () => {
-      const context = {
-        amount: 500,
-        currency: 'EUR' as Currency,
-        country: 'FR',
-        customerId: 'cust_456',
-        isB2B: true,
-        requiresInvoice: true
-      };
-
-      const decision = await routingService.selectOptimalProvider(context);
-
-      expect(decision.provider).toBe('fungies');
-      expect(decision.reason).toContain('VAT compliance');
-      expect(decision.metadata.requiresTaxCompliance).toBe(true);
-    });
-
-    it('should select Stripe as fallback for US customers', async () => {
+    it('should select Stripe for US customers', async () => {
       const context = {
         amount: 2000,
         currency: 'USD' as Currency,
@@ -125,7 +90,20 @@ describe('Payment Integration Tests', () => {
 
       expect(decision.provider).toBe('stripe');
       expect(decision.reason).toContain('North America');
-      expect(decision.fallbacks).toContain('fungies');
+    });
+
+    it('should select Stripe for EU customers', async () => {
+      const context = {
+        amount: 500,
+        currency: 'EUR' as Currency,
+        country: 'FR',
+        customerId: 'cust_456'
+      };
+
+      const decision = await routingService.selectOptimalProvider(context);
+
+      expect(decision.provider).toBe('stripe');
+      expect(decision.metadata.requiresTaxCompliance).toBe(true);
     });
   });
 
@@ -156,14 +134,14 @@ describe('Payment Integration Tests', () => {
 
     it('should handle payment with fallback on failure', async () => {
       const context = {
-        amount: 500,
-        currency: 'EUR' as Currency,
-        country: 'DE',
+        amount: 1000,
+        currency: 'MXN' as Currency,
+        country: 'MX',
         customerId: 'cust_456'
       };
 
       // Mock primary provider failure
-      jest.spyOn(fungiesProvider, 'createPaymentIntent').mockRejectedValueOnce(
+      jest.spyOn(conektaProvider, 'createPaymentIntent').mockRejectedValueOnce(
         new Error('Provider temporarily unavailable')
       );
 
@@ -462,9 +440,8 @@ describe('Payment Integration Tests', () => {
 
       const decision = await routingService.selectOptimalProvider(context);
 
-      // Should fallback to another provider
-      expect(decision.provider).not.toBe('conekta');
-      expect(['fungies', 'stripe']).toContain(decision.provider);
+      // Should fallback to Stripe
+      expect(decision.provider).toBe('stripe');
     });
   });
 

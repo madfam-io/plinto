@@ -44,27 +44,22 @@ export {
   SAMLConfigForm,
   SSOTestConnection,
   // Types - with Invitation from invitation-list only
-  Invitation,
-  InvitationCreate,
-  InvitationResponse,
-  InvitationListParams,
-  InvitationListResponse,
-  InvitationListProps,
-  InviteUserFormProps,
-  BulkInvitationResponse,
-  InvitationValidateResponse,
-  InvitationAcceptRequest,
-  InvitationAcceptResponse,
-  InvitationAcceptProps,
-  BulkInviteUploadProps,
-  SSOProviderCreate,
-  SSOProviderResponse,
-  SSOProviderListProps,
-  SSOProviderFormProps,
-  SAMLConfigUpdate,
-  SAMLConfigFormProps,
-  SSOTestResponse,
-  SSOTestConnectionProps,
+  type Invitation,
+  type InvitationCreate,
+  type InvitationListParams,
+  type InvitationListResponse,
+  type InvitationListProps,
+  type InviteUserFormProps,
+  type BulkInvitationResponse,
+  type InvitationValidateResponse,
+  type InvitationAcceptRequest,
+  type InvitationAcceptResponse,
+  type InvitationAcceptProps,
+  type BulkInviteUploadProps,
+  type SSOProviderListProps,
+  type SSOProviderFormProps,
+  type SAMLConfigFormProps,
+  type SSOTestConnectionProps,
   type SignInProps,
   type SignUpProps,
   type UserButtonProps,
@@ -87,3 +82,12 @@ export * from './stores'
 
 // Utilities
 export * from './lib/utils'
+
+// Compliance components
+export * from './components/compliance'
+
+// SCIM components
+export * from './components/scim'
+
+// RBAC components
+export * from './components/rbac'

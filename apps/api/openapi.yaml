@@ -1,0 +1,1337 @@
+openapi: 3.1.0
+info:
+  title: Plinto Enterprise Authentication API
+  description: |
+    Comprehensive authentication and enterprise features API for Plinto platform.
+
+    ## Features
+    - JWT-based authentication with refresh tokens
+    - Multi-factor authentication (TOTP, SMS, Email)
+    - Passkey (WebAuthn) support
+    - SSO integration (SAML, OAuth, OIDC)
+    - SCIM 2.0 provisioning
+    - RBAC (Role-Based Access Control)
+    - GDPR compliance features
+    - Organization management
+
+    ## Authentication
+    Most endpoints require authentication via Bearer token in the Authorization header:
+    ```
+    Authorization: Bearer <access_token>
+    ```
+
+    ## Rate Limiting
+    - Authentication endpoints: 5 requests/minute
+    - API endpoints: 100 requests/minute
+    - Enterprise endpoints: 1000 requests/minute
+
+    ## Error Handling
+    All errors follow RFC 7807 Problem Details format:
+    ```json
+    {
+      "type": "https://api.plinto.dev/errors/validation",
+      "title": "Validation Error",
+      "status": 400,
+      "detail": "Email format is invalid",
+      "instance": "/auth/register"
+    }
+    ```
+  version: 1.0.0-beta
+  contact:
+    name: Plinto API Support
+    url: https://plinto.dev/support
+    email: api@plinto.dev
+  license:
+    name: Proprietary
+    url: https://plinto.dev/license
+
+servers:
+  - url: https://api.plinto.dev/v1
+    description: Production server
+  - url: https://staging-api.plinto.dev/v1
+    description: Staging server
+  - url: http://localhost:8000/v1
+    description: Local development server
+
+tags:
+  - name: Authentication
+    description: User authentication and session management
+  - name: MFA
+    description: Multi-factor authentication endpoints
+  - name: Passkeys
+    description: WebAuthn/Passkey management
+  - name: SSO
+    description: Single Sign-On configuration and flows
+  - name: SCIM
+    description: SCIM 2.0 provisioning endpoints
+  - name: RBAC
+    description: Role-Based Access Control
+  - name: Compliance
+    description: GDPR and privacy compliance features
+  - name: Organizations
+    description: Organization and workspace management
+  - name: Users
+    description: User profile and management
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from login or token refresh
+
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for service-to-service authentication
+
+  schemas:
+    # Auth Schemas
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          minLength: 12
+          example: SecureP@ssw0rd123!
+          description: Must contain uppercase, lowercase, number, and special character
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: John Doe
+        phone:
+          type: string
+          format: phone
+          example: "+1234567890"
+        metadata:
+          type: object
+          additionalProperties: true
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: SecureP@ssw0rd123!
+        remember_me:
+          type: boolean
+          default: false
+          description: Extend session duration to 30 days
+
+    AuthResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        refresh_token:
+          type: string
+          example: rt_a1b2c3d4e5f6...
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 3600
+          description: Access token expiration in seconds
+        user:
+          $ref: '#/components/schemas/User'
+        requires_mfa:
+          type: boolean
+          example: false
+          description: Whether MFA verification is required
+        mfa_methods:
+          type: array
+          items:
+            type: string
+            enum: [totp, sms, email]
+          example: [totp, email]
+
+    RefreshTokenRequest:
+      type: object
+      required:
+        - refresh_token
+      properties:
+        refresh_token:
+          type: string
+          example: rt_a1b2c3d4e5f6...
+
+    # User Schemas
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        name:
+          type: string
+          example: John Doe
+        phone:
+          type: string
+          example: "+1234567890"
+        email_verified:
+          type: boolean
+          example: true
+        phone_verified:
+          type: boolean
+          example: false
+        mfa_enabled:
+          type: boolean
+          example: true
+        passkey_enabled:
+          type: boolean
+          example: false
+        role:
+          type: string
+          enum: [user, admin, super_admin]
+          example: user
+        organization_id:
+          type: string
+          format: uuid
+          example: org_123abc
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-01-15T10:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2025-11-16T14:22:00Z"
+        metadata:
+          type: object
+          additionalProperties: true
+
+    # MFA Schemas
+    MFASetupRequest:
+      type: object
+      required:
+        - method
+      properties:
+        method:
+          type: string
+          enum: [totp, sms, email]
+          example: totp
+        phone:
+          type: string
+          example: "+1234567890"
+          description: Required for SMS method
+
+    MFASetupResponse:
+      type: object
+      properties:
+        method:
+          type: string
+          example: totp
+        secret:
+          type: string
+          example: JBSWY3DPEHPK3PXP
+          description: TOTP secret (only for TOTP method)
+        qr_code:
+          type: string
+          format: uri
+          example: data:image/png;base64,iVBORw0KGgo...
+          description: QR code data URI (only for TOTP method)
+        backup_codes:
+          type: array
+          items:
+            type: string
+          example: ["ABC123", "DEF456", "GHI789"]
+          description: One-time backup codes
+
+    MFAVerifyRequest:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          example: "123456"
+          description: 6-digit verification code
+        remember_device:
+          type: boolean
+          default: false
+          description: Remember this device for 30 days
+
+    # Passkey Schemas
+    PasskeyRegistrationOptions:
+      type: object
+      properties:
+        challenge:
+          type: string
+          example: zTrF1pN8k2rL9sA3...
+        rp:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Plinto
+            id:
+              type: string
+              example: plinto.dev
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              example: MTIzNDU2Nzg5MA==
+            name:
+              type: string
+              example: user@example.com
+            displayName:
+              type: string
+              example: John Doe
+        pubKeyCredParams:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                example: public-key
+              alg:
+                type: integer
+                example: -7
+        timeout:
+          type: integer
+          example: 60000
+        attestation:
+          type: string
+          example: none
+        authenticatorSelection:
+          type: object
+          properties:
+            authenticatorAttachment:
+              type: string
+              example: platform
+            requireResidentKey:
+              type: boolean
+              example: false
+            userVerification:
+              type: string
+              example: required
+
+    # SSO Schemas
+    SSOConfig:
+      type: object
+      required:
+        - provider
+        - organization_id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: sso_123abc
+        provider:
+          type: string
+          enum: [saml, oauth, oidc, google, microsoft, okta]
+          example: okta
+        organization_id:
+          type: string
+          format: uuid
+          example: org_123abc
+        enabled:
+          type: boolean
+          example: true
+        metadata:
+          type: object
+          properties:
+            entity_id:
+              type: string
+              example: https://okta.example.com/sso/saml
+            sso_url:
+              type: string
+              format: uri
+              example: https://okta.example.com/app/abc123/sso/saml
+            certificate:
+              type: string
+              description: X.509 certificate for SAML
+            domains:
+              type: array
+              items:
+                type: string
+              example: ["example.com", "company.com"]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    # SCIM Schemas
+    SCIMUser:
+      type: object
+      required:
+        - schemas
+        - userName
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          example: ["urn:ietf:params:scim:schemas:core:2.0:User"]
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        externalId:
+          type: string
+          example: "user@example.com"
+        userName:
+          type: string
+          example: "user@example.com"
+        name:
+          type: object
+          properties:
+            formatted:
+              type: string
+              example: "John Doe"
+            familyName:
+              type: string
+              example: "Doe"
+            givenName:
+              type: string
+              example: "John"
+        emails:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                example: "user@example.com"
+              primary:
+                type: boolean
+                example: true
+        active:
+          type: boolean
+          example: true
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                example: "group_123"
+              display:
+                type: string
+                example: "Engineering"
+        meta:
+          type: object
+          properties:
+            resourceType:
+              type: string
+              example: "User"
+            created:
+              type: string
+              format: date-time
+            lastModified:
+              type: string
+              format: date-time
+
+    SCIMGroup:
+      type: object
+      required:
+        - schemas
+        - displayName
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+          example: ["urn:ietf:params:scim:schemas:core:2.0:Group"]
+        id:
+          type: string
+          example: "group_123"
+        displayName:
+          type: string
+          example: "Engineering"
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                example: "123e4567-e89b-12d3-a456-426614174000"
+              display:
+                type: string
+                example: "John Doe"
+        meta:
+          type: object
+          properties:
+            resourceType:
+              type: string
+              example: "Group"
+
+    # RBAC Schemas
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          example: role_admin
+        name:
+          type: string
+          example: Administrator
+        description:
+          type: string
+          example: Full system access with all permissions
+        permissions:
+          type: array
+          items:
+            type: string
+          example: ["users:read", "users:write", "orgs:admin"]
+        is_system:
+          type: boolean
+          example: true
+          description: System roles cannot be modified or deleted
+        created_at:
+          type: string
+          format: date-time
+
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          example: users:write
+        name:
+          type: string
+          example: Write Users
+        description:
+          type: string
+          example: Create and update user accounts
+        category:
+          type: string
+          example: users
+
+    # Compliance Schemas
+    ConsentPurpose:
+      type: object
+      properties:
+        id:
+          type: string
+          example: analytics
+        name:
+          type: string
+          example: Analytics and Performance
+        description:
+          type: string
+          example: Track usage patterns to improve the product
+        legal_basis:
+          type: string
+          enum: [consent, legitimate_interest, contract, legal_obligation]
+          example: consent
+        required:
+          type: boolean
+          example: false
+        gdpr_article:
+          type: string
+          example: Article 6(1)(a)
+
+    ConsentRecord:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        purpose:
+          type: string
+          example: analytics
+        granted:
+          type: boolean
+          example: true
+        granted_at:
+          type: string
+          format: date-time
+        withdrawn_at:
+          type: string
+          format: date-time
+          nullable: true
+        ip_address:
+          type: string
+          example: "192.168.1.1"
+        user_agent:
+          type: string
+          example: "Mozilla/5.0..."
+
+    DataSubjectRequest:
+      type: object
+      required:
+        - request_type
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        request_type:
+          type: string
+          enum: [access, rectification, erasure, portability, restriction, objection]
+          example: access
+        status:
+          type: string
+          enum: [pending, processing, completed, rejected]
+          example: pending
+        gdpr_article:
+          type: string
+          example: Article 15
+        description:
+          type: string
+          example: Request all personal data
+        created_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        response_deadline:
+          type: string
+          format: date-time
+          description: 30 days from request creation
+
+    # Organization Schemas
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: org_123abc
+        name:
+          type: string
+          example: Acme Corporation
+        slug:
+          type: string
+          example: acme-corp
+        plan:
+          type: string
+          enum: [free, pro, enterprise]
+          example: enterprise
+        sso_enabled:
+          type: boolean
+          example: true
+        scim_enabled:
+          type: boolean
+          example: true
+        member_count:
+          type: integer
+          example: 150
+        created_at:
+          type: string
+          format: date-time
+        settings:
+          type: object
+          properties:
+            require_mfa:
+              type: boolean
+              example: true
+            allowed_domains:
+              type: array
+              items:
+                type: string
+              example: ["acme.com", "acmecorp.com"]
+
+    # Error Schemas
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          example: https://api.plinto.dev/errors/validation
+        title:
+          type: string
+          example: Validation Error
+        status:
+          type: integer
+          example: 400
+        detail:
+          type: string
+          example: Email format is invalid
+        instance:
+          type: string
+          example: /auth/register
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: email
+              message:
+                type: string
+                example: Invalid email format
+
+paths:
+  # Authentication Endpoints
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register new user
+      description: Create a new user account with email and password
+      operationId: registerUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User login
+      description: Authenticate user and receive access/refresh tokens
+      operationId: loginUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many login attempts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      description: Obtain new access token using refresh token
+      operationId: refreshToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid or expired refresh token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: User logout
+      description: Invalidate current session and tokens
+      operationId: logoutUser
+      responses:
+        '204':
+          description: Logout successful
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # MFA Endpoints
+  /mfa/setup:
+    post:
+      tags: [MFA]
+      summary: Setup MFA
+      description: Initialize MFA setup for a method (TOTP, SMS, or Email)
+      operationId: setupMFA
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MFASetupRequest'
+      responses:
+        '200':
+          description: MFA setup initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MFASetupResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /mfa/verify:
+    post:
+      tags: [MFA]
+      summary: Verify MFA code
+      description: Verify MFA code and complete authentication
+      operationId: verifyMFA
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MFAVerifyRequest'
+      responses:
+        '200':
+          description: MFA verified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /mfa/disable:
+    post:
+      tags: [MFA]
+      summary: Disable MFA
+      description: Disable multi-factor authentication for current user
+      operationId: disableMFA
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [password]
+              properties:
+                password:
+                  type: string
+                  format: password
+      responses:
+        '204':
+          description: MFA disabled successfully
+        '401':
+          description: Invalid password
+
+  # Passkey Endpoints
+  /passkeys/registration/options:
+    post:
+      tags: [Passkeys]
+      summary: Get passkey registration options
+      description: Get WebAuthn registration options to register a new passkey
+      operationId: getPasskeyRegistrationOptions
+      responses:
+        '200':
+          description: Registration options generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasskeyRegistrationOptions'
+
+  /passkeys/registration/verify:
+    post:
+      tags: [Passkeys]
+      summary: Verify passkey registration
+      description: Complete passkey registration with credential from authenticator
+      operationId: verifyPasskeyRegistration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [credential]
+              properties:
+                credential:
+                  type: object
+                name:
+                  type: string
+                  example: "My MacBook Touch ID"
+      responses:
+        '201':
+          description: Passkey registered successfully
+        '400':
+          description: Invalid credential
+
+  # SSO Endpoints
+  /sso/config:
+    get:
+      tags: [SSO]
+      summary: List SSO configurations
+      description: Get all SSO configurations for current organization
+      operationId: listSSOConfigs
+      parameters:
+        - name: organization_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SSO configurations retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SSOConfig'
+
+    post:
+      tags: [SSO]
+      summary: Create SSO configuration
+      description: Create new SSO configuration for organization
+      operationId: createSSOConfig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SSOConfig'
+      responses:
+        '201':
+          description: SSO configuration created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSOConfig'
+
+  /sso/config/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags: [SSO]
+      summary: Get SSO configuration
+      operationId: getSSOConfig
+      responses:
+        '200':
+          description: SSO configuration retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSOConfig'
+
+    put:
+      tags: [SSO]
+      summary: Update SSO configuration
+      operationId: updateSSOConfig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SSOConfig'
+      responses:
+        '200':
+          description: SSO configuration updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SSOConfig'
+
+    delete:
+      tags: [SSO]
+      summary: Delete SSO configuration
+      operationId: deleteSSOConfig
+      responses:
+        '204':
+          description: SSO configuration deleted
+
+  # SCIM Endpoints
+  /scim/v2/Users:
+    get:
+      tags: [SCIM]
+      summary: List users (SCIM)
+      description: SCIM 2.0 endpoint to list users
+      operationId: scimListUsers
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: startIndex
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: count
+          in: query
+          schema:
+            type: integer
+            default: 100
+        - name: filter
+          in: query
+          schema:
+            type: string
+          description: SCIM filter expression
+      responses:
+        '200':
+          description: Users list
+          content:
+            application/scim+json:
+              schema:
+                type: object
+                properties:
+                  schemas:
+                    type: array
+                    items:
+                      type: string
+                  totalResults:
+                    type: integer
+                  startIndex:
+                    type: integer
+                  itemsPerPage:
+                    type: integer
+                  Resources:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SCIMUser'
+
+    post:
+      tags: [SCIM]
+      summary: Create user (SCIM)
+      description: SCIM 2.0 endpoint to create user
+      operationId: scimCreateUser
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/SCIMUser'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/SCIMUser'
+
+  /scim/v2/Users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      tags: [SCIM]
+      summary: Get user (SCIM)
+      operationId: scimGetUser
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: User details
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/SCIMUser'
+
+    put:
+      tags: [SCIM]
+      summary: Update user (SCIM)
+      operationId: scimUpdateUser
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/SCIMUser'
+      responses:
+        '200':
+          description: User updated
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/SCIMUser'
+
+    delete:
+      tags: [SCIM]
+      summary: Delete user (SCIM)
+      operationId: scimDeleteUser
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '204':
+          description: User deleted
+
+  # RBAC Endpoints
+  /roles:
+    get:
+      tags: [RBAC]
+      summary: List roles
+      operationId: listRoles
+      responses:
+        '200':
+          description: Roles list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+
+    post:
+      tags: [RBAC]
+      summary: Create custom role
+      operationId: createRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, permissions]
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                permissions:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '201':
+          description: Role created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+
+  /permissions:
+    get:
+      tags: [RBAC]
+      summary: List permissions
+      operationId: listPermissions
+      responses:
+        '200':
+          description: Permissions list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Permission'
+
+  # Compliance Endpoints
+  /compliance/consent/purposes:
+    get:
+      tags: [Compliance]
+      summary: List consent purposes
+      operationId: listConsentPurposes
+      security: []
+      responses:
+        '200':
+          description: Consent purposes list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConsentPurpose'
+
+  /compliance/consent:
+    get:
+      tags: [Compliance]
+      summary: Get user consent records
+      operationId: getUserConsent
+      responses:
+        '200':
+          description: Consent records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConsentRecord'
+
+    post:
+      tags: [Compliance]
+      summary: Grant consent
+      operationId: grantConsent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [purpose]
+              properties:
+                purpose:
+                  type: string
+                  example: analytics
+      responses:
+        '201':
+          description: Consent granted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentRecord'
+
+  /compliance/consent/{purpose}:
+    delete:
+      tags: [Compliance]
+      summary: Withdraw consent
+      operationId: withdrawConsent
+      parameters:
+        - name: purpose
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Consent withdrawn
+
+  /compliance/data-subject-request:
+    post:
+      tags: [Compliance]
+      summary: Submit data subject request
+      description: Submit GDPR data subject request (Articles 15-22)
+      operationId: submitDataSubjectRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataSubjectRequest'
+      responses:
+        '201':
+          description: Request submitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSubjectRequest'
+
+  # Organization Endpoints
+  /organizations:
+    get:
+      tags: [Organizations]
+      summary: List organizations
+      operationId: listOrganizations
+      responses:
+        '200':
+          description: Organizations list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+
+    post:
+      tags: [Organizations]
+      summary: Create organization
+      operationId: createOrganization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                slug:
+                  type: string
+      responses:
+        '201':
+          description: Organization created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Get current user
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: Current user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'

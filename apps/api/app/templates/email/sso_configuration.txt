@@ -1,0 +1,34 @@
+SSO Configuration Completed for {{ organization_name }}
+
+Hi {{ admin_name }},
+
+Single Sign-On (SSO) has been successfully configured for {{ organization_name }}.
+
+CONFIGURATION SUMMARY
+---------------------
+Provider: {{ sso_provider }}
+
+Configured Domains:
+{% for domain in domains %}- {{ domain }}
+{% endfor %}
+
+WHAT HAPPENS NEXT?
+------------------
+• Users with email addresses in the configured domains can now sign in with SSO
+• Existing users will receive a notification about the SSO enablement
+• New users will automatically use SSO for authentication
+• You can manage SSO settings in your organization dashboard
+
+VIEW SSO SETTINGS
+-----------------
+{{ configuration_url }}
+
+🔒 SECURITY NOTE
+SSO configuration changes are logged in your organization's audit trail.
+If you didn't make this change, please contact our security team immediately.
+
+Need help? Contact us at {{ support_email }}
+
+---
+Plinto by Aureo Labs
+{{ base_url }}

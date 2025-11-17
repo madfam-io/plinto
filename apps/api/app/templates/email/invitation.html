@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="margin: 0 0 20px 0; font-size: 28px; color: #1f2937;">You've been invited!</h1>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    Hi there,
+</p>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    <strong>{{ inviter_name }}</strong> has invited you to join <strong>{{ organization_name }}</strong> on Plinto.
+</p>
+
+<div class="info" style="background-color: #dbeafe; border-left: 4px solid #3b82f6; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; color: #1e40af;">Invitation Details</p>
+    <p style="margin: 0 0 5px 0; font-size: 14px; color: #1f2937;"><strong>Role:</strong> {{ role }}</p>
+    {% if teams %}
+    <p style="margin: 0; font-size: 14px; color: #1f2937;"><strong>Teams:</strong> {{ teams|join(', ') }}</p>
+    {% endif %}
+</div>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="{{ invitation_url }}" class="button" style="display: inline-block; padding: 14px 32px; background-color: #3b82f6; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Accept Invitation</a>
+</p>
+
+<div class="warning" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0; font-size: 14px; color: #92400e;">
+        <strong>⏰ This invitation expires on {{ expires_at }}</strong><br>
+        Please accept the invitation before it expires.
+    </p>
+</div>
+
+<div style="margin-top: 40px; padding: 20px; background-color: #f9fafb; border-radius: 6px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; font-size: 14px; color: #1f2937;">What is Plinto?</p>
+    <p style="margin: 0; font-size: 14px; color: #4b5563; line-height: 1.6;">
+        Plinto is an enterprise authentication platform that provides secure access management,
+        SSO integration, multi-factor authentication, and comprehensive user identity features.
+    </p>
+</div>
+
+<p style="margin-top: 32px; font-size: 13px; color: #6b7280; line-height: 1.5;">
+    If the button above doesn't work, copy and paste this URL into your browser:<br>
+    <span style="word-break: break-all; color: #3b82f6;">{{ invitation_url }}</span>
+</p>
+
+<p style="margin-top: 24px; font-size: 14px; color: #6b7280;">
+    Questions? Contact <a href="mailto:{{ support_email }}" style="color: #3b82f6; text-decoration: none;">{{ support_email }}</a>
+</p>
+{% endblock %}

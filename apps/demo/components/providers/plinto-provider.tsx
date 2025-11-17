@@ -47,7 +47,7 @@ export function PlintoProvider({ children }: { children: React.ReactNode }) {
     initAuth()
 
     // Set up event listeners for auth state changes
-    const handleSignIn = (userData: User) => {
+    const handleSignIn = ({ user: userData }: { user: User }) => {
       setUser(userData)
     }
 

@@ -22,7 +22,7 @@ export interface ActionableError {
   /** Detailed explanation */
   message: string
   /** Suggested actions to resolve */
-  actions: string[]
+  actions: readonly string[]
   /** Technical details (optional, for developers) */
   technical?: string
 }

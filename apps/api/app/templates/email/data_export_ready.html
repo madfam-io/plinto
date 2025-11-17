@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="margin: 0 0 20px 0; font-size: 28px; color: #1f2937;">Your Data Export is Ready</h1>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    Hi {{ user_name }},
+</p>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    Your {{ request_type }} data export has been prepared and is now available for download.
+</p>
+
+<div class="info" style="background-color: #d1fae5; border-left: 4px solid #10b981; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; color: #065f46;">✓ Export Details</p>
+    <p style="margin: 0; font-size: 14px; color: #1f2937;">
+        Your personal data has been compiled into a downloadable format.
+        This export includes all data we hold about you as per your data rights request.
+    </p>
+</div>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="{{ download_url }}" class="button" style="display: inline-block; padding: 14px 32px; background-color: #10b981; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Download Your Data</a>
+</p>
+
+<div class="warning" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0; font-size: 14px; color: #92400e;">
+        <strong>⏰ This download link expires on {{ expires_at }}</strong><br>
+        Please download your data before the link expires. After expiration, you'll need to
+        submit a new data export request.
+    </p>
+</div>
+
+<div style="margin: 20px 0; padding: 20px; background-color: #f9fafb; border-radius: 6px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; font-size: 14px; color: #1f2937;">What's included in your export?</p>
+    <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #4b5563; line-height: 1.8;">
+        <li>Account information and profile data</li>
+        <li>Authentication and security settings</li>
+        <li>Activity logs and session history</li>
+        <li>Organization memberships and roles</li>
+        <li>Consent records and privacy preferences</li>
+        <li>Any other personal data we process on your behalf</li>
+    </ul>
+</div>
+
+<div class="info" style="background-color: #fee2e2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0; font-size: 14px; color: #991b1b;">
+        <strong>🔒 Security Notice</strong><br>
+        Your data export contains sensitive personal information. Please store it securely
+        and do not share the download link with anyone.
+    </p>
+</div>
+
+<p style="margin-top: 32px; font-size: 13px; color: #6b7280; line-height: 1.5;">
+    If the button above doesn't work, copy and paste this URL into your browser:<br>
+    <span style="word-break: break-all; color: #3b82f6;">{{ download_url }}</span>
+</p>
+
+<p style="margin-top: 24px; font-size: 14px; color: #6b7280;">
+    Questions about your data? Contact <a href="mailto:{{ support_email }}" style="color: #3b82f6; text-decoration: none;">{{ support_email }}</a>
+</p>
+{% endblock %}

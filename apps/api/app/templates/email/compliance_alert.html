@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="margin: 0 0 20px 0; font-size: 28px; color: #dc2626;">Compliance Alert: {{ alert_type }}</h1>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    Hi {{ admin_name }},
+</p>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    This is an important compliance notification for <strong>{{ organization_name }}</strong>.
+</p>
+
+<div class="warning" style="background-color: #fee2e2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; color: #991b1b;">⚠️ Alert Details</p>
+    <p style="margin: 0 0 5px 0; font-size: 14px; color: #1f2937;"><strong>Type:</strong> {{ alert_type }}</p>
+    <p style="margin: 0; font-size: 14px; color: #1f2937;"><strong>Description:</strong> {{ alert_description }}</p>
+</div>
+
+{% if action_required %}
+<div class="warning" style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; color: #92400e;">🔔 Action Required</p>
+    <p style="margin: 0; font-size: 14px; color: #92400e;">
+        This alert requires your immediate attention and action.
+        {% if deadline %}
+        <br><strong>Deadline:</strong> {{ deadline }}
+        {% endif %}
+    </p>
+</div>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="{{ action_url }}" class="button" style="display: inline-block; padding: 14px 32px; background-color: #dc2626; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Take Action Now</a>
+</p>
+{% else %}
+<div class="info" style="background-color: #dbeafe; border-left: 4px solid #3b82f6; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0; font-size: 14px; color: #1e40af;">
+        <strong>ℹ️ Information Only</strong><br>
+        This is an informational alert. No immediate action is required.
+    </p>
+</div>
+{% endif %}
+
+<div style="margin: 20px 0; padding: 20px; background-color: #f9fafb; border-radius: 6px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; font-size: 14px; color: #1f2937;">Understanding Compliance Alerts</p>
+    <p style="margin: 0; font-size: 14px; color: #4b5563; line-height: 1.6;">
+        Plinto monitors your organization's compliance with data protection regulations including
+        GDPR, CCPA, and other privacy laws. We send these alerts to help you maintain compliance
+        and protect your users' data rights.
+    </p>
+</div>
+
+<div class="info" style="background-color: #f3e8ff; border-left: 4px solid #9333ea; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0; font-size: 14px; color: #581c87;">
+        <strong>📊 Audit Trail</strong><br>
+        All compliance activities are automatically logged in your organization's audit trail
+        for regulatory reporting and review.
+    </p>
+</div>
+
+<p style="margin-top: 24px; font-size: 14px; color: #6b7280;">
+    Questions about this alert? Contact our compliance team at <a href="mailto:{{ support_email }}" style="color: #3b82f6; text-decoration: none;">{{ support_email }}</a>
+</p>
+{% endblock %}

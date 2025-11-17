@@ -1,0 +1,28 @@
+You've been invited to {{ organization_name }}!
+
+Hi there,
+
+{{ inviter_name }} has invited you to join {{ organization_name }} on Plinto.
+
+INVITATION DETAILS
+------------------
+Role: {{ role }}
+{% if teams %}Teams: {{ teams|join(', ') }}{% endif %}
+
+ACCEPT INVITATION
+-----------------
+Click the link below to accept your invitation:
+{{ invitation_url }}
+
+⏰ IMPORTANT: This invitation expires on {{ expires_at }}
+
+ABOUT PLINTO
+------------
+Plinto is an enterprise authentication platform that provides secure access management,
+SSO integration, multi-factor authentication, and comprehensive user identity features.
+
+Questions? Contact us at {{ support_email }}
+
+---
+Plinto by Aureo Labs
+{{ base_url }}

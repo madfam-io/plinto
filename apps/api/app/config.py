@@ -16,7 +16,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False
     )
-    
+
     # Application
     VERSION: str = "0.1.0"
     APP_NAME: str = Field(default="Plinto")
@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     DOMAIN: str = Field(default="localhost")
     UPLOAD_DIR: str = Field(default="/tmp/uploads")
     FRONTEND_URL: Optional[str] = Field(default="http://localhost:3000")
-    
+
     # Database
     DATABASE_URL: str = Field(
         default="postgresql://postgres:postgres@localhost:5432/plinto",
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     DATABASE_MAX_OVERFLOW: int = Field(default=10)
     DATABASE_POOL_TIMEOUT: int = Field(default=30)
     AUTO_MIGRATE: bool = Field(default=False)
-    
+
     # Redis
     REDIS_URL: str = Field(
         default="redis://localhost:6379/0",
@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     )
     REDIS_POOL_SIZE: int = Field(default=10)
     REDIS_DECODE_RESPONSES: bool = Field(default=True)
-    
+
     # JWT
     JWT_SECRET_KEY: Optional[str] = Field(default=None)
     JWT_ALGORITHM: str = Field(default="RS256")
@@ -57,7 +57,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(default=15)
     REFRESH_TOKEN_EXPIRE_DAYS: int = Field(default=7)
     ALGORITHM: str = Field(default="HS256")
-    
+
     # Security
     SECRET_KEY: str = Field(default="development-secret-key-change-in-production")
     BCRYPT_ROUNDS: int = Field(default=12)
@@ -66,38 +66,38 @@ class Settings(BaseSettings):
     PASSWORD_REQUIRE_LOWERCASE: bool = Field(default=True)
     PASSWORD_REQUIRE_NUMBERS: bool = Field(default=True)
     PASSWORD_REQUIRE_SPECIAL: bool = Field(default=True)
-    
+
     # CORS
     CORS_ORIGINS: str = Field(
         default="http://localhost:3000,https://plinto.dev",
         description="Comma-separated string or JSON array of allowed CORS origins"
     )
-    
+
     # Rate limiting
     RATE_LIMIT_ENABLED: bool = Field(default=True)
     RATE_LIMIT_PER_MINUTE: int = Field(default=60)
     RATE_LIMIT_PER_HOUR: int = Field(default=1000)
     RATE_LIMIT_WHITELIST: str = Field(default="127.0.0.1,::1", description="Comma-separated list of IPs exempt from rate limiting")
-    
+
     # Email
     EMAIL_ENABLED: bool = Field(default=False)
-    EMAIL_PROVIDER: str = Field(default="sendgrid", pattern="^(sendgrid|ses|smtp)$")
+    EMAIL_PROVIDER: str = Field(default="resend", pattern="^(resend|ses|smtp)$")
     EMAIL_FROM_ADDRESS: str = Field(default="noreply@plinto.dev")
     EMAIL_FROM_NAME: str = Field(default="Plinto")
-    SENDGRID_API_KEY: Optional[str] = Field(default=None)
-    
+    RESEND_API_KEY: Optional[str] = Field(default=None)
+
     # SMTP Configuration (for development/self-hosted)
     SMTP_HOST: Optional[str] = Field(default=None)
     SMTP_PORT: int = Field(default=587)
     SMTP_USERNAME: Optional[str] = Field(default=None)
     SMTP_PASSWORD: Optional[str] = Field(default=None)
     SMTP_TLS: bool = Field(default=True)
-    
+
     # Email aliases for easier access
     FROM_EMAIL: Optional[str] = Field(default=None)
     FROM_NAME: Optional[str] = Field(default=None)
     SUPPORT_EMAIL: Optional[str] = Field(default=None)
-    
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Set email aliases if not explicitly provided
@@ -107,13 +107,13 @@ class Settings(BaseSettings):
             self.FROM_NAME = self.EMAIL_FROM_NAME
         if not self.SUPPORT_EMAIL:
             self.SUPPORT_EMAIL = self.EMAIL_FROM_ADDRESS
-    
+
     # WebAuthn
     WEBAUTHN_RP_ID: str = Field(default="plinto.dev")
     WEBAUTHN_RP_NAME: str = Field(default="Plinto")
     WEBAUTHN_ORIGIN: str = Field(default="https://plinto.dev")
     WEBAUTHN_TIMEOUT: int = Field(default=60000)  # milliseconds
-    
+
     # Cloudflare
     CLOUDFLARE_TURNSTILE_SECRET: Optional[str] = Field(default=None)
     CLOUDFLARE_ACCOUNT_ID: Optional[str] = Field(default=None)
@@ -123,7 +123,7 @@ class Settings(BaseSettings):
     R2_ENDPOINT: Optional[str] = Field(default=None, description="Cloudflare R2 endpoint URL")
     R2_ACCESS_KEY_ID: Optional[str] = Field(default=None, description="Cloudflare R2 access key ID")
     R2_SECRET_ACCESS_KEY: Optional[str] = Field(default=None, description="Cloudflare R2 secret access key")
-    
+
     # Monitoring
     SENTRY_DSN: Optional[str] = Field(default=None)
     OPENTELEMETRY_ENABLED: bool = Field(default=False)
@@ -131,7 +131,7 @@ class Settings(BaseSettings):
     MONITORING_ENDPOINT: Optional[str] = Field(default=None, description="External monitoring service endpoint")
     MONITORING_API_KEY: Optional[str] = Field(default=None, description="API key for monitoring service")
     ALERT_WEBHOOK_URL: Optional[str] = Field(default=None, description="Webhook URL for sending alerts")
-    
+
     # Features
     ENABLE_DOCS: bool = Field(default=True)
     ENABLE_METRICS: bool = Field(default=True)
@@ -144,7 +144,7 @@ class Settings(BaseSettings):
     ENABLE_OAUTH: bool = Field(default=True)
     ENABLE_MFA: bool = Field(default=True)
     ENABLE_ORGANIZATIONS: bool = Field(default=True)
-    
+
     # Limits
     MAX_ORGANIZATIONS_PER_IDENTITY: int = Field(default=10)
     MAX_SESSIONS_PER_IDENTITY: int = Field(default=5)
@@ -210,7 +210,7 @@ class Settings(BaseSettings):
     COMPLIANCE_REAL_TIME_MONITORING: bool = Field(default=True, description="Enable real-time compliance monitoring")
     COMPLIANCE_ALERT_THRESHOLD_MINUTES: int = Field(default=15, description="Minutes before SLA breach alert")
     COMPLIANCE_DASHBOARD_CACHE_MINUTES: int = Field(default=5, description="Dashboard data cache duration")
-    
+
     @field_validator("JWT_SECRET_KEY", mode="before")
     @classmethod
     def validate_jwt_secret(cls, v):
@@ -218,7 +218,7 @@ class Settings(BaseSettings):
         if v is None:
             return "development-secret-key"
         return v
-    
+
     @field_validator("SECRET_KEY", mode="before")
     @classmethod
     def validate_secret_key(cls, v):
@@ -228,25 +228,25 @@ class Settings(BaseSettings):
         if environment == "production" and v == "change-this-in-production":
             raise ValueError("SECRET_KEY must be changed in production")
         return v
-    
+
     @property
     def cors_origins_list(self) -> List[str]:
         """Parse CORS origins from string to list, handling both JSON and comma-separated formats"""
         import json
-        
+
         if not self.CORS_ORIGINS.strip():
             return ["http://localhost:3000", "https://plinto.dev"]
-        
+
         # Try to parse as JSON first (for backwards compatibility)
         if self.CORS_ORIGINS.strip().startswith('['):
             try:
                 return json.loads(self.CORS_ORIGINS)
             except json.JSONDecodeError:
                 pass
-        
+
         # Parse as comma-separated string
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
-    
+
     @property
     def service_url(self) -> str:
         """

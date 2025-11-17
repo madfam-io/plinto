@@ -41,7 +41,9 @@ export default function Error({
           url: window.location.href,
           userAgent: navigator.userAgent
         })
-      }).catch(// Error logged to Sentry in production
+      }).catch(() => {
+        // Error logged to Sentry in production
+      })
     }
   }, [error])
 

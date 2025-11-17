@@ -25,6 +25,8 @@ import { SSO } from './sso';
 import { Invitations } from './invitations';
 import { Payments } from './payments';
 import { EnterpriseFeatures, FEATURES, type LicenseInfo } from './enterprise';
+import { GraphQL, type GraphQLConfig } from './graphql';
+import { WebSocket, type WebSocketConfig } from './websocket';
 
 /**
  * Main Plinto SDK client class
@@ -45,22 +47,26 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   public readonly invitations: Invitations;
   public readonly payments: Payments;
 
+  // Real-time features
+  public readonly graphql?: GraphQL;
+  public readonly ws?: WebSocket;
+
   // Enterprise features
   private enterprise: EnterpriseFeatures;
   private licenseInfo?: LicenseInfo;
 
   constructor(config: Partial<PlintoConfig> = {}) {
     super();
-    
+
     // Validate and merge configuration
     this.config = this.validateAndMergeConfig(config);
-    
+
     // Initialize token manager
     this.tokenManager = this.createTokenManager();
-    
+
     // Initialize HTTP client
     this.httpClient = this.createHttpClient();
-    
+
     // Initialize enterprise features
     this.enterprise = new EnterpriseFeatures({
       licenseKey: (config as any).licenseKey,
@@ -83,6 +89,34 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
     this.invitations = new Invitations(this.httpClient);
     this.payments = new Payments(this);
 
+    // Initialize GraphQL if configured
+    if ((config as any).graphqlUrl) {
+      this.graphql = new GraphQL({
+        httpUrl: (config as any).graphqlUrl,
+        wsUrl: (config as any).graphqlWsUrl,
+        getAuthToken: () => this.getAccessToken(),
+        debug: this.config.debug,
+      });
+    }
+
+    // Initialize WebSocket if configured
+    if ((config as any).wsUrl) {
+      this.ws = new WebSocket({
+        url: (config as any).wsUrl,
+        getAuthToken: () => this.getAccessToken(),
+        reconnect: (config as any).wsReconnect ?? true,
+        reconnectInterval: (config as any).wsReconnectInterval || 5000,
+        reconnectAttempts: (config as any).wsReconnectAttempts || 5,
+        heartbeatInterval: (config as any).wsHeartbeatInterval || 30000,
+        debug: this.config.debug,
+      });
+
+      // Auto-connect WebSocket
+      if ((config as any).wsAutoConnect !== false) {
+        this.ws.connect().catch((err) => logger.warn('WebSocket auto-connect failed:', err));
+      }
+    }
+
     // Set up event forwarding
     this.setupEventForwarding();
 
@@ -90,7 +124,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
     if ((config as any).licenseKey) {
       this.validateLicense().catch((err) => logger.warn('License validation failed:', err));
     }
-    
+
     // Auto-refresh tokens if enabled
     if (this.config.autoRefreshTokens) {
       this.setupAutoTokenRefresh();
@@ -244,7 +278,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   async isAuthenticated(): Promise<boolean> {
     return await this.tokenManager.hasValidTokens();
   }
-  
+
   /**
    * Check if user is authenticated (synchronous for backward compatibility)
    */
@@ -443,9 +477,16 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   }
 
   /**
+   * Remove event listener
+   */
+  override off<T extends SdkEventType>(event: T, handler: Function): void {
+    super.off(event, handler);
+  }
+
+  /**
    * Remove all listeners for an event
    */
-  override off<T extends SdkEventType>(event?: T): void {
+  removeAllListeners(event?: SdkEventType): void {
     super.removeAllListeners(event);
   }
 
@@ -460,18 +501,18 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
     error?: string;
   }> {
     const startTime = Date.now();
-    
+
     try {
       await this.httpClient.get('/api/v1/auth/oauth/providers', { skipAuth: true });
       const latency = Math.max(1, Date.now() - startTime);
-      
+
       return {
         success: true,
         latency
       };
     } catch (error: any) {
       const latency = Math.max(1, Date.now() - startTime);
-      
+
       return {
         success: false,
         latency,
@@ -580,7 +621,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
    */
   destroy(): void {
     this.removeAllListeners();
-    
+
     // Note: We don't clear tokens here as that would sign out the user
     // Use signOut() if you want to clear tokens
   }

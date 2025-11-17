@@ -11,8 +11,10 @@
     "test:monitoring": "curl -s http://localhost:3001/api/metrics | head -20"
   },
   "dependencies": {
+    "@plinto/typescript-sdk": "*",
     "@plinto/react-sdk": "*",
     "@plinto/ui": "*",
+    "@plinto/feature-flags": "*",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",

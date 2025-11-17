@@ -3,51 +3,51 @@ External Dependencies Mock Fixtures
 Centralized mocking for all external services to eliminate duplication across test files.
 """
 
+from unittest.mock import AsyncMock, Mock, patch
+
 import pytest
-from unittest.mock import Mock, AsyncMock, patch
 
 
 @pytest.fixture(autouse=True, scope="session")
 def mock_all_external_dependencies():
     """Mock all external dependencies comprehensively"""
     mocked_modules = {
-        'aioredis': Mock(),
-        'aioredis.client': Mock(),
-        'aioredis.connection': Mock(),
-        'aioredis.exceptions': Mock(),
-        'redis': Mock(),
-        'redis.asyncio': Mock(),
-        'redis.client': Mock(),
-        'celery': Mock(),
-        'celery.result': Mock(),
-        'celery.exceptions': Mock(),
-        'boto3': Mock(),
-        'botocore': Mock(),
-        'botocore.exceptions': Mock(),
-        'stripe': Mock(),
-        'stripe.error': Mock(),
-        'twilio': Mock(),
-        'twilio.rest': Mock(),
-        'sendgrid': Mock(),
-        'sendgrid.helpers': Mock(),
-        'slack_sdk': Mock(),
-        'slack_sdk.webhook': Mock(),
-        'requests': Mock(),
-        'httpx': Mock(),
-        'psycopg2': Mock(),
-        'psycopg2.extras': Mock(),
-        'psycopg2.pool': Mock(),
-        'sqlalchemy': Mock(),
-        'sqlalchemy.ext': Mock(),
-        'sqlalchemy.ext.asyncio': Mock(),
-        'sqlalchemy.orm': Mock(),
-        'passlib': Mock(),
-        'passlib.context': Mock(),
-        'jwt': Mock(),
-        'cryptography': Mock()
+        "aioredis": Mock(),
+        "aioredis.client": Mock(),
+        "aioredis.connection": Mock(),
+        "aioredis.exceptions": Mock(),
+        "redis": Mock(),
+        "redis.asyncio": Mock(),
+        "redis.client": Mock(),
+        "celery": Mock(),
+        "celery.result": Mock(),
+        "celery.exceptions": Mock(),
+        "boto3": Mock(),
+        "botocore": Mock(),
+        "botocore.exceptions": Mock(),
+        "stripe": Mock(),
+        "stripe.error": Mock(),
+        "twilio": Mock(),
+        "twilio.rest": Mock(),
+        "resend": Mock(),
+        "slack_sdk": Mock(),
+        "slack_sdk.webhook": Mock(),
+        "requests": Mock(),
+        "httpx": Mock(),
+        "psycopg2": Mock(),
+        "psycopg2.extras": Mock(),
+        "psycopg2.pool": Mock(),
+        "sqlalchemy": Mock(),
+        "sqlalchemy.ext": Mock(),
+        "sqlalchemy.ext.asyncio": Mock(),
+        "sqlalchemy.orm": Mock(),
+        "passlib": Mock(),
+        "passlib.context": Mock(),
+        "jwt": Mock(),
+        "cryptography": Mock(),
     }
 
-    with patch.dict('sys.modules', mocked_modules):
+    with patch.dict("sys.modules", mocked_modules):
         yield
 
 
@@ -102,7 +102,7 @@ def sample_user_data():
         "role": "user",
         "organization_id": "test-org-123",
         "created_at": "2023-01-01T00:00:00Z",
-        "is_active": True
+        "is_active": True,
     }
 
 
@@ -115,10 +115,7 @@ def sample_organization_data():
         "domain": "test.example.com",
         "plan": "enterprise",
         "created_at": "2023-01-01T00:00:00Z",
-        "settings": {
-            "sso_enabled": True,
-            "mfa_required": True
-        }
+        "settings": {"sso_enabled": True, "mfa_required": True},
     }
 
 
@@ -132,11 +129,7 @@ def sample_alert_data():
         "severity": "high",
         "status": "active",
         "created_at": "2023-01-01T00:00:00Z",
-        "conditions": {
-            "metric": "error_rate",
-            "threshold": 0.05,
-            "operator": ">"
-        }
+        "conditions": {"metric": "error_rate", "threshold": 0.05, "operator": ">"},
     }
 
 
@@ -150,5 +143,5 @@ def sample_compliance_data():
         "status": "implemented",
         "evidence": ["policy_doc.pdf", "training_records.xlsx"],
         "last_tested": "2023-01-01T00:00:00Z",
-        "next_review": "2023-07-01T00:00:00Z"
+        "next_review": "2023-07-01T00:00:00Z",
     }

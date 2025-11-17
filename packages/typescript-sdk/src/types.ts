@@ -75,6 +75,15 @@ export interface User {
   updated_at: ISODateString;
   last_sign_in_at?: ISODateString;
   user_metadata: Record<string, any>;
+  // Organization and role-based access control
+  organizationId?: UUID;
+  organization?: {
+    id: UUID;
+    name: string;
+    plan?: string;
+  };
+  roles?: string[];
+  permissions?: string[];
 }
 
 export interface Session {
@@ -420,6 +429,19 @@ export interface ApiError {
 
 // SDK Configuration
 export interface PlintoConfig {
+  // GraphQL configuration
+  graphqlUrl?: string
+  graphqlWsUrl?: string
+
+  // WebSocket configuration
+  wsUrl?: string
+  wsReconnect?: boolean
+  wsReconnectInterval?: number
+  wsReconnectAttempts?: number
+  wsHeartbeatInterval?: number
+  wsAutoConnect?: boolean
+
+  // Existing configuration
   baseURL: string;
   apiKey?: string;
   timeout?: number;
@@ -468,6 +490,10 @@ export interface SdkEventMap {
   'auth:signedIn': { user: User };
   'auth:signedOut': {};
   'error': { error: any };
+  // Backward compatibility aliases
+  'signIn': { user: User };
+  'signOut': {};
+  'tokenRefreshed': { tokens: TokenResponse };
 }
 
 export type SdkEventType = keyof SdkEventMap;

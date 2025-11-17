@@ -30,8 +30,7 @@ redis==5.0.1
 aioredis==2.0.1
 
 # Email
-sendgrid==6.10.0
-python-postmark==0.6.0
+resend==0.8.0
 
 # Cloud & Storage
 boto3==1.34.21

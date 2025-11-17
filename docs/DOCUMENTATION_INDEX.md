@@ -1,8 +1,31 @@
 # Plinto Documentation Index
 
-**Last Updated**: November 16, 2025
+**Last Updated**: November 18, 2025
 
 Complete guide to all Plinto documentation, organized by category and development phase.
+
+---
+
+## 📊 **CURRENT STATUS** (November 2025)
+
+**Platform Production Readiness**: **80-85%**
+
+Quick Links:
+- **[STATUS_REPORT_NOV2025.md](STATUS_REPORT_NOV2025.md)** - ⭐ **Current platform status and roadmap**
+- **[README.md](../README.md)** - Project overview and quick start
+- **[BETA_ONBOARDING_GUIDE.md](BETA_ONBOARDING_GUIDE.md)** - <5 minute user onboarding
+
+### Key Achievements ✅
+- **Backend APIs**: 95% complete (all enterprise features)
+- **Security**: Production-hardened (Nov 2025 audit)
+- **Testing**: 538+ tests (489 unit + 49 E2E)
+- **Documentation**: Comprehensive guides
+
+### Remaining Work (4-6 weeks)
+- **Frontend UI**: Enterprise feature interfaces
+- **Email Service**: Resend migration
+- **Documentation**: Integration guides
+- **Testing**: Enterprise feature validation
 
 ---
 
@@ -371,4 +394,4 @@ To contribute to documentation:
 
 ---
 
-*Documentation maintained by the Plinto development team | Last review: November 16, 2025*
+*Documentation maintained by the Plinto development team | Last review: November 18, 2025*

@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import { Redis } from 'ioredis';
 import { ConektaProvider } from './providers/conekta.provider';
-import { FungiesProvider } from './providers/fungies.provider';
 import { StripeProvider } from './providers/stripe.provider';
 import {
   PaymentProvider,
@@ -49,7 +48,7 @@ interface ProviderHealth {
 }
 
 export class PaymentRoutingService extends EventEmitter {
-  private providers: Map<string, ConektaProvider | FungiesProvider | StripeProvider>;
+  private providers: Map<string, ConektaProvider | StripeProvider>;
   private redis: Redis;
   private healthMetrics: Map<string, ProviderHealth>;
   private routingCache: Map<string, RoutingDecision>;
@@ -61,10 +60,6 @@ export class PaymentRoutingService extends EventEmitter {
       oxxo: { percentage: 2.5, fixed: 10.00, currency: 'MXN' },
       spei: { percentage: 1.0, fixed: 8.00, currency: 'MXN' }
     },
-    fungies: {
-      card: { percentage: 2.9, fixed: 0.30, currency: 'USD' },
-      sepa: { percentage: 1.4, fixed: 0.25, currency: 'EUR' }
-    },
     stripe: {
       card: { percentage: 2.9, fixed: 0.30, currency: 'USD' },
       ach: { percentage: 0.8, fixed: 0, currency: 'USD' }
@@ -74,21 +69,19 @@ export class PaymentRoutingService extends EventEmitter {
   // Settlement times in days
   private settlementTimes = {
     conekta: { card: 2, oxxo: 3, spei: 1 },
-    fungies: { card: 2, sepa: 3 },
     stripe: { card: 2, ach: 4 }
   };
 
   constructor(
-    providers: { conekta: ConektaProvider; fungies: FungiesProvider; stripe: StripeProvider },
+    providers: { conekta: ConektaProvider; stripe: StripeProvider },
     redis: Redis
   ) {
     super();
     this.redis = redis;
     this.providers = new Map([
       ['conekta', providers.conekta],
-      ['fungies', providers.fungies],
       ['stripe', providers.stripe]
-    ] as [string, ConektaProvider | FungiesProvider | StripeProvider][]);
+    ] as [string, ConektaProvider | StripeProvider][]);
     this.healthMetrics = new Map();
     this.routingCache = new Map();
 
@@ -175,7 +168,7 @@ export class PaymentRoutingService extends EventEmitter {
 
   private async evaluateProvider(
     name: string,
-    provider: ConektaProvider | FungiesProvider | StripeProvider,
+    provider: ConektaProvider | StripeProvider,
     context: PaymentContext
   ): Promise<{ provider: string; eligible: boolean; score: number; reasons: string[] }> {
     const reasons: string[] = [];
@@ -204,25 +197,7 @@ export class PaymentRoutingService extends EventEmitter {
       }
     }
 
-    // RULE 2: EU/International tax compliance = Fungies priority
-    if (name === 'fungies') {
-      if (this.isEUCountry(context.country)) {
-        score += 30;
-        reasons.push('EU VAT compliance handled');
-      }
-
-      if (context.isB2B && context.requiresInvoice) {
-        score += 20;
-        reasons.push('B2B invoicing and tax handling');
-      }
-
-      if (!['MX', 'US', 'CA'].includes(context.country)) {
-        score += 15;
-        reasons.push('International MoR compliance');
-      }
-    }
-
-    // RULE 3: Stripe as reliable fallback
+    // RULE 2: Stripe as reliable fallback
     if (name === 'stripe') {
       score += 10; // Base reliability bonus
       reasons.push('Global coverage and reliability');
@@ -453,7 +428,6 @@ export class PaymentRoutingService extends EventEmitter {
 
   private supportsLocalPaymentMethods(provider: string, country: string): boolean {
     if (provider === 'conekta' && country === 'MX') return true;
-    if (provider === 'fungies' && this.isEUCountry(country)) return true;
     if (provider === 'stripe') return true; // Stripe has wide coverage
     return false;
   }

@@ -79,8 +79,7 @@ dependencies = [
 [project.optional-dependencies]
 # Email providers
 email = [
-    "sendgrid>=6.10.0,<7.0.0",
-    "python-postmark>=0.6.0,<1.0.0",
+    "resend>=0.8.0,<1.0.0",
 ]
 
 # SSO protocols

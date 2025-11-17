@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="margin: 0 0 20px 0; font-size: 28px; color: #1f2937;">Single Sign-On Now Available</h1>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    Hi {{ user_name }},
+</p>
+
+<p style="margin: 0 0 15px 0; font-size: 16px; color: #4b5563;">
+    Great news! Your organization <strong>{{ organization_name }}</strong> has enabled Single Sign-On (SSO) for secure, streamlined authentication.
+</p>
+
+<div class="info" style="background-color: #dbeafe; border-left: 4px solid #3b82f6; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; color: #1e40af;">What does this mean for you?</p>
+    <ul style="margin: 0; padding-left: 20px; font-size: 14px; color: #1f2937; line-height: 1.8;">
+        <li>Sign in with your {{ sso_provider }} credentials</li>
+        <li>No need to remember separate passwords</li>
+        <li>Enhanced security with your organization's identity provider</li>
+        <li>Seamless access to all Plinto services</li>
+    </ul>
+</div>
+
+<p style="text-align: center; margin: 30px 0;">
+    <a href="{{ login_url }}" class="button" style="display: inline-block; padding: 14px 32px; background-color: #3b82f6; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Sign In with SSO</a>
+</p>
+
+<div style="margin: 20px 0; padding: 20px; background-color: #f9fafb; border-radius: 6px;">
+    <p style="margin: 0 0 10px 0; font-weight: 600; font-size: 14px; color: #1f2937;">How to sign in:</p>
+    <ol style="margin: 0; padding-left: 20px; font-size: 14px; color: #4b5563; line-height: 1.8;">
+        <li>Visit the Plinto login page</li>
+        <li>Enter your email address</li>
+        <li>Click "Sign in with {{ sso_provider }}"</li>
+        <li>Authenticate with your organization's credentials</li>
+        <li>You're in! Access all your applications securely</li>
+    </ol>
+</div>
+
+<div class="info" style="background-color: #f3e8ff; border-left: 4px solid #9333ea; padding: 15px; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0; font-size: 14px; color: #581c87;">
+        <strong>💡 Pro Tip:</strong> Your existing Plinto account and data remain intact.
+        SSO simply provides a more convenient and secure way to access your account.
+    </p>
+</div>
+
+<p style="margin-top: 24px; font-size: 14px; color: #6b7280;">
+    Questions about SSO? Contact <a href="mailto:{{ support_email }}" style="color: #3b82f6; text-decoration: none;">{{ support_email }}</a>
+</p>
+{% endblock %}

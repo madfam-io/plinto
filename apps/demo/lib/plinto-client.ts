@@ -20,7 +20,7 @@ export const plintoClient = new PlintoClient({
   debug: process.env.NODE_ENV === 'development',
   // Token storage configuration
   tokenStorage: {
-    type: 'localStorage', // Use localStorage for web apps
+    type: 'localStorage' as const, // Use localStorage for web apps
     key: 'plinto_auth_token',
   },
   // Session configuration

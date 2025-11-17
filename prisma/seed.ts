@@ -270,34 +270,6 @@ async function main() {
     }
   });
 
-  const fungiesProvider = await prisma.paymentProvider.create({
-    data: {
-      name: 'fungies',
-      display_name: 'Fungies.io',
-      type: 'merchant_of_record',
-      status: 'active',
-      supported_countries: ['US', 'CA', 'GB', 'AU', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'BR', 'MX'],
-      supported_currencies: ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'BRL', 'MXN'],
-      supported_payment_methods: ['card', 'bank_transfer', 'crypto', 'local_payment'],
-      features: {
-        recurring_billing: true,
-        instant_payouts: true,
-        fraud_protection: true,
-        tax_compliance: true,
-        merchant_of_record: true,
-        global_coverage: true,
-        crypto_payments: true
-      },
-      configuration: {
-        api_version: 'v1',
-        webhook_tolerance: 600,
-        tax_calculation: 'automatic',
-        compliance_mode: 'strict'
-      },
-      priority: 150
-    }
-  });
-
   console.log('✅ Created payment providers');
 
   // Create routing rules
@@ -311,16 +283,6 @@ async function main() {
           currency: ['MXN']
         },
         provider_id: conektaProvider.id,
-        is_active: true
-      },
-      {
-        name: 'EU Tax Compliance',
-        priority: 90,
-        conditions: {
-          country: ['DE', 'FR', 'IT', 'ES', 'NL', 'BE'],
-          amount_range: { min: 100 } // Over €1.00
-        },
-        provider_id: fungiesProvider.id,
         is_active: true
       },
       {
@@ -387,8 +349,8 @@ async function main() {
   console.log('- 3 system roles (admin, user, team_lead)');
   console.log('- 1 demo team (Engineering)');
   console.log('- 1 active subscription');
-  console.log('- 3 payment providers (Stripe, Conekta, Fungies)');
-  console.log('- 3 payment routing rules');
+  console.log('- 2 payment providers (Stripe, Conekta)');
+  console.log('- 2 payment routing rules');
   console.log('- Sample audit logs');
   console.log('- 1 API key for testing');
   console.log('\n🚀 Ready for development and testing!');

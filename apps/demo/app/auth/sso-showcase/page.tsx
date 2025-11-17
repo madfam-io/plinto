@@ -8,16 +8,12 @@ import {
   SSOProviderForm,
   SAMLConfigForm,
   SSOTestConnection,
-  type SSOProviderCreate,
-  type SSOProviderResponse,
-  type SAMLConfigUpdate,
-  type SSOTestResponse,
 } from '@plinto/ui/components/auth'
-import { PlintoClient } from '@/lib/plinto-client'
+import { plintoClient } from '@/lib/plinto-client'
 
 export default function SSOShowcasePage() {
   const [activeTab, setActiveTab] = React.useState('providers')
-  const [selectedProvider, setSelectedProvider] = React.useState<SSOProviderResponse | null>(null)
+  const [selectedProvider, setSelectedProvider] = React.useState<any | null>(null)
   const [showProviderForm, setShowProviderForm] = React.useState(false)
   const [showSAMLConfig, setShowSAMLConfig] = React.useState(false)
   const [showTestConnection, setShowTestConnection] = React.useState(false)
@@ -25,14 +21,8 @@ export default function SSOShowcasePage() {
   // Mock organization ID (in production, get from auth context)
   const organizationId = 'demo-org-123'
 
-  // Initialize Plinto client
-  const plintoClient = React.useMemo(
-    () => new PlintoClient({ baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000' }),
-    []
-  )
-
   // Handler for provider created
-  const handleProviderCreated = (provider: SSOProviderResponse) => {
+  const handleProviderCreated = (provider: any) => {
     console.log('Provider created:', provider)
     setSelectedProvider(provider)
     setShowProviderForm(false)
@@ -45,28 +35,28 @@ export default function SSOShowcasePage() {
   }
 
   // Handler for editing provider
-  const handleEditProvider = (provider: SSOProviderResponse) => {
+  const handleEditProvider = (provider: any) => {
     setSelectedProvider(provider)
     setShowProviderForm(true)
     setActiveTab('configure')
   }
 
   // Handler for testing connection
-  const handleTestConnection = (provider: SSOProviderResponse) => {
+  const handleTestConnection = (provider: any) => {
     setSelectedProvider(provider)
     setShowTestConnection(true)
     setActiveTab('test')
   }
 
   // Handler for SAML config saved
-  const handleSAMLConfigSaved = (config: SAMLConfigUpdate) => {
+  const handleSAMLConfigSaved = (config: any) => {
     console.log('SAML config saved:', config)
     setActiveTab('test')
     setShowTestConnection(true)
   }
 
   // Handler for test completed
-  const handleTestCompleted = (result: SSOTestResponse) => {
+  const handleTestCompleted = (result: any) => {
     console.log('Test completed:', result)
     if (result.success) {
       alert('SSO test successful! Check console for details.')

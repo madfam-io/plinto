@@ -1,0 +1,37 @@
+Your Data Export is Ready
+
+Hi {{ user_name }},
+
+Your {{ request_type }} data export has been prepared and is now available for download.
+
+✓ EXPORT DETAILS
+----------------
+Your personal data has been compiled into a downloadable format. This export includes
+all data we hold about you as per your data rights request.
+
+DOWNLOAD YOUR DATA
+------------------
+{{ download_url }}
+
+⏰ IMPORTANT: This download link expires on {{ expires_at }}
+Please download your data before the link expires. After expiration, you'll need to
+submit a new data export request.
+
+WHAT'S INCLUDED IN YOUR EXPORT?
+--------------------------------
+• Account information and profile data
+• Authentication and security settings
+• Activity logs and session history
+• Organization memberships and roles
+• Consent records and privacy preferences
+• Any other personal data we process on your behalf
+
+🔒 SECURITY NOTICE
+Your data export contains sensitive personal information. Please store it securely
+and do not share the download link with anyone.
+
+Questions about your data? Contact us at {{ support_email }}
+
+---
+Plinto by Aureo Labs
+{{ base_url }}

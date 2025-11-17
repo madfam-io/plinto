@@ -8,12 +8,12 @@ import {
   InviteUserForm,
   InvitationAccept,
   BulkInviteUpload,
+  type Invitation,
   type InvitationCreate,
-  type InvitationResponse,
   type BulkInvitationResponse,
   type InvitationAcceptResponse,
 } from '@plinto/ui/components/auth'
-import { PlintoClient } from '@/lib/plinto-client'
+import { plintoClient } from '@/lib/plinto-client'
 
 export default function InvitationsShowcasePage() {
   const [activeTab, setActiveTab] = React.useState('manage')
@@ -23,16 +23,10 @@ export default function InvitationsShowcasePage() {
   // Mock organization ID (in production, get from auth context)
   const organizationId = 'demo-org-123'
 
-  // Initialize Plinto client
-  const plintoClient = React.useMemo(
-    () => new PlintoClient({ baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000' }),
-    []
-  )
-
   // Handler for single invitation created
-  const handleInvitationCreated = (invitation: InvitationResponse) => {
+  const handleInvitationCreated = (invitation: Invitation) => {
     console.log('Invitation created:', invitation)
-    alert(`Invitation sent to ${invitation.email}!\n\nInvitation URL:\n${invitation.invitation_url}`)
+    alert(`Invitation sent to ${invitation.email}!\n\nInvitation URL:\n${invitation.invite_url}`)
 
     // Switch to manage tab to see the new invitation
     setActiveTab('manage')
@@ -160,13 +154,13 @@ export default function InvitationsShowcasePage() {
                 <InvitationList
                   organizationId={organizationId}
                   plintoClient={plintoClient}
-                  onResend={(invitation) => {
-                    console.log('Resending invitation:', invitation.id)
-                    alert(`Invitation resent to ${invitation.email}`)
+                  onResend={async (invitationId) => {
+                    console.log('Resending invitation:', invitationId)
+                    alert(`Invitation resent!`)
                   }}
-                  onRevoke={(invitation) => {
-                    if (confirm(`Revoke invitation for ${invitation.email}?`)) {
-                      console.log('Revoking invitation:', invitation.id)
+                  onRevoke={async (invitationId) => {
+                    if (confirm(`Revoke invitation?`)) {
+                      console.log('Revoking invitation:', invitationId)
                     }
                   }}
                 />

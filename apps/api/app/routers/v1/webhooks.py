@@ -4,21 +4,20 @@ Webhook management endpoints
 Force Railway rebuild - clearing potential import cache issues
 """
 
-from typing import List, Optional
-from datetime import datetime
 import uuid
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.orm import Session
-from sqlalchemy import select, func
+from datetime import datetime
+from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field, HttpUrl
+from sqlalchemy import func, select
+from sqlalchemy.orm import Session
 
 from app.database import get_db
-from ...models import User, WebhookEndpoint, WebhookEvent, WebhookDelivery
 from app.dependencies import get_current_user
-from app.services.webhooks import (
-    webhook_service,
-    WebhookEventType
-)
+from app.services.webhooks import WebhookEventType, webhook_service
+
+from ...models import User, WebhookDelivery, WebhookEndpoint, WebhookEvent
 
 router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
@@ -26,6 +25,7 @@ router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 # Request/Response models
 class WebhookEndpointCreate(BaseModel):
     """Request model for creating webhook endpoint"""
+
     url: HttpUrl = Field(..., description="Webhook endpoint URL")
     events: List[WebhookEventType] = Field(..., description="Events to subscribe to")
     description: Optional[str] = Field(None, description="Endpoint description")
@@ -34,6 +34,7 @@ class WebhookEndpointCreate(BaseModel):
 
 class WebhookEndpointUpdate(BaseModel):
     """Request model for updating webhook endpoint"""
+
     url: Optional[HttpUrl] = Field(None, description="New webhook URL")
     events: Optional[List[WebhookEventType]] = Field(None, description="New events list")
     is_active: Optional[bool] = Field(None, description="Enable/disable endpoint")
@@ -43,6 +44,7 @@ class WebhookEndpointUpdate(BaseModel):
 
 class WebhookEndpointResponse(BaseModel):
     """Response model for webhook endpoint"""
+
     id: uuid.UUID
     url: str
     secret: str
@@ -52,24 +54,26 @@ class WebhookEndpointResponse(BaseModel):
     headers: Optional[dict]
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True
 
 
 class WebhookEventResponse(BaseModel):
     """Response model for webhook event"""
+
     id: uuid.UUID
     type: str
     data: dict
     created_at: datetime
-    
+
     class Config:
         from_attributes = True
 
 
 class WebhookDeliveryResponse(BaseModel):
     """Response model for webhook delivery"""
+
     id: uuid.UUID
     webhook_endpoint_id: uuid.UUID
     webhook_event_id: uuid.UUID
@@ -79,13 +83,14 @@ class WebhookDeliveryResponse(BaseModel):
     attempt: int
     delivered_at: Optional[datetime]
     created_at: datetime
-    
+
     class Config:
         from_attributes = True
 
 
 class WebhookStatsResponse(BaseModel):
     """Response model for webhook statistics"""
+
     total_deliveries: int
     successful: int
     failed: int
@@ -96,47 +101,56 @@ class WebhookStatsResponse(BaseModel):
 
 class WebhookEndpointListResponse(BaseModel):
     """Response model for listing webhook endpoints"""
+
     endpoints: List[WebhookEndpointResponse]
     total: int
 
 
 class WebhookEventListResponse(BaseModel):
     """Response model for listing webhook events"""
+
     events: List[WebhookEventResponse]
     total: int
 
 
 # Helper functions
 async def check_webhook_permission(
-    db: Session,
-    user: User,
-    endpoint_id: uuid.UUID
+    db: Session, user: User, endpoint_id: uuid.UUID
 ) -> WebhookEndpoint:
     """Check if user has permission to manage webhook endpoint"""
 
-    result = await db.execute(select(WebhookEndpoint).where(
-        WebhookEndpoint.id == endpoint_id
-    ))
+    result = await db.execute(select(WebhookEndpoint).where(WebhookEndpoint.id == endpoint_id))
     endpoint = result.scalar_one_or_none()
-    
+
     if not endpoint:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Webhook endpoint not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Webhook endpoint not found"
         )
-    
+
     # Check if user owns the endpoint or is admin
     if endpoint.user_id != user.id and not user.is_admin:
         # Check if user has organization permission
         if endpoint.organization_id:
-            # TODO: Check organization membership and role
-            pass
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Permission denied"
+            # Check organization membership and role
+            from app.models import OrganizationMember, OrganizationRole
+
+            member_result = await db.execute(
+                select(OrganizationMember).where(
+                    OrganizationMember.organization_id == endpoint.organization_id,
+                    OrganizationMember.user_id == user.id,
+                )
             )
-    
+            member = member_result.scalar_one_or_none()
+
+            # User must be at least a member to access org webhooks
+            if not member:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="User is not a member of this organization",
+                )
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Permission denied")
+
     return endpoint
 
 
@@ -145,10 +159,10 @@ async def check_webhook_permission(
 async def create_webhook_endpoint(
     endpoint_data: WebhookEndpointCreate,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Create a new webhook endpoint"""
-    
+
     # Create webhook endpoint
     endpoint = await webhook_service.register_endpoint(
         db,
@@ -156,14 +170,14 @@ async def create_webhook_endpoint(
         events=endpoint_data.events,
         organization_id=None,  # TODO: Add organization support
         description=endpoint_data.description,
-        headers=endpoint_data.headers
+        headers=endpoint_data.headers,
     )
-    
+
     # Add user association
     endpoint.user_id = current_user.id
     await db.commit()
     await db.refresh(endpoint)
-    
+
     return endpoint
 
 
@@ -171,34 +185,29 @@ async def create_webhook_endpoint(
 async def list_webhook_endpoints(
     is_active: Optional[bool] = Query(None, description="Filter by active status"),
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """List webhook endpoints for current user"""
 
-    stmt = select(WebhookEndpoint).where(
-        WebhookEndpoint.user_id == current_user.id
-    )
+    stmt = select(WebhookEndpoint).where(WebhookEndpoint.user_id == current_user.id)
 
     if is_active is not None:
         stmt = stmt.where(WebhookEndpoint.is_active == is_active)
 
     result = await db.execute(stmt)
     endpoints = result.scalars().all()
-    
-    return WebhookEndpointListResponse(
-        endpoints=endpoints,
-        total=len(endpoints)
-    )
+
+    return WebhookEndpointListResponse(endpoints=endpoints, total=len(endpoints))
 
 
 @router.get("/{endpoint_id}", response_model=WebhookEndpointResponse)
 async def get_webhook_endpoint(
     endpoint_id: uuid.UUID,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Get webhook endpoint details"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
     return endpoint
 
@@ -208,12 +217,12 @@ async def update_webhook_endpoint(
     endpoint_id: uuid.UUID,
     update_data: WebhookEndpointUpdate,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Update webhook endpoint configuration"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
-    
+
     # Update endpoint
     updated_endpoint = await webhook_service.update_endpoint(
         db,
@@ -222,9 +231,9 @@ async def update_webhook_endpoint(
         events=update_data.events,
         is_active=update_data.is_active,
         description=update_data.description,
-        headers=update_data.headers
+        headers=update_data.headers,
     )
-    
+
     return updated_endpoint
 
 
@@ -232,21 +241,21 @@ async def update_webhook_endpoint(
 async def delete_webhook_endpoint(
     endpoint_id: uuid.UUID,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Delete webhook endpoint"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
-    
+
     # Delete endpoint
     deleted = await webhook_service.delete_endpoint(db, str(endpoint_id))
-    
+
     if not deleted:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to delete webhook endpoint"
+            detail="Failed to delete webhook endpoint",
         )
-    
+
     return {"message": "Webhook endpoint deleted successfully"}
 
 
@@ -254,21 +263,20 @@ async def delete_webhook_endpoint(
 async def test_webhook_endpoint(
     endpoint_id: uuid.UUID,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Send test webhook to endpoint"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
-    
+
     # Send test webhook
     success = await webhook_service.test_endpoint(db, str(endpoint_id))
-    
+
     if not success:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to send test webhook"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to send test webhook"
         )
-    
+
     return {"message": "Test webhook sent successfully"}
 
 
@@ -277,19 +285,15 @@ async def get_webhook_endpoint_stats(
     endpoint_id: uuid.UUID,
     days: int = Query(7, description="Number of days to include in stats"),
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Get webhook endpoint delivery statistics"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
-    
+
     # Get statistics
-    stats = await webhook_service.get_endpoint_stats(
-        db,
-        str(endpoint_id),
-        days=days
-    )
-    
+    stats = await webhook_service.get_endpoint_stats(db, str(endpoint_id), days=days)
+
     return stats
 
 
@@ -299,20 +303,18 @@ async def list_webhook_events(
     limit: int = Query(100, le=1000, description="Max events to return"),
     offset: int = Query(0, ge=0, description="Offset for pagination"),
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """List webhook events for an endpoint"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
-    
+
     # Get events delivered to this endpoint
-    events_stmt = select(WebhookEvent).join(
-        WebhookDelivery,
-        WebhookDelivery.webhook_event_id == WebhookEvent.id
-    ).where(
-        WebhookDelivery.webhook_endpoint_id == endpoint_id
-    ).order_by(
-        WebhookEvent.created_at.desc()
+    events_stmt = (
+        select(WebhookEvent)
+        .join(WebhookDelivery, WebhookDelivery.webhook_event_id == WebhookEvent.id)
+        .where(WebhookDelivery.webhook_endpoint_id == endpoint_id)
+        .order_by(WebhookEvent.created_at.desc())
     )
 
     count_result = await db.execute(select(func.count()).select_from(events_stmt.subquery()))
@@ -320,11 +322,8 @@ async def list_webhook_events(
 
     events_result = await db.execute(events_stmt.offset(offset).limit(limit))
     events = events_result.scalars().all()
-    
-    return WebhookEventListResponse(
-        events=events,
-        total=total
-    )
+
+    return WebhookEventListResponse(events=events, total=total)
 
 
 @router.get("/{endpoint_id}/deliveries", response_model=List[WebhookDeliveryResponse])
@@ -333,20 +332,22 @@ async def list_webhook_deliveries(
     limit: int = Query(100, le=1000, description="Max deliveries to return"),
     offset: int = Query(0, ge=0, description="Offset for pagination"),
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """List webhook delivery attempts for an endpoint"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
-    
+
     # Get deliveries for this endpoint
-    result = await db.execute(select(WebhookDelivery).where(
-        WebhookDelivery.webhook_endpoint_id == endpoint_id
-    ).order_by(
-        WebhookDelivery.created_at.desc()
-    ).offset(offset).limit(limit))
+    result = await db.execute(
+        select(WebhookDelivery)
+        .where(WebhookDelivery.webhook_endpoint_id == endpoint_id)
+        .order_by(WebhookDelivery.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+    )
     deliveries = result.scalars().all()
-    
+
     return deliveries
 
 
@@ -354,51 +355,40 @@ async def list_webhook_deliveries(
 async def regenerate_webhook_secret(
     endpoint_id: uuid.UUID,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Regenerate webhook endpoint secret"""
-    
+
     endpoint = await check_webhook_permission(db, current_user, endpoint_id)
-    
+
     # Generate new secret
     import hashlib
     import time
-    
-    new_secret = hashlib.sha256(
-        f"{endpoint.url}{time.time()}{uuid.uuid4()}".encode()
-    ).hexdigest()
-    
+
+    new_secret = hashlib.sha256(f"{endpoint.url}{time.time()}{uuid.uuid4()}".encode()).hexdigest()
+
     endpoint.secret = new_secret
     endpoint.updated_at = datetime.utcnow()
-    
+
     await db.commit()
     await db.refresh(endpoint)
-    
+
     return endpoint
 
 
 @router.get("/events/types", response_model=List[str])
-async def list_available_event_types(
-    current_user: User = Depends(get_current_user)
-):
+async def list_available_event_types(current_user: User = Depends(get_current_user)):
     """List all available webhook event types"""
-    
+
     return [event.value for event in WebhookEventType]
 
 
 @router.post("/verify-signature")
 async def verify_webhook_signature(
-    secret: str,
-    payload: str,
-    signature: str,
-    current_user: User = Depends(get_current_user)
+    secret: str, payload: str, signature: str, current_user: User = Depends(get_current_user)
 ):
     """Verify webhook signature for testing"""
-    
-    is_valid = await webhook_service.verify_webhook_signature(
-        secret,
-        payload,
-        signature
-    )
-    
+
+    is_valid = await webhook_service.verify_webhook_signature(secret, payload, signature)
+
     return {"valid": is_valid}

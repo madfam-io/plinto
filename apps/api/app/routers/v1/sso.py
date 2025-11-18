@@ -211,7 +211,18 @@ async def get_sso_configuration(
             raise HTTPException(status_code=404, detail="SSO configuration not found")
 
         # Verify user belongs to organization
-        # TODO: Add proper organization membership check
+        from app.models import OrganizationMember
+
+        member_result = await db.execute(
+            select(OrganizationMember).where(
+                OrganizationMember.organization_id == organization_id,
+                OrganizationMember.user_id == current_user.id,
+            )
+        )
+        member = member_result.scalar_one_or_none()
+
+        if not member:
+            raise HTTPException(status_code=403, detail="User does not belong to this organization")
 
         return SSOConfigurationResponse(**config)
 

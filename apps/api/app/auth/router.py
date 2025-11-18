@@ -464,30 +464,140 @@ async def reset_password(request: ResetPasswordRequest, db=Depends(get_db)):
 
 
 # WebAuthn/Passkeys endpoints
-@router.post("/passkeys/register/options")
-async def passkey_register_options(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """Get WebAuthn registration options"""
-    # TODO: Implement WebAuthn registration options
-    # - Generate challenge
-    # - Return registration options
+# Note: Full WebAuthn implementation is in /v1/passkeys router
+# These are legacy endpoints - redirect to the v1 implementation
 
+
+@router.post("/passkeys/register/options")
+async def passkey_register_options(
+    current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)
+):
+    """
+    Get WebAuthn registration options
+
+    Delegates to /v1/passkeys/register/options for full implementation
+    """
+    from webauthn.helpers import bytes_to_base64url
+
+    from app.routers.v1.passkeys import generate_registration_options as webauthn_generate
+
+    # Generate WebAuthn registration options
+    options = webauthn_generate(
+        rp_id=settings.WEBAUTHN_RP_ID or "localhost",
+        rp_name=settings.WEBAUTHN_RP_NAME or "Plinto",
+        user_id=str(current_user.id).encode(),
+        user_name=current_user.email,
+        user_display_name=current_user.full_name or current_user.email,
+        authenticator_selection={
+            "authenticator_attachment": "cross-platform",
+            "require_resident_key": False,
+            "user_verification": "preferred",
+        },
+        timeout=settings.WEBAUTHN_TIMEOUT or 60000,
+    )
+
+    # Store challenge in Redis with 5-minute expiry
+    from app.core.database import get_redis
+
+    challenge = bytes_to_base64url(options.challenge)
+    redis_client = await get_redis()
+    await redis_client.setex(
+        f"passkey_challenge:{current_user.id}",
+        300,  # 5 minutes
+        challenge,
+    )
+
+    # Convert to JSON-serializable format
     return {
-        "challenge": "mock_challenge",
-        "rp": {"name": settings.WEBAUTHN_RP_NAME, "id": settings.WEBAUTHN_RP_ID},
-        "user": {"id": "user_123", "name": "user@example.com", "displayName": "Test User"},
-        "timeout": settings.WEBAUTHN_TIMEOUT,
+        "challenge": challenge,
+        "rp": {"id": options.rp.id, "name": options.rp.name},
+        "user": {
+            "id": bytes_to_base64url(options.user.id),
+            "name": options.user.name,
+            "displayName": options.user.display_name,
+        },
+        "pubKeyCredParams": [
+            {"type": "public-key", "alg": -7},  # ES256
+            {"type": "public-key", "alg": -257},  # RS256
+        ],
+        "timeout": options.timeout,
+        "authenticatorSelection": {
+            "authenticatorAttachment": "cross-platform",
+            "requireResidentKey": False,
+            "userVerification": "preferred",
+        },
     }
 
 
 @router.post("/passkeys/register")
 async def passkey_register(
     credential: dict,
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
-    """Register a new passkey"""
-    # TODO: Implement WebAuthn registration
-    # - Verify registration response
-    # - Store credential in database
+    """
+    Register a new passkey
 
-    return {"message": "Passkey registered successfully"}
+    Delegates to /v1/passkeys/register/verify for full implementation
+    """
+    from datetime import datetime
+
+    import structlog
+    from webauthn.helpers import base64url_to_bytes
+
+    from app.core.database import get_redis
+    from app.models import Passkey
+    from app.routers.v1.passkeys import verify_registration_response as webauthn_verify
+
+    logger = structlog.get_logger()
+
+    # Retrieve challenge from Redis
+    redis_client = await get_redis()
+    stored_challenge = await redis_client.get(f"passkey_challenge:{current_user.id}")
+
+    if not stored_challenge:
+        raise HTTPException(status_code=400, detail="Challenge not found or expired")
+
+    # Verify WebAuthn registration
+    try:
+        verification = webauthn_verify(
+            credential=credential,
+            expected_challenge=base64url_to_bytes(stored_challenge),
+            expected_origin=settings.WEBAUTHN_ORIGIN or "http://localhost:3000",
+            expected_rp_id=settings.WEBAUTHN_RP_ID or "localhost",
+        )
+
+        if not verification.verified:
+            raise HTTPException(status_code=400, detail="Registration verification failed")
+
+        # Store passkey in database
+        from webauthn.helpers import bytes_to_base64url
+
+        passkey = Passkey(
+            user_id=current_user.id,
+            credential_id=bytes_to_base64url(verification.credential_id),
+            public_key=bytes_to_base64url(verification.credential_public_key),
+            sign_count=verification.sign_count,
+            name=f"Passkey {datetime.utcnow().strftime('%Y-%m-%d')}",
+            authenticator_attachment=credential.get("authenticatorAttachment"),
+            created_at=datetime.utcnow(),
+        )
+
+        db.add(passkey)
+        await db.commit()
+        await db.refresh(passkey)
+
+        # Clean up challenge
+        await redis_client.delete(f"passkey_challenge:{current_user.id}")
+
+        logger.info("Passkey registered", user_id=str(current_user.id), passkey_id=str(passkey.id))
+
+        return {
+            "message": "Passkey registered successfully",
+            "passkey_id": str(passkey.id),
+            "name": passkey.name,
+        }
+
+    except Exception as e:
+        logger.error("Passkey registration failed", error=str(e), user_id=str(current_user.id))
+        raise HTTPException(status_code=400, detail=f"Registration verification failed: {str(e)}")

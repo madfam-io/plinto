@@ -216,13 +216,31 @@ async def get_system_health(
         database_status = "unhealthy"
 
     # Check cache (Redis in production)
-    cache_status = "not_configured"  # TODO: Check Redis connection
+    from app.core.database import get_redis
 
-    # Check storage
-    storage_status = "healthy"  # TODO: Check S3/storage connection
+    try:
+        redis_client = await get_redis()
+        await redis_client.ping()
+        cache_status = "healthy"
+    except Exception as e:
+        cache_status = f"unhealthy: {str(e)}"
+
+    # Check storage (S3/R2 in production)
+    try:
+        # Check if storage is configured
+        if not settings.STORAGE_ENABLED or not settings.STORAGE_BUCKET_NAME:
+            storage_status = "not_configured"
+        else:
+            # Basic configuration check - actual S3/R2 health check would require boto3
+            # For now, validate that required settings are present
+            if settings.STORAGE_ACCESS_KEY_ID and settings.STORAGE_SECRET_ACCESS_KEY:
+                storage_status = "configured"  # Assume healthy if properly configured
+            else:
+                storage_status = "misconfigured"
+    except Exception as e:
+        storage_status = f"unhealthy: {str(e)}"
 
     # Check email service
-    from app.core.database import get_redis
     from app.services.resend_email_service import get_resend_email_service
 
     try:

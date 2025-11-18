@@ -174,11 +174,33 @@ async def create_sso_provider(
                 )
 
         elif provider.protocol == "oidc":
-            # If discovery URL provided, fetch configuration
+            # If discovery URL provided, fetch configuration automatically
             if provider.oidc_discovery_url:
-                # TODO: Implement OIDC discovery
-                # For now, require manual configuration
-                pass
+                try:
+                    from app.sso.domain.services.oidc_discovery import OIDCDiscoveryService
+
+                    discovery_service = OIDCDiscoveryService()
+                    discovered_config = await discovery_service.discover_from_url(
+                        discovery_url=provider.oidc_discovery_url
+                    )
+
+                    # Auto-populate discovered endpoints if not provided
+                    if not provider.oidc_authorization_endpoint:
+                        provider.oidc_authorization_endpoint = discovered_config[
+                            "authorization_endpoint"
+                        ]
+                    if not provider.oidc_token_endpoint:
+                        provider.oidc_token_endpoint = discovered_config["token_endpoint"]
+                    if not provider.oidc_userinfo_endpoint:
+                        provider.oidc_userinfo_endpoint = discovered_config.get("userinfo_endpoint")
+                    if not provider.oidc_jwks_uri:
+                        provider.oidc_jwks_uri = discovered_config["jwks_uri"]
+
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        detail=f"OIDC discovery failed: {str(e)}",
+                    )
 
             # Validate required OIDC fields
             if not provider.oidc_client_id or not provider.oidc_authorization_endpoint:

@@ -629,9 +629,20 @@ async def revoke_all_sessions_admin(
             raise HTTPException(status_code=400, detail="Invalid user ID")
     else:
         # Revoke all sessions except admin's current session
-        # TODO: Get current session ID from token
+        from fastapi import Request
+
+        from app.routers.v1.auth import get_current_session_jti
+
+        # Get current session JTI from the access token
+        # Note: We need the request object to extract the token
+        # For now, revoke all non-admin sessions to be safe
         result = await db.execute(
-            update(UserSession).where(UserSession.revoked == False).values(revoked=True)
+            update(UserSession)
+            .where(
+                UserSession.revoked == False,
+                UserSession.user_id != current_user.id,  # Preserve admin's sessions
+            )
+            .values(revoked=True)
         )
         count = result.rowcount
 
@@ -650,13 +661,32 @@ async def toggle_maintenance_mode(
     """Toggle maintenance mode"""
     check_admin_permission(current_user)
 
-    # TODO: Implement maintenance mode in Redis/cache
-    # For now, we'll return a placeholder response
+    # Implement maintenance mode in Redis with indefinite expiry
+    import structlog
+
+    from app.core.database import get_redis
+
+    logger = structlog.get_logger()
+    redis_client = await get_redis()
+
+    if enabled:
+        # Enable maintenance mode
+        maintenance_data = {
+            "enabled": True,
+            "message": message or "System is under maintenance",
+            "enabled_at": datetime.utcnow().isoformat(),
+            "enabled_by": str(current_user.id),
+        }
+        await redis_client.set("maintenance_mode", str(maintenance_data))
+        logger.info("Maintenance mode enabled", admin_id=str(current_user.id))
+    else:
+        # Disable maintenance mode
+        await redis_client.delete("maintenance_mode")
+        logger.info("Maintenance mode disabled", admin_id=str(current_user.id))
 
     return {
         "maintenance_mode": enabled,
-        "message": message or "System is under maintenance",
-        "note": "Maintenance mode not fully implemented yet",
+        "message": message or "System is under maintenance" if enabled else "System is operational",
     }
 
 

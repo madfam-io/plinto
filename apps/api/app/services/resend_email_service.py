@@ -598,6 +598,58 @@ class ResendEmailService:
             },
         )
 
+    async def send_mfa_recovery_email(
+        self,
+        to_email: str,
+        user_name: str,
+        backup_codes: List[str],
+    ) -> EmailDeliveryStatus:
+        """Send MFA recovery email with backup codes"""
+
+        context = {
+            "user_name": user_name,
+            "backup_codes": backup_codes,
+            "base_url": settings.BASE_URL,
+            "company_name": "Plinto",
+            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+        }
+
+        html_content = self._render_template("mfa_recovery.html", context)
+        text_content = self._render_template("mfa_recovery.txt", context)
+
+        return await self.send_email(
+            to_email=to_email,
+            subject="MFA Recovery Codes - Plinto",
+            html_content=html_content,
+            text_content=text_content,
+            priority=EmailPriority.HIGH,
+            tags=[{"name": "category", "value": "mfa_recovery"}],
+            metadata={"type": "mfa_recovery", "user_email": to_email},
+        )
+
+    async def check_health(self) -> Dict[str, Any]:
+        """Check Resend email service health"""
+        if not settings.EMAIL_ENABLED:
+            return {"status": "disabled", "message": "Email service disabled"}
+
+        if not settings.RESEND_API_KEY:
+            return {"status": "not_configured", "message": "Resend API key not configured"}
+
+        try:
+            # Verify API key format (Resend keys start with 're_')
+            if settings.ENVIRONMENT == "production" and not settings.RESEND_API_KEY.startswith(
+                "re_"
+            ):
+                return {"status": "unhealthy", "message": "Invalid Resend API key format"}
+
+            # Check Redis connection for delivery tracking
+            if self.redis_client:
+                await self.redis_client.ping()
+
+            return {"status": "healthy", "message": "Email service operational"}
+        except Exception as e:
+            return {"status": "unhealthy", "message": str(e)}
+
 
 # Global service instance
 def get_resend_email_service(redis_client: Optional[redis.Redis] = None) -> ResendEmailService:

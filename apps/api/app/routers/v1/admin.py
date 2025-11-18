@@ -2,29 +2,41 @@
 Admin API endpoints for system management
 """
 
-from typing import List, Optional, Dict, Any
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.orm import Session
-from sqlalchemy import func, and_, or_, desc, select, update
-from pydantic import BaseModel, Field
-from datetime import datetime, timedelta
 import uuid
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional
 
-from app.database import get_db
-from ...models import (
-    User, UserStatus, Organization, OrganizationMember, organization_members,
-    Session as UserSession, ActivityLog, OAuthAccount,
-    Passkey, MagicLink, PasswordReset, EmailVerification,
-    OAuthProvider
-)
-from app.routers.v1.auth import get_current_user
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
+from sqlalchemy import and_, desc, func, or_, select, update
+from sqlalchemy.orm import Session
+
 from app.config import settings
+from app.database import get_db
+from app.routers.v1.auth import get_current_user
+
+from ...models import (
+    ActivityLog,
+    EmailVerification,
+    MagicLink,
+    OAuthAccount,
+    OAuthProvider,
+    Organization,
+    OrganizationMember,
+    Passkey,
+    PasswordReset,
+    User,
+    UserStatus,
+    organization_members,
+)
+from ...models import Session as UserSession
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 
 class AdminStatsResponse(BaseModel):
     """Admin statistics response"""
+
     total_users: int
     active_users: int
     suspended_users: int
@@ -41,6 +53,7 @@ class AdminStatsResponse(BaseModel):
 
 class SystemHealthResponse(BaseModel):
     """System health response"""
+
     status: str
     database: str
     cache: str
@@ -53,6 +66,7 @@ class SystemHealthResponse(BaseModel):
 
 class UserAdminResponse(BaseModel):
     """Admin user response with additional details"""
+
     id: str
     email: str
     email_verified: bool
@@ -73,6 +87,7 @@ class UserAdminResponse(BaseModel):
 
 class OrganizationAdminResponse(BaseModel):
     """Admin organization response"""
+
     id: str
     name: str
     slug: str
@@ -87,6 +102,7 @@ class OrganizationAdminResponse(BaseModel):
 
 class ActivityLogResponse(BaseModel):
     """Activity log response"""
+
     id: str
     user_id: str
     user_email: str
@@ -99,6 +115,7 @@ class ActivityLogResponse(BaseModel):
 
 class AdminUserUpdateRequest(BaseModel):
     """Admin user update request"""
+
     status: Optional[UserStatus] = None
     is_admin: Optional[bool] = None
     email_verified: Optional[bool] = None
@@ -112,8 +129,7 @@ def check_admin_permission(user: User):
 
 @router.get("/stats", response_model=AdminStatsResponse)
 async def get_admin_stats(
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     """Get admin statistics"""
     check_admin_permission(current_user)
@@ -122,19 +138,15 @@ async def get_admin_stats(
     result = await db.execute(select(func.count(User.id)))
     total_users = result.scalar()
 
-    result = await db.execute(select(func.count(User.id)).where(
-        User.status == UserStatus.ACTIVE
-    ))
+    result = await db.execute(select(func.count(User.id)).where(User.status == UserStatus.ACTIVE))
     active_users = result.scalar()
 
-    result = await db.execute(select(func.count(User.id)).where(
-        User.status == UserStatus.SUSPENDED
-    ))
+    result = await db.execute(
+        select(func.count(User.id)).where(User.status == UserStatus.SUSPENDED)
+    )
     suspended_users = result.scalar()
 
-    result = await db.execute(select(func.count(User.id)).where(
-        User.status == UserStatus.DELETED
-    ))
+    result = await db.execute(select(func.count(User.id)).where(User.status == UserStatus.DELETED))
     deleted_users = result.scalar()
 
     # Organization statistics
@@ -145,16 +157,15 @@ async def get_admin_stats(
     result = await db.execute(select(func.count(UserSession.id)))
     total_sessions = result.scalar()
 
-    result = await db.execute(select(func.count(UserSession.id)).where(
-        UserSession.revoked == False,
-        UserSession.expires_at > datetime.utcnow()
-    ))
+    result = await db.execute(
+        select(func.count(UserSession.id)).where(
+            UserSession.revoked == False, UserSession.expires_at > datetime.utcnow()
+        )
+    )
     active_sessions = result.scalar()
 
     # Security statistics
-    result = await db.execute(select(func.count(User.id)).where(
-        User.mfa_enabled == True
-    ))
+    result = await db.execute(select(func.count(User.id)).where(User.mfa_enabled == True))
     mfa_enabled_users = result.scalar()
 
     result = await db.execute(select(func.count(OAuthAccount.id)))
@@ -166,16 +177,14 @@ async def get_admin_stats(
     # Recent activity
     last_24h = datetime.utcnow() - timedelta(hours=24)
 
-    result = await db.execute(select(func.count(User.id)).where(
-        User.created_at >= last_24h
-    ))
+    result = await db.execute(select(func.count(User.id)).where(User.created_at >= last_24h))
     users_last_24h = result.scalar()
 
-    result = await db.execute(select(func.count(UserSession.id)).where(
-        UserSession.created_at >= last_24h
-    ))
+    result = await db.execute(
+        select(func.count(UserSession.id)).where(UserSession.created_at >= last_24h)
+    )
     sessions_last_24h = result.scalar()
-    
+
     return AdminStatsResponse(
         total_users=total_users,
         active_users=active_users,
@@ -188,37 +197,45 @@ async def get_admin_stats(
         oauth_accounts=oauth_accounts,
         passkeys_registered=passkeys_registered,
         users_last_24h=users_last_24h,
-        sessions_last_24h=sessions_last_24h
+        sessions_last_24h=sessions_last_24h,
     )
 
 
 @router.get("/health", response_model=SystemHealthResponse)
 async def get_system_health(
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     """Get system health status"""
     check_admin_permission(current_user)
-    
+
     # Check database
     try:
         db.execute("SELECT 1")
         database_status = "healthy"
     except:
         database_status = "unhealthy"
-    
+
     # Check cache (Redis in production)
     cache_status = "not_configured"  # TODO: Check Redis connection
-    
+
     # Check storage
     storage_status = "healthy"  # TODO: Check S3/storage connection
-    
+
     # Check email service
-    email_status = "not_configured"  # TODO: Check email service
-    
+    from app.core.database import get_redis
+    from app.services.resend_email_service import get_resend_email_service
+
+    try:
+        redis_client = await get_redis()
+        email_service = get_resend_email_service(redis_client)
+        health = await email_service.check_health()
+        email_status = health["status"]
+    except Exception:
+        email_status = "unhealthy"
+
     # Calculate uptime (in production, track actual start time)
     uptime = 0.0  # TODO: Calculate from application start time
-    
+
     return SystemHealthResponse(
         status="healthy" if database_status == "healthy" else "degraded",
         database=database_status,
@@ -227,7 +244,7 @@ async def get_system_health(
         email=email_status,
         uptime=uptime,
         version=settings.VERSION or "1.0.0",
-        environment=settings.ENVIRONMENT
+        environment=settings.ENVIRONMENT,
     )
 
 
@@ -240,7 +257,7 @@ async def list_all_users(
     mfa_enabled: Optional[bool] = None,
     is_admin: Optional[bool] = None,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """List all users (admin only)"""
     check_admin_permission(current_user)
@@ -255,7 +272,7 @@ async def list_all_users(
                 User.email.ilike(f"%{search}%"),
                 User.first_name.ilike(f"%{search}%"),
                 User.last_name.ilike(f"%{search}%"),
-                User.username.ilike(f"%{search}%")
+                User.username.ilike(f"%{search}%"),
             )
         )
 
@@ -274,51 +291,56 @@ async def list_all_users(
 
     result_set = await db.execute(stmt)
     users = result_set.scalars().all()
-    
+
     # Build response
     result = []
     for user in users:
         # Get additional counts
-        orgs_result = await db.execute(select(func.count(organization_members.c.organization_id)).where(
-            organization_members.c.user_id == user.id
-        ))
+        orgs_result = await db.execute(
+            select(func.count(organization_members.c.organization_id)).where(
+                organization_members.c.user_id == user.id
+            )
+        )
         orgs_count = orgs_result.scalar()
 
-        sessions_result = await db.execute(select(func.count(UserSession.id)).where(
-            UserSession.user_id == user.id,
-            UserSession.revoked == False
-        ))
+        sessions_result = await db.execute(
+            select(func.count(UserSession.id)).where(
+                UserSession.user_id == user.id, UserSession.revoked == False
+            )
+        )
         sessions_count = sessions_result.scalar()
 
-        oauth_result = await db.execute(select(OAuthAccount.provider).where(
-            OAuthAccount.user_id == user.id
-        ))
+        oauth_result = await db.execute(
+            select(OAuthAccount.provider).where(OAuthAccount.user_id == user.id)
+        )
         oauth_providers = oauth_result.scalars().all()
 
-        passkeys_result = await db.execute(select(func.count(Passkey.id)).where(
-            Passkey.user_id == user.id
-        ))
+        passkeys_result = await db.execute(
+            select(func.count(Passkey.id)).where(Passkey.user_id == user.id)
+        )
         passkeys_count = passkeys_result.scalar()
-        
-        result.append(UserAdminResponse(
-            id=str(user.id),
-            email=user.email,
-            email_verified=user.email_verified,
-            username=user.username,
-            first_name=user.first_name,
-            last_name=user.last_name,
-            status=user.status.value,
-            mfa_enabled=user.mfa_enabled,
-            is_admin=user.is_admin,
-            organizations_count=orgs_count,
-            sessions_count=sessions_count,
-            oauth_providers=[p.provider.value for p in oauth_providers],
-            passkeys_count=passkeys_count,
-            created_at=user.created_at,
-            updated_at=user.updated_at,
-            last_sign_in_at=user.last_sign_in_at
-        ))
-    
+
+        result.append(
+            UserAdminResponse(
+                id=str(user.id),
+                email=user.email,
+                email_verified=user.email_verified,
+                username=user.username,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                status=user.status.value,
+                mfa_enabled=user.mfa_enabled,
+                is_admin=user.is_admin,
+                organizations_count=orgs_count,
+                sessions_count=sessions_count,
+                oauth_providers=[p.provider.value for p in oauth_providers],
+                passkeys_count=passkeys_count,
+                created_at=user.created_at,
+                updated_at=user.updated_at,
+                last_sign_in_at=user.last_sign_in_at,
+            )
+        )
+
     return result
 
 
@@ -327,7 +349,7 @@ async def update_user_admin(
     user_id: str,
     request: AdminUserUpdateRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Update user as admin"""
     check_admin_permission(current_user)
@@ -345,29 +367,27 @@ async def update_user_admin(
     # Prevent self-demotion
     if user.id == current_user.id and request.is_admin == False:
         raise HTTPException(status_code=400, detail="Cannot remove your own admin privileges")
-    
+
     # Update fields
     if request.status is not None:
         user.status = request.status
-        
+
         # Revoke sessions if suspending/deleting
         if request.status in [UserStatus.SUSPENDED, UserStatus.DELETED]:
             await db.execute(
-                update(UserSession)
-                .where(UserSession.user_id == user.id)
-                .values(revoked=True)
+                update(UserSession).where(UserSession.user_id == user.id).values(revoked=True)
             )
-    
+
     if request.is_admin is not None:
         user.is_admin = request.is_admin
-    
+
     if request.email_verified is not None:
         user.email_verified = request.email_verified
         if request.email_verified:
             user.email_verified_at = datetime.utcnow()
-    
+
     await db.commit()
-    
+
     return {"message": "User updated successfully"}
 
 
@@ -376,7 +396,7 @@ async def delete_user_admin(
     user_id: str,
     permanent: bool = Query(False),
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Delete user as admin"""
     check_admin_permission(current_user)
@@ -394,7 +414,7 @@ async def delete_user_admin(
     # Prevent self-deletion
     if user.id == current_user.id:
         raise HTTPException(status_code=400, detail="Cannot delete your own account")
-    
+
     if permanent:
         # Hard delete - remove from database
         db.delete(user)
@@ -405,13 +425,11 @@ async def delete_user_admin(
 
         # Revoke all sessions
         await db.execute(
-            update(UserSession)
-            .where(UserSession.user_id == user.id)
-            .values(revoked=True)
+            update(UserSession).where(UserSession.user_id == user.id).values(revoked=True)
         )
-    
+
     await db.commit()
-    
+
     return {"message": f"User {'permanently' if permanent else 'soft'} deleted"}
 
 
@@ -422,7 +440,7 @@ async def list_all_organizations(
     search: Optional[str] = None,
     billing_plan: Optional[str] = None,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """List all organizations (admin only)"""
     check_admin_permission(current_user)
@@ -436,7 +454,7 @@ async def list_all_organizations(
             or_(
                 Organization.name.ilike(f"%{search}%"),
                 Organization.slug.ilike(f"%{search}%"),
-                User.email.ilike(f"%{search}%")
+                User.email.ilike(f"%{search}%"),
             )
         )
 
@@ -449,39 +467,41 @@ async def list_all_organizations(
 
     result_set = await db.execute(stmt)
     organizations = result_set.scalars().all()
-    
+
     # Build response
     result = []
     for org in organizations:
         owner_result = await db.execute(select(User).where(User.id == org.owner_id))
         owner = owner_result.scalar_one_or_none()
 
-        members_result = await db.execute(select(func.count(organization_members.c.user_id)).where(
-            organization_members.c.organization_id == org.id
-        ))
+        members_result = await db.execute(
+            select(func.count(organization_members.c.user_id)).where(
+                organization_members.c.organization_id == org.id
+            )
+        )
         members_count = members_result.scalar()
-        
-        result.append(OrganizationAdminResponse(
-            id=str(org.id),
-            name=org.name,
-            slug=org.slug,
-            owner_id=str(org.owner_id),
-            owner_email=owner.email if owner else "unknown",
-            billing_plan=org.billing_plan,
-            billing_email=org.billing_email,
-            members_count=members_count,
-            created_at=org.created_at,
-            updated_at=org.updated_at
-        ))
-    
+
+        result.append(
+            OrganizationAdminResponse(
+                id=str(org.id),
+                name=org.name,
+                slug=org.slug,
+                owner_id=str(org.owner_id),
+                owner_email=owner.email if owner else "unknown",
+                billing_plan=org.billing_plan,
+                billing_email=org.billing_email,
+                members_count=members_count,
+                created_at=org.created_at,
+                updated_at=org.updated_at,
+            )
+        )
+
     return result
 
 
 @router.delete("/organizations/{org_id}")
 async def delete_organization_admin(
-    org_id: str,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    org_id: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     """Delete organization as admin"""
     check_admin_permission(current_user)
@@ -495,11 +515,11 @@ async def delete_organization_admin(
     org = org_result.scalar_one_or_none()
     if not org:
         raise HTTPException(status_code=404, detail="Organization not found")
-    
+
     # Delete organization (cascade will handle related records)
     db.delete(org)
     await db.commit()
-    
+
     return {"message": "Organization deleted successfully"}
 
 
@@ -512,7 +532,7 @@ async def get_activity_logs(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Get activity logs (admin only)"""
     check_admin_permission(current_user)
@@ -546,24 +566,26 @@ async def get_activity_logs(
 
     result_set = await db.execute(stmt)
     logs = result_set.scalars().all()
-    
+
     # Build response
     result = []
     for log in logs:
         user_result = await db.execute(select(User).where(User.id == log.user_id))
         user = user_result.scalar_one_or_none()
-        
-        result.append(ActivityLogResponse(
-            id=str(log.id),
-            user_id=str(log.user_id),
-            user_email=user.email if user else "unknown",
-            action=log.action,
-            details=log.details or {},
-            ip_address=log.ip_address,
-            user_agent=log.user_agent,
-            created_at=log.created_at
-        ))
-    
+
+        result.append(
+            ActivityLogResponse(
+                id=str(log.id),
+                user_id=str(log.user_id),
+                user_email=user.email if user else "unknown",
+                action=log.action,
+                details=log.details or {},
+                ip_address=log.ip_address,
+                user_agent=log.user_agent,
+                created_at=log.created_at,
+            )
+        )
+
     return result
 
 
@@ -571,7 +593,7 @@ async def get_activity_logs(
 async def revoke_all_sessions_admin(
     user_id: Optional[str] = None,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Revoke all sessions (optionally for specific user)"""
     check_admin_permission(current_user)
@@ -581,10 +603,7 @@ async def revoke_all_sessions_admin(
             user_uuid = uuid.UUID(user_id)
             result = await db.execute(
                 update(UserSession)
-                .where(
-                    UserSession.user_id == user_uuid,
-                    UserSession.revoked == False
-                )
+                .where(UserSession.user_id == user_uuid, UserSession.revoked == False)
                 .values(revoked=True)
             )
             count = result.rowcount
@@ -594,14 +613,12 @@ async def revoke_all_sessions_admin(
         # Revoke all sessions except admin's current session
         # TODO: Get current session ID from token
         result = await db.execute(
-            update(UserSession)
-            .where(UserSession.revoked == False)
-            .values(revoked=True)
+            update(UserSession).where(UserSession.revoked == False).values(revoked=True)
         )
         count = result.rowcount
-    
+
     await db.commit()
-    
+
     return {"message": f"Revoked {count} sessions"}
 
 
@@ -610,28 +627,26 @@ async def toggle_maintenance_mode(
     enabled: bool,
     message: Optional[str] = None,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     """Toggle maintenance mode"""
     check_admin_permission(current_user)
-    
+
     # TODO: Implement maintenance mode in Redis/cache
     # For now, we'll return a placeholder response
-    
+
     return {
         "maintenance_mode": enabled,
         "message": message or "System is under maintenance",
-        "note": "Maintenance mode not fully implemented yet"
+        "note": "Maintenance mode not fully implemented yet",
     }
 
 
 @router.get("/config")
-async def get_system_config(
-    current_user: User = Depends(get_current_user)
-):
+async def get_system_config(current_user: User = Depends(get_current_user)):
     """Get system configuration (admin only)"""
     check_admin_permission(current_user)
-    
+
     # Return non-sensitive configuration
     return {
         "environment": settings.ENVIRONMENT,
@@ -643,7 +658,7 @@ async def get_system_config(
             "passkeys_enabled": True,
             "oauth_providers": [p.value for p in OAuthProvider],
             "magic_links_enabled": True,
-            "organizations_enabled": True
+            "organizations_enabled": True,
         },
         "limits": {
             "max_sessions_per_user": 10,
@@ -651,6 +666,6 @@ async def get_system_config(
             "refresh_token_days": settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS,
             "password_reset_expire_minutes": 60,
             "magic_link_expire_minutes": 15,
-            "invitation_expire_days": 7
-        }
+            "invitation_expire_days": 7,
+        },
     }

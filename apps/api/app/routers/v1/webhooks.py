@@ -30,6 +30,9 @@ class WebhookEndpointCreate(BaseModel):
     events: List[WebhookEventType] = Field(..., description="Events to subscribe to")
     description: Optional[str] = Field(None, description="Endpoint description")
     headers: Optional[dict] = Field(None, description="Custom headers to include")
+    organization_id: Optional[str] = Field(
+        None, description="Organization ID for org-scoped webhook"
+    )
 
 
 class WebhookEndpointUpdate(BaseModel):
@@ -163,12 +166,42 @@ async def create_webhook_endpoint(
 ):
     """Create a new webhook endpoint"""
 
+    # Validate organization membership if org ID provided
+    organization_id = None
+    if endpoint_data.organization_id:
+        from app.models import OrganizationMember
+
+        try:
+            org_uuid = uuid.UUID(endpoint_data.organization_id)
+
+            # Verify user is a member of the organization
+            member_result = await db.execute(
+                select(OrganizationMember).where(
+                    OrganizationMember.organization_id == org_uuid,
+                    OrganizationMember.user_id == current_user.id,
+                )
+            )
+            member = member_result.scalar_one_or_none()
+
+            if not member:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="User is not a member of the specified organization",
+                )
+
+            organization_id = org_uuid
+
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid organization ID format"
+            )
+
     # Create webhook endpoint
     endpoint = await webhook_service.register_endpoint(
         db,
         url=str(endpoint_data.url),
         events=endpoint_data.events,
-        organization_id=None,  # TODO: Add organization support
+        organization_id=organization_id,
         description=endpoint_data.description,
         headers=endpoint_data.headers,
     )

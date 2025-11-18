@@ -2,6 +2,7 @@
 Admin API endpoints for system management
 """
 
+import time
 import uuid
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
@@ -14,6 +15,9 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.database import get_db
 from app.routers.v1.auth import get_current_user
+
+# Application start time for uptime calculation
+APPLICATION_START_TIME = time.time()
 
 from ...models import (
     ActivityLog,
@@ -251,8 +255,8 @@ async def get_system_health(
     except Exception:
         email_status = "unhealthy"
 
-    # Calculate uptime (in production, track actual start time)
-    uptime = 0.0  # TODO: Calculate from application start time
+    # Calculate uptime from application start time
+    uptime = time.time() - APPLICATION_START_TIME
 
     return SystemHealthResponse(
         status="healthy" if database_status == "healthy" else "degraded",

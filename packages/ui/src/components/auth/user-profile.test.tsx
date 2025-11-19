@@ -357,7 +357,9 @@ describe('UserProfile', () => {
       const accountTab = screen.getByRole('tab', { name: /account/i })
       await user.click(accountTab)
 
-      expect(screen.getByText(/delete account/i)).toBeInTheDocument()
+      // "Delete account" appears in both heading and button
+      const deleteElements = screen.getAllByText(/delete account/i)
+      expect(deleteElements.length).toBeGreaterThan(0)
     })
 
     it('should not show delete account section when disabled', async () => {

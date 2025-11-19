@@ -9,7 +9,7 @@ const metrics = {
   lastReset: Date.now()
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   const now = Date.now()
   const uptime = now - metrics.lastReset
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, metrics })
-  } catch (error) {
+  } catch {
     metrics.errors += 1
     return NextResponse.json({ error: 'Failed to record metric' }, { status: 500 })
   }

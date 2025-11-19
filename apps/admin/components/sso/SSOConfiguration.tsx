@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { Shield, AlertCircle, CheckCircle, XCircle, Copy, Download, Upload } from 'lucide-react'
+import { Shield, AlertCircle, CheckCircle, XCircle, Copy, Download } from 'lucide-react'
 
 interface SSOConfig {
   id: string
@@ -56,6 +56,7 @@ export function SSOConfiguration({ organizationId }: SSOConfigurationProps) {
 
   useEffect(() => {
     fetchConfiguration()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organizationId])
 
   const fetchConfiguration = async () => {
@@ -90,7 +91,7 @@ export function SSOConfiguration({ organizationId }: SSOConfigurationProps) {
 
   const handleSaveConfiguration = async () => {
     try {
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         provider,
         jit_provisioning: jitProvisioning,
         default_role: defaultRole,
@@ -237,7 +238,7 @@ export function SSOConfiguration({ organizationId }: SSOConfigurationProps) {
             <TabsContent value="configuration" className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="provider">Provider Type</Label>
-                <Select value={provider} onValueChange={(v: any) => setProvider(v)}>
+                <Select value={provider} onValueChange={(v: 'saml' | 'oidc') => setProvider(v)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

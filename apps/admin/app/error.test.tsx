@@ -9,9 +9,6 @@ jest.mock('./error', () => {
 })
 
 describe('Error', () => {
-  const mockError = new Error('Test error message')
-  const mockReset = jest.fn()
-
   beforeEach(() => {
     jest.clearAllMocks()
   })

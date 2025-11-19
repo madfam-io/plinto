@@ -811,8 +811,13 @@ async def beta_list_users():
 
             await redis_client.close()
 
-        except:
-            pass
+        except Exception as e:
+            # Log Redis failure but continue with memory users
+            logger.warning(
+                "Failed to fetch users from Redis, falling back to memory",
+                error=str(e),
+                error_type=type(e).__name__
+            )
 
         # Add memory users
         for user in memory_users:

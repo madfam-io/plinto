@@ -151,8 +151,14 @@ class ComplianceDashboard:
             if cached_data:
                 try:
                     return ComplianceDashboardData(**json.loads(cached_data))
-                except:
-                    pass  # Fall through to regenerate
+                except Exception as e:
+                    # Log cache deserialization error and regenerate
+                    logger.warning(
+                        "Failed to deserialize cached dashboard data, regenerating",
+                        organization_id=str(organization_id),
+                        error=str(e),
+                        error_type=type(e).__name__
+                    )
 
         # Generate fresh dashboard data
         dashboard_data = await self._generate_dashboard_data(

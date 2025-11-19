@@ -374,8 +374,14 @@ class APMCollector:
             process = psutil.Process()
             profile.cpu_usage = psutil.cpu_percent()
             profile.memory_usage = process.memory_info().rss
-        except:
-            pass
+        except Exception as e:
+            # Log metrics collection failure but continue
+            logger.warning(
+                "Failed to collect system metrics for performance profile",
+                request_id=request_id,
+                error=str(e),
+                error_type=type(e).__name__
+            )
 
         # Store completed profile
         asyncio.create_task(self._store_performance_profile(profile))

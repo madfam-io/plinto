@@ -267,8 +267,13 @@ class TokenManager:
                 try:
                     await self._refresh_access_token()
                     return True
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.warning(
+                        "Failed to automatically refresh access token",
+                        error=str(e),
+                        error_type=type(e).__name__,
+                        refresh_strategy=self.refresh_strategy.value
+                    )
 
         # For other errors or failed refresh, clear tokens
         await self.clear_tokens()
@@ -331,8 +336,13 @@ class AuthenticationFlow:
         if callback:
             try:
                 await callback()
-            except Exception:
-                pass  # Continue with local sign out even if API call fails
+            except Exception as e:
+                # Continue with local sign out even if API call fails
+                logger.warning(
+                    "Sign out callback failed, continuing with local token clearance",
+                    error=str(e),
+                    error_type=type(e).__name__
+                )
 
         # Clear local tokens
         await self.token_manager.clear_tokens()

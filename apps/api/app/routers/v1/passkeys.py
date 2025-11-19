@@ -26,7 +26,7 @@ from webauthn.helpers import base64url_to_bytes, bytes_to_base64url
 from app.config import settings
 from app.database import get_db
 from app.routers.v1.auth import get_current_user
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 
 from ...models import ActivityLog, Passkey, User
 from ...models import Session as UserSession

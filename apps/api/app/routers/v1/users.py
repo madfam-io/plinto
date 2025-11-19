@@ -15,7 +15,7 @@ import hashlib
 from app.database import get_db
 from ...models import User, UserStatus, Organization, OrganizationMember, Session as UserSession
 from app.routers.v1.auth import get_current_user
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 from app.config import settings
 
 router = APIRouter(prefix="/users", tags=["users"])

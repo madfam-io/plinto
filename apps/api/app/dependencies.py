@@ -13,7 +13,7 @@ from sqlalchemy import select
 from app.database import get_db
 from app.core.redis import get_redis
 from .models import User, UserStatus, Organization, OrganizationMember
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 
 security = HTTPBearer()
 

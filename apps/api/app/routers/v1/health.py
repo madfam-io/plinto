@@ -8,6 +8,8 @@ import asyncio
 from datetime import datetime
 
 from app.core.database_manager import get_database_health
+from app.core.redis import get_redis
+from app.core.redis_circuit_breaker import ResilientRedisClient
 
 router = APIRouter(
     prefix="/health",
@@ -68,3 +70,30 @@ async def liveness_check() -> Dict[str, Any]:
         "status": "alive",
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+@router.get("/redis")
+async def redis_health(
+    redis_client: ResilientRedisClient = Depends(get_redis)
+) -> Dict[str, Any]:
+    """
+    Get Redis health status including circuit breaker state.
+
+    Returns:
+        - redis_available: Whether Redis is currently accessible
+        - circuit_breaker: Circuit breaker metrics and state
+        - degraded_mode: Whether system is running in degraded mode
+    """
+    return await redis_client.health_check()
+
+
+@router.get("/circuit-breaker")
+async def circuit_breaker_status(
+    redis_client: ResilientRedisClient = Depends(get_redis)
+) -> Dict[str, Any]:
+    """
+    Get detailed circuit breaker metrics.
+
+    Useful for monitoring and alerting on Redis failures.
+    """
+    return redis_client.get_circuit_status()

@@ -14,7 +14,7 @@ from sqlalchemy import and_
 
 from ..models import User, OAuthAccount, OAuthProvider, UserStatus
 from app.config import settings
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 
 logger = logging.getLogger(__name__)
 

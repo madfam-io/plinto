@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.database import get_db
 from app.routers.v1.auth import get_current_user
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 
 from ...models import ActivityLog, User, UserStatus
 

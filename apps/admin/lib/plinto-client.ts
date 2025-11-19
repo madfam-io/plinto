@@ -11,10 +11,7 @@ export const plintoClient = new PlintoClient({
   apiUrl,
   apiBasePath,
   debug: process.env.NODE_ENV === 'development',
-  tokenStorage: {
-    type: 'localStorage' as const,
-    key: 'plinto_admin_token',
-  },
+  tokenStorage: 'localStorage',
   session: {
     autoRefresh: true,
     refreshThreshold: 300,

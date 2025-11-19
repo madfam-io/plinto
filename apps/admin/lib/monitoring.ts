@@ -2,14 +2,20 @@
  * Frontend monitoring utilities for admin application
  */
 
-import { createLogger } from '@plinto/core/utils/logger'
+// TODO: Re-enable when @plinto/core logger is available
+// import { createLogger } from '@plinto/core/utils/logger'
+// const logger = createLogger('AdminMonitoring')
 
-const logger = createLogger('AdminMonitoring')
+// Temporary logger stub until @plinto/core is properly configured
+const logger = {
+  debug: (..._args: unknown[]) => {},
+  warn: (..._args: unknown[]) => {},
+}
 
 interface MetricData {
   type: 'adminAction' | 'userOperation' | 'configChange' | 'error'
   value?: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 class AdminMonitoring {
@@ -67,7 +73,7 @@ class AdminMonitoring {
   /**
    * Track configuration change
    */
-  trackConfigChange(setting: string, oldValue?: any, newValue?: any, adminUserId?: string): void {
+  trackConfigChange(setting: string, oldValue?: unknown, newValue?: unknown, adminUserId?: string): void {
     this.track({
       type: 'configChange',
       metadata: { 
@@ -83,7 +89,7 @@ class AdminMonitoring {
   /**
    * Track error
    */
-  trackError(error: Error | string, context?: Record<string, any>): void {
+  trackError(error: Error | string, context?: Record<string, unknown>): void {
     const errorMessage = error instanceof Error ? error.message : error
     const errorStack = error instanceof Error ? error.stack : undefined
     
@@ -101,7 +107,7 @@ class AdminMonitoring {
   /**
    * Get current metrics (for debugging)
    */
-  async getMetrics(): Promise<any> {
+  async getMetrics(): Promise<string | null> {
     try {
       const response = await fetch(this.baseUrl)
       return await response.text()
@@ -126,7 +132,7 @@ export function useAdminMonitoring() {
 }
 
 // Error boundary integration
-export function trackErrorBoundary(error: Error, errorInfo: any) {
+export function trackErrorBoundary(error: Error, errorInfo: { componentStack?: string }) {
   adminMonitoring.trackError(error, {
     component: 'ErrorBoundary',
     errorInfo: errorInfo?.componentStack
@@ -134,7 +140,7 @@ export function trackErrorBoundary(error: Error, errorInfo: any) {
 }
 
 // Security-focused tracking for admin operations
-export function trackSecurityEvent(eventType: string, severity: 'low' | 'medium' | 'high', details: Record<string, any>) {
+export function trackSecurityEvent(eventType: string, severity: 'low' | 'medium' | 'high', details: Record<string, unknown>) {
   adminMonitoring.trackAdminAction(`security_${eventType}`, 'security', undefined)
   
   // Also track as error if high severity

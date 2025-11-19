@@ -1,18 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { 
-  Users, 
-  Building2, 
-  Shield, 
-  Database,
+import {
+  Users,
+  Building2,
+  Shield,
   Server,
   Activity,
   Settings,
   AlertTriangle,
   BarChart3,
-  Key,
-  Globe,
   CreditCard
 } from 'lucide-react'
 

@@ -1,39 +1,57 @@
 from typing import Optional
-from typing import Optional
 import redis.asyncio as redis
 import structlog
 
 from app.config import settings
+from app.core.redis_circuit_breaker import ResilientRedisClient
 
 logger = structlog.get_logger()
 
-# Global Redis client
-redis_client: Optional[redis.Redis] = None
+# Global Redis clients
+_raw_redis_client: Optional[redis.Redis] = None
+_resilient_redis_client: Optional[ResilientRedisClient] = None
 
 
 async def init_redis():
-    """Initialize Redis connection"""
-    global redis_client
+    """Initialize Redis connection with circuit breaker protection"""
+    global _raw_redis_client, _resilient_redis_client
+
     try:
-        redis_client = redis.from_url(
+        # Create raw Redis client
+        _raw_redis_client = redis.from_url(
             settings.REDIS_URL,
             encoding="utf-8",
             decode_responses=settings.REDIS_DECODE_RESPONSES,
             max_connections=settings.REDIS_POOL_SIZE
         )
+
         # Test connection
-        await redis_client.ping()
+        await _raw_redis_client.ping()
         logger.info("Redis initialized successfully")
+
     except Exception as e:
-        logger.error("Failed to initialize Redis", error=str(e))
-        raise
+        logger.warning(
+            "Failed to initialize Redis - running in degraded mode",
+            error=str(e)
+        )
+        _raw_redis_client = None
+
+    # Create resilient client (works with or without raw client)
+    _resilient_redis_client = ResilientRedisClient(_raw_redis_client)
 
 
-async def get_redis() -> redis.Redis:
-    """Get Redis client"""
-    if redis_client is None:
+async def get_redis() -> ResilientRedisClient:
+    """Get circuit breaker-protected Redis client"""
+    if _resilient_redis_client is None:
         await init_redis()
-    return redis_client
+    return _resilient_redis_client
+
+
+async def get_raw_redis() -> Optional[redis.Redis]:
+    """Get raw Redis client for cases requiring direct access"""
+    if _raw_redis_client is None:
+        await init_redis()
+    return _raw_redis_client
 
 
 class RateLimiter:

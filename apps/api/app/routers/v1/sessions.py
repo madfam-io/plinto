@@ -13,7 +13,7 @@ import uuid
 from app.database import get_db
 from ...models import Session as UserSession, User
 from app.routers.v1.auth import get_current_user
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
 

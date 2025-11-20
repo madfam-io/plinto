@@ -37,8 +37,10 @@ from app.core.error_handling import (
     ErrorHandlingMiddleware,
     api_exception_handler,
     http_exception_handler,
+    plinto_exception_handler,
     validation_exception_handler,
 )
+from app.core.exceptions import PlintoAPIException
 from app.routers.v1 import (
     admin as admin_v1,
 )
@@ -354,6 +356,9 @@ Rate limit headers returned in response:
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# Add Plinto-specific exception handler
+app.add_exception_handler(PlintoAPIException, plinto_exception_handler)
+
 # Add comprehensive error handling
 app.add_exception_handler(APIException, api_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
@@ -436,8 +441,23 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allow_headers=[
+        "Authorization",
+        "Content-Type",
+        "X-Requested-With",
+        "X-API-Key",
+        "Accept",
+        "Origin",
+        "User-Agent",
+        "DNT",
+        "Cache-Control",
+        "X-Mx-ReqToken",
+        "Keep-Alive",
+        "X-Requested-With",
+        "If-Modified-Since",
+        "X-CSRF-Token",
+    ],
 )
 
 # In-memory fallback storage for beta endpoints
@@ -791,8 +811,13 @@ async def beta_list_users():
 
             await redis_client.close()
 
-        except:
-            pass
+        except Exception as e:
+            # Log Redis failure but continue with memory users
+            logger.warning(
+                "Failed to fetch users from Redis, falling back to memory",
+                error=str(e),
+                error_type=type(e).__name__
+            )
 
         # Add memory users
         for user in memory_users:

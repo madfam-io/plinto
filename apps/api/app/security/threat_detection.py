@@ -289,20 +289,26 @@ class AdvancedThreatDetectionSystem:
         """Check if IP is from suspicious range"""
         try:
             ip_obj = ipaddress.ip_address(ip)
-            
+
             # Check for common VPN/proxy ranges
             suspicious_ranges = [
                 ipaddress.ip_network("10.0.0.0/8"),
                 ipaddress.ip_network("172.16.0.0/12"),
                 ipaddress.ip_network("192.168.0.0/16"),
             ]
-            
+
             for range in suspicious_ranges:
                 if ip_obj in range:
                     return True
-            
-        except:
-            pass
+
+        except (ValueError, ipaddress.AddressValueError) as e:
+            # Invalid IP address format
+            logger.warning(
+                "Invalid IP address format in threat detection",
+                ip=ip,
+                error=str(e),
+                error_type=type(e).__name__
+            )
         
         return False
     

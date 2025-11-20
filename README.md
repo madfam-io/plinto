@@ -46,6 +46,35 @@ So we built this. All features are free and open source. MIT licensed.
 
 ---
 
+## 💰 Migrating from Auth0?
+
+**We built a migration tool to help you escape Auth0's pricing.**
+
+If you're paying **$2,000-5,000/month** for Auth0 (or more with SSO/SCIM), you can migrate to self-hosted Plinto and run it for **~$170/month**.
+
+**Savings: $24,000-58,000/year.**
+
+### Migration Tool Features
+
+- ✅ **Export all users** from Auth0 (via Management API)
+- ✅ **Import to Plinto** with automatic data mapping
+- ✅ **Preserve user data** - email, name, phone, metadata
+- ✅ **Migration report** showing success/failures
+- ✅ **Zero-downtime strategy** guide included
+
+**Quick migration:**
+```bash
+cd scripts/migration
+pip install -r requirements.txt
+python auth0_migrate.py --config config.json
+```
+
+**📖 Full guide:** [scripts/migration/README.md](scripts/migration/README.md)
+
+**Note:** Password hashes can't be migrated from Auth0 (this is normal). Users reset passwords on first login.
+
+---
+
 ## Quick Start
 
 ### Try it locally (5 minutes)
@@ -262,16 +291,19 @@ We need help. This is a big project and we're a small team.
 - Making setup easier (one-command installs)
 - Improving documentation
 - Fixing bugs as they're reported
-- Adding tests for edge cases
+- Testing the Auth0 migration tool with real users
 
 **What we're NOT doing:**
 - Building a managed SaaS version (yet)
 - Chasing every feature request
 - Trying to be Auth0
 
+**What we just shipped:**
+- ✅ Auth0 migration tool (help us test it!)
+
 **Future (when we have >5K stars and prove this is valuable):**
 - Managed hosting option
-- Migration tools from Auth0/Clerk
+- Clerk/Firebase migration tools
 - Enterprise support contracts
 
 We'll build what the community needs. Tell us what you need.
@@ -282,7 +314,8 @@ We'll build what the community needs. Tell us what you need.
 
 **vs. Auth0/Okta:**
 - ✅ You own the infrastructure
-- ✅ No per-user pricing
+- ✅ No per-user pricing ($24K-58K/year savings)
+- ✅ Migration tool included (export users from Auth0)
 - ❌ No managed service (you run it)
 - ❌ No compliance reports (yet)
 

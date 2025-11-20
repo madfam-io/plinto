@@ -1,0 +1,11 @@
+{
+  "auth0": {
+    "domain": "your-tenant.auth0.com",
+    "client_id": "your_client_id",
+    "client_secret": "your_client_secret"
+  },
+  "plinto": {
+    "api_url": "http://localhost:8000",
+    "admin_token": "your_admin_token"
+  }
+}

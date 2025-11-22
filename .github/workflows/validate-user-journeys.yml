@@ -118,6 +118,32 @@ jobs:
           timeout 120s bash -c 'until curl -f http://localhost:3000 2>/dev/null; do sleep 2; done'
           echo "Landing page is healthy and ready"
 
+      - name: Install test-app dependencies
+        run: |
+          cd tests/test-app
+          npm install
+
+      - name: Build test-app
+        run: |
+          cd tests/test-app
+          npm run build
+
+      - name: Start test-app
+        run: |
+          cd tests/test-app
+          JANUA_API_URL="http://localhost:8000" \
+          JANUA_API_KEY="test-api-key" \
+          PORT=3001 \
+          npm start &
+          echo $! > /tmp/test-app.pid
+          echo "Test app started in background on port 3001"
+
+      - name: Wait for test-app to be ready
+        run: |
+          echo "Waiting for test-app..."
+          timeout 120s bash -c 'until curl -f http://localhost:3001 2>/dev/null; do sleep 2; done'
+          echo "Test-app is healthy and ready"
+
       - name: Run journey validation tests
         run: npx playwright test tests/e2e/journeys --reporter=github
 
@@ -152,6 +178,14 @@ jobs:
           echo ""
           echo "Please review the Playwright report for details."
           exit 1
+
+      - name: Stop test-app
+        if: always()
+        run: |
+          if [ -f /tmp/test-app.pid ]; then
+            kill $(cat /tmp/test-app.pid) 2>/dev/null || true
+          fi
+          pkill -f "node.*test-app" || true
 
       - name: Stop landing page
         if: always()
@@ -334,11 +368,45 @@ jobs:
           timeout 120s bash -c 'until curl -f http://localhost:3000 2>/dev/null; do sleep 2; done'
           echo "Landing page is healthy and ready"
 
+      - name: Install test-app dependencies
+        run: |
+          cd tests/test-app
+          npm install
+
+      - name: Build test-app
+        run: |
+          cd tests/test-app
+          npm run build
+
+      - name: Start test-app
+        run: |
+          cd tests/test-app
+          JANUA_API_URL="http://localhost:8000" \
+          JANUA_API_KEY="test-api-key" \
+          PORT=3001 \
+          npm start &
+          echo $! > /tmp/test-app.pid
+          echo "Test app started in background on port 3001"
+
+      - name: Wait for test-app to be ready
+        run: |
+          echo "Waiting for test-app..."
+          timeout 120s bash -c 'until curl -f http://localhost:3001 2>/dev/null; do sleep 2; done'
+          echo "Test-app is healthy and ready"
+
       - name: Run performance tests
         run: |
           npx playwright test tests/e2e/journeys/developer-integrator.spec.ts \
             -g "Performance meets documented expectations" \
             --reporter=github
+
+      - name: Stop test-app
+        if: always()
+        run: |
+          if [ -f /tmp/test-app.pid ]; then
+            kill $(cat /tmp/test-app.pid) 2>/dev/null || true
+          fi
+          pkill -f "node.*test-app" || true
 
       - name: Stop landing page
         if: always()

@@ -19,7 +19,7 @@ test.describe('Business Decision Maker Journey', () => {
     metrics.startJourney('bdm-problem-recognition');
 
     // Navigate to landing page
-    await page.goto('http://localhost:3001');
+    await page.goto('http://localhost:3000');
     metrics.checkpoint('landing-page-loaded');
 
     // Verify value proposition is visible
@@ -31,8 +31,8 @@ test.describe('Business Decision Maker Journey', () => {
     await expect(hero.locator('p')).toBeVisible();
 
     // Should have clear CTAs
-    await expect(page.getByTestId('signup-button')).toBeVisible();
-    await expect(page.getByTestId('login-button')).toBeVisible();
+    await expect(page.getByTestId('get-started-button')).toBeVisible();
+    await expect(page.getByTestId('view-docs-button')).toBeVisible();
 
     metrics.checkpoint('value-proposition-assessed');
   });
@@ -40,7 +40,7 @@ test.describe('Business Decision Maker Journey', () => {
   test('Stage 2: Research - Feature Discovery', async ({ page }) => {
     metrics.startJourney('bdm-research');
 
-    await page.goto('http://localhost:3001');
+    await page.goto('http://localhost:3000');
     metrics.checkpoint('landing-page-loaded');
 
     // Verify features section
@@ -76,9 +76,7 @@ test.describe('Business Decision Maker Journey', () => {
     const persona = BusinessDecisionMakerPersona.createCTO();
 
     // Navigate to signup
-    await page.goto('http://localhost:3001');
-    await page.getByTestId('signup-button').click();
-    await page.waitForURL('**/signup');
+    await page.goto('http://localhost:3001/signup');
     metrics.checkpoint('signup-page-loaded');
 
     // Evaluate signup simplicity
@@ -208,7 +206,7 @@ test.describe('Business Decision Maker Journey', () => {
     const persona = BusinessDecisionMakerPersona.createVPEngineering();
 
     // Evaluate production readiness factors
-    await page.goto('http://localhost:3001');
+    await page.goto('http://localhost:3000');
     metrics.checkpoint('evaluation-started');
 
     // 1. Performance (page load time)
@@ -226,7 +224,7 @@ test.describe('Business Decision Maker Journey', () => {
     metrics.checkpoint('security-features-confirmed');
 
     // 3. Create account to test reliability
-    await page.getByTestId('signup-button').click();
+    await page.goto('http://localhost:3001/signup');
     await page.getByTestId('name-input').fill(persona.name);
     await page.getByTestId('email-input').fill(persona.email);
     await page.getByTestId('password-input').fill(persona.password);
@@ -258,9 +256,7 @@ test.describe('Business Decision Maker Journey', () => {
     // Evaluate onboarding simplicity (time to first successful auth)
     const onboardingStart = Date.now();
 
-    await page.goto('http://localhost:3001');
-    await page.getByTestId('signup-button').click();
-    await page.waitForURL('**/signup');
+    await page.goto('http://localhost:3001/signup');
 
     await page.getByTestId('name-input').fill(persona.name);
     await page.getByTestId('email-input').fill(persona.email);
@@ -293,7 +289,7 @@ test.describe('Business Decision Maker Journey', () => {
     const persona = BusinessDecisionMakerPersona.createProductManager();
 
     // 1. Problem Recognition
-    await page.goto('http://localhost:3001');
+    await page.goto('http://localhost:3000');
     await expect(page.getByTestId('hero-section')).toBeVisible();
     metrics.checkpoint('problem-recognized');
 
@@ -304,7 +300,7 @@ test.describe('Business Decision Maker Journey', () => {
     metrics.checkpoint('research-completed');
 
     // 3. Evaluation (Quick Trial)
-    await page.getByTestId('signup-button').click();
+    await page.goto('http://localhost:3001/signup');
     await page.getByTestId('name-input').fill(persona.name);
     await page.getByTestId('email-input').fill(persona.email);
     await page.getByTestId('password-input').fill(persona.password);

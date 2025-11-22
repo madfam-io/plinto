@@ -1,10 +1,10 @@
-# @plinto/typescript-sdk
+# @janua/typescript-sdk
 
-[![npm version](https://badge.fury.io/js/@plinto%2Ftypescript-sdk.svg)](https://badge.fury.io/js/@plinto%2Ftypescript-sdk)
+[![npm version](https://badge.fury.io/js/@janua%2Ftypescript-sdk.svg)](https://badge.fury.io/js/@janua%2Ftypescript-sdk)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.2+-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Official TypeScript SDK for [Plinto](https://plinto.dev) - Enterprise-grade authentication and user management platform.
+Official TypeScript SDK for [Janua](https://janua.dev) - Enterprise-grade authentication and user management platform.
 
 ## Features
 
@@ -22,7 +22,7 @@ Official TypeScript SDK for [Plinto](https://plinto.dev) - Enterprise-grade auth
 ## Installation
 
 ```bash
-npm install @plinto/typescript-sdk
+npm install @janua/typescript-sdk
 ```
 
 ## Quick Start
@@ -30,18 +30,18 @@ npm install @plinto/typescript-sdk
 ### Basic Setup
 
 ```typescript
-import { PlintoClient, createClient } from '@plinto/typescript-sdk';
+import { JanuaClient, createClient } from '@janua/typescript-sdk';
 
 // Create client with API key (server-side)
 const client = createClient({
-  base_url: 'https://api.plinto.dev',
+  base_url: 'https://api.janua.dev',
   api_key: 'your-api-key',
   debug: false
 });
 
 // Or create client for user authentication (client-side)
-const client = new PlintoClient({
-  base_url: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  base_url: 'https://api.janua.dev',
   authentication_method: AuthenticationMethod.JWT_TOKEN
 });
 ```
@@ -49,10 +49,10 @@ const client = new PlintoClient({
 ### User Authentication
 
 ```typescript
-import { PlintoClient, AuthenticationError } from '@plinto/typescript-sdk';
+import { JanuaClient, AuthenticationError } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  base_url: 'https://api.plinto.dev'
+const client = new JanuaClient({
+  base_url: 'https://api.janua.dev'
 });
 
 try {
@@ -215,7 +215,7 @@ console.log('OAuth user:', result.data.user);
 ### Custom Token Storage
 
 ```typescript
-import { PlintoClient, TokenStorage } from '@plinto/typescript-sdk';
+import { JanuaClient, TokenStorage } from '@janua/typescript-sdk';
 
 // Implement custom token storage (e.g., React Native SecureStore)
 class SecureTokenStorage implements TokenStorage {
@@ -237,12 +237,12 @@ class SecureTokenStorage implements TokenStorage {
   }
 
   async clear(): Promise<void> {
-    // Clear all Plinto tokens
+    // Clear all Janua tokens
   }
 }
 
-const client = new PlintoClient({
-  base_url: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  base_url: 'https://api.janua.dev',
   // Custom token storage will be used automatically
 });
 ```
@@ -251,13 +251,13 @@ const client = new PlintoClient({
 
 ```typescript
 import {
-  PlintoClient,
+  JanuaClient,
   APIError,
   AuthenticationError,
   ValidationError,
   RateLimitError,
   NetworkError
-} from '@plinto/typescript-sdk';
+} from '@janua/typescript-sdk';
 
 try {
   await client.login({ email: 'user@example.com', password: 'wrong' });
@@ -282,10 +282,10 @@ try {
 ### Configuration Options
 
 ```typescript
-import { PlintoClient, AuthenticationMethod } from '@plinto/typescript-sdk';
+import { JanuaClient, AuthenticationMethod } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  base_url: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  base_url: 'https://api.janua.dev',
   api_key: 'optional-api-key',
   authentication_method: AuthenticationMethod.JWT_TOKEN,
   timeout: 30000, // 30 seconds
@@ -331,10 +331,10 @@ try {
 
 ```tsx
 import React, { useEffect, useState } from 'react';
-import { PlintoClient, UserProfile } from '@plinto/typescript-sdk';
+import { JanuaClient, UserProfile } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  base_url: 'https://api.plinto.dev'
+const client = new JanuaClient({
+  base_url: 'https://api.janua.dev'
 });
 
 function UserDashboard() {
@@ -379,9 +379,9 @@ function UserDashboard() {
 The SDK is built with TypeScript and provides comprehensive type definitions:
 
 ```typescript
-import { PlintoClient, SDKDataResponse, UserProfile } from '@plinto/typescript-sdk';
+import { JanuaClient, SDKDataResponse, UserProfile } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({ base_url: 'https://api.plinto.dev' });
+const client = new JanuaClient({ base_url: 'https://api.janua.dev' });
 
 // Full type safety
 const response: SDKDataResponse<UserProfile> = await client.getCurrentUser();
@@ -405,9 +405,9 @@ try {
 Set these environment variables for configuration:
 
 ```bash
-PLINTO_BASE_URL=https://api.plinto.dev
-PLINTO_API_KEY=your-api-key
-PLINTO_DEBUG=true
+JANUA_BASE_URL=https://api.janua.dev
+JANUA_API_KEY=your-api-key
+JANUA_DEBUG=true
 ```
 
 ## Testing
@@ -426,10 +426,10 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## Support
 
-- 📖 [Documentation](https://docs.plinto.dev)
-- 💬 [Discord Community](https://discord.gg/plinto)
-- 🐛 [Issue Tracker](https://github.com/plinto/typescript-sdk/issues)
-- 📧 [Email Support](mailto:support@plinto.dev)
+- 📖 [Documentation](https://docs.janua.dev)
+- 💬 [Discord Community](https://discord.gg/janua)
+- 🐛 [Issue Tracker](https://github.com/janua/typescript-sdk/issues)
+- 📧 [Email Support](mailto:support@janua.dev)
 
 ## Changelog
 

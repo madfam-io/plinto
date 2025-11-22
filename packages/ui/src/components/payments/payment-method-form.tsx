@@ -15,11 +15,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { PaymentMethod } from '@plinto/typescript-sdk';
+import type { PaymentMethod } from '@janua/typescript-sdk';
 
 export interface PaymentMethodFormProps {
   /**
-   * Plinto client instance
+   * Janua client instance
    */
   client: any;
 

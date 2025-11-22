@@ -16,7 +16,7 @@ export interface PersonaData {
 
 /**
  * Developer Integrator Persona
- * Technical users integrating Plinto authentication
+ * Technical users integrating Janua authentication
  */
 export class DeveloperPersona {
   static create(overrides: Partial<PersonaData> = {}): PersonaData {
@@ -136,7 +136,7 @@ export class SecurityAdminPersona {
 
 /**
  * Business Decision Maker Persona
- * CTOs, managers evaluating and purchasing Plinto
+ * CTOs, managers evaluating and purchasing Janua
  */
 export class BusinessDecisionMakerPersona {
   static create(overrides: Partial<PersonaData> = {}): PersonaData {

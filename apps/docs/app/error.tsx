@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { FileQuestion, RefreshCw, Search, Home } from 'lucide-react'
-import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@plinto/ui'
+import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@janua/ui'
 
 export default function Error({
   error,

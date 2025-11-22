@@ -1,9 +1,9 @@
-# Plinto API Reference
+# Janua API Reference
 
 ## Base URL
 
 ```
-Production: https://api.plinto.dev/v1
+Production: https://api.janua.dev/v1
 Development: http://localhost:8000/v1
 ```
 
@@ -216,7 +216,7 @@ GET /users/me
   "username": "johndoe",
   "first_name": "John",
   "last_name": "Doe",
-  "avatar_url": "https://cdn.plinto.dev/avatars/usr_abc123.jpg",
+  "avatar_url": "https://cdn.janua.dev/avatars/usr_abc123.jpg",
   "metadata": {
     "preferences": {
       "theme": "dark",
@@ -632,10 +632,10 @@ GET /admin/audit-logs?start_date=2025-01-01&end_date=2025-01-31
 ### TypeScript/JavaScript
 
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  baseURL: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  baseURL: 'https://api.janua.dev',
   apiKey: 'YOUR_API_KEY'
 });
 
@@ -652,9 +652,9 @@ const currentUser = await client.users.getCurrentUser();
 ### Python
 
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-client = PlintoClient(base_url="https://api.plinto.dev")
+client = JanuaClient(base_url="https://api.janua.dev")
 
 # Sign in
 response = await client.auth.sign_in(
@@ -672,7 +672,7 @@ await client.users.update_profile(
 ### React
 
 ```jsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function MyComponent() {
   const { signIn, user, isAuthenticated } = useAuth();
@@ -733,7 +733,7 @@ function MyComponent() {
 Verify webhook signatures:
 
 ```typescript
-import { verifyWebhookSignature } from '@plinto/typescript-sdk';
+import { verifyWebhookSignature } from '@janua/typescript-sdk';
 
 const isValid = verifyWebhookSignature(
   payload,
@@ -761,7 +761,7 @@ const isValid = verifyWebhookSignature(
 
 ## Support
 
-- **Documentation**: https://docs.plinto.dev
-- **Status Page**: https://status.plinto.dev
-- **Support Email**: support@plinto.dev
-- **GitHub Issues**: https://github.com/madfam-io/plinto/issues
+- **Documentation**: https://docs.janua.dev
+- **Status Page**: https://status.janua.dev
+- **Support Email**: support@janua.dev
+- **GitHub Issues**: https://github.com/madfam-io/janua/issues

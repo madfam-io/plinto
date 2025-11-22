@@ -1,5 +1,5 @@
 {
-  "name": "@plinto/docs",
+  "name": "@janua/docs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@plinto/ui": "*",
+    "@janua/ui": "*",
     "@headlessui/react": "^1.7.17",
     "@mdx-js/loader": "^3.0.0",
     "@mdx-js/react": "^3.0.0",

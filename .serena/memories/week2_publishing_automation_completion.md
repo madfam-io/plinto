@@ -7,7 +7,7 @@
 
 ### 1. NPM Organization Registration ⏸️
 **Status**: Pending (requires NPM account credentials)
-**Action Required**: Manual registration of `@plinto` organization on npmjs.com
+**Action Required**: Manual registration of `@janua` organization on npmjs.com
 **Documentation Created**: Publishing guide includes NPM org setup instructions
 
 ### 2. Publish Scripts for All SDKs ✅
@@ -252,10 +252,10 @@ git push origin typescript-sdk-v1.1.0
 ### Setup Instructions
 ```bash
 # NPM token (create at npmjs.com)
-gh secret set NPM_TOKEN --repo madfam-io/plinto
+gh secret set NPM_TOKEN --repo madfam-io/janua
 
 # PyPI token (create at pypi.org)
-gh secret set PYPI_API_TOKEN --repo madfam-io/plinto
+gh secret set PYPI_API_TOKEN --repo madfam-io/janua
 ```
 
 ## Success Metrics

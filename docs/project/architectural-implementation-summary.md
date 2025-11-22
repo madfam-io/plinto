@@ -3,7 +3,7 @@
 ## Enterprise Architecture Implementation Complete
 
 ### Overview
-Successfully implemented enterprise-grade architecture with proper separation of concerns, distinct service ports, and microservice-style organization for the Plinto identity platform.
+Successfully implemented enterprise-grade architecture with proper separation of concerns, distinct service ports, and microservice-style organization for the Janua identity platform.
 
 ## Final Architecture Structure
 

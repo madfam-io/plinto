@@ -351,8 +351,8 @@ pytest --cov=app --cov-report=term | grep "TOTAL"
 
 ### CI/CD Monitoring
 
-- **GitHub Actions**: Check workflow runs at `https://github.com/{org}/plinto/actions`
-- **Codecov Dashboard**: View coverage trends at `https://app.codecov.io/gh/{org}/plinto`
+- **GitHub Actions**: Check workflow runs at `https://github.com/{org}/janua/actions`
+- **Codecov Dashboard**: View coverage trends at `https://app.codecov.io/gh/{org}/janua`
 - **PR Comments**: Coverage diff automatically commented on PRs
 
 ---

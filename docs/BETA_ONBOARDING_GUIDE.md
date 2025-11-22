@@ -1,4 +1,4 @@
-# Plinto Beta Onboarding Guide
+# Janua Beta Onboarding Guide
 
 **Version**: 1.0.0 (Beta)  
 **Last Updated**: November 16, 2025  
@@ -6,9 +6,9 @@
 
 ---
 
-## 🎯 Welcome to Plinto Beta!
+## 🎯 Welcome to Janua Beta!
 
-Thank you for joining the Plinto beta program! This guide will help you integrate Plinto authentication into your application in less than 5 minutes.
+Thank you for joining the Janua beta program! This guide will help you integrate Janua authentication into your application in less than 5 minutes.
 
 ### What You Get
 - ✅ Complete authentication system (email, OAuth, MFA, passkeys)
@@ -19,7 +19,7 @@ Thank you for joining the Plinto beta program! This guide will help you integrat
 - ✅ Self-hosting option (optional)
 
 ### Beta Program Benefits
-- **Early Access**: Be among the first to use Plinto
+- **Early Access**: Be among the first to use Janua
 - **Pricing Lock**: Beta pricing guaranteed for 12 months
 - **Priority Support**: Direct access to engineering team
 - **Influence Roadmap**: Your feedback shapes future features
@@ -45,23 +45,23 @@ Thank you for joining the Plinto beta program! This guide will help you integrat
 ### Step 1: Install Packages (1 minute)
 
 ```bash
-npm install @plinto/ui @plinto/typescript-sdk
+npm install @janua/ui @janua/typescript-sdk
 # or
-yarn add @plinto/ui @plinto/typescript-sdk
+yarn add @janua/ui @janua/typescript-sdk
 # or
-pnpm add @plinto/ui @plinto/typescript-sdk
+pnpm add @janua/ui @janua/typescript-sdk
 ```
 
 ### Step 2: Configure Client (1 minute)
 
-Create `lib/plinto-client.ts`:
+Create `lib/janua-client.ts`:
 
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk'
+import { JanuaClient } from '@janua/typescript-sdk'
 
-export const plintoClient = new PlintoClient({
-  apiUrl: process.env.NEXT_PUBLIC_PLINTO_API_URL || 'https://api.plinto.dev',
-  publishableKey: process.env.NEXT_PUBLIC_PLINTO_PUBLISHABLE_KEY!,
+export const januaClient = new JanuaClient({
+  apiUrl: process.env.NEXT_PUBLIC_JANUA_API_URL || 'https://api.janua.dev',
+  publishableKey: process.env.NEXT_PUBLIC_JANUA_PUBLISHABLE_KEY!,
 })
 ```
 
@@ -72,14 +72,14 @@ export const plintoClient = new PlintoClient({
 ```typescript
 'use client'
 
-import { PlintoProvider } from '@plinto/ui'
-import { plintoClient } from '@/lib/plinto-client'
+import { JanuaProvider } from '@janua/ui'
+import { januaClient } from '@/lib/janua-client'
 
 export function Providers({ children }: { children: React.Node }) {
   return (
-    <PlintoProvider client={plintoClient}>
+    <JanuaProvider client={januaClient}>
       {children}
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 ```
@@ -107,7 +107,7 @@ export default function RootLayout({ children }) {
 ```typescript
 'use client'
 
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 import { useRouter } from 'next/navigation'
 
 export default function SignInPage() {
@@ -129,7 +129,7 @@ export default function SignInPage() {
 ```typescript
 'use client'
 
-import { useAuth } from '@plinto/ui'
+import { useAuth } from '@janua/ui'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -166,7 +166,7 @@ export default function Dashboard() {
 
 For beta testing, we provide a shared beta environment:
 
-- **API URL**: `https://beta-api.plinto.dev`
+- **API URL**: `https://beta-api.janua.dev`
 - **Publishable Key**: Provided in your beta invitation email
 
 ### Self-Hosted (Optional)
@@ -190,8 +190,8 @@ Your API will be available at `http://localhost:8000`.
 3. **[Deployment Guide](DEPLOYMENT.md)** - Production deployment options
 
 ### Interactive Documentation
-- **Swagger UI**: https://beta-api.plinto.dev/docs (Try endpoints live)
-- **ReDoc**: https://beta-api.plinto.dev/redoc (Beautiful API docs)
+- **Swagger UI**: https://beta-api.janua.dev/docs (Try endpoints live)
+- **ReDoc**: https://beta-api.janua.dev/redoc (Beautiful API docs)
 
 ### Component Documentation
 All authentication components with props and examples:
@@ -242,9 +242,9 @@ See [Manual Error Message Testing Checklist](testing/MANUAL_ERROR_MESSAGE_TESTIN
 ### Beta Bug Reports
 
 Please report bugs via:
-- **GitHub Issues**: https://github.com/plinto/plinto/issues
-- **Email**: beta@plinto.dev
-- **Discord**: https://discord.gg/plinto (Coming soon)
+- **GitHub Issues**: https://github.com/janua/janua/issues
+- **Email**: beta@janua.dev
+- **Discord**: https://discord.gg/janua (Coming soon)
 
 ### Issue Template
 
@@ -273,21 +273,21 @@ Please report bugs via:
 ### Support Channels
 
 **Priority Support (Beta Users)**:
-- **Email**: beta@plinto.dev (Response within 4 hours during business hours)
+- **Email**: beta@janua.dev (Response within 4 hours during business hours)
 - **Office Hours**: Wednesdays 2-4pm EST (Zoom link in beta email)
-- **GitHub Discussions**: https://github.com/plinto/plinto/discussions
+- **GitHub Discussions**: https://github.com/janua/janua/discussions
 
 **Resources**:
-- **Documentation**: https://docs.plinto.dev
-- **API Status**: https://status.plinto.dev
-- **Changelog**: https://github.com/plinto/plinto/blob/main/CHANGELOG.md
+- **Documentation**: https://docs.janua.dev
+- **API Status**: https://status.janua.dev
+- **Changelog**: https://github.com/janua/janua/blob/main/CHANGELOG.md
 
 ### Common Questions
 
 **Q: Where do I get my publishable key?**  
-A: Check your beta invitation email or contact beta@plinto.dev
+A: Check your beta invitation email or contact beta@janua.dev
 
-**Q: Can I use Plinto in production during beta?**  
+**Q: Can I use Janua in production during beta?**  
 A: Beta is stable but not recommended for production. GA expected Q1 2026.
 
 **Q: What happens after beta ends?**  
@@ -297,7 +297,7 @@ A: Your integration continues to work. Beta pricing honored for 12 months.
 A: Yes! Follow the [Deployment Guide](DEPLOYMENT.md).
 
 **Q: What if I need a feature that's not available?**  
-A: Email beta@plinto.dev with your use case. We prioritize beta user requests.
+A: Email beta@janua.dev with your use case. We prioritize beta user requests.
 
 ---
 
@@ -320,7 +320,7 @@ You'll know your integration is successful when:
 
 1. **Add MFA**: Enable two-factor authentication
    ```typescript
-   import { MFASetup } from '@plinto/ui'
+   import { MFASetup } from '@janua/ui'
    
    <MFASetup onSuccess={() => console.log('MFA enabled')} />
    ```
@@ -334,14 +334,14 @@ You'll know your integration is successful when:
 
 3. **Add Organizations**: Multi-tenant support
    ```typescript
-   import { OrganizationSwitcher } from '@plinto/ui'
+   import { OrganizationSwitcher } from '@janua/ui'
    
    <OrganizationSwitcher />
    ```
 
 4. **Add Passkeys**: Passwordless WebAuthn authentication
    ```typescript
-   import { PasskeySetup } from '@plinto/ui'
+   import { PasskeySetup } from '@janua/ui'
    
    <PasskeySetup />
    ```
@@ -373,8 +373,8 @@ Please share feedback on:
 
 ### Feedback Channels
 
-- **Survey**: https://forms.plinto.dev/beta-feedback
-- **Email**: beta@plinto.dev
+- **Survey**: https://forms.janua.dev/beta-feedback
+- **Email**: beta@janua.dev
 - **Office Hours**: Wednesdays 2-4pm EST
 
 ### Incentives
@@ -413,7 +413,7 @@ Please share feedback on:
 ### Data Handling
 - **Beta Data**: May be reset/migrated before GA
 - **Backups**: Daily backups, 30-day retention
-- **Deletion**: Request via beta@plinto.dev
+- **Deletion**: Request via beta@janua.dev
 
 ---
 
@@ -436,14 +436,14 @@ Beta users get 12 months at beta pricing.
 
 ## 🎉 Welcome Aboard!
 
-Thank you for being part of the Plinto beta journey. Your feedback and patience help us build the best authentication platform for developers.
+Thank you for being part of the Janua beta journey. Your feedback and patience help us build the best authentication platform for developers.
 
 **Let's build something great together!**
 
 ---
 
-**Questions?** Email beta@plinto.dev  
-**Issues?** https://github.com/plinto/plinto/issues  
-**Stay Updated**: Follow @plinto on Twitter
+**Questions?** Email beta@janua.dev  
+**Issues?** https://github.com/janua/janua/issues  
+**Stay Updated**: Follow @janua on Twitter
 
 **Happy Building! 🚀**

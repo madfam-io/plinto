@@ -1,4 +1,4 @@
-# golangci-lint configuration for Plinto Go SDK
+# golangci-lint configuration for Janua Go SDK
 
 run:
   timeout: 5m

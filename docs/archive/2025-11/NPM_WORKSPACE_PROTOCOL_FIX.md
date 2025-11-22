@@ -24,7 +24,7 @@ Two package.json files in the monorepo used **pnpm/Yarn workspace protocol synta
 
 Both files had:
 ```json
-"@plinto/typescript-sdk": "workspace:*"
+"@janua/typescript-sdk": "workspace:*"
 ```
 
 The `workspace:` protocol is specific to **pnpm** and **Yarn 2+** but is **not supported by npm**, even though npm has its own workspace functionality.
@@ -33,9 +33,9 @@ The `workspace:` protocol is specific to **pnpm** and **Yarn 2+** but is **not s
 
 | Package Manager | Workspace Dependency Syntax | Supported? |
 |----------------|---------------------------|-----------|
-| **npm** | `"@plinto/typescript-sdk": "*"` | ✅ Correct |
-| **pnpm** | `"@plinto/typescript-sdk": "workspace:*"` | ❌ Wrong for our project |
-| **Yarn 2+** | `"@plinto/typescript-sdk": "workspace:*"` | ❌ Wrong for our project |
+| **npm** | `"@janua/typescript-sdk": "*"` | ✅ Correct |
+| **pnpm** | `"@janua/typescript-sdk": "workspace:*"` | ❌ Wrong for our project |
+| **Yarn 2+** | `"@janua/typescript-sdk": "workspace:*"` | ❌ Wrong for our project |
 
 ## Project Configuration
 
@@ -60,7 +60,7 @@ Changed the workspace dependency syntax from pnpm/Yarn format to npm format:
 ```json
 {
   "dependencies": {
-    "@plinto/typescript-sdk": "workspace:*"
+    "@janua/typescript-sdk": "workspace:*"
   }
 }
 ```
@@ -69,7 +69,7 @@ Changed the workspace dependency syntax from pnpm/Yarn format to npm format:
 ```json
 {
   "dependencies": {
-    "@plinto/typescript-sdk": "*"
+    "@janua/typescript-sdk": "*"
   }
 }
 ```
@@ -99,7 +99,7 @@ Example:
 // In apps/landing/package.json
 {
   "dependencies": {
-    "@plinto/typescript-sdk": "*"  // Links to packages/typescript-sdk
+    "@janua/typescript-sdk": "*"  // Links to packages/typescript-sdk
   }
 }
 ```
@@ -118,7 +118,7 @@ npm ci
 npm ci --dry-run
 
 # Verify workspace linking
-npm ls @plinto/typescript-sdk
+npm ls @janua/typescript-sdk
 ```
 
 ## Affected GitHub Actions Workflows
@@ -185,7 +185,7 @@ npm ci --dry-run  # ✅ Success
 
 # Test in specific workspace
 cd apps/landing
-npm install  # ✅ Correctly links @plinto/typescript-sdk
+npm install  # ✅ Correctly links @janua/typescript-sdk
 ```
 
 ## Lock File Regeneration

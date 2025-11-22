@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Plinto Admin Portal provides comprehensive organization management, user administration, security monitoring, and analytics capabilities through an intuitive web-based interface designed for enterprise administrators and security teams.
+The Janua Admin Portal provides comprehensive organization management, user administration, security monitoring, and analytics capabilities through an intuitive web-based interface designed for enterprise administrators and security teams.
 
 ## Portal Architecture
 
@@ -65,7 +65,7 @@ interface AdminRole {
 
 ```tsx
 // Dashboard Component Implementation
-import { Dashboard, Widget, Chart } from '@plinto/admin-ui';
+import { Dashboard, Widget, Chart } from '@janua/admin-ui';
 
 export function ExecutiveDashboard() {
   return (
@@ -150,7 +150,7 @@ class RealtimeMonitor {
   private subscribers: Map<string, Subscriber[]> = new Map();
   
   async connect() {
-    this.websocket = new WebSocket('wss://api.plinto.dev/admin/realtime');
+    this.websocket = new WebSocket('wss://api.janua.dev/admin/realtime');
     
     this.websocket.on('message', (data) => {
       const event = JSON.parse(data);
@@ -904,10 +904,10 @@ export function OrganizationSettings() {
 
 ```typescript
 // Admin API Client
-class PlintoAdminAPI {
+class JanuaAdminAPI {
   constructor(config: AdminAPIConfig) {
     this.client = new APIClient({
-      baseUrl: 'https://api.plinto.dev/admin/v1',
+      baseUrl: 'https://api.janua.dev/admin/v1',
       apiKey: config.apiKey,
       
       // Admin-specific headers
@@ -963,7 +963,7 @@ class PlintoAdminAPI {
     search: (query: AuditQuery) => this.client.post('/audit/search', query),
     export: (params: ExportParams) => this.client.post('/audit/export', params),
     stream: (callback: (event: AuditEvent) => void) => {
-      const ws = new WebSocket('wss://api.plinto.dev/admin/v1/audit/stream');
+      const ws = new WebSocket('wss://api.janua.dev/admin/v1/audit/stream');
       ws.on('message', (data) => callback(JSON.parse(data)));
       return ws;
     }
@@ -977,7 +977,7 @@ class PlintoAdminAPI {
 
 ```tsx
 // Mobile Admin Dashboard
-import { AdminMobile } from '@plinto/admin-mobile';
+import { AdminMobile } from '@janua/admin-mobile';
 
 export function MobileAdminApp() {
   return (
@@ -1094,7 +1094,7 @@ async function applyWhiteLabel(config: WhiteLabelConfig) {
 
 ## Support & Documentation
 
-- Admin Portal Guide: https://docs.plinto.dev/admin-portal
-- API Reference: https://api.plinto.dev/admin/docs
-- Video Tutorials: https://plinto.dev/tutorials/admin
-- Enterprise Support: enterprise@plinto.dev
+- Admin Portal Guide: https://docs.janua.dev/admin-portal
+- API Reference: https://api.janua.dev/admin/docs
+- Video Tutorials: https://janua.dev/tutorials/admin
+- Enterprise Support: enterprise@janua.dev

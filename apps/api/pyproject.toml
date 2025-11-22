@@ -3,16 +3,16 @@ requires = ["hatchling>=1.17.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "plinto"
+name = "janua"
 dynamic = ["version"]
 description = "Enterprise-grade authentication and user management platform"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Plinto Team", email = "team@plinto.dev"},
+    {name = "Janua Team", email = "team@janua.dev"},
 ]
 maintainers = [
-    {name = "Plinto Team", email = "team@plinto.dev"},
+    {name = "Janua Team", email = "team@janua.dev"},
 ]
 keywords = [
     "authentication", "authorization", "user-management", "enterprise",
@@ -102,27 +102,27 @@ dev = [
 
 # All optional dependencies
 all = [
-    "plinto[email,sso,dev]"
+    "janua[email,sso,dev]"
 ]
 
 [project.urls]
-Homepage = "https://plinto.dev"
-Documentation = "https://docs.plinto.dev"
-Repository = "https://github.com/madfam-io/plinto"
-"Bug Tracker" = "https://github.com/madfam-io/plinto/issues"
-Changelog = "https://github.com/madfam-io/plinto/blob/main/CHANGELOG.md"
+Homepage = "https://janua.dev"
+Documentation = "https://docs.janua.dev"
+Repository = "https://github.com/madfam-io/janua"
+"Bug Tracker" = "https://github.com/madfam-io/janua/issues"
+Changelog = "https://github.com/madfam-io/janua/blob/main/CHANGELOG.md"
 
 [project.scripts]
-plinto = "plinto.cli:cli_main"
+janua = "janua.cli:cli_main"
 
 [project.entry-points."fastapi.middleware"]
-plinto = "plinto.middleware:get_middleware_stack"
+janua = "janua.middleware:get_middleware_stack"
 
-[project.entry-points."plinto.auth_providers"]
-jwt = "plinto.auth.providers.jwt:JWTAuthProvider"
-oauth = "plinto.auth.providers.oauth:OAuthProvider"
-saml = "plinto.auth.providers.saml:SAMLProvider"
-webauthn = "plinto.auth.providers.webauthn:WebAuthnProvider"
+[project.entry-points."janua.auth_providers"]
+jwt = "janua.auth.providers.jwt:JWTAuthProvider"
+oauth = "janua.auth.providers.oauth:OAuthProvider"
+saml = "janua.auth.providers.saml:SAMLProvider"
+webauthn = "janua.auth.providers.webauthn:WebAuthnProvider"
 
 [tool.hatch.version]
 path = "app/__init__.py"
@@ -146,7 +146,7 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["app", "plinto"]
+packages = ["app", "janua"]
 
 # Development Tools Configuration
 [tool.black]

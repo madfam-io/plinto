@@ -7,14 +7,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus-config
-  namespace: plinto-production
+  namespace: janua-production
 data:
   prometheus.yml: |
     global:
       scrape_interval: 15s
       evaluation_interval: 15s
       external_labels:
-        cluster: 'plinto-production'
+        cluster: 'janua-production'
         environment: 'production'
 
     rule_files:
@@ -28,16 +28,16 @@ data:
 
     scrape_configs:
       # API Monitoring
-      - job_name: 'plinto-api'
+      - job_name: 'janua-api'
         kubernetes_sd_configs:
         - role: endpoints
           namespaces:
             names:
-            - plinto-production
+            - janua-production
         relabel_configs:
         - source_labels: [__meta_kubernetes_service_name]
           action: keep
-          regex: plinto-api-service
+          regex: janua-api-service
         - source_labels: [__meta_kubernetes_endpoint_port_name]
           action: keep
           regex: http
@@ -50,7 +50,7 @@ data:
         - role: endpoints
           namespaces:
             names:
-            - plinto-production
+            - janua-production
         relabel_configs:
         - source_labels: [__meta_kubernetes_service_name]
           action: keep
@@ -62,7 +62,7 @@ data:
         - role: endpoints
           namespaces:
             names:
-            - plinto-production
+            - janua-production
         relabel_configs:
         - source_labels: [__meta_kubernetes_service_name]
           action: keep
@@ -97,7 +97,7 @@ data:
         - role: pod
           namespaces:
             names:
-            - plinto-production
+            - janua-production
         relabel_configs:
         - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
           action: keep
@@ -110,11 +110,11 @@ data:
   # Alerting Rules
   alert_rules.yml: |
     groups:
-    - name: plinto.rules
+    - name: janua.rules
       rules:
       # API Performance Alerts
       - alert: HighResponseTime
-        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="plinto-api"}[5m])) > 0.1
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="janua-api"}[5m])) > 0.1
         for: 2m
         labels:
           severity: warning
@@ -185,7 +185,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: prometheus
     component: monitoring
@@ -260,7 +260,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: prometheus-serviceaccount
-  namespace: plinto-production
+  namespace: janua-production
 
 ---
 # Prometheus RBAC
@@ -295,7 +295,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: prometheus-serviceaccount
-  namespace: plinto-production
+  namespace: janua-production
 
 ---
 # Prometheus PVC
@@ -303,7 +303,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: prometheus-data
-  namespace: plinto-production
+  namespace: janua-production
 spec:
   accessModes:
   - ReadWriteOnce
@@ -318,7 +318,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prometheus-service
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: prometheus
     component: monitoring
@@ -338,7 +338,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-config
-  namespace: plinto-production
+  namespace: janua-production
 data:
   grafana.ini: |
     [server]
@@ -355,7 +355,7 @@ data:
     enabled = false
     
     [dashboards]
-    default_home_dashboard_path = /etc/grafana/provisioning/dashboards/plinto-overview.json
+    default_home_dashboard_path = /etc/grafana/provisioning/dashboards/janua-overview.json
     
     [log]
     mode = console
@@ -390,7 +390,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: grafana-secret
-  namespace: plinto-production
+  namespace: janua-production
 type: Opaque
 stringData:
   GF_SECURITY_ADMIN_PASSWORD: "REPLACE_WITH_SECURE_GRAFANA_PASSWORD"
@@ -401,7 +401,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: grafana
     component: monitoring
@@ -482,7 +482,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: grafana-data
-  namespace: plinto-production
+  namespace: janua-production
 spec:
   accessModes:
   - ReadWriteOnce
@@ -497,7 +497,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: grafana-service
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: grafana
     component: monitoring
@@ -517,21 +517,21 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: grafana-ingress
-  namespace: plinto-production
+  namespace: janua-production
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: grafana-basic-auth
-    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - Plinto Monitoring"
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - Janua Monitoring"
 spec:
   tls:
   - hosts:
-    - monitoring.plinto.dev
+    - monitoring.janua.dev
     secretName: grafana-tls
   rules:
-  - host: monitoring.plinto.dev
+  - host: monitoring.janua.dev
     http:
       paths:
       - path: /

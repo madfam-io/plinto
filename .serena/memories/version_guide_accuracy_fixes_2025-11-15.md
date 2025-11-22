@@ -5,7 +5,7 @@ Documentation incorrectly showed Python SDK as published to PyPI when it is only
 
 ## Verification Performed
 ```bash
-curl -s https://pypi.org/pypi/plinto/json
+curl -s https://pypi.org/pypi/janua/json
 # Result: {"message": "Not Found"}
 ```
 
@@ -16,19 +16,19 @@ curl -s https://pypi.org/pypi/plinto/json
 ### 1. Quick Reference Table
 **Before**:
 ```markdown
-| `plinto` (Python SDK) | 0.1.0b1 | Beta | PyPI |
-| `plinto` (API) | 0.1.0b1 | Beta | PyPI |
+| `janua` (Python SDK) | 0.1.0b1 | Beta | PyPI |
+| `janua` (API) | 0.1.0b1 | Beta | PyPI |
 ```
 
 **After**:
 ```markdown
-| `plinto` (Python SDK) | 0.1.0b1 | Built (not published) | - |
-| `plinto` (API) | 0.1.0b1 | Development | - |
+| `janua` (Python SDK) | 0.1.0b1 | Built (not published) | - |
+| `janua` (API) | 0.1.0b1 | Development | - |
 ```
 
 ### 2. SDK Packages Section
 **Removed**:
-- Python installation command: `pip install plinto==0.1.0b1`
+- Python installation command: `pip install janua==0.1.0b1`
 - Python from beta SDK list
 
 ### 3. Compatibility Matrix
@@ -41,13 +41,13 @@ curl -s https://pypi.org/pypi/plinto/json
 
 ### 5. Version Checking Examples
 **Removed**:
-- Python code example: `import plinto; print(plinto.__version__)`
-- pip show plinto command example
+- Python code example: `import janua; print(janua.__version__)`
+- pip show janua command example
 
 ### 6. Development Packages Section
 **Added**:
 ```markdown
-- `plinto` (Python SDK) - Python SDK (built, publication pending)
+- `janua` (Python SDK) - Python SDK (built, publication pending)
 ```
 
 ## Files Modified
@@ -68,7 +68,7 @@ All Python SDK references now accurately reflect:
 
 ## Publication-Ready SDKs
 Only the following 4 SDKs are documented as ready for publication:
-1. @plinto/typescript-sdk@0.1.0-beta.1
-2. @plinto/react-sdk@0.1.0-beta.1
-3. @plinto/vue-sdk@0.1.0-beta.1
-4. @plinto/nextjs@0.1.0-beta.1
+1. @janua/typescript-sdk@0.1.0-beta.1
+2. @janua/react-sdk@0.1.0-beta.1
+3. @janua/vue-sdk@0.1.0-beta.1
+4. @janua/nextjs@0.1.0-beta.1

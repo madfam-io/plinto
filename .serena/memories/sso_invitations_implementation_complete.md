@@ -96,11 +96,11 @@ interface BulkInvitationResponse {
 
 **Updated Files:**
 - `packages/typescript-sdk/src/client.ts` - Added SSO and Invitations module instantiation
-- `apps/demo/lib/plinto-client.ts` - Export sso and invitations modules
+- `apps/demo/lib/janua-client.ts` - Export sso and invitations modules
 
 **Usage Example:**
 ```typescript
-import { plintoClient, sso, invitations } from '@/lib/plinto-client'
+import { januaClient, sso, invitations } from '@/lib/janua-client'
 
 // SSO Usage
 const config = await sso.createConfiguration('org-123', {
@@ -144,7 +144,7 @@ interface SSOProviderListProps {
   onTest?: (configId: string) => void
   onToggleEnabled?: (configId: string, enabled: boolean) => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   showActions?: boolean
 }
 ```
@@ -169,7 +169,7 @@ interface SSOProviderFormProps {
   onSubmit?: (config: SSOConfigurationCreate | SSOConfigurationUpdate) => Promise<void>
   onCancel?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   mode?: 'create' | 'edit'
 }
 ```
@@ -194,7 +194,7 @@ interface SAMLConfigFormProps {
   onSubmit?: (config: Partial<SSOConfigurationCreate>) => Promise<void>
   onDownloadMetadata?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
 }
 ```
 
@@ -214,7 +214,7 @@ interface SSOTestConnectionProps {
   configurationId: string
   onTest?: () => Promise<SSOTestResponse>
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   showTroubleshooting?: boolean
 }
 ```
@@ -244,7 +244,7 @@ interface InvitationListProps {
   onResend?: (invitationId: string) => Promise<void>
   onRevoke?: (invitationId: string) => Promise<void>
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   showBulkActions?: boolean
   pageSize?: number
 }
@@ -269,7 +269,7 @@ interface InviteUserFormProps {
   onSuccess?: (invitation: Invitation) => void
   onCancel?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   defaultRole?: string
   defaultExpiresIn?: number
 }
@@ -294,7 +294,7 @@ interface InvitationAcceptProps {
   onAccept?: (request: InvitationAcceptRequest) => Promise<InvitationAcceptResponse>
   onSuccess?: (response: InvitationAcceptResponse) => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   redirectUrl?: string
 }
 ```
@@ -320,7 +320,7 @@ interface BulkInviteUploadProps {
   onSuccess?: (response: BulkInvitationResponse) => void
   onCancel?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   maxEmails?: number // Default 100
 }
 ```
@@ -399,7 +399,7 @@ export function Component({ ...props }: ComponentProps) {
   const [error, setError] = React.useState<string | null>(null)
   
   // API Integration - Three patterns:
-  // a) Plinto SDK client (preferred)
+  // a) Janua SDK client (preferred)
   // b) Custom callback (onFetch...)
   // c) Direct fetch fallback
   
@@ -413,8 +413,8 @@ export function Component({ ...props }: ComponentProps) {
 
 ### SDK Integration Pattern
 ```typescript
-if (plintoClient) {
-  const response = await plintoClient.sso.createConfiguration(...)
+if (januaClient) {
+  const response = await januaClient.sso.createConfiguration(...)
 } else if (onCustomCallback) {
   await onCustomCallback(...)
 } else {

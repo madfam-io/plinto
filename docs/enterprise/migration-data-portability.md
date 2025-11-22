@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto provides comprehensive migration tools and data portability features to help organizations transition from legacy authentication systems while maintaining data integrity, security, and user experience continuity.
+Janua provides comprehensive migration tools and data portability features to help organizations transition from legacy authentication systems while maintaining data integrity, security, and user experience continuity.
 
 ## Migration Strategies
 
@@ -102,8 +102,8 @@ class Auth0Migration {
     // Step 2: Transform data
     const transformed = await this.transformAuth0Data(auth0Data);
     
-    // Step 3: Import to Plinto
-    const result = await this.importToPlinto(transformed);
+    // Step 3: Import to Janua
+    const result = await this.importToJanua(transformed);
     
     return result;
   }
@@ -137,7 +137,7 @@ class Auth0Migration {
     };
   }
   
-  private async transformAuth0Data(data: Auth0Export): Promise<PlintoImport> {
+  private async transformAuth0Data(data: Auth0Export): Promise<JanuaImport> {
     return {
       users: data.users.map(user => ({
         // Basic info
@@ -227,7 +227,7 @@ class OktaMigration {
     // Step 2: Export with relationships
     const exported = await this.exportWithRelationships(okta, discovery);
     
-    // Step 3: Transform to Plinto format
+    // Step 3: Transform to Janua format
     const transformed = await this.transformOktaData(exported);
     
     // Step 4: Import with validation
@@ -262,7 +262,7 @@ class OktaMigration {
     };
   }
   
-  private async transformOktaData(data: OktaExport): Promise<PlintoImport> {
+  private async transformOktaData(data: OktaExport): Promise<JanuaImport> {
     return {
       users: await Promise.all(data.users.map(async user => ({
         // Basic info
@@ -424,9 +424,9 @@ class PasswordHashAdapter {
       };
     }
     
-    // Migrate to Plinto format
+    // Migrate to Janua format
     return {
-      algorithm: 'plinto-wrapped',
+      algorithm: 'janua-wrapped',
       originalAlgorithm: algorithm,
       hash: await adapter.wrap(hash, options),
       
@@ -440,7 +440,7 @@ class PasswordHashAdapter {
     password: string,
     hashedPassword: MigratedHash
   ): Promise<VerificationResult> {
-    if (hashedPassword.algorithm === 'plinto-wrapped') {
+    if (hashedPassword.algorithm === 'janua-wrapped') {
       // Verify using original algorithm
       const adapter = this.adapters.get(hashedPassword.originalAlgorithm);
       const verified = await adapter.verify(password, hashedPassword.hash);
@@ -459,7 +459,7 @@ class PasswordHashAdapter {
       return { verified };
     }
     
-    // Native Plinto hash
+    // Native Janua hash
     return this.verifyNativeHash(password, hashedPassword);
   }
 }
@@ -733,12 +733,12 @@ class DataExportService {
       
       // Data portability information
       portability: {
-        format: 'plinto-export-v2',
-        schema: 'https://plinto.dev/schemas/export/v2',
+        format: 'janua-export-v2',
+        schema: 'https://janua.dev/schemas/export/v2',
         
         // Import instructions
         importInstructions: {
-          plinto: 'Use import tool with this file',
+          janua: 'Use import tool with this file',
           generic: 'JSON format compatible with most systems'
         }
       }
@@ -867,17 +867,17 @@ class MigrationCLI {
 }
 
 // Usage example
-// $ plinto-migrate analyze --source auth0 --config auth0.json
-// $ plinto-migrate plan --output migration-plan.json
-// $ plinto-migrate migrate --plan migration-plan.json --parallel 4
-// $ plinto-migrate verify --plan migration-plan.json
+// $ janua-migrate analyze --source auth0 --config auth0.json
+// $ janua-migrate plan --output migration-plan.json
+// $ janua-migrate migrate --plan migration-plan.json --parallel 4
+// $ janua-migrate verify --plan migration-plan.json
 ```
 
 ### Migration SDK
 
 ```typescript
 // SDK for programmatic migrations
-import { MigrationSDK } from '@plinto/migration';
+import { MigrationSDK } from '@janua/migration';
 
 const migration = new MigrationSDK({
   source: {
@@ -890,8 +890,8 @@ const migration = new MigrationSDK({
   },
   
   target: {
-    apiKey: process.env.PLINTO_API_KEY,
-    endpoint: 'https://api.plinto.dev'
+    apiKey: process.env.JANUA_API_KEY,
+    endpoint: 'https://api.janua.dev'
   },
   
   options: {
@@ -938,7 +938,7 @@ class ZeroDowntimeMigration {
     // Step 1: Configure write-through to both systems
     this.configureWriteThrough({
       primary: config.legacySystem,
-      secondary: config.plintoSystem,
+      secondary: config.januaSystem,
       
       // Async replication to avoid latency
       mode: 'async',
@@ -953,7 +953,7 @@ class ZeroDowntimeMigration {
     // Step 2: Start background sync
     await this.startBackgroundSync({
       source: config.legacySystem,
-      target: config.plintoSystem,
+      target: config.januaSystem,
       
       // Sync configuration
       batchSize: 1000,
@@ -988,7 +988,7 @@ class ZeroDowntimeMigration {
       // Update load balancer
       await this.updateLoadBalancer({
         legacy: 100 - stage.percentage,
-        plinto: stage.percentage
+        janua: stage.percentage
       });
       
       // Monitor for issues
@@ -1045,7 +1045,7 @@ class ZeroDowntimeMigration {
 
 ## Support & Resources
 
-- Migration Guide: https://docs.plinto.dev/migration
-- Migration Tools: https://github.com/plinto/migration-tools
-- Support: migration@plinto.dev
-- Professional Services: enterprise@plinto.dev
+- Migration Guide: https://docs.janua.dev/migration
+- Migration Tools: https://github.com/janua/migration-tools
+- Support: migration@janua.dev
+- Professional Services: enterprise@janua.dev

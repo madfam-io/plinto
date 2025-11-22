@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build script for Plinto Go SDK
+# Build script for Janua Go SDK
 
 set -e
 
@@ -9,7 +9,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}🔨 Building Plinto Go SDK${NC}"
+echo -e "${GREEN}🔨 Building Janua Go SDK${NC}"
 
 # Check if Go is installed
 if ! command -v go &> /dev/null; then

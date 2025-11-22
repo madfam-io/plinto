@@ -26,7 +26,7 @@ jobs:
         working-directory: ./marketing
         run: yarn build
         env:
-          NEXT_PUBLIC_API_URL: https://plinto.dev/api/v1
+          NEXT_PUBLIC_API_URL: https://janua.dev/api/v1
       
       - name: Deploy to Vercel
         uses: vercel/action@v20
@@ -57,8 +57,8 @@ jobs:
         working-directory: ./dashboard
         run: yarn build
         env:
-          NEXT_PUBLIC_API_URL: https://plinto.dev/api/v1
-          NEXT_PUBLIC_APP_URL: https://app.plinto.dev
+          NEXT_PUBLIC_API_URL: https://janua.dev/api/v1
+          NEXT_PUBLIC_APP_URL: https://app.janua.dev
       
       - name: Deploy to Vercel
         uses: vercel/action@v20
@@ -89,8 +89,8 @@ jobs:
         working-directory: ./admin
         run: yarn build
         env:
-          NEXT_PUBLIC_API_URL: https://plinto.dev/api/v1
-          NEXT_PUBLIC_ADMIN_URL: https://admin.plinto.dev
+          NEXT_PUBLIC_API_URL: https://janua.dev/api/v1
+          NEXT_PUBLIC_ADMIN_URL: https://admin.janua.dev
       
       - name: Deploy to Vercel
         uses: vercel/action@v20

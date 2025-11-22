@@ -1,9 +1,9 @@
 'use client'
 
-import { EmailVerification, PhoneVerification } from '@plinto/ui'
+import { EmailVerification, PhoneVerification } from '@janua/ui'
 import { useState } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
-import { plintoClient } from '@/lib/plinto-client'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
+import { januaClient } from '@/lib/janua-client'
 
 export default function VerificationShowcase() {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -80,7 +80,7 @@ export default function VerificationShowcase() {
 {`import {
   EmailVerification,
   PhoneVerification
-} from '@plinto/ui'
+} from '@janua/ui'
 
 <EmailVerification
   onSendCode={handleSend}
@@ -118,7 +118,7 @@ export default function VerificationShowcase() {
 
           <TabsContent value="email">
             <EmailVerification
-              plintoClient={plintoClient}
+              januaClient={januaClient}
               email="user@example.com"
               onResendEmail={async () => {
                 // removed console.log
@@ -145,7 +145,7 @@ export default function VerificationShowcase() {
 
           <TabsContent value="phone">
             <PhoneVerification
-              plintoClient={plintoClient}
+              januaClient={januaClient}
               phoneNumber="+1 (555) 123-4567"
               onSendCode={async (phone) => {
                 // removed console.log
@@ -183,7 +183,7 @@ export default function VerificationShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Email Verification Flow</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { EmailVerification } from '@plinto/ui'
+import { EmailVerification } from '@janua/ui'
 import { useRouter } from 'next/navigation'
 
 export default function VerifyEmailPage({ email }) {
@@ -227,7 +227,7 @@ export default function VerifyEmailPage({ email }) {
           <div>
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Phone Verification with SMS</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-{`import { PhoneVerification } from '@plinto/ui'
+{`import { PhoneVerification } from '@janua/ui'
 
 export default function VerifyPhonePage() {
   return (

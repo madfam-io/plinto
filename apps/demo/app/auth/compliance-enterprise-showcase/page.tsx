@@ -1,6 +1,6 @@
 'use client'
 
-import { ConsentManager, DataSubjectRequestForm, PrivacySettings } from '@plinto/ui'
+import { ConsentManager, DataSubjectRequestForm, PrivacySettings } from '@janua/ui'
 import { useState } from 'react'
 
 export default function ComplianceEnterpriseShowcase() {

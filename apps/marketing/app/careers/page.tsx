@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { ArrowRight, MapPin, Clock, DollarSign, Users, Globe, Heart, Award } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Careers | Plinto',
+  title: 'Careers | Janua',
   description: 'Join our mission to build the future of authentication. Remote-first culture, competitive benefits, and meaningful work.',
 }
 
@@ -33,7 +33,7 @@ export default function CareersPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-              Why Work at Plinto?
+              Why Work at Janua?
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-300">
               We're building something meaningful with a team that values excellence, transparency, and work-life balance.
@@ -122,7 +122,7 @@ export default function CareersPage() {
                   </p>
                 </div>
                 <Button className="group shrink-0" asChild>
-                  <Link href="mailto:careers@plinto.dev?subject=Senior Platform Engineer">
+                  <Link href="mailto:careers@janua.dev?subject=Senior Platform Engineer">
                     Apply Now
                     <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
@@ -155,7 +155,7 @@ export default function CareersPage() {
                   </p>
                 </div>
                 <Button className="group shrink-0" asChild>
-                  <Link href="mailto:careers@plinto.dev?subject=Frontend Engineer">
+                  <Link href="mailto:careers@janua.dev?subject=Frontend Engineer">
                     Apply Now
                     <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
@@ -184,11 +184,11 @@ export default function CareersPage() {
                     </div>
                   </div>
                   <p className="text-slate-600 dark:text-slate-400 mt-2">
-                    Build community, create educational content, and help developers succeed with Plinto's authentication platform.
+                    Build community, create educational content, and help developers succeed with Janua's authentication platform.
                   </p>
                 </div>
                 <Button className="group shrink-0" asChild>
-                  <Link href="mailto:careers@plinto.dev?subject=Developer Relations Engineer">
+                  <Link href="mailto:careers@janua.dev?subject=Developer Relations Engineer">
                     Apply Now
                     <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>
@@ -202,7 +202,7 @@ export default function CareersPage() {
               Don't see the perfect role? We're always looking for exceptional talent.
             </p>
             <Button variant="outline" className="group" asChild>
-              <Link href="mailto:careers@plinto.dev?subject=General Interest">
+              <Link href="mailto:careers@janua.dev?subject=General Interest">
                 Send Us Your Resume
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>

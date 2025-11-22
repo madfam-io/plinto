@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Check, ArrowRight, Zap, Building2, Rocket, Crown } from 'lucide-react'
-import { Badge } from '@plinto/ui'
-import { Button } from '@plinto/ui'
+import { Badge } from '@janua/ui'
+import { Button } from '@janua/ui'
 
 const tiers = [
   {

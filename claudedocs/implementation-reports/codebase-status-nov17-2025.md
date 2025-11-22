@@ -1,7 +1,7 @@
-# Plinto Codebase Evidence-Based Status Report
+# Janua Codebase Evidence-Based Status Report
 **Generated**: November 17, 2025  
 **Method**: Direct file system analysis, line counting, pattern matching  
-**Repository**: github.com/madfam-io/plinto
+**Repository**: github.com/madfam-io/janua
 
 ---
 
@@ -264,7 +264,7 @@ From commit 924eb9f (+5,209 lines):
 
 ## Conclusion
 
-**Evidence-Based Assessment**: The Plinto codebase is substantially more mature than previously documented. With 374,697 lines of code, comprehensive enterprise features, 249 test files, and active development (355 commits in 3 months), the project demonstrates strong technical foundation.
+**Evidence-Based Assessment**: The Janua codebase is substantially more mature than previously documented. With 374,697 lines of code, comprehensive enterprise features, 249 test files, and active development (355 commits in 3 months), the project demonstrates strong technical foundation.
 
 **Production Readiness**: 75-80% complete, with clear path to beta launch in 4-6 weeks.
 

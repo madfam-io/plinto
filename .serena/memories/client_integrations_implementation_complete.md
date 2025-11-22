@@ -4,7 +4,7 @@
 
 ## Overview
 
-Implemented GraphQL and WebSocket client integrations for the Plinto TypeScript SDK, completing the missing client layers for real-time and flexible API access.
+Implemented GraphQL and WebSocket client integrations for the Janua TypeScript SDK, completing the missing client layers for real-time and flexible API access.
 
 ## Implemented Modules
 
@@ -100,14 +100,14 @@ interface WebSocketMessage {
 
 ---
 
-## PlintoClient Integration
+## JanuaClient Integration
 
 ### Updated Configuration
 
-Added GraphQL and WebSocket options to `PlintoConfig`:
+Added GraphQL and WebSocket options to `JanuaConfig`:
 
 ```typescript
-interface PlintoConfig {
+interface JanuaConfig {
   // ... existing options
   
   // GraphQL configuration
@@ -126,10 +126,10 @@ interface PlintoConfig {
 
 ### Client Properties
 
-Added optional `graphql` and `ws` properties to `PlintoClient`:
+Added optional `graphql` and `ws` properties to `JanuaClient`:
 
 ```typescript
-class PlintoClient {
+class JanuaClient {
   // ... existing properties
   
   public readonly graphql?: GraphQL     // GraphQL client (if graphqlUrl configured)
@@ -243,12 +243,12 @@ export type {
 ### GraphQL Query
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 import { gql } from '@apollo/client';
 
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  graphqlUrl: 'https://api.plinto.dev/graphql',
+  baseURL: 'https://api.janua.dev',
+  graphqlUrl: 'https://api.janua.dev/graphql',
 });
 
 const GET_USER = gql`
@@ -292,8 +292,8 @@ subscription.subscribe({
 
 ```typescript
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  wsUrl: 'wss://api.plinto.dev/ws',
+  baseURL: 'https://api.janua.dev',
+  wsUrl: 'wss://api.janua.dev/ws',
 });
 
 // Subscribe to channel
@@ -317,10 +317,10 @@ client.ws!.publish('chat', {
 
 ```typescript
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  graphqlUrl: 'https://api.plinto.dev/graphql',
-  graphqlWsUrl: 'wss://api.plinto.dev/graphql',
-  wsUrl: 'wss://api.plinto.dev/ws',
+  baseURL: 'https://api.janua.dev',
+  graphqlUrl: 'https://api.janua.dev/graphql',
+  graphqlWsUrl: 'wss://api.janua.dev/graphql',
+  wsUrl: 'wss://api.janua.dev/ws',
 });
 
 // Initial data via GraphQL
@@ -350,7 +350,7 @@ client.ws!.on('message', (msg) => {
 
 **Authentication Flow**:
 1. Apollo Link middleware intercepts requests
-2. Calls `getAuthToken()` (returns `PlintoClient.getAccessToken()`)
+2. Calls `getAuthToken()` (returns `JanuaClient.getAccessToken()`)
 3. Adds `Authorization: Bearer <token>` header
 4. For WebSocket: Adds token to connection params
 
@@ -453,7 +453,7 @@ describe('WebSocket Client', () => {
 **Completed**:
 - ✅ GraphQL client module (queries, mutations, subscriptions)
 - ✅ WebSocket client module (pub/sub, reconnection, heartbeat)
-- ✅ PlintoClient integration
+- ✅ JanuaClient integration
 - ✅ TypeScript types and exports
 - ✅ Comprehensive documentation
 - ✅ Dependency management
@@ -509,4 +509,4 @@ Users can now:
 4. **Optional Dependencies**: Peer dependencies only required if features used
 5. **Comprehensive Docs**: 600+ line guide with examples and best practices
 
-The client integration layer is now complete, providing users with flexible REST, GraphQL, and WebSocket access to Plinto's APIs.
+The client integration layer is now complete, providing users with flexible REST, GraphQL, and WebSocket access to Janua's APIs.

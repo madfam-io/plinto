@@ -63,7 +63,7 @@ test.describe('100% Functionality Test', () => {
       await logoLink.waitFor({ state: 'visible', timeout: 5000 });
 
       addResult({
-        element: 'Plinto Logo/Home Link',
+        element: 'Janua Logo/Home Link',
         location: 'Header Navigation',
         action: 'Verify logo link exists',
         expected: 'Should be visible and functional',
@@ -72,7 +72,7 @@ test.describe('100% Functionality Test', () => {
       });
     } catch (error) {
       addResult({
-        element: 'Plinto Logo/Home Link',
+        element: 'Janua Logo/Home Link',
         location: 'Header Navigation',
         action: 'Verify logo link exists',
         expected: 'Should be visible and functional',
@@ -164,8 +164,8 @@ test.describe('100% Functionality Test', () => {
 
     // Test header CTA buttons (verify they exist and have correct hrefs)
     const headerButtons = [
-      { text: 'Sign In', expectedHref: 'https://app.plinto.dev/auth/signin' },
-      { text: 'Start Free', expectedHref: 'https://app.plinto.dev/auth/signup' }
+      { text: 'Sign In', expectedHref: 'https://app.janua.dev/auth/signin' },
+      { text: 'Start Free', expectedHref: 'https://app.janua.dev/auth/signup' }
     ];
 
     for (const button of headerButtons) {
@@ -314,9 +314,9 @@ test.describe('100% Functionality Test', () => {
   test('External Links and Integrations', async ({ page }) => {
     // Test key external links
     const externalLinkTests = [
-      { selector: 'a[href*="github.com/plinto/plinto"]', name: 'GitHub Repository' },
-      { selector: 'a[href*="app.plinto.dev"]', name: 'App Links' },
-      { selector: 'a[href*="docs.plinto.dev"]', name: 'Documentation Links' }
+      { selector: 'a[href*="github.com/janua/janua"]', name: 'GitHub Repository' },
+      { selector: 'a[href*="app.janua.dev"]', name: 'App Links' },
+      { selector: 'a[href*="docs.janua.dev"]', name: 'Documentation Links' }
     ];
 
     for (const linkTest of externalLinkTests) {

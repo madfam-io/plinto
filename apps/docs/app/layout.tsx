@@ -8,18 +8,18 @@ import '@/styles/tokens.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Plinto Documentation',
-  description: 'Complete documentation for the Plinto identity platform',
+  title: 'Janua Documentation',
+  description: 'Complete documentation for the Janua identity platform',
   openGraph: {
-    title: 'Plinto Documentation',
-    description: 'Complete documentation for the Plinto identity platform',
+    title: 'Janua Documentation',
+    description: 'Complete documentation for the Janua identity platform',
     type: 'website',
-    url: 'https://docs.plinto.dev',
+    url: 'https://docs.janua.dev',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Plinto Documentation',
-    description: 'Complete documentation for the Plinto identity platform',
+    title: 'Janua Documentation',
+    description: 'Complete documentation for the Janua identity platform',
   },
 };
 

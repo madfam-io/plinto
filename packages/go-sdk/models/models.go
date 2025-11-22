@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// User represents a Plinto user
+// User represents a Janua user
 type User struct {
 	ID                string                 `json:"id"`
 	Email             string                 `json:"email"`
@@ -35,7 +35,7 @@ type Session struct {
 	ExpiresAt    time.Time `json:"expires_at"`
 }
 
-// Organization represents a Plinto organization
+// Organization represents a Janua organization
 type Organization struct {
 	ID           string                 `json:"id"`
 	Name         string                 `json:"name"`

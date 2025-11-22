@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Run K6 Load Tests for Plinto Authentication
+# Run K6 Load Tests for Janua Authentication
 #
 # Usage:
 #   ./tests/load/run-tests.sh [smoke|load|stress|spike]
@@ -23,7 +23,7 @@ NC='\033[0m' # No Color
 BASE_URL="${BASE_URL:-http://localhost:8000}"
 TEST_TYPE="${1:-load}"
 
-echo -e "${GREEN}=== Plinto Load Testing ===${NC}"
+echo -e "${GREEN}=== Janua Load Testing ===${NC}"
 echo -e "Base URL: ${YELLOW}${BASE_URL}${NC}"
 echo -e "Test Type: ${YELLOW}${TEST_TYPE}${NC}\n"
 

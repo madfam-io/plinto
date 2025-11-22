@@ -4,7 +4,7 @@ Unit tests for custom exception classes
 
 import pytest
 from app.exceptions import (
-    PlintoAPIException,
+    JanuaAPIException,
     AuthenticationError,
     TokenError,
     AuthorizationError,
@@ -15,12 +15,12 @@ from app.exceptions import (
 )
 
 
-class TestPlintoAPIException:
-    """Test the base PlintoAPIException class."""
+class TestJanuaAPIException:
+    """Test the base JanuaAPIException class."""
     
     def test_basic_exception(self):
         """Test basic exception creation."""
-        exc = PlintoAPIException(
+        exc = JanuaAPIException(
             message="Test error",
             status_code=400,
             error_code="TEST_ERROR"
@@ -35,7 +35,7 @@ class TestPlintoAPIException:
     def test_exception_with_details(self):
         """Test exception with additional details."""
         details = {"field": "email", "value": "invalid"}
-        exc = PlintoAPIException(
+        exc = JanuaAPIException(
             message="Validation failed",
             status_code=422,
             error_code="VALIDATION_ERROR",
@@ -46,11 +46,11 @@ class TestPlintoAPIException:
     
     def test_default_values(self):
         """Test exception with default values."""
-        exc = PlintoAPIException(message="Simple error")
+        exc = JanuaAPIException(message="Simple error")
         
         assert exc.status_code == 500
         # Updated to match actual implementation - class name is uppercase without underscores
-        assert exc.error_code == "PLINTOAPIEXCEPTION"
+        assert exc.error_code == "JANUAAPIEXCEPTION"
         assert exc.details == {}
 
 
@@ -132,7 +132,7 @@ class TestSpecificExceptions:
         assert exc.details == details
     
     def test_all_exceptions_inherit_from_base(self):
-        """Test that all custom exceptions inherit from PlintoAPIException."""
+        """Test that all custom exceptions inherit from JanuaAPIException."""
         exceptions = [
             AuthenticationError(),
             TokenError(),
@@ -144,7 +144,7 @@ class TestSpecificExceptions:
         ]
         
         for exc in exceptions:
-            assert isinstance(exc, PlintoAPIException)
+            assert isinstance(exc, JanuaAPIException)
             assert hasattr(exc, 'message')
             assert hasattr(exc, 'status_code')
             assert hasattr(exc, 'error_code')

@@ -1,6 +1,6 @@
 # Root Directory Structure
 
-This document describes the proper organization of files in the Plinto project root directory.
+This document describes the proper organization of files in the Janua project root directory.
 
 ## ✅ Files That Belong in Root
 
@@ -25,7 +25,7 @@ This document describes the proper organization of files in the Plinto project r
 ## 📁 Directory Structure
 
 ```
-plinto/
+janua/
 ├── apps/                 # Application packages (monorepo)
 │   ├── api/             # Python FastAPI backend
 │   ├── marketing/       # Marketing website

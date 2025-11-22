@@ -1,8 +1,8 @@
-# 📚 Plinto Documentation System
+# 📚 Janua Documentation System
 
 ## Overview
 
-The Plinto documentation system implements a robust content pipeline with automated validation to ensure high-quality, consistent documentation across internal and public-facing materials.
+The Janua documentation system implements a robust content pipeline with automated validation to ensure high-quality, consistent documentation across internal and public-facing materials.
 
 ## 🏗️ Architecture
 

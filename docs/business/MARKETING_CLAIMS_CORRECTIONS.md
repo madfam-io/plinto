@@ -201,7 +201,7 @@ More frameworks coming soon (Svelte, Astro planned Q1 2026)."
 3. **Drizzle adapter decision** - Remove or implement
 
 ### 📅 Planned (Week 2)
-1. **Eject Button migration guide** - Document Plinto Cloud → Self-hosted workflow
+1. **Eject Button migration guide** - Document Janua Cloud → Self-hosted workflow
 2. **Marketing site updates** - Apply all copy corrections
 3. **A/B testing** - Test new positioning with beta users
 

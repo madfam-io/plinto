@@ -24,7 +24,7 @@ export interface RoleManagerProps {
   onUpdateRole?: (roleId: string, updates: Partial<Role>) => Promise<Role>
   onDeleteRole?: (roleId: string) => Promise<void>
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
 }
 
@@ -37,7 +37,7 @@ export function RoleManager({
   onUpdateRole,
   onDeleteRole,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: RoleManagerProps) {
   const [isCreating, setIsCreating] = React.useState(false)
@@ -65,8 +65,8 @@ export function RoleManager({
         is_system_role: false,
       }
 
-      if (plintoClient) {
-        await plintoClient.rbac.createRole(roleData)
+      if (januaClient) {
+        await januaClient.rbac.createRole(roleData)
       } else if (onCreateRole) {
         await onCreateRole(roleData)
       } else {

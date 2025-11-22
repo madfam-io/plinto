@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { ArrowRight, Cloud, Shield, Users, Settings, Zap, Database, Lock, BarChart3 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'SaaS Authentication | Plinto',
+  title: 'SaaS Authentication | Janua',
   description: 'Enterprise-grade authentication for SaaS applications. Multi-tenant architecture, SSO integration, and developer-friendly APIs.',
 }
 
@@ -36,14 +36,14 @@ export default function SaasPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="group" asChild>
-                <Link href="https://app.plinto.dev/auth/signup">
+                <Link href="https://app.janua.dev/auth/signup">
                   Start Building
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
 
               <Button size="lg" variant="outline" asChild>
-                <Link href="https://docs.plinto.dev/solutions/saas">
+                <Link href="https://docs.janua.dev/solutions/saas">
                   API Documentation
                 </Link>
               </Button>
@@ -56,7 +56,7 @@ export default function SaasPage() {
       <section className="py-20 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-16">
-            Why SaaS Teams Choose Plinto
+            Why SaaS Teams Choose Janua
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -164,13 +164,13 @@ export default function SaasPage() {
                 </p>
                 <div className="space-y-4">
                   <Button size="lg" className="w-full group" asChild>
-                    <Link href="https://app.plinto.dev/auth/signup">
+                    <Link href="https://app.janua.dev/auth/signup">
                       Start Free Trial
                       <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
                   <Button size="lg" variant="outline" className="w-full" asChild>
-                    <Link href="https://docs.plinto.dev/quickstart">
+                    <Link href="https://docs.janua.dev/quickstart">
                       5-Minute Quickstart
                     </Link>
                   </Button>
@@ -195,12 +195,12 @@ export default function SaasPage() {
 
           <div className="bg-slate-900 dark:bg-slate-800 rounded-lg p-6 overflow-x-auto">
             <pre className="text-green-400 font-mono text-sm">
-              <code>{`// Initialize Plinto in your SaaS app
-import { PlintoAuth } from '@plinto/react'
+              <code>{`// Initialize Janua in your SaaS app
+import { JanuaAuth } from '@janua/react'
 
 function App() {
   return (
-    <PlintoAuth
+    <JanuaAuth
       tenantId="your-tenant-id"
       organizationId="customer-org-id"
       config={{
@@ -213,7 +213,7 @@ function App() {
       }}
     >
       <YourSaaSApp />
-    </PlintoAuth>
+    </JanuaAuth>
   )
 }`}</code>
             </pre>

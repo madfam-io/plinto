@@ -1,12 +1,12 @@
-# @plinto/monitoring
+# @janua/monitoring
 
-> **Comprehensive observability and monitoring** for the Plinto platform
+> **Comprehensive observability and monitoring** for the Janua platform
 
 **Version:** 0.1.0 · **Stack:** OpenTelemetry, Prometheus, Sentry · **Status:** Production Ready
 
 ## 📋 Overview
 
-@plinto/monitoring provides unified observability across all Plinto services with distributed tracing, metrics collection, error tracking, and performance monitoring. Built on OpenTelemetry standards with support for multiple backends including Prometheus, Grafana, Sentry, and Datadog.
+@janua/monitoring provides unified observability across all Janua services with distributed tracing, metrics collection, error tracking, and performance monitoring. Built on OpenTelemetry standards with support for multiple backends including Prometheus, Grafana, Sentry, and Datadog.
 
 ## 🚀 Quick Start
 
@@ -14,7 +14,7 @@
 
 ```bash
 # Install package
-yarn add @plinto/monitoring
+yarn add @janua/monitoring
 
 # Install optional backends
 yarn add @sentry/node @opentelemetry/api @opentelemetry/sdk-node
@@ -23,7 +23,7 @@ yarn add @sentry/node @opentelemetry/api @opentelemetry/sdk-node
 ### Basic Setup
 
 ```typescript
-import { Monitor } from '@plinto/monitoring';
+import { Monitor } from '@janua/monitoring';
 
 // Initialize monitoring
 const monitor = Monitor.init({
@@ -115,7 +115,7 @@ packages/monitoring/
 ┌─────────────────────────────────────┐
 │         Application Layer           │
 ├─────────────────────────────────────┤
-│       @plinto/monitoring            │
+│       @janua/monitoring            │
 │  ┌───────────────────────────────┐  │
 │  │   OpenTelemetry SDK           │  │
 │  │  ┌──────────────────────┐     │  │
@@ -135,7 +135,7 @@ packages/monitoring/
 ### Basic Tracing
 
 ```typescript
-import { Tracer } from '@plinto/monitoring';
+import { Tracer } from '@janua/monitoring';
 
 const tracer = new Tracer('auth-service');
 
@@ -163,7 +163,7 @@ try {
 ### Automatic Instrumentation
 
 ```typescript
-import { autoInstrument } from '@plinto/monitoring';
+import { autoInstrument } from '@janua/monitoring';
 
 // Auto-instrument HTTP
 autoInstrument.http({
@@ -185,7 +185,7 @@ autoInstrument.graphql(schema);
 ### Context Propagation
 
 ```typescript
-import { Context, propagation } from '@plinto/monitoring';
+import { Context, propagation } from '@janua/monitoring';
 
 // Extract context from incoming request
 const context = propagation.extract(req.headers);
@@ -205,7 +205,7 @@ await fetch(url, { headers });
 ### Custom Spans
 
 ```typescript
-import { trace } from '@plinto/monitoring';
+import { trace } from '@janua/monitoring';
 
 // Decorator for automatic tracing
 class UserService {
@@ -245,7 +245,7 @@ async function complexOperation() {
 ### Metric Types
 
 ```typescript
-import { Metrics } from '@plinto/monitoring';
+import { Metrics } from '@janua/monitoring';
 
 const metrics = new Metrics('auth-service');
 
@@ -302,13 +302,13 @@ metrics.increment('revenue.total', 99.99, {
 ### Prometheus Export
 
 ```typescript
-import { PrometheusExporter } from '@plinto/monitoring';
+import { PrometheusExporter } from '@janua/monitoring';
 
 // Configure Prometheus exporter
 const exporter = new PrometheusExporter({
   port: 9090,
   endpoint: '/metrics',
-  prefix: 'plinto_'
+  prefix: 'janua_'
 });
 
 // Start metrics server
@@ -322,7 +322,7 @@ await exporter.start();
 ### Sentry Integration
 
 ```typescript
-import { ErrorTracker } from '@plinto/monitoring';
+import { ErrorTracker } from '@janua/monitoring';
 
 const errorTracker = new ErrorTracker({
   dsn: process.env.SENTRY_DSN,
@@ -389,7 +389,7 @@ const transaction = errorTracker.startTransaction({
 ### Web Vitals
 
 ```typescript
-import { WebVitals } from '@plinto/monitoring';
+import { WebVitals } from '@janua/monitoring';
 
 const vitals = new WebVitals();
 
@@ -416,7 +416,7 @@ performance.measure('feature-duration', 'feature-start', 'feature-end');
 ### CPU/Memory Profiling
 
 ```typescript
-import { Profiler } from '@plinto/monitoring';
+import { Profiler } from '@janua/monitoring';
 
 const profiler = new Profiler();
 
@@ -443,7 +443,7 @@ profiler.startContinuousProfiling({
 ### Transaction Monitoring
 
 ```typescript
-import { Transaction } from '@plinto/monitoring';
+import { Transaction } from '@janua/monitoring';
 
 // Monitor API transactions
 app.use((req, res, next) => {
@@ -487,7 +487,7 @@ async function processJob(job: Job) {
 ### Logger Configuration
 
 ```typescript
-import { Logger } from '@plinto/monitoring';
+import { Logger } from '@janua/monitoring';
 
 const logger = new Logger({
   service: 'auth-api',
@@ -544,7 +544,7 @@ app.use((req, res, next) => {
 ### Alert Rules
 
 ```typescript
-import { AlertManager } from '@plinto/monitoring';
+import { AlertManager } from '@janua/monitoring';
 
 const alerts = new AlertManager();
 
@@ -642,7 +642,7 @@ monitor.onThreshold('memory.usage', 90, () => {
 ### Custom Dashboards
 
 ```typescript
-import { Dashboard } from '@plinto/monitoring/dashboards';
+import { Dashboard } from '@janua/monitoring/dashboards';
 
 const dashboard = new Dashboard({
   title: 'Business Metrics',
@@ -676,7 +676,7 @@ await dashboard.export('grafana');
 ### Mock Monitoring
 
 ```typescript
-import { MockMonitor } from '@plinto/monitoring/testing';
+import { MockMonitor } from '@janua/monitoring/testing';
 
 const monitor = new MockMonitor();
 
@@ -738,7 +738,7 @@ const monitor = Monitor.init({
 
 ```bash
 # Clone the repo
-git clone https://github.com/plinto/plinto.git
+git clone https://github.com/janua/janua.git
 
 # Navigate to monitoring package
 cd packages/monitoring
@@ -801,4 +801,4 @@ See [Monitoring Contributing Guide](../../docs/contributing/monitoring.md) for d
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

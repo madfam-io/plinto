@@ -4,7 +4,7 @@ Implement fine-grained permissions with hierarchical roles, custom permissions, 
 
 ## Overview
 
-Plinto's RBAC system provides flexible, scalable access control with hierarchical roles, custom permissions, and resource-level restrictions. The system supports both predefined roles and dynamic custom roles that can inherit from parent roles.
+Janua's RBAC system provides flexible, scalable access control with hierarchical roles, custom permissions, and resource-level restrictions. The system supports both predefined roles and dynamic custom roles that can inherit from parent roles.
 
 ## Core Concepts
 
@@ -32,7 +32,7 @@ Owner (all permissions)
 
 ### Resource Types
 
-Standard resource types in Plinto:
+Standard resource types in Janua:
 
 - `user` - User management
 - `organization` - Organization settings
@@ -47,10 +47,10 @@ Standard resource types in Plinto:
 ### 1. Check User Permissions
 
 ```typescript
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 // Check if user can perform action
-const canDeleteUser = await plinto.rbac.checkPermission({
+const canDeleteUser = await janua.rbac.checkPermission({
   userId: currentUser.id,
   resource: 'user',
   action: 'delete',
@@ -69,21 +69,21 @@ if (canDeleteUser) {
 
 ```typescript
 // Protect route with permission check
-@plinto.rbac.requirePermission('project', 'create')
+@janua.rbac.requirePermission('project', 'create')
 async function createProject(projectData) {
-  return await plinto.projects.create(projectData)
+  return await janua.projects.create(projectData)
 }
 
 // Protect with multiple permissions (OR logic)
-@plinto.rbac.requireAnyPermission(['user:delete', 'user:suspend'])
+@janua.rbac.requireAnyPermission(['user:delete', 'user:suspend'])
 async function removeUser(userId) {
-  return await plinto.users.delete(userId)
+  return await janua.users.delete(userId)
 }
 
 // Protect with role requirement
-@plinto.rbac.requireRole(['admin', 'manager'])
+@janua.rbac.requireRole(['admin', 'manager'])
 async function getAnalytics() {
-  return await plinto.analytics.getReports()
+  return await janua.analytics.getReports()
 }
 ```
 
@@ -91,7 +91,7 @@ async function getAnalytics() {
 
 ```typescript
 // Create custom role with specific permissions
-const role = await plinto.rbac.createRole({
+const role = await janua.rbac.createRole({
   organizationId: currentOrg.id,
   name: 'Project Manager',
   description: 'Manages projects and team members',
@@ -106,7 +106,7 @@ const role = await plinto.rbac.createRole({
 })
 
 // Assign role to user
-await plinto.rbac.assignRole({
+await janua.rbac.assignRole({
   userId: targetUser.id,
   roleId: role.id,
   organizationId: currentOrg.id
@@ -116,7 +116,7 @@ await plinto.rbac.assignRole({
 ### 4. Permission-Based UI
 
 ```jsx
-import { usePermissions } from '@plinto/react-sdk'
+import { usePermissions } from '@janua/react-sdk'
 
 function ProjectActions({ project }) {
   const { hasPermission } = usePermissions()
@@ -153,11 +153,11 @@ function ProjectActions({ project }) {
 
 ```javascript
 const express = require('express')
-const { Plinto } = require('@plinto/typescript-sdk')
+const { Janua } = require('@janua/typescript-sdk')
 
 const app = express()
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY,
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY,
   rbac: {
     defaultRoles: ['owner', 'admin', 'member', 'viewer'],
     permissionFormat: 'resource:action:scope',
@@ -177,7 +177,7 @@ const requirePermission = (resource, action, scope = null) => {
         return res.status(401).json({ error: 'Authentication required' })
       }
 
-      const hasPermission = await plinto.rbac.checkPermission({
+      const hasPermission = await janua.rbac.checkPermission({
         userId,
         organizationId,
         resource,
@@ -188,7 +188,7 @@ const requirePermission = (resource, action, scope = null) => {
 
       if (!hasPermission) {
         // Log permission denial for audit
-        await plinto.audit.log({
+        await janua.audit.log({
           event: 'permission.denied',
           userId,
           organizationId,
@@ -216,7 +216,7 @@ app.get('/api/roles', requirePermission('role', 'read'), async (req, res) => {
   try {
     const { organizationId } = req.session
 
-    const roles = await plinto.rbac.getRoles({
+    const roles = await janua.rbac.getRoles({
       organizationId,
       includePermissions: true,
       includeHierarchy: true
@@ -255,7 +255,7 @@ app.post('/api/roles', requirePermission('role', 'create'), async (req, res) => 
     }
 
     // Check if user has all permissions they're trying to grant
-    const userPermissions = await plinto.rbac.getUserPermissions({
+    const userPermissions = await janua.rbac.getUserPermissions({
       userId,
       organizationId
     })
@@ -271,7 +271,7 @@ app.post('/api/roles', requirePermission('role', 'create'), async (req, res) => 
       })
     }
 
-    const role = await plinto.rbac.createRole({
+    const role = await janua.rbac.createRole({
       organizationId,
       name,
       description,
@@ -281,7 +281,7 @@ app.post('/api/roles', requirePermission('role', 'create'), async (req, res) => 
     })
 
     // Log role creation
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'role.created',
       userId,
       organizationId,
@@ -307,7 +307,7 @@ app.put('/api/roles/:roleId', requirePermission('role', 'update'), async (req, r
     const { organizationId, userId } = req.session
 
     // Verify role belongs to organization
-    const existingRole = await plinto.rbac.getRole(roleId, organizationId)
+    const existingRole = await janua.rbac.getRole(roleId, organizationId)
     if (!existingRole) {
       return res.status(404).json({ error: 'Role not found' })
     }
@@ -319,7 +319,7 @@ app.put('/api/roles/:roleId', requirePermission('role', 'update'), async (req, r
 
     // Validate new permissions
     if (permissions) {
-      const userPermissions = await plinto.rbac.getUserPermissions({
+      const userPermissions = await janua.rbac.getUserPermissions({
         userId,
         organizationId
       })
@@ -336,7 +336,7 @@ app.put('/api/roles/:roleId', requirePermission('role', 'update'), async (req, r
       }
     }
 
-    const updatedRole = await plinto.rbac.updateRole(roleId, {
+    const updatedRole = await janua.rbac.updateRole(roleId, {
       name,
       description,
       permissions,
@@ -344,7 +344,7 @@ app.put('/api/roles/:roleId', requirePermission('role', 'update'), async (req, r
     })
 
     // Log role update
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'role.updated',
       userId,
       organizationId,
@@ -367,7 +367,7 @@ app.delete('/api/roles/:roleId', requirePermission('role', 'delete'), async (req
     const { reassignToRoleId } = req.body
     const { organizationId, userId } = req.session
 
-    const role = await plinto.rbac.getRole(roleId, organizationId)
+    const role = await janua.rbac.getRole(roleId, organizationId)
     if (!role) {
       return res.status(404).json({ error: 'Role not found' })
     }
@@ -377,7 +377,7 @@ app.delete('/api/roles/:roleId', requirePermission('role', 'delete'), async (req
     }
 
     // Check if role has members
-    const memberCount = await plinto.rbac.getRoleMemberCount(roleId)
+    const memberCount = await janua.rbac.getRoleMemberCount(roleId)
     if (memberCount > 0 && !reassignToRoleId) {
       return res.status(409).json({
         error: 'Role has members',
@@ -386,7 +386,7 @@ app.delete('/api/roles/:roleId', requirePermission('role', 'delete'), async (req
       })
     }
 
-    const result = await plinto.rbac.deleteRole({
+    const result = await janua.rbac.deleteRole({
       roleId,
       organizationId,
       reassignToRoleId,
@@ -394,7 +394,7 @@ app.delete('/api/roles/:roleId', requirePermission('role', 'delete'), async (req
     })
 
     // Log role deletion
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'role.deleted',
       userId,
       organizationId,
@@ -421,7 +421,7 @@ app.put('/api/users/:userId/role', requirePermission('user', 'update'), async (r
     const { organizationId, userId } = req.session
 
     // Verify target user is in organization
-    const membership = await plinto.organizations.getMembership({
+    const membership = await janua.organizations.getMembership({
       userId: targetUserId,
       organizationId
     })
@@ -431,13 +431,13 @@ app.put('/api/users/:userId/role', requirePermission('user', 'update'), async (r
     }
 
     // Verify role exists and is valid
-    const role = await plinto.rbac.getRole(roleId, organizationId)
+    const role = await janua.rbac.getRole(roleId, organizationId)
     if (!role) {
       return res.status(404).json({ error: 'Role not found' })
     }
 
     // Check if user can assign this role
-    const canAssignRole = await plinto.rbac.canAssignRole({
+    const canAssignRole = await janua.rbac.canAssignRole({
       assignerId: userId,
       roleId,
       targetUserId,
@@ -453,7 +453,7 @@ app.put('/api/users/:userId/role', requirePermission('user', 'update'), async (r
     const previousRole = membership.role
 
     // Assign new role
-    await plinto.rbac.assignRole({
+    await janua.rbac.assignRole({
       userId: targetUserId,
       roleId,
       organizationId,
@@ -461,7 +461,7 @@ app.put('/api/users/:userId/role', requirePermission('user', 'update'), async (r
     })
 
     // Log role assignment
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'role.assigned',
       userId,
       organizationId,
@@ -487,7 +487,7 @@ app.get('/api/users/:userId/permissions', requirePermission('user', 'read'), asy
     const { userId: targetUserId } = req.params
     const { organizationId } = req.session
 
-    const permissions = await plinto.rbac.getUserPermissions({
+    const permissions = await janua.rbac.getUserPermissions({
       userId: targetUserId,
       organizationId,
       includeInherited: true,
@@ -513,7 +513,7 @@ app.post('/api/permissions/check', async (req, res) => {
     const { resource, action, scope, resourceId } = req.body
     const { userId, organizationId } = req.session
 
-    const hasPermission = await plinto.rbac.checkPermission({
+    const hasPermission = await janua.rbac.checkPermission({
       userId,
       organizationId,
       resource,
@@ -541,7 +541,7 @@ app.post('/api/permissions/check-bulk', async (req, res) => {
 
     const results = await Promise.all(
       permissions.map(async (perm) => {
-        const hasPermission = await plinto.rbac.checkPermission({
+        const hasPermission = await janua.rbac.checkPermission({
           userId,
           organizationId,
           resource: perm.resource,
@@ -596,13 +596,13 @@ function hasPermissionToGrant(userPermissions, permissionToGrant) {
 ```python
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer
-from plinto import Plinto
+from janua import Janua
 from functools import wraps
 import os
 
 app = FastAPI()
-plinto = Plinto(
-    api_key=os.getenv("PLINTO_API_KEY"),
+janua = Janua(
+    api_key=os.getenv("JANUA_API_KEY"),
     rbac={
         "default_roles": ["owner", "admin", "member", "viewer"],
         "permission_format": "resource:action:scope",
@@ -627,7 +627,7 @@ def require_permission(resource: str, action: str, scope: str = None):
             organization_id = request.state.tenant.organization_id
             resource_id = kwargs.get('resource_id')
 
-            has_permission = await plinto.rbac.check_permission(
+            has_permission = await janua.rbac.check_permission(
                 user_id=user_id,
                 organization_id=organization_id,
                 resource=resource,
@@ -638,7 +638,7 @@ def require_permission(resource: str, action: str, scope: str = None):
 
             if not has_permission:
                 # Log permission denial
-                await plinto.audit.log(
+                await janua.audit.log(
                     event="permission.denied",
                     user_id=user_id,
                     organization_id=organization_id,
@@ -667,7 +667,7 @@ async def get_roles(request: Request):
     try:
         organization_id = request.state.tenant.organization_id
 
-        roles = await plinto.rbac.get_roles(
+        roles = await janua.rbac.get_roles(
             organization_id=organization_id,
             include_permissions=True,
             include_hierarchy=True
@@ -712,7 +712,7 @@ async def create_role(
                 )
 
         # Check if user has all permissions they're trying to grant
-        user_permissions = await plinto.rbac.get_user_permissions(
+        user_permissions = await janua.rbac.get_user_permissions(
             user_id=user_id,
             organization_id=organization_id
         )
@@ -728,7 +728,7 @@ async def create_role(
                 f"Cannot grant permissions you do not have: {unauthorized_perms}"
             )
 
-        role = await plinto.rbac.create_role(
+        role = await janua.rbac.create_role(
             organization_id=organization_id,
             name=name,
             description=description,
@@ -738,7 +738,7 @@ async def create_role(
         )
 
         # Log role creation
-        await plinto.audit.log(
+        await janua.audit.log(
             event="role.created",
             user_id=user_id,
             organization_id=organization_id,
@@ -767,7 +767,7 @@ async def update_role(
         organization_id = request.state.tenant.organization_id
 
         # Verify role belongs to organization
-        existing_role = await plinto.rbac.get_role(role_id, organization_id)
+        existing_role = await janua.rbac.get_role(role_id, organization_id)
         if not existing_role:
             raise HTTPException(404, "Role not found")
 
@@ -776,7 +776,7 @@ async def update_role(
 
         # Validate new permissions if provided
         if permissions:
-            user_permissions = await plinto.rbac.get_user_permissions(
+            user_permissions = await janua.rbac.get_user_permissions(
                 user_id=user_id,
                 organization_id=organization_id
             )
@@ -792,7 +792,7 @@ async def update_role(
                     f"Cannot grant permissions you do not have: {unauthorized_perms}"
                 )
 
-        updated_role = await plinto.rbac.update_role(
+        updated_role = await janua.rbac.update_role(
             role_id=role_id,
             name=name,
             description=description,
@@ -801,7 +801,7 @@ async def update_role(
         )
 
         # Log role update
-        await plinto.audit.log(
+        await janua.audit.log(
             event="role.updated",
             user_id=user_id,
             organization_id=organization_id,
@@ -827,7 +827,7 @@ async def delete_role(
         user_id = request.state.user.id
         organization_id = request.state.tenant.organization_id
 
-        role = await plinto.rbac.get_role(role_id, organization_id)
+        role = await janua.rbac.get_role(role_id, organization_id)
         if not role:
             raise HTTPException(404, "Role not found")
 
@@ -835,14 +835,14 @@ async def delete_role(
             raise HTTPException(403, "Cannot delete system roles")
 
         # Check if role has members
-        member_count = await plinto.rbac.get_role_member_count(role_id)
+        member_count = await janua.rbac.get_role_member_count(role_id)
         if member_count > 0 and not reassign_to_role_id:
             raise HTTPException(
                 409,
                 f"Role has {member_count} members. Provide reassign_to_role_id."
             )
 
-        result = await plinto.rbac.delete_role(
+        result = await janua.rbac.delete_role(
             role_id=role_id,
             organization_id=organization_id,
             reassign_to_role_id=reassign_to_role_id,
@@ -850,7 +850,7 @@ async def delete_role(
         )
 
         # Log role deletion
-        await plinto.audit.log(
+        await janua.audit.log(
             event="role.deleted",
             user_id=user_id,
             organization_id=organization_id,
@@ -878,7 +878,7 @@ async def assign_user_role(
         organization_id = request.state.tenant.organization_id
 
         # Verify target user is in organization
-        membership = await plinto.organizations.get_membership(
+        membership = await janua.organizations.get_membership(
             user_id=user_id,
             organization_id=organization_id
         )
@@ -887,12 +887,12 @@ async def assign_user_role(
             raise HTTPException(404, "User not found in organization")
 
         # Verify role exists
-        role = await plinto.rbac.get_role(role_id, organization_id)
+        role = await janua.rbac.get_role(role_id, organization_id)
         if not role:
             raise HTTPException(404, "Role not found")
 
         # Check if user can assign this role
-        can_assign = await plinto.rbac.can_assign_role(
+        can_assign = await janua.rbac.can_assign_role(
             assigner_id=assigner_id,
             role_id=role_id,
             target_user_id=user_id,
@@ -908,7 +908,7 @@ async def assign_user_role(
         previous_role = membership.role
 
         # Assign new role
-        await plinto.rbac.assign_role(
+        await janua.rbac.assign_role(
             user_id=user_id,
             role_id=role_id,
             organization_id=organization_id,
@@ -916,7 +916,7 @@ async def assign_user_role(
         )
 
         # Log role assignment
-        await plinto.audit.log(
+        await janua.audit.log(
             event="role.assigned",
             user_id=assigner_id,
             organization_id=organization_id,
@@ -970,12 +970,12 @@ def has_permission_to_grant(user_permissions: list, permission_to_grant: str) ->
 
 ```jsx
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { usePlinto } from '@plinto/react-sdk'
+import { useJanua } from '@janua/react-sdk'
 
 const PermissionsContext = createContext()
 
 export function PermissionsProvider({ children }) {
-  const { rbac, auth } = usePlinto()
+  const { rbac, auth } = useJanua()
   const [permissions, setPermissions] = useState([])
   const [roles, setRoles] = useState([])
   const [loading, setLoading] = useState(true)
@@ -1126,7 +1126,7 @@ export function RoleGate({ roles, fallback = null, children }) {
 
 // Role management component
 function RoleManager() {
-  const { rbac } = usePlinto()
+  const { rbac } = useJanua()
   const { hasPermission } = usePermissions()
   const [roles, setRoles] = useState([])
   const [loading, setLoading] = useState(true)
@@ -1410,18 +1410,18 @@ Create context-aware permissions:
 // Resource ownership permissions
 const resourceOwnerPermissions = {
   'project:delete:own': async (userId, resourceId) => {
-    const project = await plinto.projects.get(resourceId)
+    const project = await janua.projects.get(resourceId)
     return project.ownerId === userId
   },
 
   'user:update:team': async (userId, targetUserId) => {
-    const manager = await plinto.users.get(userId)
-    const subordinate = await plinto.users.get(targetUserId)
+    const manager = await janua.users.get(userId)
+    const subordinate = await janua.users.get(targetUserId)
     return manager.teamId === subordinate.teamId && manager.role === 'manager'
   },
 
   'billing:read:organization': async (userId, organizationId) => {
-    const membership = await plinto.organizations.getMembership({
+    const membership = await janua.organizations.getMembership({
       userId,
       organizationId
     })
@@ -1430,7 +1430,7 @@ const resourceOwnerPermissions = {
 }
 
 // Register dynamic permission handlers
-plinto.rbac.registerDynamicPermissions(resourceOwnerPermissions)
+janua.rbac.registerDynamicPermissions(resourceOwnerPermissions)
 ```
 
 ### Permission Inheritance
@@ -1470,7 +1470,7 @@ const roleHierarchy = {
   }
 }
 
-await plinto.rbac.configureHierarchy(roleHierarchy)
+await janua.rbac.configureHierarchy(roleHierarchy)
 ```
 
 ### Conditional Permissions
@@ -1514,7 +1514,7 @@ const conditionalPermissions = {
   }
 }
 
-await plinto.rbac.setConditionalPermissions(conditionalPermissions)
+await janua.rbac.setConditionalPermissions(conditionalPermissions)
 ```
 
 ## Testing
@@ -1526,23 +1526,23 @@ describe('RBAC System', () => {
   let testUser, testOrg, adminRole, memberRole
 
   beforeEach(async () => {
-    testOrg = await plinto.organizations.create({
+    testOrg = await janua.organizations.create({
       name: 'Test Organization'
     })
 
-    adminRole = await plinto.rbac.createRole({
+    adminRole = await janua.rbac.createRole({
       organizationId: testOrg.id,
       name: 'Admin',
       permissions: ['user:*', 'project:*']
     })
 
-    memberRole = await plinto.rbac.createRole({
+    memberRole = await janua.rbac.createRole({
       organizationId: testOrg.id,
       name: 'Member',
       permissions: ['project:read', 'user:read:own']
     })
 
-    testUser = await plinto.users.create({
+    testUser = await janua.users.create({
       email: 'test@example.com',
       organizationId: testOrg.id
     })
@@ -1550,14 +1550,14 @@ describe('RBAC System', () => {
 
   it('should grant permissions correctly', async () => {
     // Assign admin role
-    await plinto.rbac.assignRole({
+    await janua.rbac.assignRole({
       userId: testUser.id,
       roleId: adminRole.id,
       organizationId: testOrg.id
     })
 
     // Check permissions
-    const canDeleteUser = await plinto.rbac.checkPermission({
+    const canDeleteUser = await janua.rbac.checkPermission({
       userId: testUser.id,
       organizationId: testOrg.id,
       resource: 'user',
@@ -1569,14 +1569,14 @@ describe('RBAC System', () => {
 
   it('should deny permissions correctly', async () => {
     // Assign member role
-    await plinto.rbac.assignRole({
+    await janua.rbac.assignRole({
       userId: testUser.id,
       roleId: memberRole.id,
       organizationId: testOrg.id
     })
 
     // Check permissions
-    const canDeleteUser = await plinto.rbac.checkPermission({
+    const canDeleteUser = await janua.rbac.checkPermission({
       userId: testUser.id,
       organizationId: testOrg.id,
       resource: 'user',
@@ -1588,28 +1588,28 @@ describe('RBAC System', () => {
 
   it('should handle role inheritance', async () => {
     // Create child role that inherits from admin
-    const managerRole = await plinto.rbac.createRole({
+    const managerRole = await janua.rbac.createRole({
       organizationId: testOrg.id,
       name: 'Manager',
       permissions: ['team:manage'],
       parentRoleId: adminRole.id
     })
 
-    await plinto.rbac.assignRole({
+    await janua.rbac.assignRole({
       userId: testUser.id,
       roleId: managerRole.id,
       organizationId: testOrg.id
     })
 
     // Should have both own permissions and inherited permissions
-    const canManageTeam = await plinto.rbac.checkPermission({
+    const canManageTeam = await janua.rbac.checkPermission({
       userId: testUser.id,
       organizationId: testOrg.id,
       resource: 'team',
       action: 'manage'
     })
 
-    const canDeleteUser = await plinto.rbac.checkPermission({
+    const canDeleteUser = await janua.rbac.checkPermission({
       userId: testUser.id,
       organizationId: testOrg.id,
       resource: 'user',
@@ -1621,20 +1621,20 @@ describe('RBAC System', () => {
   })
 
   it('should handle wildcard permissions', async () => {
-    const superAdminRole = await plinto.rbac.createRole({
+    const superAdminRole = await janua.rbac.createRole({
       organizationId: testOrg.id,
       name: 'Super Admin',
       permissions: ['*:*']
     })
 
-    await plinto.rbac.assignRole({
+    await janua.rbac.assignRole({
       userId: testUser.id,
       roleId: superAdminRole.id,
       organizationId: testOrg.id
     })
 
     // Should have all permissions
-    const canDoAnything = await plinto.rbac.checkPermission({
+    const canDoAnything = await janua.rbac.checkPermission({
       userId: testUser.id,
       organizationId: testOrg.id,
       resource: 'anything',
@@ -1645,31 +1645,31 @@ describe('RBAC System', () => {
   })
 
   it('should enforce resource-specific permissions', async () => {
-    const ownProjectRole = await plinto.rbac.createRole({
+    const ownProjectRole = await janua.rbac.createRole({
       organizationId: testOrg.id,
       name: 'Project Owner',
       permissions: ['project:delete:own']
     })
 
-    await plinto.rbac.assignRole({
+    await janua.rbac.assignRole({
       userId: testUser.id,
       roleId: ownProjectRole.id,
       organizationId: testOrg.id
     })
 
     // Create projects
-    const ownProject = await plinto.projects.create({
+    const ownProject = await janua.projects.create({
       name: 'Own Project',
       ownerId: testUser.id
     })
 
-    const otherProject = await plinto.projects.create({
+    const otherProject = await janua.projects.create({
       name: 'Other Project',
       ownerId: 'other-user-id'
     })
 
     // Can delete own project
-    const canDeleteOwn = await plinto.rbac.checkPermission({
+    const canDeleteOwn = await janua.rbac.checkPermission({
       userId: testUser.id,
       organizationId: testOrg.id,
       resource: 'project',
@@ -1678,7 +1678,7 @@ describe('RBAC System', () => {
     })
 
     // Cannot delete other's project
-    const canDeleteOther = await plinto.rbac.checkPermission({
+    const canDeleteOther = await janua.rbac.checkPermission({
       userId: testUser.id,
       organizationId: testOrg.id,
       resource: 'project',
@@ -1700,8 +1700,8 @@ describe('RBAC System', () => {
 // Migration from simple role strings to RBAC
 const migrateToRBAC = async () => {
   // Get all users with old role system
-  const users = await plinto.tenancy.withSystemContext(() =>
-    plinto.users.list({ includeOldRoles: true })
+  const users = await janua.tenancy.withSystemContext(() =>
+    janua.users.list({ includeOldRoles: true })
   )
 
   const roleMapping = {
@@ -1728,7 +1728,7 @@ const migrateToRBAC = async () => {
 
   for (const [oldRole, config] of Object.entries(roleMapping)) {
     // Create new RBAC role
-    const newRole = await plinto.rbac.createRole({
+    const newRole = await janua.rbac.createRole({
       name: config.roleName,
       permissions: config.permissions,
       isSystemRole: true
@@ -1738,14 +1738,14 @@ const migrateToRBAC = async () => {
     const usersWithRole = users.filter(u => u.oldRole === oldRole)
 
     for (const user of usersWithRole) {
-      await plinto.rbac.assignRole({
+      await janua.rbac.assignRole({
         userId: user.id,
         roleId: newRole.id,
         organizationId: user.organizationId
       })
 
       // Remove old role field
-      await plinto.users.update(user.id, {
+      await janua.users.update(user.id, {
         oldRole: null,
         migratedToRBAC: true
       })

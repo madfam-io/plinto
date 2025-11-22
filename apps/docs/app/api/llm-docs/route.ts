@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server'
  * optimized for AI/LLM consumption with structured patterns.
  */
 
-const LLM_DOCS = `# PLINTO_API_DOCS_LLM_VERSION_1.0
+const LLM_DOCS = `# JANUA_API_DOCS_LLM_VERSION_1.0
 
 ## AUTHENTICATION_ENDPOINTS
 
@@ -510,8 +510,8 @@ EXAMPLE_RESPONSE: {"deliveries":[{"id":"del_456","event_type":"user.created","ti
 ## SDK_INITIALIZATION
 
 ### TypeScript/JavaScript
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY,
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY,
   environment: 'production', // or 'sandbox'
   organizationId: 'org_xyz789', // optional, for multi-tenant
   timeout: 30000, // 30 seconds
@@ -519,10 +519,10 @@ const plinto = new Plinto({
 })
 
 ### Python
-from plinto import Plinto
+from janua import Janua
 
-plinto = Plinto(
-    api_key=os.getenv('PLINTO_API_KEY'),
+janua = Janua(
+    api_key=os.getenv('JANUA_API_KEY'),
     environment='production',
     organization_id='org_xyz789',
     timeout=30,
@@ -530,12 +530,12 @@ plinto = Plinto(
 )
 
 ### Go
-import "github.com/plinto/plinto-go"
+import "github.com/janua/janua-go"
 
-client := plinto.NewClient(
-    plinto.WithAPIKey(os.Getenv("PLINTO_API_KEY")),
-    plinto.WithEnvironment("production"),
-    plinto.WithOrgID("org_xyz789"),
+client := janua.NewClient(
+    janua.WithAPIKey(os.Getenv("JANUA_API_KEY")),
+    janua.WithEnvironment("production"),
+    janua.WithOrgID("org_xyz789"),
 )
 
 ## BEST_PRACTICES
@@ -573,7 +573,7 @@ client := plinto.NewClient(
 5. Implement GDPR compliance
 6. Regular data validation
 
-END_PLINTO_API_DOCS_LLM_VERSION_1.0`
+END_JANUA_API_DOCS_LLM_VERSION_1.0`
 
 export async function GET() {
   return new NextResponse(LLM_DOCS, {

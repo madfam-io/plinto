@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { CodeExample } from '@/components/CodeExample'
 
 export const metadata: Metadata = {
-  title: 'Quickstart - Plinto Documentation',
-  description: 'Get started with Plinto in 5 minutes. Build your first authentication flow.',
+  title: 'Quickstart - Janua Documentation',
+  description: 'Get started with Janua in 5 minutes. Build your first authentication flow.',
 }
 
 export default function QuickstartPage() {
@@ -12,14 +12,14 @@ export default function QuickstartPage() {
       <h1>Quickstart Guide</h1>
       
       <p className="lead">
-        Get up and running with Plinto in 5 minutes. This guide will walk you through 
+        Get up and running with Janua in 5 minutes. This guide will walk you through 
         setting up authentication for a basic application.
       </p>
 
       <h2>Prerequisites</h2>
       <ul>
         <li>Node.js 18+ or Python 3.9+</li>
-        <li>PostgreSQL 14+ (or use managed Plinto cloud)</li>
+        <li>PostgreSQL 14+ (or use managed Janua cloud)</li>
         <li>Redis 6+ (optional, for session management)</li>
       </ul>
 
@@ -31,23 +31,23 @@ export default function QuickstartPage() {
       <CodeExample
         title="Install TypeScript SDK"
         language="bash"
-        code={`npm install @plinto/typescript-sdk
+        code={`npm install @janua/typescript-sdk
 # or
-yarn add @plinto/typescript-sdk
+yarn add @janua/typescript-sdk
 # or
-pnpm add @plinto/typescript-sdk`}
+pnpm add @janua/typescript-sdk`}
       />
 
       <CodeExample
         title="Install React SDK"
         language="bash"
-        code={`npm install @plinto/react-sdk`}
+        code={`npm install @janua/react-sdk`}
       />
 
       <CodeExample
         title="Install Python SDK"
         language="bash"
-        code={`pip install plinto-sdk`}
+        code={`pip install janua-sdk`}
       />
 
       <h2>Step 2: Configure Environment Variables</h2>
@@ -58,39 +58,39 @@ pnpm add @plinto/typescript-sdk`}
       <CodeExample
         title=".env"
         language="bash"
-        code={`PLINTO_API_URL=http://localhost:8000
-PLINTO_API_KEY=your-api-key-here
+        code={`JANUA_API_URL=http://localhost:8000
+JANUA_API_KEY=your-api-key-here
 
-# Or use managed Plinto cloud:
-# PLINTO_API_URL=https://api.plinto.dev
-# PLINTO_API_KEY=your-cloud-api-key`}
+# Or use managed Janua cloud:
+# JANUA_API_URL=https://api.janua.dev
+# JANUA_API_KEY=your-cloud-api-key`}
       />
 
       <h2>Step 3: Initialize the Client</h2>
       <p>
-        Create a Plinto client instance in your application:
+        Create a Janua client instance in your application:
       </p>
 
       <CodeExample
         title="Initialize Client (TypeScript)"
         language="typescript"
-        code={`import { PlintoClient } from '@plinto/typescript-sdk';
+        code={`import { JanuaClient } from '@janua/typescript-sdk';
 
-export const plinto = new PlintoClient({
-  baseURL: process.env.PLINTO_API_URL!,
-  apiKey: process.env.PLINTO_API_KEY!,
+export const janua = new JanuaClient({
+  baseURL: process.env.JANUA_API_URL!,
+  apiKey: process.env.JANUA_API_KEY!,
 });`}
       />
 
       <CodeExample
         title="Initialize Client (Python)"
         language="python"
-        code={`from plinto_sdk import PlintoClient
+        code={`from janua_sdk import JanuaClient
 import os
 
-plinto = PlintoClient(
-    api_url=os.getenv('PLINTO_API_URL'),
-    api_key=os.getenv('PLINTO_API_KEY')
+janua = JanuaClient(
+    api_url=os.getenv('JANUA_API_URL'),
+    api_key=os.getenv('JANUA_API_KEY')
 )`}
       />
 
@@ -103,7 +103,7 @@ plinto = PlintoClient(
         title="Signup Implementation (TypeScript)"
         language="typescript"
         code={`import express from 'express';
-import { plinto } from './plinto-client';
+import { janua } from './janua-client';
 
 const app = express();
 app.use(express.json());
@@ -113,7 +113,7 @@ app.post('/api/signup', async (req, res) => {
     const { email, password, name } = req.body;
     
     // Sign up user
-    const result = await plinto.auth.signUp({
+    const result = await janua.auth.signUp({
       email,
       password,
       name
@@ -155,7 +155,7 @@ app.post('/api/signup', async (req, res) => {
     const { email, password, mfa_code } = req.body;
     
     // Sign in user
-    const result = await plinto.auth.signIn({
+    const result = await janua.auth.signIn({
       email,
       password,
       mfa_code // Optional, only if MFA is enabled
@@ -203,7 +203,7 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
     
     // Get current user (verifies token)
-    const user = await plinto.auth.getCurrentUser();
+    const user = await janua.auth.getCurrentUser();
     
     // Attach user to request
     req.user = user;
@@ -212,7 +212,7 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
     // Try to refresh token
     try {
       const refreshToken = req.cookies.refresh_token;
-      const result = await plinto.auth.refreshToken(refreshToken);
+      const result = await janua.auth.refreshToken(refreshToken);
       
       // Update tokens
       res.cookie('access_token', result.access_token, {
@@ -223,7 +223,7 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
       });
       
       // Get current user (verifies new token)
-      const user = await plinto.auth.getCurrentUser();
+      const user = await janua.auth.getCurrentUser();
       req.user = user;
       next();
     } catch (refreshError) {
@@ -251,7 +251,7 @@ app.get('/api/profile', requireAuth, (req, res) => {
     const accessToken = req.cookies.access_token;
     
     // Enable MFA for user
-    const mfaSetup = await plinto.auth.enableMFA('totp', {
+    const mfaSetup = await janua.auth.enableMFA('totp', {
       headers: { Authorization: \`Bearer \${accessToken}\` }
     });
     
@@ -272,7 +272,7 @@ app.post('/api/mfa/verify', requireAuth, async (req, res) => {
     const accessToken = req.cookies.access_token;
     
     // Verify MFA code
-    const result = await plinto.auth.verifyMFA({
+    const result = await janua.auth.verifyMFA({
       code,
       headers: { Authorization: \`Bearer \${accessToken}\` }
     });
@@ -294,22 +294,22 @@ app.post('/api/mfa/verify', requireAuth, async (req, res) => {
         language="typescript"
         code={`import express from 'express';
 import cookieParser from 'cookie-parser';
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// Initialize Plinto client
-const plinto = new PlintoClient({
-  baseURL: process.env.PLINTO_API_URL!,
-  apiKey: process.env.PLINTO_API_KEY!,
+// Initialize Janua client
+const janua = new JanuaClient({
+  baseURL: process.env.JANUA_API_URL!,
+  apiKey: process.env.JANUA_API_KEY!,
 });
 
 // Signup
 app.post('/api/signup', async (req, res) => {
   const { email, password, name } = req.body;
-  const result = await plinto.auth.signUp({ email, password, name });
+  const result = await janua.auth.signUp({ email, password, name });
   
   res.cookie('access_token', result.tokens.access_token, {
     httpOnly: true,
@@ -324,7 +324,7 @@ app.post('/api/signup', async (req, res) => {
 // Login
 app.post('/api/login', async (req, res) => {
   const { email, password, mfa_code } = req.body;
-  const result = await plinto.auth.signIn({ email, password, mfa_code });
+  const result = await janua.auth.signIn({ email, password, mfa_code });
   
   res.cookie('access_token', result.tokens.access_token, {
     httpOnly: true,
@@ -342,7 +342,7 @@ async function requireAuth(req, res, next) {
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
   
   try {
-    const user = await plinto.auth.getCurrentUser();
+    const user = await janua.auth.getCurrentUser();
     req.user = user;
     next();
   } catch (error) {
@@ -379,8 +379,8 @@ app.listen(3000, () => {
       <div className="not-prose bg-primary-50 border-l-4 border-primary-600 p-6 my-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Need Help?</h3>
         <p className="text-gray-700">
-          Join our <a href="https://github.com/madfam-io/plinto/discussions" className="text-primary-600 hover:text-primary-700">GitHub Discussions</a> for 
-          community support or check out our <a href="https://github.com/madfam-io/plinto/issues" className="text-primary-600 hover:text-primary-700">GitHub Issues</a> to 
+          Join our <a href="https://github.com/madfam-io/janua/discussions" className="text-primary-600 hover:text-primary-700">GitHub Discussions</a> for 
+          community support or check out our <a href="https://github.com/madfam-io/janua/issues" className="text-primary-600 hover:text-primary-700">GitHub Issues</a> to 
           report bugs.
         </p>
       </div>

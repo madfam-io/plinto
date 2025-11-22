@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **@plinto/flutter** SDK provides a comprehensive Flutter package for integrating Plinto authentication across iOS, Android, and Web platforms. Built with native performance in mind, it offers biometric authentication, secure storage, real-time updates, and pre-built widgets following Material Design and Cupertino patterns.
+The **@janua/flutter** SDK provides a comprehensive Flutter package for integrating Janua authentication across iOS, Android, and Web platforms. Built with native performance in mind, it offers biometric authentication, secure storage, real-time updates, and pre-built widgets following Material Design and Cupertino patterns.
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ The **@plinto/flutter** SDK provides a comprehensive Flutter package for integra
 ```yaml
 # pubspec.yaml
 dependencies:
-  plinto_flutter: ^1.0.0
+  janua_flutter: ^1.0.0
 
   # Required for biometric authentication
   local_auth: ^2.1.6
@@ -50,15 +50,15 @@ flutter pub get
 ```dart
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:plinto_flutter/plinto_flutter.dart';
+import 'package:janua_flutter/janua_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Plinto SDK
-  final plinto = await Plinto.initialize(
-    config: PlintoConfig(
-      baseUrl: 'https://api.plinto.dev',
+  // Initialize Janua SDK
+  final janua = await Janua.initialize(
+    config: JanuaConfig(
+      baseUrl: 'https://api.janua.dev',
       apiKey: 'your-api-key',
       organizationSlug: 'your-org-slug',
       environment: Environment.production,
@@ -68,20 +68,20 @@ void main() async {
     ),
   );
 
-  runApp(MyApp(plinto: plinto));
+  runApp(MyApp(janua: janua));
 }
 
 class MyApp extends StatelessWidget {
-  final Plinto plinto;
+  final Janua janua;
 
-  const MyApp({Key? key, required this.plinto}) : super(key: key);
+  const MyApp({Key? key, required this.janua}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PlintoProvider(
-      plinto: plinto,
+    return JanuaProvider(
+      janua: janua,
       child: MaterialApp(
-        title: 'Plinto Flutter Demo',
+        title: 'Janua Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           useMaterial3: true,
@@ -96,17 +96,17 @@ class MyApp extends StatelessWidget {
 ### Configuration Options
 
 ```dart
-// config/plinto_config.dart
-class PlintoConfigurationManager {
-  static PlintoConfig getConfig() {
+// config/janua_config.dart
+class JanuaConfigurationManager {
+  static JanuaConfig getConfig() {
     const environment = String.fromEnvironment('ENVIRONMENT', defaultValue: 'development');
 
     switch (environment) {
       case 'production':
-        return PlintoConfig(
-          baseUrl: 'https://api.plinto.dev',
-          apiKey: const String.fromEnvironment('PLINTO_API_KEY'),
-          organizationSlug: const String.fromEnvironment('PLINTO_ORG_SLUG'),
+        return JanuaConfig(
+          baseUrl: 'https://api.janua.dev',
+          apiKey: const String.fromEnvironment('JANUA_API_KEY'),
+          organizationSlug: const String.fromEnvironment('JANUA_ORG_SLUG'),
           environment: Environment.production,
           enableBiometrics: true,
           enableSecureStorage: true,
@@ -117,9 +117,9 @@ class PlintoConfigurationManager {
         );
 
       case 'staging':
-        return PlintoConfig(
-          baseUrl: 'https://staging-api.plinto.dev',
-          apiKey: const String.fromEnvironment('PLINTO_STAGING_API_KEY'),
+        return JanuaConfig(
+          baseUrl: 'https://staging-api.janua.dev',
+          apiKey: const String.fromEnvironment('JANUA_STAGING_API_KEY'),
           organizationSlug: 'staging-org',
           environment: Environment.staging,
           enableBiometrics: true,
@@ -129,7 +129,7 @@ class PlintoConfigurationManager {
         );
 
       default: // development
-        return PlintoConfig(
+        return JanuaConfig(
           baseUrl: 'http://localhost:8000',
           apiKey: 'dev-api-key',
           organizationSlug: 'dev-org',
@@ -169,7 +169,7 @@ class PlintoConfigurationManager {
 <array>
   <dict>
     <key>CFBundleURLName</key>
-    <string>plinto.auth</string>
+    <string>janua.auth</string>
     <key>CFBundleURLSchemes</key>
     <array>
       <string>your-app-scheme</string>
@@ -235,7 +235,7 @@ import LocalAuthentication
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:label="Plinto Flutter App"
+        android:label="Janua Flutter App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
@@ -317,25 +317,25 @@ class MainActivity: FlutterActivity() {
   <base href="$FLUTTER_BASE_HREF">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Plinto Flutter Web App">
+  <meta name="description" content="Janua Flutter Web App">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Plinto App">
+  <meta name="apple-mobile-web-app-title" content="Janua App">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png"/>
-  <title>Plinto App</title>
+  <title>Janua App</title>
   <link rel="manifest" href="manifest.json">
 
-  <!-- Plinto Web SDK -->
-  <script src="https://cdn.plinto.dev/js/plinto-web.min.js"></script>
+  <!-- Janua Web SDK -->
+  <script src="https://cdn.janua.dev/js/janua-web.min.js"></script>
 </head>
 <body>
   <script>
     window.addEventListener('load', function(ev) {
-      // Initialize Plinto Web SDK
-      window.PlintoWeb = new PlintoWebSDK({
+      // Initialize Janua Web SDK
+      window.JanuaWeb = new JanuaWebSDK({
         apiKey: 'your-web-api-key',
-        baseUrl: 'https://api.plinto.dev'
+        baseUrl: 'https://api.janua.dev'
       });
 
       // Download main.dart.js
@@ -360,18 +360,18 @@ class MainActivity: FlutterActivity() {
 
 ```dart
 // services/auth_service.dart
-import 'package:plinto_flutter/plinto_flutter.dart';
+import 'package:janua_flutter/janua_flutter.dart';
 
 class AuthService {
-  final Plinto _plinto;
+  final Janua _janua;
 
-  AuthService(this._plinto);
+  AuthService(this._janua);
 
   // Stream of authentication state changes
-  Stream<User?> get authStateChanges => _plinto.authStateChanges;
+  Stream<User?> get authStateChanges => _janua.authStateChanges;
 
   // Current user
-  User? get currentUser => _plinto.currentUser;
+  User? get currentUser => _janua.currentUser;
 
   // Sign up with email and password
   Future<AuthResult> signUp({
@@ -382,7 +382,7 @@ class AuthService {
     Map<String, dynamic>? metadata,
   }) async {
     try {
-      final result = await _plinto.signUp(
+      final result = await _janua.signUp(
         email: email,
         password: password,
         name: firstName != null && lastName != null
@@ -392,11 +392,11 @@ class AuthService {
       );
 
       // Send email verification
-      await _plinto.sendEmailVerification();
+      await _janua.sendEmailVerification();
 
       return result;
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
@@ -407,21 +407,21 @@ class AuthService {
     bool rememberMe = false,
   }) async {
     try {
-      final result = await _plinto.signIn(
+      final result = await _janua.signIn(
         email: email,
         password: password,
       );
 
       if (rememberMe) {
-        await _plinto.secureStorage.write(
+        await _janua.secureStorage.write(
           key: 'remember_user',
           value: email,
         );
       }
 
       return result;
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
@@ -431,18 +431,18 @@ class AuthService {
   }) async {
     try {
       // Check if biometrics are available
-      if (!await _plinto.isBiometricAvailable()) {
+      if (!await _janua.isBiometricAvailable()) {
         throw const AuthServiceException(
           code: 'biometric-unavailable',
           message: 'Biometric authentication is not available',
         );
       }
 
-      return await _plinto.signInWithBiometrics(
+      return await _janua.signInWithBiometrics(
         localizedReason: localizedReason ?? 'Authenticate to access your account',
       );
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
@@ -452,12 +452,12 @@ class AuthService {
     List<String>? scopes,
   }) async {
     try {
-      return await _plinto.signInWithProvider(
+      return await _janua.signInWithProvider(
         provider,
         scopes: scopes,
       );
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
@@ -467,30 +467,30 @@ class AuthService {
     String? redirectUrl,
   }) async {
     try {
-      await _plinto.sendMagicLink(
+      await _janua.sendMagicLink(
         email: email,
         redirectUrl: redirectUrl,
       );
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
   // Verify magic link
   Future<AuthResult> verifyMagicLink(String token) async {
     try {
-      return await _plinto.verifyMagicLink(token);
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+      return await _janua.verifyMagicLink(token);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
   // Password reset
   Future<void> sendPasswordReset(String email) async {
     try {
-      await _plinto.sendPasswordReset(email);
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+      await _janua.sendPasswordReset(email);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
@@ -500,24 +500,24 @@ class AuthService {
     required String newPassword,
   }) async {
     try {
-      await _plinto.changePassword(
+      await _janua.changePassword(
         currentPassword: currentPassword,
         newPassword: newPassword,
       );
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
   // Sign out
   Future<void> signOut() async {
     try {
-      await _plinto.signOut();
+      await _janua.signOut();
 
       // Clear remember me data
-      await _plinto.secureStorage.delete(key: 'remember_user');
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+      await _janua.secureStorage.delete(key: 'remember_user');
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
@@ -528,22 +528,22 @@ class AuthService {
     Map<String, dynamic>? metadata,
   }) async {
     try {
-      return await _plinto.updateProfile(
+      return await _janua.updateProfile(
         name: name,
         photoUrl: photoUrl,
         metadata: metadata,
       );
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 
   // Upload avatar
   Future<String> uploadAvatar(File imageFile) async {
     try {
-      return await _plinto.uploadAvatar(imageFile);
-    } on PlintoException catch (e) {
-      throw AuthServiceException.fromPlintoException(e);
+      return await _janua.uploadAvatar(imageFile);
+    } on JanuaException catch (e) {
+      throw AuthServiceException.fromJanuaException(e);
     }
   }
 }
@@ -558,7 +558,7 @@ class AuthServiceException implements Exception {
     required this.message,
   });
 
-  factory AuthServiceException.fromPlintoException(PlintoException e) {
+  factory AuthServiceException.fromJanuaException(JanuaException e) {
     return AuthServiceException(
       code: e.code,
       message: e.message,
@@ -577,13 +577,13 @@ class AuthServiceException implements Exception {
 ```dart
 // services/biometric_service.dart
 import 'package:local_auth/local_auth.dart';
-import 'package:plinto_flutter/plinto_flutter.dart';
+import 'package:janua_flutter/janua_flutter.dart';
 
 class BiometricService {
-  final Plinto _plinto;
+  final Janua _janua;
   final LocalAuthentication _localAuth = LocalAuthentication();
 
-  BiometricService(this._plinto);
+  BiometricService(this._janua);
 
   // Check if biometric authentication is available
   Future<bool> isBiometricAvailable() async {
@@ -612,7 +612,7 @@ class BiometricService {
   }) async {
     // First, verify current password if required
     if (password != null) {
-      final user = _plinto.currentUser;
+      final user = _janua.currentUser;
       if (user?.email == null) {
         throw const BiometricServiceException(
           code: 'no-user',
@@ -622,7 +622,7 @@ class BiometricService {
 
       // Verify password by attempting sign in
       try {
-        await _plinto.signIn(
+        await _janua.signIn(
           email: user!.email!,
           password: password,
         );
@@ -650,8 +650,8 @@ class BiometricService {
       );
     }
 
-    // Enable biometric authentication in Plinto
-    await _plinto.enableBiometricAuth(localizedReason: localizedReason);
+    // Enable biometric authentication in Janua
+    await _janua.enableBiometricAuth(localizedReason: localizedReason);
   }
 
   // Disable biometric authentication
@@ -660,16 +660,16 @@ class BiometricService {
   }) async {
     if (password != null) {
       // Verify password before disabling
-      final user = _plinto.currentUser;
+      final user = _janua.currentUser;
       if (user?.email != null) {
-        await _plinto.signIn(
+        await _janua.signIn(
           email: user!.email!,
           password: password,
         );
       }
     }
 
-    await _plinto.disableBiometricAuth();
+    await _janua.disableBiometricAuth();
   }
 
   // Authenticate with biometrics
@@ -693,7 +693,7 @@ class BiometricService {
 
   // Check if biometric authentication is enabled for current user
   Future<bool> isBiometricEnabled() async {
-    return await _plinto.isBiometricEnabled();
+    return await _janua.isBiometricEnabled();
   }
 
   // Get biometric capability description
@@ -946,7 +946,7 @@ class _BiometricAuthWidgetState extends State<BiometricAuthWidget>
 class AuthFlowWidget extends StatefulWidget {
   final Function(User)? onAuthSuccess;
   final Function(String)? onAuthError;
-  final PlintoTheme? theme;
+  final JanuaTheme? theme;
   final bool enableBiometrics;
   final bool enableSocialLogin;
   final List<SocialProvider> socialProviders;
@@ -993,9 +993,9 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
 
   Future<void> _checkRememberedUser() async {
     final authService = context.read<AuthService>();
-    final plinto = context.read<Plinto>();
+    final janua = context.read<Janua>();
 
-    final rememberedEmail = await plinto.secureStorage.read(key: 'remember_user');
+    final rememberedEmail = await janua.secureStorage.read(key: 'remember_user');
     if (rememberedEmail != null) {
       _emailController.text = rememberedEmail;
     }
@@ -1003,7 +1003,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
 
   @override
   Widget build(BuildContext context) {
-    final theme = widget.theme ?? PlintoTheme.defaultTheme();
+    final theme = widget.theme ?? JanuaTheme.defaultTheme();
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -1088,7 +1088,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
     );
   }
 
-  Widget _buildHeader(PlintoTheme theme) {
+  Widget _buildHeader(JanuaTheme theme) {
     return Column(
       children: [
         Container(
@@ -1106,7 +1106,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
         ),
         const SizedBox(height: 16),
         Text(
-          'Welcome to Plinto',
+          'Welcome to Janua',
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -1125,7 +1125,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
     );
   }
 
-  Widget _buildTabBar(PlintoTheme theme) {
+  Widget _buildTabBar(JanuaTheme theme) {
     return Container(
       decoration: BoxDecoration(
         color: theme.surfaceColor,
@@ -1147,7 +1147,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
     );
   }
 
-  Widget _buildLoginForm(PlintoTheme theme) {
+  Widget _buildLoginForm(JanuaTheme theme) {
     return Form(
       key: _loginFormKey,
       child: Column(
@@ -1166,7 +1166,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
     );
   }
 
-  Widget _buildSignUpForm(PlintoTheme theme) {
+  Widget _buildSignUpForm(JanuaTheme theme) {
     return Form(
       key: _signUpFormKey,
       child: Column(
@@ -1195,7 +1195,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
     );
   }
 
-  Widget _buildEmailField(PlintoTheme theme) {
+  Widget _buildEmailField(JanuaTheme theme) {
     return TextFormField(
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
@@ -1218,7 +1218,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
     );
   }
 
-  Widget _buildPasswordField(PlintoTheme theme) {
+  Widget _buildPasswordField(JanuaTheme theme) {
     return TextFormField(
       controller: _passwordController,
       obscureText: true,
@@ -1243,7 +1243,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
 
   // Additional form field builders...
 
-  Widget _buildLoginButton(PlintoTheme theme) {
+  Widget _buildLoginButton(JanuaTheme theme) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -1326,7 +1326,7 @@ class _AuthFlowWidgetState extends State<AuthFlowWidget>
 }
 
 // Theme configuration
-class PlintoTheme {
+class JanuaTheme {
   final Color primaryColor;
   final Color backgroundColor;
   final Color surfaceColor;
@@ -1335,7 +1335,7 @@ class PlintoTheme {
   final Color errorColor;
   final Gradient? backgroundGradient;
 
-  const PlintoTheme({
+  const JanuaTheme({
     required this.primaryColor,
     required this.backgroundColor,
     required this.surfaceColor,
@@ -1345,8 +1345,8 @@ class PlintoTheme {
     this.backgroundGradient,
   });
 
-  factory PlintoTheme.defaultTheme() {
-    return PlintoTheme(
+  factory JanuaTheme.defaultTheme() {
+    return JanuaTheme(
       primaryColor: const Color(0xFF2196F3),
       backgroundColor: Colors.white,
       surfaceColor: const Color(0xFFF5F5F5),
@@ -1649,28 +1649,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final plinto = await Plinto.initialize(
-    config: PlintoConfigurationManager.getConfig(),
+  final janua = await Janua.initialize(
+    config: JanuaConfigurationManager.getConfig(),
   );
 
-  runApp(MyApp(plinto: plinto));
+  runApp(MyApp(janua: janua));
 }
 
 class MyApp extends StatelessWidget {
-  final Plinto plinto;
+  final Janua janua;
 
-  const MyApp({Key? key, required this.plinto}) : super(key: key);
+  const MyApp({Key? key, required this.janua}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<Plinto>.value(value: plinto),
+        RepositoryProvider<Janua>.value(value: janua),
         RepositoryProvider<AuthService>(
-          create: (context) => AuthService(context.read<Plinto>()),
+          create: (context) => AuthService(context.read<Janua>()),
         ),
         RepositoryProvider<BiometricService>(
-          create: (context) => BiometricService(context.read<Plinto>()),
+          create: (context) => BiometricService(context.read<Janua>()),
         ),
       ],
       child: MultiBlocProvider(
@@ -1683,7 +1683,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          title: 'Plinto Flutter Demo',
+          title: 'Janua Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
             useMaterial3: true,
@@ -1752,9 +1752,9 @@ class AuthWrapper extends StatelessWidget {
 ```dart
 // services/secure_storage_service.dart
 class SecureStorageService {
-  final Plinto _plinto;
+  final Janua _janua;
 
-  SecureStorageService(this._plinto);
+  SecureStorageService(this._janua);
 
   // Store sensitive data
   Future<void> storeSecurely({
@@ -1763,22 +1763,22 @@ class SecureStorageService {
     Map<String, String>? metadata,
   }) async {
     try {
-      await _plinto.secureStorage.write(
+      await _janua.secureStorage.write(
         key: key,
         value: value,
         aOptions: const AndroidOptions(
           encryptedSharedPreferences: true,
-          sharedPreferencesName: 'plinto_secure_prefs',
-          preferencesKeyPrefix: 'plinto_',
+          sharedPreferencesName: 'janua_secure_prefs',
+          preferencesKeyPrefix: 'janua_',
         ),
         iOptions: const IOSOptions(
-          groupId: 'group.com.yourcompany.yourapp.plinto',
-          accountName: 'plinto_account',
+          groupId: 'group.com.yourcompany.yourapp.janua',
+          accountName: 'janua_account',
           accessibility: IOSAccessibility.first_unlock_this_device,
         ),
         webOptions: const WebOptions(
-          dbName: 'plinto_secure_db',
-          publicKey: 'plinto_public_key',
+          dbName: 'janua_secure_db',
+          publicKey: 'janua_public_key',
         ),
       );
 
@@ -1796,20 +1796,20 @@ class SecureStorageService {
   // Retrieve sensitive data
   Future<String?> retrieveSecurely(String key) async {
     try {
-      return await _plinto.secureStorage.read(
+      return await _janua.secureStorage.read(
         key: key,
         aOptions: const AndroidOptions(
           encryptedSharedPreferences: true,
-          sharedPreferencesName: 'plinto_secure_prefs',
-          preferencesKeyPrefix: 'plinto_',
+          sharedPreferencesName: 'janua_secure_prefs',
+          preferencesKeyPrefix: 'janua_',
         ),
         iOptions: const IOSOptions(
-          groupId: 'group.com.yourcompany.yourapp.plinto',
-          accountName: 'plinto_account',
+          groupId: 'group.com.yourcompany.yourapp.janua',
+          accountName: 'janua_account',
         ),
         webOptions: const WebOptions(
-          dbName: 'plinto_secure_db',
-          publicKey: 'plinto_public_key',
+          dbName: 'janua_secure_db',
+          publicKey: 'janua_public_key',
         ),
       );
     } catch (e) {
@@ -1900,7 +1900,7 @@ class SecureStorageService {
   // Check if data exists
   Future<bool> containsKey(String key) async {
     try {
-      return await _plinto.secureStorage.containsKey(key: key);
+      return await _janua.secureStorage.containsKey(key: key);
     } catch (e) {
       return false;
     }
@@ -1909,7 +1909,7 @@ class SecureStorageService {
   // Delete specific data
   Future<void> deleteSecurely(String key) async {
     try {
-      await _plinto.secureStorage.delete(key: key);
+      await _janua.secureStorage.delete(key: key);
       await _deleteMetadata(key);
     } catch (e) {
       throw SecureStorageException(
@@ -1921,7 +1921,7 @@ class SecureStorageService {
   // Clear all secure storage
   Future<void> clearAllSecureData() async {
     try {
-      await _plinto.secureStorage.deleteAll();
+      await _janua.secureStorage.deleteAll();
     } catch (e) {
       throw SecureStorageException(
         message: 'Failed to clear secure storage: $e',
@@ -1932,7 +1932,7 @@ class SecureStorageService {
   // Get all keys
   Future<Set<String>> getAllKeys() async {
     try {
-      return await _plinto.secureStorage.readAll().then(
+      return await _janua.secureStorage.readAll().then(
         (data) => data.keys.toSet(),
       );
     } catch (e) {
@@ -1943,7 +1943,7 @@ class SecureStorageService {
   // Private method to store metadata
   Future<void> _storeMetadata(String key, Map<String, String> metadata) async {
     final metadataKey = '${key}_metadata';
-    await _plinto.secureStorage.write(
+    await _janua.secureStorage.write(
       key: metadataKey,
       value: jsonEncode(metadata),
     );
@@ -1953,7 +1953,7 @@ class SecureStorageService {
   Future<void> _deleteMetadata(String key) async {
     final metadataKey = '${key}_metadata';
     try {
-      await _plinto.secureStorage.delete(key: metadataKey);
+      await _janua.secureStorage.delete(key: metadataKey);
     } catch (e) {
       // Ignore metadata deletion errors
     }
@@ -2018,19 +2018,19 @@ class SecureStorageException implements Exception {
 ```dart
 // services/websocket_service.dart
 class WebSocketService {
-  final Plinto _plinto;
+  final Janua _janua;
   WebSocketChannel? _channel;
   final Map<String, List<Function(dynamic)>> _eventListeners = {};
   Timer? _heartbeatTimer;
   bool _isConnected = false;
 
-  WebSocketService(this._plinto);
+  WebSocketService(this._janua);
 
   // Connect to WebSocket
   Future<void> connect() async {
     try {
-      final wsUrl = await _plinto.getWebSocketUrl();
-      final accessToken = await _plinto.getAccessToken();
+      final wsUrl = await _janua.getWebSocketUrl();
+      final accessToken = await _janua.getAccessToken();
 
       _channel = WebSocketChannel.connect(
         Uri.parse('$wsUrl?token=$accessToken'),
@@ -2097,34 +2097,34 @@ class WebSocketService {
   // Listen to user events
   void listenToUserEvents() {
     on('user.updated', (data) {
-      _plinto.handleUserUpdate(data);
+      _janua.handleUserUpdate(data);
     });
 
     on('user.session.created', (data) {
-      _plinto.handleNewSession(data);
+      _janua.handleNewSession(data);
     });
 
     on('user.session.revoked', (data) {
-      _plinto.handleRevokedSession(data);
+      _janua.handleRevokedSession(data);
     });
 
     on('security.alert', (data) {
-      _plinto.handleSecurityAlert(data);
+      _janua.handleSecurityAlert(data);
     });
   }
 
   // Listen to organization events
   void listenToOrganizationEvents() {
     on('organization.updated', (data) {
-      _plinto.handleOrganizationUpdate(data);
+      _janua.handleOrganizationUpdate(data);
     });
 
     on('organization.member.added', (data) {
-      _plinto.handleMemberAdded(data);
+      _janua.handleMemberAdded(data);
     });
 
     on('organization.member.removed', (data) {
-      _plinto.handleMemberRemoved(data);
+      _janua.handleMemberRemoved(data);
     });
   }
 
@@ -2204,16 +2204,16 @@ class WebSocketException implements Exception {
 ### iOS Native Integration
 
 ```swift
-// ios/Classes/PlintoPlugin.swift
+// ios/Classes/JanuaPlugin.swift
 import Flutter
 import UIKit
 import LocalAuthentication
 import Security
 
-public class PlintoPlugin: NSObject, FlutterPlugin {
+public class JanuaPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "plinto_flutter", binaryMessenger: registrar.messenger())
-        let instance = PlintoPlugin()
+        let channel = FlutterMethodChannel(name: "janua_flutter", binaryMessenger: registrar.messenger())
+        let instance = JanuaPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
 
@@ -2351,8 +2351,8 @@ public class PlintoPlugin: NSObject, FlutterPlugin {
 ### Android Native Integration
 
 ```kotlin
-// android/src/main/kotlin/PlintoPlugin.kt
-package com.plinto.flutter
+// android/src/main/kotlin/JanuaPlugin.kt
+package com.janua.flutter
 
 import android.content.Context
 import android.hardware.biometrics.BiometricManager
@@ -2370,13 +2370,13 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import java.util.concurrent.Executor
 
-class PlintoPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
+class JanuaPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
     private var activity: FragmentActivity? = null
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "plinto_flutter")
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "janua_flutter")
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
     }
@@ -2481,19 +2481,19 @@ class PlintoPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:plinto_flutter/plinto_flutter.dart';
+import 'package:janua_flutter/janua_flutter.dart';
 
-@GenerateMocks([Plinto])
+@GenerateMocks([Janua])
 import 'auth_service_test.mocks.dart';
 
 void main() {
   group('AuthService', () {
     late AuthService authService;
-    late MockPlinto mockPlinto;
+    late MockJanua mockJanua;
 
     setUp(() {
-      mockPlinto = MockPlinto();
-      authService = AuthService(mockPlinto);
+      mockJanua = MockJanua();
+      authService = AuthService(mockJanua);
     });
 
     group('signIn', () {
@@ -2506,7 +2506,7 @@ void main() {
           session: Session(token: 'mock-token'),
         );
 
-        when(mockPlinto.signIn(email: email, password: password))
+        when(mockJanua.signIn(email: email, password: password))
             .thenAnswer((_) async => expectedResult);
 
         // Act
@@ -2517,7 +2517,7 @@ void main() {
 
         // Assert
         expect(result, equals(expectedResult));
-        verify(mockPlinto.signIn(email: email, password: password));
+        verify(mockJanua.signIn(email: email, password: password));
       });
 
       test('should throw AuthServiceException on invalid credentials', () async {
@@ -2525,8 +2525,8 @@ void main() {
         const email = 'test@example.com';
         const password = 'wrong-password';
 
-        when(mockPlinto.signIn(email: email, password: password))
-            .thenThrow(const PlintoAuthException(
+        when(mockJanua.signIn(email: email, password: password))
+            .thenThrow(const JanuaAuthException(
               code: 'invalid-credentials',
               message: 'Invalid email or password',
             ));
@@ -2552,13 +2552,13 @@ void main() {
           session: Session(token: 'mock-token'),
         );
 
-        when(mockPlinto.signUp(
+        when(mockJanua.signUp(
           email: email,
           password: password,
           name: '$firstName $lastName',
         )).thenAnswer((_) async => expectedResult);
 
-        when(mockPlinto.sendEmailVerification())
+        when(mockJanua.sendEmailVerification())
             .thenAnswer((_) async => {});
 
         // Act
@@ -2571,12 +2571,12 @@ void main() {
 
         // Assert
         expect(result, equals(expectedResult));
-        verify(mockPlinto.signUp(
+        verify(mockJanua.signUp(
           email: email,
           password: password,
           name: '$firstName $lastName',
         ));
-        verify(mockPlinto.sendEmailVerification());
+        verify(mockJanua.sendEmailVerification());
       });
     });
 
@@ -2588,10 +2588,10 @@ void main() {
           session: Session(token: 'mock-token'),
         );
 
-        when(mockPlinto.isBiometricAvailable())
+        when(mockJanua.isBiometricAvailable())
             .thenAnswer((_) async => true);
 
-        when(mockPlinto.signInWithBiometrics(
+        when(mockJanua.signInWithBiometrics(
           localizedReason: anyNamed('localizedReason'),
         )).thenAnswer((_) async => expectedResult);
 
@@ -2604,7 +2604,7 @@ void main() {
 
       test('should throw exception when biometrics not available', () async {
         // Arrange
-        when(mockPlinto.isBiometricAvailable())
+        when(mockJanua.isBiometricAvailable())
             .thenAnswer((_) async => false);
 
         // Act & Assert
@@ -2772,7 +2772,7 @@ void main() {
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:plinto_flutter_example/main.dart' as app;
+import 'package:janua_flutter_example/main.dart' as app;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -2878,17 +2878,17 @@ extension TesterExtension on WidgetTester {
 
 ```dart
 // migration/firebase_migration.dart
-class FirebaseToPlinto Migration {
+class FirebaseToJanua Migration {
   final FirebaseAuth _firebaseAuth;
-  final AuthService _plintoAuth;
+  final AuthService _januaAuth;
 
-  FirebaseToPlintoMigration({
+  FirebaseToJanuaMigration({
     required FirebaseAuth firebaseAuth,
-    required AuthService plintoAuth,
+    required AuthService januaAuth,
   }) : _firebaseAuth = firebaseAuth,
-       _plintoAuth = plintoAuth;
+       _januaAuth = januaAuth;
 
-  // Migrate user data from Firebase to Plinto
+  // Migrate user data from Firebase to Janua
   Future<void> migrateUser() async {
     final firebaseUser = _firebaseAuth.currentUser;
     if (firebaseUser == null) {
@@ -2896,8 +2896,8 @@ class FirebaseToPlinto Migration {
     }
 
     try {
-      // Create corresponding Plinto account
-      final result = await _plintoAuth.signUp(
+      // Create corresponding Janua account
+      final result = await _januaAuth.signUp(
         email: firebaseUser.email!,
         password: '', // Temporary password, user will reset
         firstName: firebaseUser.displayName?.split(' ').first,
@@ -2930,13 +2930,13 @@ class FirebaseToPlinto Migration {
     for (final providerData in firebaseUser.providerData) {
       switch (providerData.providerId) {
         case 'google.com':
-          // Enable Google OAuth in Plinto
+          // Enable Google OAuth in Janua
           break;
         case 'apple.com':
-          // Enable Apple OAuth in Plinto
+          // Enable Apple OAuth in Janua
           break;
         case 'phone':
-          // Enable phone authentication in Plinto
+          // Enable phone authentication in Janua
           break;
       }
     }
@@ -2966,7 +2966,7 @@ class FirebaseToPlinto Migration {
 
   private Future<void> _migrateUserPreferences(
     User firebaseUser,
-    User plintoUser,
+    User januaUser,
   ) async {
     // Implementation would depend on how preferences were stored in Firebase
     // This is a simplified example
@@ -2977,9 +2977,9 @@ class FirebaseToPlinto Migration {
       'language': 'en',
     };
 
-    await _plintoAuth.updateProfile(
+    await _januaAuth.updateProfile(
       metadata: {
-        ...plintoUser.metadata ?? {},
+        ...januaUser.metadata ?? {},
         'preferences': preferences,
       },
     );
@@ -2987,16 +2987,16 @@ class FirebaseToPlinto Migration {
 
   private Future<void> _migrateCustomClaims(
     User firebaseUser,
-    User plintoUser,
+    User januaUser,
   ) async {
-    // Migrate Firebase custom claims to Plinto roles/permissions
+    // Migrate Firebase custom claims to Janua roles/permissions
     // This would require Firebase Admin SDK to read custom claims
 
     final customClaims = <String, dynamic>{
       // Read from Firebase Admin SDK
     };
 
-    // Map Firebase claims to Plinto roles
+    // Map Firebase claims to Janua roles
     final roles = <String>[];
     if (customClaims['admin'] == true) {
       roles.add('admin');
@@ -3005,7 +3005,7 @@ class FirebaseToPlinto Migration {
       roles.add('moderator');
     }
 
-    // Update user roles in Plinto
+    // Update user roles in Janua
     // This would require admin API access
   }
 }
@@ -3031,17 +3031,17 @@ class ExistingAppIntegration {
     required Map<String, dynamic> existingUserData,
   }) async {
     try {
-      // Create Plinto user account
-      final plinto = Plinto.instance;
+      // Create Janua user account
+      final janua = Janua.instance;
 
-      // Check if user already exists in Plinto
-      final existingUser = await plinto.findUserByEmail(existingEmail);
+      // Check if user already exists in Janua
+      final existingUser = await janua.findUserByEmail(existingEmail);
       if (existingUser != null) {
-        throw IntegrationException('User already exists in Plinto');
+        throw IntegrationException('User already exists in Janua');
       }
 
-      // Create new Plinto user with existing data
-      final result = await plinto.createUser(
+      // Create new Janua user with existing data
+      final result = await janua.createUser(
         email: existingEmail,
         metadata: {
           'legacyUserId': existingUserId,
@@ -3051,7 +3051,7 @@ class ExistingAppIntegration {
       );
 
       // Set up user session
-      await plinto.createSession(result.user.id);
+      await janua.createSession(result.user.id);
 
       print('Integration completed for user: $existingEmail');
     } catch (e) {
@@ -3064,7 +3064,7 @@ class ExistingAppIntegration {
     required String existingSessionToken,
     required DateTime expiresAt,
   }) async {
-    final plinto = Plinto.instance;
+    final janua = Janua.instance;
 
     try {
       // Validate existing session token
@@ -3073,8 +3073,8 @@ class ExistingAppIntegration {
         throw IntegrationException('Invalid existing session token');
       }
 
-      // Create equivalent Plinto session
-      await plinto.createSessionFromLegacyToken(
+      // Create equivalent Janua session
+      await janua.createSessionFromLegacyToken(
         legacyToken: existingSessionToken,
         expiresAt: expiresAt,
       );
@@ -3086,15 +3086,15 @@ class ExistingAppIntegration {
 
   // Sync user data between systems
   static Future<void> syncUserData({
-    required String plintoUserId,
+    required String januaUserId,
     required Map<String, dynamic> externalUserData,
   }) async {
-    final plinto = Plinto.instance;
+    final janua = Janua.instance;
 
     try {
-      // Update Plinto user with external data
-      await plinto.updateUser(
-        userId: plintoUserId,
+      // Update Janua user with external data
+      await janua.updateUser(
+        userId: januaUserId,
         data: {
           'syncedData': externalUserData,
           'lastSyncAt': DateTime.now().toIso8601String(),
@@ -3103,7 +3103,7 @@ class ExistingAppIntegration {
 
       // Set up periodic sync if needed
       Timer.periodic(const Duration(hours: 1), (timer) async {
-        await _performPeriodicSync(plintoUserId);
+        await _performPeriodicSync(januaUserId);
       });
 
     } catch (e) {
@@ -3195,14 +3195,14 @@ class SecureStorageDiagnostics {
     const testValue = 'test_value';
 
     try {
-      final plinto = Plinto.instance;
+      final janua = Janua.instance;
 
       // Test write
-      await plinto.secureStorage.write(key: testKey, value: testValue);
+      await janua.secureStorage.write(key: testKey, value: testValue);
       print('✓ Secure storage write successful');
 
       // Test read
-      final retrievedValue = await plinto.secureStorage.read(key: testKey);
+      final retrievedValue = await janua.secureStorage.read(key: testKey);
       if (retrievedValue == testValue) {
         print('✓ Secure storage read successful');
       } else {
@@ -3210,8 +3210,8 @@ class SecureStorageDiagnostics {
       }
 
       // Test delete
-      await plinto.secureStorage.delete(key: testKey);
-      final afterDelete = await plinto.secureStorage.read(key: testKey);
+      await janua.secureStorage.delete(key: testKey);
+      final afterDelete = await janua.secureStorage.read(key: testKey);
       if (afterDelete == null) {
         print('✓ Secure storage delete successful');
       } else {
@@ -3239,7 +3239,7 @@ class NetworkDiagnostics {
       results['connectivity'] = connectivityResult.toString();
 
       // Test API endpoint
-      final apiUrl = 'https://api.plinto.dev/health';
+      final apiUrl = 'https://api.janua.dev/health';
       final response = await http.get(Uri.parse(apiUrl));
       results['apiStatus'] = response.statusCode;
       results['apiResponse'] = response.body;
@@ -3247,7 +3247,7 @@ class NetworkDiagnostics {
       // Test WebSocket connection
       try {
         final wsChannel = WebSocketChannel.connect(
-          Uri.parse('wss://api.plinto.dev/ws'),
+          Uri.parse('wss://api.janua.dev/ws'),
         );
         await wsChannel.sink.close();
         results['websocketAvailable'] = true;
@@ -3362,17 +3362,17 @@ class PerformanceOptimizer {
 
   static void preloadCriticalData() async {
     // Preload essential data for better UX
-    final plinto = Plinto.instance;
+    final janua = Janua.instance;
 
-    if (plinto.currentUser != null) {
+    if (janua.currentUser != null) {
       // Preload user organizations
-      unawaited(plinto.organizations.getUserOrganizations());
+      unawaited(janua.organizations.getUserOrganizations());
 
       // Preload user preferences
-      unawaited(plinto.secureStorage.read(key: 'user_preferences'));
+      unawaited(janua.secureStorage.read(key: 'user_preferences'));
 
       // Setup real-time connections
-      unawaited(plinto.connectWebSocket());
+      unawaited(janua.connectWebSocket());
     }
   }
 }
@@ -3382,7 +3382,7 @@ class PerformanceOptimizer {
 
 ## Summary
 
-The **@plinto/flutter** SDK provides a comprehensive authentication solution for Flutter applications with:
+The **@janua/flutter** SDK provides a comprehensive authentication solution for Flutter applications with:
 
 - **Cross-Platform Support**: Native iOS, Android, and Web implementations
 - **Biometric Authentication**: Face ID, Touch ID, Fingerprint with fallback options
@@ -3395,4 +3395,4 @@ The **@plinto/flutter** SDK provides a comprehensive authentication solution for
 
 This guide covers everything from basic setup to advanced enterprise features, providing you with all the tools needed to implement robust authentication in your Flutter applications across all platforms.
 
-For additional support and advanced configuration options, refer to the [Plinto documentation](https://docs.plinto.dev) or contact our support team.
+For additional support and advanced configuration options, refer to the [Janua documentation](https://docs.janua.dev) or contact our support team.

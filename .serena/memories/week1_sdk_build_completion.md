@@ -13,7 +13,7 @@
   - index.d.ts (TypeScript declarations)
   - Source maps
 - Build command: `npm run build`
-- Import test: ✅ Successful (`usePlinto`, `createPlinto`)
+- Import test: ✅ Successful (`useJanua`, `createJanua`)
 
 ### 2. Python SDK Build System ✅
 **Modernized pyproject.toml**:
@@ -30,11 +30,11 @@
 - Added `NetworkConnectionError` (alias for `NetworkError`)
 
 **Build Output**:
-- 2 distribution files: plinto-1.0.0.tar.gz + plinto-1.0.0-py3-none-any.whl
-- 15 Python module files in plinto/
+- 2 distribution files: janua-1.0.0.tar.gz + janua-1.0.0-py3-none-any.whl
+- 15 Python module files in janua/
 - Build command: `python -m build`
 
-**Known Issue**: Missing type definitions (`AuthTokens`, `PasswordResetRequest`, `EmailVerificationRequest`, `PlintoConfig`) prevent runtime imports - tracked as separate task
+**Known Issue**: Missing type definitions (`AuthTokens`, `PasswordResetRequest`, `EmailVerificationRequest`, `JanuaConfig`) prevent runtime imports - tracked as separate task
 
 ### 3. Go SDK Build Configuration ✅
 **Created Build Infrastructure**:
@@ -55,7 +55,7 @@
 - `CONTRIBUTING.md`: Complete development guide
 
 **Package Structure**:
-- 8 Go source files in plinto/ directory
+- 8 Go source files in janua/ directory
 - go.mod with 4 direct dependencies
 - Dependencies: golang-jwt, google/uuid, gorilla/websocket, oauth2
 
@@ -86,7 +86,7 @@
 ## Known Issues for Later
 
 1. **Python SDK Runtime Imports**: Missing type definitions prevent full runtime usage
-   - `AuthTokens`, `PasswordResetRequest`, `EmailVerificationRequest`, `PlintoConfig` not defined
+   - `AuthTokens`, `PasswordResetRequest`, `EmailVerificationRequest`, `JanuaConfig` not defined
    - Build system works, code needs completion
    - Tracked as separate task
 
@@ -96,7 +96,7 @@
 
 ## Next Steps (Week 2)
 
-1. Register @plinto NPM organization
+1. Register @janua NPM organization
 2. Create publish scripts for all SDKs
 3. Implement semantic versioning automation
 4. Setup GitHub Actions release workflow

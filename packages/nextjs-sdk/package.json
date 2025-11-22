@@ -1,7 +1,7 @@
 {
-  "name": "@plinto/nextjs",
+  "name": "@janua/nextjs",
   "version": "0.1.0-beta.1",
-  "description": "Official Plinto SDK for Next.js applications with App Router and Pages Router support",
+  "description": "Official Janua SDK for Next.js applications with App Router and Pages Router support",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -39,7 +39,7 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "plinto",
+    "janua",
     "nextjs",
     "authentication",
     "auth",
@@ -48,19 +48,19 @@
     "pages-router",
     "middleware"
   ],
-  "author": "Plinto Team",
+  "author": "Janua Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/madfam-io/plinto.git",
+    "url": "https://github.com/madfam-io/janua.git",
     "directory": "packages/nextjs-sdk"
   },
-  "homepage": "https://plinto.dev",
+  "homepage": "https://janua.dev",
   "bugs": {
-    "url": "https://github.com/madfam-io/plinto/issues"
+    "url": "https://github.com/madfam-io/janua/issues"
   },
   "dependencies": {
-    "@plinto/typescript-sdk": "*",
+    "@janua/typescript-sdk": "*",
     "jose": "^5.0.0"
   },
   "peerDependencies": {

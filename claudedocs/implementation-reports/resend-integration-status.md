@@ -6,7 +6,7 @@
 
 ## Overview
 
-Resend is the established email service provider for Plinto. The integration is **production-ready** with comprehensive email templates and delivery tracking.
+Resend is the established email service provider for Janua. The integration is **production-ready** with comprehensive email templates and delivery tracking.
 
 ---
 
@@ -89,8 +89,8 @@ async def send_mfa_recovery_email(
         "user_name": user_name,
         "backup_codes": backup_codes,
         "base_url": settings.BASE_URL,
-        "company_name": "Plinto",
-        "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+        "company_name": "Janua",
+        "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
     }
     
     html_content = self._render_template("mfa_recovery.html", context)
@@ -98,7 +98,7 @@ async def send_mfa_recovery_email(
     
     return await self.send_email(
         to_email=to_email,
-        subject="MFA Recovery Codes - Plinto",
+        subject="MFA Recovery Codes - Janua",
         html_content=html_content,
         text_content=text_content,
         priority=EmailPriority.HIGH,
@@ -169,9 +169,9 @@ EMAIL_PROVIDER=resend  # ✅ Configured as default
 RESEND_API_KEY=re_xxxxxxxxxxxxx  # ✅ Required for production
 
 # Email Addresses
-EMAIL_FROM_NAME=Plinto
-EMAIL_FROM_ADDRESS=noreply@plinto.dev
-SUPPORT_EMAIL=support@plinto.dev
+EMAIL_FROM_NAME=Janua
+EMAIL_FROM_ADDRESS=noreply@janua.dev
+SUPPORT_EMAIL=support@janua.dev
 
 # Development Mode
 ENVIRONMENT=development  # Console logging when not production

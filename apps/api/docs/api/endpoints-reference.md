@@ -1,8 +1,8 @@
 # API Endpoints Reference
 
-Comprehensive reference for all Plinto API endpoints.
+Comprehensive reference for all Janua API endpoints.
 
-**Base URL**: `https://api.plinto.dev` (or your self-hosted instance)
+**Base URL**: `https://api.janua.dev` (or your self-hosted instance)
 **Current Version**: v1
 **Total Endpoints**: 202
 
@@ -308,13 +308,13 @@ Common error codes:
 ## SDK Support
 
 Official SDKs available for:
-- **TypeScript/JavaScript**: `@plinto/typescript-sdk`
-- **React**: `@plinto/react-sdk`
-- **Python**: `plinto`
-- **Vue**: `@plinto/vue-sdk`
-- **Next.js**: `@plinto/nextjs-sdk`
-- **Go**: `github.com/plinto/go-sdk`
-- **Flutter**: `plinto_flutter`
+- **TypeScript/JavaScript**: `@janua/typescript-sdk`
+- **React**: `@janua/react-sdk`
+- **Python**: `janua`
+- **Vue**: `@janua/vue-sdk`
+- **Next.js**: `@janua/nextjs-sdk`
+- **Go**: `github.com/janua/go-sdk`
+- **Flutter**: `janua_flutter`
 
 ## Related Documentation
 

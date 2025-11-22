@@ -30,8 +30,8 @@ export interface MFASetupProps {
   onCancel?: () => void
   /** Show backup codes step */
   showBackupCodes?: boolean
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -44,7 +44,7 @@ export function MFASetup({
   onError,
   onCancel,
   showBackupCodes = true,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: MFASetupProps) {
   const [step, setStep] = React.useState<'scan' | 'verify' | 'backup'>('scan')
@@ -61,9 +61,9 @@ export function MFASetup({
       setIsLoading(true)
 
       const fetchData = async () => {
-        if (plintoClient) {
-          // Use Plinto SDK for MFA setup
-          const response = await plintoClient.auth.setupMFA('totp')
+        if (januaClient) {
+          // Use Janua SDK for MFA setup
+          const response = await januaClient.auth.setupMFA('totp')
           return response
         } else if (onFetchSetupData) {
           // Use custom callback if provided
@@ -98,7 +98,7 @@ export function MFASetup({
         })
         .finally(() => setIsLoading(false))
     }
-  }, [mfaData, plintoClient, onFetchSetupData, onError, apiUrl])
+  }, [mfaData, januaClient, onFetchSetupData, onError, apiUrl])
 
   const handleCopySecret = async () => {
     if (!mfaData?.secret) return
@@ -114,12 +114,12 @@ export function MFASetup({
   const handleDownloadBackupCodes = () => {
     if (!mfaData?.backupCodes) return
 
-    const content = `Plinto Backup Codes\nGenerated: ${new Date().toISOString()}\n\n${mfaData.backupCodes.join('\n')}\n\nStore these codes securely. Each code can only be used once.`
+    const content = `Janua Backup Codes\nGenerated: ${new Date().toISOString()}\n\n${mfaData.backupCodes.join('\n')}\n\nStore these codes securely. Each code can only be used once.`
     const blob = new Blob([content], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `plinto-backup-codes-${Date.now()}.txt`
+    a.download = `janua-backup-codes-${Date.now()}.txt`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -133,9 +133,9 @@ export function MFASetup({
     setIsLoading(true)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for MFA verification
-        await plintoClient.auth.verifyMFA(verificationCode)
+      if (januaClient) {
+        // Use Janua SDK for MFA verification
+        await januaClient.auth.verifyMFA(verificationCode)
       } else if (onComplete) {
         // Use custom callback if provided
         await onComplete(verificationCode)

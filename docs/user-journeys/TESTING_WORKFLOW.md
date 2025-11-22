@@ -50,7 +50,7 @@ graph TD
 |---------|------|---------|
 | API | 8000 | Backend authentication services |
 | Landing Page | 3000 | Marketing and documentation site |
-| Test App | 3001 | Sample app using Plinto SDK |
+| Test App | 3001 | Sample app using Janua SDK |
 | Dashboard | 3002 | Admin and user management |
 | PostgreSQL | 5432 | Database |
 | Redis | 6379 | Cache and sessions |

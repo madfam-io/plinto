@@ -1,9 +1,9 @@
 'use client'
 
-import { SignUp } from '@plinto/ui'
+import { SignUp } from '@janua/ui'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { plintoClient } from '@/lib/plinto-client'
+import { januaClient } from '@/lib/janua-client'
 
 export default function SignUpShowcase() {
   const router = useRouter()
@@ -61,7 +61,7 @@ export default function SignUpShowcase() {
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Usage</h3>
             <pre className="text-xs bg-gray-100 dark:bg-gray-900 p-2 rounded overflow-x-auto">
-{`import { SignUp } from '@plinto/ui'
+{`import { SignUp } from '@janua/ui'
 
 <SignUp
   onSuccess={(data) => {
@@ -98,7 +98,7 @@ export default function SignUpShowcase() {
           </h3>
 
           <SignUp
-            plintoClient={plintoClient}
+            januaClient={januaClient}
             afterSignUp={handleSuccess}
             onError={handleError}
             redirectUrl="/dashboard"
@@ -106,7 +106,7 @@ export default function SignUpShowcase() {
 
           <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <p className="text-sm text-blue-800 dark:text-blue-200">
-              <strong>Demo Note:</strong> This is the pure @plinto/ui component without demo-specific features.
+              <strong>Demo Note:</strong> This is the pure @janua/ui component without demo-specific features.
               In a real application, you would connect this to your user registration API.
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function SignUpShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Basic Usage</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { SignUp } from '@plinto/ui'
+import { SignUp } from '@janua/ui'
 import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
@@ -182,7 +182,7 @@ export default function RegisterPage() {
           <div>
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">With Auto Sign-In After Registration</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-{`import { SignUp } from '@plinto/ui'
+{`import { SignUp } from '@janua/ui'
 
 <SignUp
   onSuccess={async (data) => {

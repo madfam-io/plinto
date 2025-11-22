@@ -1,13 +1,13 @@
-// Re-export everything from @plinto/typescript-sdk
-export * from '@plinto/typescript-sdk';
+// Re-export everything from @janua/typescript-sdk
+export * from '@janua/typescript-sdk';
 
 // Plugin
-export { createPlinto, PLINTO_KEY } from './plugin';
-export type { PlintoState, PlintoPluginOptions, PlintoVue } from './plugin';
+export { createJanua, JANUA_KEY } from './plugin';
+export type { JanuaState, JanuaPluginOptions, JanuaVue } from './plugin';
 
 // Composables
 export {
-  usePlinto,
+  useJanua,
   useAuth,
   useUser,
   useSession,

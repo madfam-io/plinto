@@ -14,7 +14,7 @@ jest.mock('next/link', () => {
 describe('DocsHomePage', () => {
   it('should render the main heading', () => {
     render(<DocsHomePage />)
-    expect(screen.getByText('Plinto Documentation')).toBeInTheDocument()
+    expect(screen.getByText('Janua Documentation')).toBeInTheDocument()
   })
 
   it('should render the description', () => {
@@ -40,7 +40,7 @@ describe('DocsHomePage', () => {
   it('should render code example', () => {
     render(<DocsHomePage />)
     expect(screen.getByText('Quick Example')).toBeInTheDocument()
-    expect(screen.getByText(/import { Plinto }/)).toBeInTheDocument()
+    expect(screen.getByText(/import { Janua }/)).toBeInTheDocument()
   })
 
   it('should render latest updates', () => {

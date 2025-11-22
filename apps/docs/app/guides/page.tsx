@@ -7,10 +7,10 @@ export default function GuidesPage() {
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-          Plinto Guides
+          Janua Guides
         </h1>
         <p className="mt-6 text-xl leading-8 text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-          Comprehensive guides covering every aspect of Plinto identity management.
+          Comprehensive guides covering every aspect of Janua identity management.
           From basic authentication to advanced enterprise features.
         </p>
       </div>
@@ -198,7 +198,7 @@ export default function GuidesPage() {
             <MigrationLink
               from="Clerk"
               href="/guides/migration/clerk"
-              description="Switch from Clerk to Plinto"
+              description="Switch from Clerk to Janua"
             />
             <MigrationLink
               from="Supabase Auth"

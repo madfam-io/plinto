@@ -1,11 +1,11 @@
-# Plinto Cloud → Self-Hosted Migration Guide ("Eject Button")
+# Janua Cloud → Self-Hosted Migration Guide ("Eject Button")
 
-**Target Audience**: Organizations migrating from Plinto managed cloud to self-hosted deployment
+**Target Audience**: Organizations migrating from Janua managed cloud to self-hosted deployment
 **Migration Time**: 2-4 hours (depending on data volume)
 **Downtime**: Zero (with proper planning)
 **Difficulty**: Intermediate
 
-This guide provides a step-by-step process for migrating from Plinto Cloud (managed) to self-hosted Plinto OSS, preserving all user data, organizations, and configurations.
+This guide provides a step-by-step process for migrating from Janua Cloud (managed) to self-hosted Janua OSS, preserving all user data, organizations, and configurations.
 
 ---
 
@@ -37,13 +37,13 @@ This guide provides a step-by-step process for migrating from Plinto Cloud (mana
 - **Infrastructure**: Server/VM with Docker (see [requirements](#prerequisites))
 - **Database**: PostgreSQL 15+ instance
 - **DNS Access**: Ability to update DNS records
-- **API Access**: Plinto Cloud API key with export permissions
+- **API Access**: Janua Cloud API key with export permissions
 
 ### Migration Strategy
 
 We use a **zero-downtime dual-write approach**:
 
-1. **Export** data from Plinto Cloud
+1. **Export** data from Janua Cloud
 2. **Deploy** self-hosted instance in parallel
 3. **Import** data to self-hosted
 4. **Verify** data integrity
@@ -87,7 +87,7 @@ Software:
 
 ### Required Access
 
-- [ ] Plinto Cloud API key with `export:all` permission
+- [ ] Janua Cloud API key with `export:all` permission
 - [ ] DNS management access for your domain
 - [ ] SSH access to target server
 - [ ] SSL certificate for your domain (Let's Encrypt recommended)
@@ -96,7 +96,7 @@ Software:
 
 **⚠️ Important Pre-Migration Steps**:
 
-1. **Backup Existing Data**: Even though Plinto Cloud retains data, create local backup
+1. **Backup Existing Data**: Even though Janua Cloud retains data, create local backup
 2. **Review Data Volume**: Check current user count and data size
 3. **Schedule Downtime Window**: Optional but recommended (maintenance mode)
 4. **Test Server Access**: Ensure SSH and Docker are working
@@ -109,20 +109,20 @@ Software:
 ### Step 1.1: Generate Export API Key
 
 ```bash
-# Log in to Plinto Cloud dashboard
-https://cloud.plinto.dev/dashboard
+# Log in to Janua Cloud dashboard
+https://cloud.janua.dev/dashboard
 
 # Navigate to: Settings → API Keys → Create Export Key
 # Permissions: export:users, export:organizations, export:audit_logs
-# Copy the API key (starts with "plinto_export_...")
+# Copy the API key (starts with "janua_export_...")
 ```
 
 ### Step 1.2: Export User Data
 
 ```bash
 # Export all users
-curl -X POST https://api.plinto.cloud/v1/export/users \
-  -H "Authorization: Bearer plinto_export_YOUR_KEY" \
+curl -X POST https://api.janua.cloud/v1/export/users \
+  -H "Authorization: Bearer janua_export_YOUR_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "format": "json",
@@ -130,10 +130,10 @@ curl -X POST https://api.plinto.cloud/v1/export/users \
     "include_sessions": true,
     "include_mfa": true
   }' \
-  -o plinto_users_export.json
+  -o janua_users_export.json
 
 # Verify export
-jq '.metadata' plinto_users_export.json
+jq '.metadata' janua_users_export.json
 # Should show: total_users, export_version, export_date
 ```
 
@@ -169,8 +169,8 @@ jq '.metadata' plinto_users_export.json
 
 ```bash
 # Export all organizations
-curl -X POST https://api.plinto.cloud/v1/export/organizations \
-  -H "Authorization: Bearer plinto_export_YOUR_KEY" \
+curl -X POST https://api.janua.cloud/v1/export/organizations \
+  -H "Authorization: Bearer janua_export_YOUR_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "format": "json",
@@ -178,52 +178,52 @@ curl -X POST https://api.plinto.cloud/v1/export/organizations \
     "include_roles": true,
     "include_sso_configs": true
   }' \
-  -o plinto_organizations_export.json
+  -o janua_organizations_export.json
 
 # Verify export
-jq '.metadata' plinto_organizations_export.json
+jq '.metadata' janua_organizations_export.json
 ```
 
 ### Step 1.4: Export Configuration
 
 ```bash
 # Export webhooks, API keys, SSO configs
-curl -X POST https://api.plinto.cloud/v1/export/config \
-  -H "Authorization: Bearer plinto_export_YOUR_KEY" \
+curl -X POST https://api.janua.cloud/v1/export/config \
+  -H "Authorization: Bearer janua_export_YOUR_KEY" \
   -H "Content-Type: application/json" \
-  -o plinto_config_export.json
+  -o janua_config_export.json
 
 # Verify export
-jq '.metadata' plinto_config_export.json
+jq '.metadata' janua_config_export.json
 ```
 
 ### Step 1.5: Create Encrypted Archive
 
 ```bash
 # Combine all exports into encrypted archive
-tar czf - plinto_*_export.json | \
-  openssl enc -aes-256-cbc -pbkdf2 -out plinto_export.tar.gz.enc
+tar czf - janua_*_export.json | \
+  openssl enc -aes-256-cbc -pbkdf2 -out janua_export.tar.gz.enc
 
 # Enter encryption password when prompted
 # Store password securely (you'll need it for import)
 
 # Verify archive
-ls -lh plinto_export.tar.gz.enc
+ls -lh janua_export.tar.gz.enc
 ```
 
 ---
 
 ## Phase 2: Deploy Self-Hosted
 
-### Step 2.1: Clone Plinto Repository
+### Step 2.1: Clone Janua Repository
 
 ```bash
 # SSH into your target server
 ssh user@your-server.com
 
-# Clone Plinto repository
-git clone https://github.com/plinto/plinto.git
-cd plinto
+# Clone Janua repository
+git clone https://github.com/janua/janua.git
+cd janua
 
 # Checkout latest stable release
 git checkout v1.0.0  # Replace with latest version
@@ -248,7 +248,7 @@ nano .env.production
 **Required Environment Variables**:
 ```bash
 # Database
-DATABASE_URL=postgresql://plinto:${DATABASE_PASSWORD}@postgres:5432/plinto_production
+DATABASE_URL=postgresql://janua:${DATABASE_PASSWORD}@postgres:5432/janua_production
 
 # Redis
 REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
@@ -258,7 +258,7 @@ SECRET_KEY=${SECRET_KEY}
 JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY}
 
 # Application
-APP_NAME=Plinto
+APP_NAME=Janua
 DOMAIN=auth.yourdomain.com
 FRONTEND_URL=https://auth.yourdomain.com
 ENVIRONMENT=production
@@ -273,22 +273,22 @@ STORAGE_PROVIDER=s3  # or r2, gcs, local
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_REGION=us-east-1
-AWS_BUCKET=plinto-uploads
+AWS_BUCKET=janua-uploads
 ```
 
 ### Step 2.3: Deploy with Docker Compose
 
 ```bash
-# Deploy Plinto stack
+# Deploy Janua stack
 docker-compose -f deployment/docker-compose.production.yml up -d
 
 # Check service health
 docker-compose ps
 
 # Should show:
-# - plinto-api (healthy)
-# - plinto-postgres (healthy)
-# - plinto-redis (healthy)
+# - janua-api (healthy)
+# - janua-postgres (healthy)
+# - janua-redis (healthy)
 ```
 
 ### Step 2.4: Run Database Migrations
@@ -298,9 +298,9 @@ docker-compose ps
 docker-compose exec api alembic upgrade head
 
 # Verify database schema
-docker-compose exec postgres psql -U plinto -d plinto_production -c "\dt"
+docker-compose exec postgres psql -U janua -d janua_production -c "\dt"
 
-# Should show all Plinto tables:
+# Should show all Janua tables:
 # - users
 # - organizations
 # - sessions
@@ -333,31 +333,31 @@ curl http://localhost:8000/health
 
 ```bash
 # From your local machine, transfer export to server
-scp plinto_export.tar.gz.enc user@your-server.com:~/plinto/
+scp janua_export.tar.gz.enc user@your-server.com:~/janua/
 
 # SSH into server
 ssh user@your-server.com
-cd plinto
+cd janua
 ```
 
 ### Step 3.2: Decrypt and Extract
 
 ```bash
 # Decrypt archive
-openssl enc -aes-256-cbc -pbkdf2 -d -in plinto_export.tar.gz.enc | tar xzf -
+openssl enc -aes-256-cbc -pbkdf2 -d -in janua_export.tar.gz.enc | tar xzf -
 
 # Verify extracted files
-ls -lh plinto_*_export.json
+ls -lh janua_*_export.json
 ```
 
 ### Step 3.3: Run Import Script
 
 ```bash
-# Run import script (included in Plinto repo)
+# Run import script (included in Janua repo)
 docker-compose exec api python scripts/import_from_cloud.py \
-  --users plinto_users_export.json \
-  --organizations plinto_organizations_export.json \
-  --config plinto_config_export.json \
+  --users janua_users_export.json \
+  --organizations janua_organizations_export.json \
+  --config janua_config_export.json \
   --verify-integrity
 
 # Expected output:
@@ -435,7 +435,7 @@ sudo certbot certonly --standalone \
 
 **Before DNS Update**:
 ```
-auth.yourdomain.com → Plinto Cloud (1.2.3.4)
+auth.yourdomain.com → Janua Cloud (1.2.3.4)
 ```
 
 **After DNS Update**:
@@ -527,14 +527,14 @@ If issues arise during cutover, follow this rollback procedure:
 ### Quick Rollback (< 5 minutes)
 
 ```bash
-# 1. Revert DNS to Plinto Cloud
-# Update A record: auth.yourdomain.com → Plinto Cloud IP
+# 1. Revert DNS to Janua Cloud
+# Update A record: auth.yourdomain.com → Janua Cloud IP
 
 # 2. Wait for DNS propagation
 dig auth.yourdomain.com
 
-# 3. Verify traffic flowing to Plinto Cloud
-# Check Plinto Cloud dashboard for incoming requests
+# 3. Verify traffic flowing to Janua Cloud
+# Check Janua Cloud dashboard for incoming requests
 
 # 4. Your self-hosted instance remains available for debugging
 ```
@@ -546,7 +546,7 @@ dig auth.yourdomain.com
 docker-compose logs api | grep ERROR
 
 # Check database connectivity
-docker-compose exec postgres psql -U plinto -d plinto_production -c "SELECT COUNT(*) FROM users;"
+docker-compose exec postgres psql -U janua -d janua_production -c "SELECT COUNT(*) FROM users;"
 
 # Check Redis connectivity
 docker-compose exec redis redis-cli PING
@@ -702,15 +702,15 @@ print(f'CPU: {psutil.cpu_percent()}%')
 ### Ongoing
 
 - [ ] Schedule regular backups (daily database dumps)
-- [ ] Plan for Plinto version upgrades
+- [ ] Plan for Janua version upgrades
 - [ ] Review and optimize infrastructure costs
 - [ ] Consider high-availability setup (multi-region, load balancing)
 
 ---
 
-## Cost Comparison: Plinto Cloud vs Self-Hosted
+## Cost Comparison: Janua Cloud vs Self-Hosted
 
-**Plinto Cloud (Professional - 10,000 MAU)**:
+**Janua Cloud (Professional - 10,000 MAU)**:
 ```
 Monthly Cost: $99/mo
 Annual Cost: $1,188/year
@@ -741,7 +741,7 @@ Backups (S3): $20-30/mo
 Total Monthly: $350-650/mo
 Annual Cost: $4,200-7,800/year
 
-vs Plinto Cloud Enterprise: $2,000-5,000/mo ($24,000-60,000/year)
+vs Janua Cloud Enterprise: $2,000-5,000/mo ($24,000-60,000/year)
 Savings: $16,200-$52,200/year (67-87% cost reduction)
 ```
 
@@ -750,13 +750,13 @@ Savings: $16,200-$52,200/year (67-87% cost reduction)
 ## Support & Resources
 
 **Self-Hosting Community**:
-- GitHub Discussions: https://github.com/plinto/plinto/discussions
-- Discord Server: https://discord.gg/plinto
-- Documentation: https://docs.plinto.dev
+- GitHub Discussions: https://github.com/janua/janua/discussions
+- Discord Server: https://discord.gg/janua
+- Documentation: https://docs.janua.dev
 
 **Professional Migration Support**:
-- Email: migration@plinto.dev
-- Enterprise Support: enterprise@plinto.dev (for paid migration assistance)
+- Email: migration@janua.dev
+- Enterprise Support: enterprise@janua.dev (for paid migration assistance)
 
 **Related Guides**:
 - [Production Deployment Guide](../DEPLOYMENT.md)
@@ -771,9 +771,9 @@ The `scripts/import_from_cloud.py` script supports additional options:
 
 ```bash
 python scripts/import_from_cloud.py \
-  --users plinto_users_export.json \
-  --organizations plinto_organizations_export.json \
-  --config plinto_config_export.json \
+  --users janua_users_export.json \
+  --organizations janua_organizations_export.json \
+  --config janua_config_export.json \
   --verify-integrity \
   --dry-run  # Test import without committing
   --batch-size 100  # Import in batches of 100
@@ -785,7 +785,7 @@ python scripts/import_from_cloud.py \
 ```bash
 # Test import without making changes
 python scripts/import_from_cloud.py \
-  --users plinto_users_export.json \
+  --users janua_users_export.json \
   --dry-run
 
 # Output shows what WOULD be imported
@@ -793,4 +793,4 @@ python scripts/import_from_cloud.py \
 
 ---
 
-**Migration completed successfully? Welcome to self-hosted Plinto! You now have complete control over your authentication infrastructure with zero vendor lock-in.** 🎉
+**Migration completed successfully? Welcome to self-hosted Janua! You now have complete control over your authentication infrastructure with zero vendor lock-in.** 🎉

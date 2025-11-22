@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { PlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Plinto Authentication Example',
-  description: 'Production-ready authentication with Plinto SDK',
+  title: 'Janua Authentication Example',
+  description: 'Production-ready authentication with Janua SDK',
 };
 
 export default function RootLayout({
@@ -18,15 +18,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <PlintoProvider
+        <JanuaProvider
           config={{
-            baseURL: process.env.NEXT_PUBLIC_PLINTO_API_URL || 'https://api.plinto.dev',
-            apiKey: process.env.NEXT_PUBLIC_PLINTO_API_KEY,
+            baseURL: process.env.NEXT_PUBLIC_JANUA_API_URL || 'https://api.janua.dev',
+            apiKey: process.env.NEXT_PUBLIC_JANUA_API_KEY,
             environment: process.env.NODE_ENV === 'production' ? 'production' : 'development',
           }}
         >
           {children}
-        </PlintoProvider>
+        </JanuaProvider>
       </body>
     </html>
   );

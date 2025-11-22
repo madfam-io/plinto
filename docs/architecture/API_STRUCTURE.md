@@ -1,12 +1,12 @@
-# Plinto API Structure
+# Janua API Structure
 
 ## Current Architecture
 
-The Plinto platform uses a **monorepo structure** with clear separation between frontend applications and the backend API:
+The Janua platform uses a **monorepo structure** with clear separation between frontend applications and the backend API:
 
 ### Directory Structure
 ```
-plinto/
+janua/
 ├── apps/
 │   ├── api/          # ← Python FastAPI backend (deployed to Railway)
 │   ├── admin/        # Next.js admin panel

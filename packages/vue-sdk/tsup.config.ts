@@ -7,6 +7,6 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
-  external: ['vue', '@plinto/typescript-sdk'],
+  external: ['vue', '@janua/typescript-sdk'],
   target: 'es2020',
 });

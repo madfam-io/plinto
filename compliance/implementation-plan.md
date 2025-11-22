@@ -10,7 +10,7 @@
 ## 1. Executive Summary
 
 ### 1.1 Project Overview
-This implementation plan establishes the roadmap for achieving SOC2 Type II compliance for the Plinto authentication platform. The project leverages existing security architecture while implementing additional controls, evidence collection, and monitoring capabilities required for enterprise audit readiness.
+This implementation plan establishes the roadmap for achieving SOC2 Type II compliance for the Janua authentication platform. The project leverages existing security architecture while implementing additional controls, evidence collection, and monitoring capabilities required for enterprise audit readiness.
 
 ### 1.2 Business Justification
 - **Market Requirement**: Enterprise customers require SOC2 compliance
@@ -134,7 +134,7 @@ class PolicyManager:
 
 #### Week 5-6: Control Mapping and Documentation
 **Deliverables**:
-- [ ] SOC2 control mapping to Plinto systems
+- [ ] SOC2 control mapping to Janua systems
 - [ ] Control design documentation
 - [ ] Evidence requirements specification
 - [ ] Control testing procedures
@@ -496,4 +496,4 @@ class EvidenceAutomation:
 4. **Week 2**: Start control mapping documentation
 5. **Week 3**: Launch policy framework development
 
-*This implementation plan provides a comprehensive roadmap for achieving SOC2 Type II compliance while leveraging Plinto's existing security architecture and maintaining operational efficiency.*
+*This implementation plan provides a comprehensive roadmap for achieving SOC2 Type II compliance while leveraging Janua's existing security architecture and maintaining operational efficiency.*

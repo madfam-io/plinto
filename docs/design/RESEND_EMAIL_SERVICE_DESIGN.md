@@ -9,7 +9,7 @@
 
 ## 🎯 Executive Summary
 
-**Decision**: Migrate from SendGrid to **Resend** as Plinto's email service provider
+**Decision**: Migrate from SendGrid to **Resend** as Janua's email service provider
 
 **Rationale**:
 - **Developer-First**: Modern API designed for developers
@@ -47,7 +47,7 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│           Plinto Application                     │
+│           Janua Application                     │
 │                                                  │
 │  ┌──────────────────────────────────────────┐  │
 │  │      ResendEmailService                   │  │
@@ -149,7 +149,7 @@ class ResendEmailService:
             params = {
                 "from": self.from_email,
                 "to": [email],
-                "subject": "Verify your Plinto account",
+                "subject": "Verify your Janua account",
                 "html": self._render_verification_email(
                     user_name=user_name or email.split("@")[0],
                     verification_url=verification_url
@@ -202,7 +202,7 @@ class ResendEmailService:
             params = {
                 "from": self.from_email,
                 "to": [email],
-                "subject": "Reset your Plinto password",
+                "subject": "Reset your Janua password",
                 "html": self._render_password_reset_email(
                     user_name=user_name or email.split("@")[0],
                     reset_url=reset_url
@@ -234,7 +234,7 @@ class ResendEmailService:
             params = {
                 "from": self.from_email,
                 "to": [email],
-                "subject": "Welcome to Plinto! 🎉",
+                "subject": "Welcome to Janua! 🎉",
                 "html": self._render_welcome_email(
                     user_name=user_name or email.split("@")[0]
                 )
@@ -266,7 +266,7 @@ class ResendEmailService:
             params = {
                 "from": self.from_email,
                 "to": [email],
-                "subject": "Your Plinto verification code",
+                "subject": "Your Janua verification code",
                 "html": self._render_mfa_code_email(
                     user_name=user_name or email.split("@")[0],
                     code=code
@@ -299,7 +299,7 @@ class ResendEmailService:
             params = {
                 "from": self.from_email,
                 "to": [email],
-                "subject": "Sign in to Plinto",
+                "subject": "Sign in to Janua",
                 "html": self._render_magic_link_email(
                     user_name=user_name or email.split("@")[0],
                     magic_link=magic_link
@@ -362,18 +362,18 @@ class ResendEmailService:
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify your Plinto account</title>
+    <title>Verify your Janua account</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 28px;">Plinto</h1>
+        <h1 style="color: white; margin: 0; font-size: 28px;">Janua</h1>
     </div>
     
     <div style="background: white; padding: 40px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
         <h2 style="margin-top: 0; color: #1f2937;">Hi {user_name},</h2>
         
         <p style="font-size: 16px; color: #4b5563;">
-            Welcome to Plinto! Please verify your email address to get started.
+            Welcome to Janua! Please verify your email address to get started.
         </p>
         
         <div style="text-align: center; margin: 32px 0;">
@@ -401,16 +401,16 @@ class ResendEmailService:
         </p>
         
         <p style="font-size: 14px; color: #6b7280;">
-            If you didn't create a Plinto account, you can safely ignore this email.
+            If you didn't create a Janua account, you can safely ignore this email.
         </p>
     </div>
     
     <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
-        <p>© 2025 Plinto. All rights reserved.</p>
+        <p>© 2025 Janua. All rights reserved.</p>
         <p>
-            <a href="https://plinto.dev" style="color: #9ca3af; text-decoration: none;">Website</a> •
-            <a href="https://docs.plinto.dev" style="color: #9ca3af; text-decoration: none;">Documentation</a> •
-            <a href="mailto:support@plinto.dev" style="color: #9ca3af; text-decoration: none;">Support</a>
+            <a href="https://janua.dev" style="color: #9ca3af; text-decoration: none;">Website</a> •
+            <a href="https://docs.janua.dev" style="color: #9ca3af; text-decoration: none;">Documentation</a> •
+            <a href="mailto:support@janua.dev" style="color: #9ca3af; text-decoration: none;">Support</a>
         </p>
     </div>
 </body>
@@ -425,18 +425,18 @@ class ResendEmailService:
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset your Plinto password</title>
+    <title>Reset your Janua password</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 28px;">Plinto</h1>
+        <h1 style="color: white; margin: 0; font-size: 28px;">Janua</h1>
     </div>
     
     <div style="background: white; padding: 40px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
         <h2 style="margin-top: 0; color: #1f2937;">Hi {user_name},</h2>
         
         <p style="font-size: 16px; color: #4b5563;">
-            We received a request to reset your Plinto password.
+            We received a request to reset your Janua password.
         </p>
         
         <div style="text-align: center; margin: 32px 0;">
@@ -469,11 +469,11 @@ class ResendEmailService:
     </div>
     
     <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
-        <p>© 2025 Plinto. All rights reserved.</p>
+        <p>© 2025 Janua. All rights reserved.</p>
         <p>
-            <a href="https://plinto.dev" style="color: #9ca3af; text-decoration: none;">Website</a> •
-            <a href="https://docs.plinto.dev" style="color: #9ca3af; text-decoration: none;">Documentation</a> •
-            <a href="mailto:support@plinto.dev" style="color: #9ca3af; text-decoration: none;">Support</a>
+            <a href="https://janua.dev" style="color: #9ca3af; text-decoration: none;">Website</a> •
+            <a href="https://docs.janua.dev" style="color: #9ca3af; text-decoration: none;">Documentation</a> •
+            <a href="mailto:support@janua.dev" style="color: #9ca3af; text-decoration: none;">Support</a>
         </p>
     </div>
 </body>
@@ -488,18 +488,18 @@ class ResendEmailService:
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Plinto!</title>
+    <title>Welcome to Janua!</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 28px;">🎉 Welcome to Plinto!</h1>
+        <h1 style="color: white; margin: 0; font-size: 28px;">🎉 Welcome to Janua!</h1>
     </div>
     
     <div style="background: white; padding: 40px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
         <h2 style="margin-top: 0; color: #1f2937;">Hi {user_name},</h2>
         
         <p style="font-size: 16px; color: #4b5563;">
-            Your account is ready! You can now start integrating Plinto's authentication into your applications.
+            Your account is ready! You can now start integrating Janua's authentication into your applications.
         </p>
         
         <h3 style="color: #1f2937; margin-top: 32px;">🚀 Quick Start</h3>
@@ -525,16 +525,16 @@ class ResendEmailService:
         <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 32px 0;">
         
         <p style="font-size: 14px; color: #6b7280;">
-            Need help? Contact us at <a href="mailto:support@plinto.dev" style="color: #667eea;">support@plinto.dev</a> or check our <a href="{settings.BASE_URL}/docs" style="color: #667eea;">documentation</a>.
+            Need help? Contact us at <a href="mailto:support@janua.dev" style="color: #667eea;">support@janua.dev</a> or check our <a href="{settings.BASE_URL}/docs" style="color: #667eea;">documentation</a>.
         </p>
     </div>
     
     <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
-        <p>© 2025 Plinto. All rights reserved.</p>
+        <p>© 2025 Janua. All rights reserved.</p>
         <p>
-            <a href="https://plinto.dev" style="color: #9ca3af; text-decoration: none;">Website</a> •
-            <a href="https://docs.plinto.dev" style="color: #9ca3af; text-decoration: none;">Documentation</a> •
-            <a href="mailto:support@plinto.dev" style="color: #9ca3af; text-decoration: none;">Support</a>
+            <a href="https://janua.dev" style="color: #9ca3af; text-decoration: none;">Website</a> •
+            <a href="https://docs.janua.dev" style="color: #9ca3af; text-decoration: none;">Documentation</a> •
+            <a href="mailto:support@janua.dev" style="color: #9ca3af; text-decoration: none;">Support</a>
         </p>
     </div>
 </body>
@@ -549,11 +549,11 @@ class ResendEmailService:
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Plinto verification code</title>
+    <title>Your Janua verification code</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 28px;">Plinto</h1>
+        <h1 style="color: white; margin: 0; font-size: 28px;">Janua</h1>
     </div>
     
     <div style="background: white; padding: 40px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
@@ -587,7 +587,7 @@ class ResendEmailService:
     </div>
     
     <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
-        <p>© 2025 Plinto. All rights reserved.</p>
+        <p>© 2025 Janua. All rights reserved.</p>
     </div>
 </body>
 </html>
@@ -601,18 +601,18 @@ class ResendEmailService:
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in to Plinto</title>
+    <title>Sign in to Janua</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 28px;">Plinto</h1>
+        <h1 style="color: white; margin: 0; font-size: 28px;">Janua</h1>
     </div>
     
     <div style="background: white; padding: 40px 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
         <h2 style="margin-top: 0; color: #1f2937;">Hi {user_name},</h2>
         
         <p style="font-size: 16px; color: #4b5563;">
-            Click the button below to sign in to your Plinto account.
+            Click the button below to sign in to your Janua account.
         </p>
         
         <div style="text-align: center; margin: 32px 0;">
@@ -624,7 +624,7 @@ class ResendEmailService:
                       border-radius: 6px; 
                       font-weight: 600;
                       display: inline-block;">
-                Sign In to Plinto
+                Sign In to Janua
             </a>
         </div>
         
@@ -645,7 +645,7 @@ class ResendEmailService:
     </div>
     
     <div style="text-align: center; padding: 20px; color: #9ca3af; font-size: 12px;">
-        <p>© 2025 Plinto. All rights reserved.</p>
+        <p>© 2025 Janua. All rights reserved.</p>
     </div>
 </body>
 </html>
@@ -670,9 +670,9 @@ RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 EMAIL_ENABLED=true
 
 # Email Settings
-EMAIL_FROM_ADDRESS=noreply@plinto.dev
-EMAIL_FROM_NAME=Plinto
-BASE_URL=https://plinto.dev
+EMAIL_FROM_ADDRESS=noreply@janua.dev
+EMAIL_FROM_NAME=Janua
+BASE_URL=https://janua.dev
 
 # Redis (for token storage)
 REDIS_URL=redis://localhost:6379
@@ -723,7 +723,7 @@ structlog
 - [ ] Test magic link email
 
 **Day 3: Domain Setup**
-- [ ] Add plinto.dev to Resend
+- [ ] Add janua.dev to Resend
 - [ ] Verify DNS records (SPF, DKIM, DMARC)
 - [ ] Test deliverability
 
@@ -965,7 +965,7 @@ async def resend_webhook(request: Request):
 
 ### Week 2: Testing & Launch
 - Test all email flows
-- Configure domain (plinto.dev)
+- Configure domain (janua.dev)
 - Deploy to production
 - Monitor delivery metrics
 

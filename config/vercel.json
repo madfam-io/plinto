@@ -3,15 +3,15 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://plinto-api.railway.app/api/:path*"
+      "destination": "https://janua-api.railway.app/api/:path*"
     },
     {
       "source": "/.well-known/jwks.json",
-      "destination": "https://plinto-api.railway.app/.well-known/jwks.json"
+      "destination": "https://janua-api.railway.app/.well-known/jwks.json"
     },
     {
       "source": "/.well-known/openid-configuration",
-      "destination": "https://plinto-api.railway.app/.well-known/openid-configuration"
+      "destination": "https://janua-api.railway.app/.well-known/openid-configuration"
     }
   ],
   "headers": [

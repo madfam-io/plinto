@@ -32,9 +32,9 @@ export interface Session {
 export interface SessionManagementProps {
   /** Optional custom class name */
   className?: string
-  /** List of active sessions (optional if plintoClient provided) */
+  /** List of active sessions (optional if januaClient provided) */
   sessions?: Session[]
-  /** Current session ID (optional if plintoClient provided) */
+  /** Current session ID (optional if januaClient provided) */
   currentSessionId?: string
   /** Callback to revoke a session */
   onRevokeSession?: (sessionId: string) => Promise<void>
@@ -44,8 +44,8 @@ export interface SessionManagementProps {
   onError?: (error: Error) => void
   /** Custom logo URL */
   logoUrl?: string
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -58,7 +58,7 @@ export function SessionManagement({
   onRevokeAllOthers,
   onError,
   logoUrl,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: SessionManagementProps) {
   const [sessions, setSessions] = React.useState<Session[]>(initialSessions || [])
@@ -70,12 +70,12 @@ export function SessionManagement({
 
   // Fetch sessions from SDK on mount if client provided
   React.useEffect(() => {
-    if (plintoClient && !initialSessions) {
+    if (januaClient && !initialSessions) {
       setIsLoading(true)
       const fetchSessions = async () => {
         try {
-          const response = await plintoClient.sessions.listSessions()
-          const currentSession = await plintoClient.sessions.getCurrentSession()
+          const response = await januaClient.sessions.listSessions()
+          const currentSession = await januaClient.sessions.getCurrentSession()
 
           setSessions(response.data || response)
           setCurrentSessionId(currentSession.id)
@@ -90,16 +90,16 @@ export function SessionManagement({
 
       fetchSessions()
     }
-  }, [plintoClient, initialSessions, onError])
+  }, [januaClient, initialSessions, onError])
 
   const handleRevokeSession = async (sessionId: string) => {
     setRevokingSessionId(sessionId)
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        await plintoClient.sessions.revokeSession(sessionId)
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        await januaClient.sessions.revokeSession(sessionId)
         // Update local state to remove the revoked session
         setSessions(sessions.filter((s) => s.id !== sessionId))
       } else if (onRevokeSession) {
@@ -133,9 +133,9 @@ export function SessionManagement({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        await plintoClient.sessions.revokeAllSessions()
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        await januaClient.sessions.revokeAllSessions()
         // Keep only the current session
         setSessions(sessions.filter((s) => s.id === currentSessionId))
       } else if (onRevokeAllOthers) {

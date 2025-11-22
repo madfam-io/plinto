@@ -31,7 +31,7 @@ export interface InviteUserFormProps {
   onSuccess?: (invitation: Invitation) => void
   onCancel?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   defaultRole?: string
   defaultExpiresIn?: number
@@ -44,7 +44,7 @@ export function InviteUserForm({
   onSuccess,
   onCancel,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   defaultRole = 'member',
   defaultExpiresIn = 7,
@@ -93,8 +93,8 @@ export function InviteUserForm({
 
       let invitation: Invitation
 
-      if (plintoClient) {
-        invitation = await plintoClient.invitations.createInvitation(invitationData)
+      if (januaClient) {
+        invitation = await januaClient.invitations.createInvitation(invitationData)
       } else if (onSubmit) {
         invitation = await onSubmit(invitationData)
       } else {

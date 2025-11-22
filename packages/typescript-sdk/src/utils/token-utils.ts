@@ -154,9 +154,9 @@ export class MemoryTokenStorage implements TokenStorage {
  * Token management with storage abstraction
  */
 export class TokenManager {
-  private readonly ACCESS_TOKEN_KEY = 'plinto_access_token';
-  private readonly REFRESH_TOKEN_KEY = 'plinto_refresh_token';
-  private readonly EXPIRES_AT_KEY = 'plinto_token_expires_at';
+  private readonly ACCESS_TOKEN_KEY = 'janua_access_token';
+  private readonly REFRESH_TOKEN_KEY = 'janua_refresh_token';
+  private readonly EXPIRES_AT_KEY = 'janua_token_expires_at';
 
   constructor(private storage: TokenStorage) {}
 

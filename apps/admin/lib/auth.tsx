@@ -3,12 +3,12 @@
 /**
  * Admin Authentication Provider with RBAC
  *
- * Requires @plinto.dev email and superadmin/admin role
+ * Requires @janua.dev email and superadmin/admin role
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react'
-import { plintoClient } from './plinto-client'
-import type { User } from '@plinto/typescript-sdk'
+import { januaClient } from './janua-client'
+import type { User } from '@janua/typescript-sdk'
 
 interface AuthContextType {
   user: User | null
@@ -25,7 +25,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 const ALLOWED_ROLES = ['superadmin', 'admin']
-const REQUIRED_EMAIL_DOMAIN = '@plinto.dev'
+const REQUIRED_EMAIL_DOMAIN = '@janua.dev'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const currentUser = await plintoClient.auth.getCurrentUser()
+      const currentUser = await januaClient.auth.getCurrentUser()
       setUser(currentUser)
     } catch (error) {
       console.error('Failed to fetch user:', error)
@@ -61,24 +61,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const handleSignOut = () => setUser(null)
     const handleTokenRefresh = () => refreshUser()
 
-    plintoClient.on('signIn', handleSignIn)
-    plintoClient.on('signOut', handleSignOut)
-    plintoClient.on('tokenRefreshed', handleTokenRefresh)
+    januaClient.on('signIn', handleSignIn)
+    januaClient.on('signOut', handleSignOut)
+    januaClient.on('tokenRefreshed', handleTokenRefresh)
 
     return () => {
-      plintoClient.off('signIn', handleSignIn)
-      plintoClient.off('signOut', handleSignOut)
-      plintoClient.off('tokenRefreshed', handleTokenRefresh)
+      januaClient.off('signIn', handleSignIn)
+      januaClient.off('signOut', handleSignOut)
+      januaClient.off('tokenRefreshed', handleTokenRefresh)
     }
   }, [refreshUser])
 
   const login = async (email: string, password: string) => {
-    const response = await plintoClient.auth.signIn({ email, password })
+    const response = await januaClient.auth.signIn({ email, password })
     setUser(response.user)
   }
 
   const logout = async () => {
-    await plintoClient.auth.signOut()
+    await januaClient.auth.signOut()
     setUser(null)
     window.location.href = '/login'
   }

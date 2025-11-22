@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **@plinto/vue** SDK provides a comprehensive Vue 3 plugin and composable system for integrating Plinto authentication and user management into your Vue applications. Built on top of the TypeScript SDK, it offers reactive state management, automatic OAuth handling, and a full set of authentication methods.
+The **@janua/vue** SDK provides a comprehensive Vue 3 plugin and composable system for integrating Janua authentication and user management into your Vue applications. Built on top of the TypeScript SDK, it offers reactive state management, automatic OAuth handling, and a full set of authentication methods.
 
 ## Table of Contents
 
@@ -21,11 +21,11 @@ The **@plinto/vue** SDK provides a comprehensive Vue 3 plugin and composable sys
 ### Installation
 
 ```bash
-npm install @plinto/vue
+npm install @janua/vue
 # or
-yarn add @plinto/vue
+yarn add @janua/vue
 # or
-pnpm add @plinto/vue
+pnpm add @janua/vue
 ```
 
 ### Basic Setup
@@ -33,13 +33,13 @@ pnpm add @plinto/vue
 ```typescript
 // main.ts
 import { createApp } from 'vue'
-import { createPlinto } from '@plinto/vue'
+import { createJanua } from '@janua/vue'
 import App from './App.vue'
 
 const app = createApp(App)
 
-app.use(createPlinto({
-  baseUrl: 'https://api.plinto.dev',
+app.use(createJanua({
+  baseUrl: 'https://api.janua.dev',
   clientId: 'your-client-id',
   organizationSlug: 'your-org-slug'
 }))
@@ -50,11 +50,11 @@ app.mount('#app')
 ### Environment Configuration
 
 ```typescript
-// config/plinto.ts
-export const plintoConfig = {
-  baseUrl: import.meta.env.VITE_PLINTO_BASE_URL || 'https://api.plinto.dev',
-  clientId: import.meta.env.VITE_PLINTO_CLIENT_ID,
-  organizationSlug: import.meta.env.VITE_PLINTO_ORG_SLUG,
+// config/janua.ts
+export const januaConfig = {
+  baseUrl: import.meta.env.VITE_JANUA_BASE_URL || 'https://api.janua.dev',
+  clientId: import.meta.env.VITE_JANUA_CLIENT_ID,
+  organizationSlug: import.meta.env.VITE_JANUA_ORG_SLUG,
   onAuthChange: (user) => {
     console.log('Auth state changed:', user)
     // Custom logic for auth state changes
@@ -64,18 +64,18 @@ export const plintoConfig = {
 
 ```typescript
 // main.ts
-import { createPlinto } from '@plinto/vue'
-import { plintoConfig } from './config/plinto'
+import { createJanua } from '@janua/vue'
+import { januaConfig } from './config/janua'
 
-app.use(createPlinto(plintoConfig))
+app.use(createJanua(januaConfig))
 ```
 
 ## Plugin Configuration
 
-### PlintoPluginOptions Interface
+### JanuaPluginOptions Interface
 
 ```typescript
-interface PlintoPluginOptions {
+interface JanuaPluginOptions {
   baseUrl: string
   clientId: string
   organizationSlug?: string
@@ -106,9 +106,9 @@ const devConfig = {
 
 // Production Configuration
 const prodConfig = {
-  baseUrl: 'https://api.plinto.dev',
-  clientId: process.env.VUE_APP_PLINTO_CLIENT_ID,
-  organizationSlug: process.env.VUE_APP_PLINTO_ORG_SLUG,
+  baseUrl: 'https://api.janua.dev',
+  clientId: process.env.VUE_APP_JANUA_CLIENT_ID,
+  organizationSlug: process.env.VUE_APP_JANUA_ORG_SLUG,
   environment: 'production' as const,
   timeout: 10000,
   retryAttempts: 3
@@ -134,7 +134,7 @@ const prodConfig = {
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '@plinto/vue'
+import { useAuth } from '@janua/vue'
 
 const {
   user,
@@ -195,7 +195,7 @@ const handleSignOut = async () => {
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useUser } from '@plinto/vue'
+import { useUser } from '@janua/vue'
 
 const { user, isLoading, updateUser } = useUser()
 
@@ -250,7 +250,7 @@ const handleUpdateProfile = async () => {
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useSession } from '@plinto/vue'
+import { useSession } from '@janua/vue'
 
 const { session, refreshSession, revokeSession } = useSession()
 
@@ -308,8 +308,8 @@ const handleRevokeSession = async () => {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useOrganizations } from '@plinto/vue'
-import type { Organization } from '@plinto/vue'
+import { useOrganizations } from '@janua/vue'
+import type { Organization } from '@janua/vue'
 
 const organizations = ref<Organization[]>([])
 const isLoading = ref(true)
@@ -384,7 +384,7 @@ const createOrganization = async () => {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useMagicLink } from '@plinto/vue'
+import { useMagicLink } from '@janua/vue'
 
 const { sendMagicLink, signInWithMagicLink } = useMagicLink()
 
@@ -442,7 +442,7 @@ const handleMagicLinkCallback = async (token: string) => {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useOAuth } from '@plinto/vue'
+import { useOAuth } from '@janua/vue'
 
 const { getOAuthUrl, handleOAuthCallback } = useOAuth()
 
@@ -563,7 +563,7 @@ const handleCallback = async () => {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useMFA } from '@plinto/vue'
+import { useMFA } from '@janua/vue'
 
 const { enableMFA, confirmMFA, disableMFA, verifyMFA } = useMFA()
 
@@ -658,7 +658,7 @@ const handleDisableMFA = async () => {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { usePasskeys } from '@plinto/vue'
+import { usePasskeys } from '@janua/vue'
 
 const { registerPasskey, authenticateWithPasskey } = usePasskeys()
 
@@ -684,7 +684,7 @@ const handleRegisterPasskey = async () => {
     }) as PublicKeyCredential
 
     if (credential) {
-      // Complete registration with Plinto
+      // Complete registration with Janua
       // await completePasskeyRegistration(credential)
       hasPasskey.value = true
     }
@@ -708,7 +708,7 @@ const handleAuthenticateWithPasskey = async () => {
     }) as PublicKeyCredential
 
     if (credential) {
-      // Complete authentication with Plinto
+      // Complete authentication with Janua
       // await completePasskeyAuthentication(credential)
       // User is now authenticated
     }
@@ -728,7 +728,7 @@ const handleAuthenticateWithPasskey = async () => {
 ```typescript
 // router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
-import { usePlinto } from '@plinto/vue'
+import { useJanua } from '@janua/vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -757,8 +757,8 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const plinto = usePlinto()
-  const state = plinto.getState()
+  const janua = useJanua()
+  const state = janua.getState()
 
   // Wait for auth state to initialize
   while (state.isLoading) {
@@ -805,7 +805,7 @@ export default router
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useAuth } from '@plinto/vue'
+import { useAuth } from '@janua/vue'
 
 const { user } = useAuth()
 
@@ -857,7 +857,7 @@ function usePermissions() {
 ```typescript
 // composables/useCustomAuth.ts
 import { ref, computed, watch } from 'vue'
-import { useAuth } from '@plinto/vue'
+import { useAuth } from '@janua/vue'
 import { useRouter } from 'vue-router'
 import { useToast } from './useToast'
 
@@ -1189,7 +1189,7 @@ export function useCustomAuth() {
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useCustomAuth } from '../composables/useCustomAuth'
-import { useOAuth } from '@plinto/vue'
+import { useOAuth } from '@janua/vue'
 import MagicLinkForm from '../components/MagicLinkForm.vue'
 
 const {
@@ -1513,11 +1513,11 @@ const handleOAuthLogin = async (provider: string) => {
 // tests/composables/useAuth.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createPlinto } from '@plinto/vue'
+import { createJanua } from '@janua/vue'
 
 // Mock the TypeScript SDK
-vi.mock('@plinto/typescript-sdk', () => ({
-  PlintoClient: vi.fn().mockImplementation(() => ({
+vi.mock('@janua/typescript-sdk', () => ({
+  JanuaClient: vi.fn().mockImplementation(() => ({
     auth: {
       signIn: vi.fn(),
       signUp: vi.fn(),
@@ -1540,7 +1540,7 @@ describe('useAuth', () => {
       template: '<div></div>'
     })
 
-    app.use(createPlinto({
+    app.use(createJanua({
       baseUrl: 'http://localhost:8000',
       clientId: 'test-client-id'
     }))
@@ -1701,10 +1701,10 @@ test.describe('Authentication', () => {
 ### Type Definitions
 
 ```typescript
-// types/plinto.d.ts
-import '@plinto/vue'
+// types/janua.d.ts
+import '@janua/vue'
 
-declare module '@plinto/vue' {
+declare module '@janua/vue' {
   interface User {
     id: string
     email: string
@@ -1734,7 +1734,7 @@ declare module '@plinto/vue' {
     permissions: string[]
   }
 
-  interface PlintoState {
+  interface JanuaState {
     user: User | null
     session: Session | null
     isLoading: boolean
@@ -1748,8 +1748,8 @@ declare module '@plinto/vue' {
 ```typescript
 // composables/useTypedAuth.ts
 import type { ComputedRef } from 'vue'
-import type { User, Session } from '@plinto/vue'
-import { useAuth } from '@plinto/vue'
+import type { User, Session } from '@janua/vue'
+import { useAuth } from '@janua/vue'
 
 interface TypedAuthReturn {
   user: ComputedRef<User | null>
@@ -1780,19 +1780,19 @@ export function useTypedAuth(): TypedAuthReturn {
 #### 1. Plugin Not Installed Error
 
 ```typescript
-// Error: Plinto plugin not installed
-// Solution: Ensure you call app.use(createPlinto(...)) before mounting
+// Error: Janua plugin not installed
+// Solution: Ensure you call app.use(createJanua(...)) before mounting
 
 // main.ts
 import { createApp } from 'vue'
-import { createPlinto } from '@plinto/vue'
+import { createJanua } from '@janua/vue'
 import App from './App.vue'
 
 const app = createApp(App)
 
 // MUST be called before app.mount()
-app.use(createPlinto({
-  baseUrl: 'https://api.plinto.dev',
+app.use(createJanua({
+  baseUrl: 'https://api.janua.dev',
   clientId: 'your-client-id'
 }))
 
@@ -1815,7 +1815,7 @@ watchEffect(() => {
 })
 
 // Check if API is reachable
-fetch('https://api.plinto.dev/health')
+fetch('https://api.janua.dev/health')
   .then(response => console.log('API Status:', response.status))
   .catch(error => console.error('API Error:', error))
 ```
@@ -1836,7 +1836,7 @@ fetch('https://api.plinto.dev/health')
 // AuthCallback.vue
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useOAuth } from '@plinto/vue'
+import { useOAuth } from '@janua/vue'
 import { useRouter } from 'vue-router'
 
 const { handleOAuthCallback } = useOAuth()
@@ -1870,8 +1870,8 @@ onMounted(async () => {
 
 // Check for stored tokens on app initialization
 const initializeAuth = async () => {
-  const accessToken = localStorage.getItem('plinto_access_token')
-  const refreshToken = localStorage.getItem('plinto_refresh_token')
+  const accessToken = localStorage.getItem('janua_access_token')
+  const refreshToken = localStorage.getItem('janua_refresh_token')
 
   if (accessToken && refreshToken) {
     try {
@@ -1879,8 +1879,8 @@ const initializeAuth = async () => {
       await updateSession()
     } catch (error) {
       // Clear invalid tokens
-      localStorage.removeItem('plinto_access_token')
-      localStorage.removeItem('plinto_refresh_token')
+      localStorage.removeItem('janua_access_token')
+      localStorage.removeItem('janua_refresh_token')
     }
   }
 }
@@ -1897,7 +1897,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://api.plinto.dev',
+        target: 'https://api.janua.dev',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
@@ -1905,10 +1905,10 @@ export default defineConfig({
   }
 })
 
-// Update Plinto config for development
-const plintoConfig = {
-  baseUrl: import.meta.env.DEV ? '/api' : 'https://api.plinto.dev',
-  clientId: import.meta.env.VITE_PLINTO_CLIENT_ID
+// Update Janua config for development
+const januaConfig = {
+  baseUrl: import.meta.env.DEV ? '/api' : 'https://api.janua.dev',
+  clientId: import.meta.env.VITE_JANUA_CLIENT_ID
 }
 ```
 
@@ -1916,8 +1916,8 @@ const plintoConfig = {
 
 ```typescript
 // Enable debug logging
-const plintoConfig = {
-  baseUrl: 'https://api.plinto.dev',
+const januaConfig = {
+  baseUrl: 'https://api.janua.dev',
   clientId: 'your-client-id',
   debug: true, // Enable debug mode
   onAuthChange: (user) => {
@@ -1947,7 +1947,7 @@ const preloadAuthData = async () => {
 
 ## Summary
 
-The **@plinto/vue** SDK provides a comprehensive authentication solution for Vue 3 applications with:
+The **@janua/vue** SDK provides a comprehensive authentication solution for Vue 3 applications with:
 
 - **Plugin System**: Easy installation and configuration
 - **Reactive Composables**: Full suite of authentication composables
@@ -1958,4 +1958,4 @@ The **@plinto/vue** SDK provides a comprehensive authentication solution for Vue
 
 This guide covers all aspects from basic setup to advanced enterprise features, providing you with everything needed to implement robust authentication in your Vue applications.
 
-For additional support and advanced use cases, refer to the [Plinto documentation](https://docs.plinto.dev) or contact our support team.
+For additional support and advanced use cases, refer to the [Janua documentation](https://docs.janua.dev) or contact our support team.

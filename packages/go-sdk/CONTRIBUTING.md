@@ -1,4 +1,4 @@
-# Contributing to Plinto Go SDK
+# Contributing to Janua Go SDK
 
 ## Development Setup
 
@@ -11,8 +11,8 @@
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/madfam-io/plinto.git
-   cd plinto/packages/go-sdk
+   git clone https://github.com/madfam-io/janua.git
+   cd janua/packages/go-sdk
    ```
 
 2. **Install dependencies**:
@@ -88,7 +88,7 @@ golangci-lint run ./...
 
 ```
 go-sdk/
-├── plinto/           # Main SDK package
+├── janua/           # Main SDK package
 │   ├── client.go     # Main client implementation
 │   ├── auth.go       # Authentication methods
 │   ├── users.go      # User management
@@ -118,7 +118,7 @@ make test-coverage
 
 ### Run Tests for Specific Package
 ```bash
-go test -v ./plinto
+go test -v ./janua
 ```
 
 ### Run Tests with Race Detector
@@ -223,7 +223,7 @@ make build
 go test -v ./...
 
 # Run specific test
-go test -v -run TestSpecificFunction ./plinto
+go test -v -run TestSpecificFunction ./janua
 ```
 
 ## Code Style Guidelines

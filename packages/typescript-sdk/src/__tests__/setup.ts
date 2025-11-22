@@ -2,8 +2,8 @@
 import '@testing-library/jest-dom';
 
 // Mock environment variables for SDK testing
-process.env.PLINTO_API_URL = 'http://localhost:4000';
-process.env.PLINTO_ENV = 'test';
+process.env.JANUA_API_URL = 'http://localhost:4000';
+process.env.JANUA_ENV = 'test';
 
 // Mock fetch for API calls
 global.fetch = jest.fn();

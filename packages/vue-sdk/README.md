@@ -1,15 +1,15 @@
-# @plinto/vue
+# @janua/vue
 
-Official Plinto SDK for Vue 3 applications with Composition API support.
+Official Janua SDK for Vue 3 applications with Composition API support.
 
 ## Installation
 
 ```bash
-npm install @plinto/vue
+npm install @janua/vue
 # or
-yarn add @plinto/vue
+yarn add @janua/vue
 # or
-pnpm add @plinto/vue
+pnpm add @janua/vue
 ```
 
 ## Features
@@ -27,11 +27,11 @@ pnpm add @plinto/vue
 
 ### 1. Environment Configuration
 
-Add your Plinto credentials to your environment:
+Add your Janua credentials to your environment:
 
 ```env
-VITE_PLINTO_PUBLISHABLE_KEY=pk_live_...
-VITE_PLINTO_API_URL=https://api.plinto.dev
+VITE_JANUA_PUBLISHABLE_KEY=pk_live_...
+VITE_JANUA_API_URL=https://api.janua.dev
 ```
 
 ### 2. Install the Plugin
@@ -39,16 +39,16 @@ VITE_PLINTO_API_URL=https://api.plinto.dev
 ```typescript
 // main.ts
 import { createApp } from 'vue';
-import { createPlinto } from '@plinto/vue';
+import { createJanua } from '@janua/vue';
 import App from './App.vue';
 
-const plinto = createPlinto({
-  publishableKey: import.meta.env.VITE_PLINTO_PUBLISHABLE_KEY,
-  apiUrl: import.meta.env.VITE_PLINTO_API_URL,
+const janua = createJanua({
+  publishableKey: import.meta.env.VITE_JANUA_PUBLISHABLE_KEY,
+  apiUrl: import.meta.env.VITE_JANUA_API_URL,
 });
 
 const app = createApp(App);
-app.use(plinto);
+app.use(janua);
 app.mount('#app');
 ```
 
@@ -72,7 +72,7 @@ app.mount('#app');
 </template>
 
 <script setup lang="ts">
-import { useAuth, useUser } from '@plinto/vue';
+import { useAuth, useUser } from '@janua/vue';
 import SignInForm from './components/SignInForm.vue';
 
 const { isSignedIn, isLoading, signOut } = useAuth();
@@ -101,7 +101,7 @@ const handleSignIn = (user: any) => {
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useSignIn } from '@plinto/vue';
+import { useSignIn } from '@janua/vue';
 
 const email = ref('');
 const password = ref('');
@@ -141,7 +141,7 @@ const handleSignIn = async () => {
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useSignUp } from '@plinto/vue';
+import { useSignUp } from '@janua/vue';
 
 const email = ref('');
 const password = ref('');
@@ -190,7 +190,7 @@ const handleSignUp = async () => {
 </template>
 
 <script setup lang="ts">
-import { useOrganizations } from '@plinto/vue';
+import { useOrganizations } from '@janua/vue';
 
 const {
   organizations,
@@ -222,7 +222,7 @@ const {
 ```typescript
 // router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
-import { usePlinto } from '@plinto/vue';
+import { useJanua } from '@janua/vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -248,10 +248,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const plinto = usePlinto();
+  const janua = useJanua();
 
   if (to.meta.requiresAuth) {
-    const session = await plinto.auth.getSession();
+    const session = await janua.auth.getSession();
 
     if (!session) {
       next('/sign-in');
@@ -410,7 +410,7 @@ const {
 ### Plugin Configuration
 
 ```typescript
-interface PlintoPluginOptions {
+interface JanuaPluginOptions {
   publishableKey: string;
   apiUrl?: string;
   sessionCookieName?: string;
@@ -418,10 +418,10 @@ interface PlintoPluginOptions {
   refreshInterval?: number;
 }
 
-const plinto = createPlinto({
+const janua = createJanua({
   publishableKey: 'pk_live_...',
-  apiUrl: 'https://api.plinto.dev',
-  sessionCookieName: 'plinto-session',
+  apiUrl: 'https://api.janua.dev',
+  sessionCookieName: 'janua-session',
   autoRefresh: true,
   refreshInterval: 300000 // 5 minutes
 });
@@ -432,7 +432,7 @@ const plinto = createPlinto({
 All composables and functions are fully typed:
 
 ```typescript
-import type { User, Organization, Session } from '@plinto/vue';
+import type { User, Organization, Session } from '@janua/vue';
 
 const user: User = {
   id: 'user_123',
@@ -453,7 +453,7 @@ MIT License - see [LICENSE](./LICENSE) file for details.
 
 ## Support
 
-- 📖 [Documentation](https://docs.plinto.dev)
-- 💬 [Discord Community](https://discord.gg/plinto)
-- 🐛 [Report Issues](https://github.com/plinto/plinto/issues)
-- 📧 [Email Support](mailto:support@plinto.dev)
+- 📖 [Documentation](https://docs.janua.dev)
+- 💬 [Discord Community](https://discord.gg/janua)
+- 🐛 [Report Issues](https://github.com/janua/janua/issues)
+- 📧 [Email Support](mailto:support@janua.dev)

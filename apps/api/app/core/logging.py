@@ -1,5 +1,5 @@
 """
-Structured logging configuration for Plinto
+Structured logging configuration for Janua
 """
 
 import logging

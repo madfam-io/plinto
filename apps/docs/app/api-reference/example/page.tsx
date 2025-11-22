@@ -96,7 +96,7 @@ export default function ApiReferencePage() {
           examples={[
             {
               language: 'javascript',
-              code: `const response = await fetch('https://api.plinto.dev/api/auth/login', {
+              code: `const response = await fetch('https://api.janua.dev/api/auth/login', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ console.log(data.tokens.access);`
               code: `import requests
 
 response = requests.post(
-    'https://api.plinto.dev/api/auth/login',
+    'https://api.janua.dev/api/auth/login',
     json={
         'email': 'user@example.com',
         'password': 'SecurePassword123!',

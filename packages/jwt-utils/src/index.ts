@@ -1,34 +1,34 @@
 /**
- * Plinto JavaScript/TypeScript SDK
+ * Janua JavaScript/TypeScript SDK
  */
 
 import { z } from 'zod'
 import { verifyToken, type JWTPayload } from './jwt'
 import { JWKSCache } from './jwks'
 import type {
-  PlintoConfig,
+  JanuaConfig,
   CreateIdentityData,
   CreateSessionData,
   Identity,
   Session,
   Organization,
   TokenPair,
-  PlintoError
+  JanuaError
 } from './types'
 
 export * from './types'
 export { verifyToken } from './jwt'
 
 /**
- * Main Plinto SDK client
+ * Main Janua SDK client
  */
-export class PlintoClient {
-  private config: PlintoConfig
+export class JanuaClient {
+  private config: JanuaConfig
   private jwksCache: JWKSCache | null = null
 
-  constructor(config: PlintoConfig) {
+  constructor(config: JanuaConfig) {
     this.config = {
-      baseUrl: 'https://plinto.dev',
+      baseUrl: 'https://janua.dev',
       ...config
     }
 
@@ -117,8 +117,8 @@ export class PlintoClient {
           const jwks = await this.jwksCache.get()
           if (jwks) {
             return await verifyToken(token, jwks, {
-              audience: this.config.audience || 'plinto.dev',
-              issuer: this.config.issuer || 'https://plinto.dev'
+              audience: this.config.audience || 'janua.dev',
+              issuer: this.config.issuer || 'https://janua.dev'
             })
           }
         } catch (error) {
@@ -320,7 +320,7 @@ export class PlintoClient {
 
     // Add tenant ID if provided
     if (this.config.tenantId) {
-      headers['X-Plinto-Tenant'] = this.config.tenantId
+      headers['X-Janua-Tenant'] = this.config.tenantId
     }
 
     const response = await fetch(url, {
@@ -338,7 +338,7 @@ export class PlintoClient {
         }
       }))
       
-      throw new PlintoAPIError(
+      throw new JanuaAPIError(
         error.error?.message || 'Request failed',
         error.error?.code || 'unknown_error',
         response.status
@@ -355,22 +355,22 @@ export class PlintoClient {
 }
 
 /**
- * Plinto API Error
+ * Janua API Error
  */
-export class PlintoAPIError extends Error implements PlintoError {
+export class JanuaAPIError extends Error implements JanuaError {
   constructor(
     message: string,
     public code: string,
     public status: number
   ) {
     super(message)
-    this.name = 'PlintoAPIError'
+    this.name = 'JanuaAPIError'
   }
 }
 
 /**
- * Create a Plinto client instance
+ * Create a Janua client instance
  */
-export function createClient(config: PlintoConfig): PlintoClient {
-  return new PlintoClient(config)
+export function createClient(config: JanuaConfig): JanuaClient {
+  return new JanuaClient(config)
 }

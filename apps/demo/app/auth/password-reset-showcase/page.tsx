@@ -1,8 +1,8 @@
 'use client'
 
-import { PasswordReset } from '@plinto/ui'
+import { PasswordReset } from '@janua/ui'
 import { useState } from 'react'
-import { plintoClient } from '@/lib/plinto-client'
+import { januaClient } from '@/lib/janua-client'
 
 export default function PasswordResetShowcase() {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -62,7 +62,7 @@ export default function PasswordResetShowcase() {
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Usage</h3>
             <pre className="text-xs bg-gray-100 dark:bg-gray-900 p-2 rounded overflow-x-auto">
-{`import { PasswordReset } from '@plinto/ui'
+{`import { PasswordReset } from '@janua/ui'
 
 <PasswordReset
   onRequestReset={handleRequest}
@@ -95,7 +95,7 @@ export default function PasswordResetShowcase() {
           </h3>
 
           <PasswordReset
-            plintoClient={plintoClient}
+            januaClient={januaClient}
             onRequestReset={handleRequestReset}
             onError={handleError}
           />
@@ -117,7 +117,7 @@ export default function PasswordResetShowcase() {
           </h3>
 
           <PasswordReset
-            plintoClient={plintoClient}
+            januaClient={januaClient}
             token="demo-reset-token-123"
             onResetPassword={handleResetPassword}
             onError={handleError}
@@ -143,7 +143,7 @@ export default function PasswordResetShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Request Password Reset Page</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { PasswordReset } from '@plinto/ui'
+import { PasswordReset } from '@janua/ui'
 import { useRouter } from 'next/navigation'
 
 export default function ForgotPasswordPage() {
@@ -175,7 +175,7 @@ export default function ForgotPasswordPage() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Reset Password with Token</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { PasswordReset } from '@plinto/ui'
+import { PasswordReset } from '@janua/ui'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function ResetPasswordPage() {

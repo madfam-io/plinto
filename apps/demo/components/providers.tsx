@@ -1,8 +1,8 @@
 'use client'
 
-import { PlintoProvider } from './providers/plinto-provider'
-import { FeatureFlagProvider } from '@plinto/feature-flags'
-import { useAuth } from './providers/plinto-provider'
+import { JanuaProvider } from './providers/janua-provider'
+import { FeatureFlagProvider } from '@janua/feature-flags'
+import { useAuth } from './providers/janua-provider'
 
 function FeatureFlagWrapper({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
@@ -16,7 +16,7 @@ function FeatureFlagWrapper({ children }: { children: React.ReactNode }) {
         plan: user?.organization?.plan || 'free',
         attributes: {
           app: 'demo',
-          internal: user?.email?.endsWith('@plinto.dev') || false,
+          internal: user?.email?.endsWith('@janua.dev') || false,
         },
       }}
     >
@@ -27,8 +27,8 @@ function FeatureFlagWrapper({ children }: { children: React.ReactNode }) {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <PlintoProvider>
+    <JanuaProvider>
       <FeatureFlagWrapper>{children}</FeatureFlagWrapper>
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }

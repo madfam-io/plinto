@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 export function LoginForm() {
   const { signIn } = useAuth();

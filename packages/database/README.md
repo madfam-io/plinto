@@ -1,12 +1,12 @@
-# @plinto/database
+# @janua/database
 
-> **Unified database abstraction layer** for the Plinto platform
+> **Unified database abstraction layer** for the Janua platform
 
 **Version:** 0.1.0 · **Databases:** PostgreSQL, Redis · **Status:** Production Ready
 
 ## 📋 Overview
 
-@plinto/database provides a unified, type-safe database abstraction layer for all Plinto services. It includes PostgreSQL for primary data storage, Redis for caching and sessions, database migrations, connection pooling, and monitoring utilities.
+@janua/database provides a unified, type-safe database abstraction layer for all Janua services. It includes PostgreSQL for primary data storage, Redis for caching and sessions, database migrations, connection pooling, and monitoring utilities.
 
 ## 🚀 Quick Start
 
@@ -14,7 +14,7 @@
 
 ```bash
 # Install package
-yarn add @plinto/database
+yarn add @janua/database
 
 # Install database drivers
 yarn add pg redis
@@ -23,7 +23,7 @@ yarn add pg redis
 ### Basic Setup
 
 ```typescript
-import { Database, Redis, migrate } from '@plinto/database';
+import { Database, Redis, migrate } from '@janua/database';
 
 // Initialize PostgreSQL
 const db = new Database({
@@ -99,7 +99,7 @@ packages/database/
 ┌─────────────────────────────────────┐
 │         Application Layer           │
 ├─────────────────────────────────────┤
-│      @plinto/database               │
+│      @janua/database               │
 │  ┌───────────────────────────────┐  │
 │  │     Repository Layer          │  │
 │  │  ┌──────────┬──────────┐      │  │
@@ -120,14 +120,14 @@ packages/database/
 ### Connection Management
 
 ```typescript
-import { Database } from '@plinto/database';
+import { Database } from '@janua/database';
 
 const db = new Database({
   // Connection options
   host: 'localhost',
   port: 5432,
-  database: 'plinto',
-  user: 'plinto_user',
+  database: 'janua',
+  user: 'janua_user',
   password: 'secure_password',
   
   // Or use connection string
@@ -156,7 +156,7 @@ const stats = db.getPoolStats();
 ### Query Builder
 
 ```typescript
-import { query } from '@plinto/database';
+import { query } from '@janua/database';
 
 // Simple queries
 const users = await query('users')
@@ -188,7 +188,7 @@ const custom = await db.raw(`
 ### Models & ORM
 
 ```typescript
-import { Model, Column, Table } from '@plinto/database';
+import { Model, Column, Table } from '@janua/database';
 
 @Table('users')
 export class User extends Model {
@@ -234,7 +234,7 @@ await user.delete();
 ### Repositories
 
 ```typescript
-import { UserRepository } from '@plinto/database/repositories';
+import { UserRepository } from '@janua/database/repositories';
 
 const userRepo = new UserRepository(db);
 
@@ -265,7 +265,7 @@ export class CustomUserRepository extends UserRepository {
 ### Transactions
 
 ```typescript
-import { transaction } from '@plinto/database';
+import { transaction } from '@janua/database';
 
 // Automatic transaction management
 const result = await transaction(async (trx) => {
@@ -304,13 +304,13 @@ try {
 ### Cache Management
 
 ```typescript
-import { Redis, Cache } from '@plinto/database';
+import { Redis, Cache } from '@janua/database';
 
 const redis = new Redis({
   url: 'redis://localhost:6379',
   password: 'optional',
   db: 0,
-  keyPrefix: 'plinto:',
+  keyPrefix: 'janua:',
   maxRetries: 3,
   retryStrategy: (times) => Math.min(times * 50, 2000)
 });
@@ -342,7 +342,7 @@ await cache.flush(); // Clear all cache
 ### Session Store
 
 ```typescript
-import { SessionStore } from '@plinto/database/redis';
+import { SessionStore } from '@janua/database/redis';
 
 const sessions = new SessionStore(redis, {
   prefix: 'session:',
@@ -373,7 +373,7 @@ const userSessions = await sessions.getUserSessions('user_123');
 ### Pub/Sub
 
 ```typescript
-import { PubSub } from '@plinto/database/redis';
+import { PubSub } from '@janua/database/redis';
 
 const pubsub = new PubSub(redis);
 
@@ -405,7 +405,7 @@ pubsub.unsubscribe('auth:events');
 ### Rate Limiting
 
 ```typescript
-import { RateLimiter } from '@plinto/database/redis';
+import { RateLimiter } from '@janua/database/redis';
 
 const limiter = new RateLimiter(redis, {
   prefix: 'rate:',
@@ -434,7 +434,7 @@ await limiter.reset(`api:${userId}`);
 ### Running Migrations
 
 ```typescript
-import { Migrator } from '@plinto/database/migrations';
+import { Migrator } from '@janua/database/migrations';
 
 const migrator = new Migrator({
   database: db,
@@ -485,7 +485,7 @@ DROP TABLE IF EXISTS products;
 ### Seed Data
 
 ```typescript
-import { Seeder } from '@plinto/database/seeds';
+import { Seeder } from '@janua/database/seeds';
 
 const seeder = new Seeder(db);
 
@@ -512,7 +512,7 @@ export default async function seed(db: Database) {
 ### Database Metrics
 
 ```typescript
-import { Monitor } from '@plinto/database/monitoring';
+import { Monitor } from '@janua/database/monitoring';
 
 const monitor = new Monitor(db, redis);
 
@@ -613,7 +613,7 @@ const redis = new Redis({
 ### Test Utilities
 
 ```typescript
-import { TestDatabase, TestRedis } from '@plinto/database/testing';
+import { TestDatabase, TestRedis } from '@janua/database/testing';
 
 // Setup test database
 const testDb = await TestDatabase.create();
@@ -634,7 +634,7 @@ await mockRedis.set('key', 'value');
 ### Integration Testing
 
 ```typescript
-import { createTestDatabase } from '@plinto/database/testing';
+import { createTestDatabase } from '@janua/database/testing';
 
 describe('User Repository', () => {
   let db: Database;
@@ -736,10 +736,10 @@ yarn db:restore          # Restore from backup
 
 ## 📚 Resources
 
-- [Database Documentation](https://docs.plinto.dev/packages/database)
-- [Query Builder Guide](https://docs.plinto.dev/packages/database/query-builder)
-- [Migration Guide](https://docs.plinto.dev/packages/database/migrations)
-- [Performance Tuning](https://docs.plinto.dev/packages/database/performance)
+- [Database Documentation](https://docs.janua.dev/packages/database)
+- [Query Builder Guide](https://docs.janua.dev/packages/database/query-builder)
+- [Migration Guide](https://docs.janua.dev/packages/database/migrations)
+- [Performance Tuning](https://docs.janua.dev/packages/database/performance)
 
 ## 🎯 Roadmap
 
@@ -761,4 +761,4 @@ See [Database Contributing Guide](../../docs/contributing/database.md) for devel
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

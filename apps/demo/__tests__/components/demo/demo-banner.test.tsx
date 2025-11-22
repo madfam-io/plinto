@@ -18,8 +18,8 @@ jest.mock('@/hooks/useEnvironment', () => ({
   useEnvironment: jest.fn(),
 }))
 
-// Mock @plinto/ui components
-jest.mock('@plinto/ui', () => {
+// Mock @janua/ui components
+jest.mock('@janua/ui', () => {
   const React = require('react');
   return {
     Button: (props) => React.createElement('button', props, props.children),
@@ -87,7 +87,7 @@ describe('DemoBanner', () => {
 
     expect(screen.getByTestId('info-icon')).toBeInTheDocument()
     expect(screen.getByText('Demo Environment')).toBeInTheDocument()
-    expect(screen.getByText(/Experience Plinto's authentication platform/)).toBeInTheDocument()
+    expect(screen.getByText(/Experience Janua's authentication platform/)).toBeInTheDocument()
     expect(screen.getByText('Try Production')).toBeInTheDocument()
     expect(screen.getByTestId('external-link-icon')).toBeInTheDocument()
     expect(screen.getByTestId('x-icon')).toBeInTheDocument()
@@ -105,7 +105,7 @@ describe('DemoBanner', () => {
     const tryProductionButton = screen.getByText('Try Production')
     fireEvent.click(tryProductionButton)
 
-    expect(global.open).toHaveBeenCalledWith('https://plinto.dev/contact', '_blank')
+    expect(global.open).toHaveBeenCalledWith('https://janua.dev/contact', '_blank')
   })
 
   it('should dismiss banner when close button is clicked', () => {

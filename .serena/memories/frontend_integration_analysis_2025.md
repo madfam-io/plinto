@@ -7,10 +7,10 @@
 **Finding**: Frontend has excellent foundation but **missing UI for all enterprise APIs**
 
 ### Current State
-- ✅ 15 production-ready auth components (`@plinto/ui`)
+- ✅ 15 production-ready auth components (`@janua/ui`)
 - ✅ TypeScript SDK with auth, users, sessions, organizations
 - ✅ Demo app with 9 showcase pages
-- ✅ Plinto client configured with auto-refresh
+- ✅ Janua client configured with auto-refresh
 - ❌ **No UI for SSO, SCIM, Invitations, Compliance, RBAC, GraphQL**
 
 ### Gap Summary
@@ -370,8 +370,8 @@
 
 ### Current Setup
 ```typescript
-// apps/demo/lib/plinto-client.ts
-export const plintoClient = new PlintoClient({
+// apps/demo/lib/janua-client.ts
+export const januaClient = new JanuaClient({
   apiUrl: 'http://localhost:8000',
   apiBasePath: '/api/v1',
   tokenStorage: { type: 'localStorage' },
@@ -395,8 +395,8 @@ export const plintoClient = new PlintoClient({
 
 ### Recommended Pattern
 ```typescript
-// Pattern 1: Extend PlintoClient with enterprise modules
-export class PlintoClient {
+// Pattern 1: Extend JanuaClient with enterprise modules
+export class JanuaClient {
   public readonly sso: SSO;
   public readonly invitations: Invitations;
   public readonly compliance: Compliance;
@@ -451,7 +451,7 @@ export const useEnterpriseStore = create<EnterpriseState>((set) => ({
 3. Create `compliance.ts` module (1 day)
 4. Create `scim.ts` module (0.5 days)
 5. Create `rbac.ts` module (0.5 days)
-6. Integrate modules into PlintoClient (0.5 days)
+6. Integrate modules into JanuaClient (0.5 days)
 7. Add TypeScript types (0.5 days)
 
 **Deliverable**: Complete SDK coverage for all backend APIs
@@ -614,9 +614,9 @@ export class Invitations {
   }
 }
 
-// 2. Add to PlintoClient
+// 2. Add to JanuaClient
 // packages/typescript-sdk/src/client.ts
-export class PlintoClient {
+export class JanuaClient {
   public readonly invitations: Invitations;
   
   constructor(config) {
@@ -631,7 +631,7 @@ export function InvitationManager() {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   
   useEffect(() => {
-    plintoClient.invitations.list().then(setInvitations);
+    januaClient.invitations.list().then(setInvitations);
   }, []);
   
   return (

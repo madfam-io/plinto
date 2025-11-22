@@ -1,5 +1,5 @@
 /**
- * WebSocket client module for Plinto SDK
+ * WebSocket client module for Janua SDK
  * Provides real-time communication with automatic reconnection
  */
 

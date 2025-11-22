@@ -1,6 +1,6 @@
 # SOC2 Controls Documentation
 
-This directory contains the detailed control documentation for SOC2 Type II compliance, mapped to the Trust Services Criteria and Plinto's existing security architecture.
+This directory contains the detailed control documentation for SOC2 Type II compliance, mapped to the Trust Services Criteria and Janua's existing security architecture.
 
 ## Control Framework Overview
 
@@ -47,7 +47,7 @@ controls/
 │   ├── control-testing-procedures.md
 │   └── evidence-requirements.md
 └── mappings/                  # Control mappings
-    ├── plinto-control-mapping.md
+    ├── janua-control-mapping.md
     ├── nist-mapping.md
     └── iso27001-mapping.md
 ```
@@ -171,7 +171,7 @@ controls/
 - **Quarterly**: Executive risk report
 - **Annually**: SOC2 readiness assessment
 
-## Integration with Plinto Architecture
+## Integration with Janua Architecture
 
 ### Existing Security Features Leveraged
 - JWT authentication and authorization system
@@ -197,4 +197,4 @@ controls/
 
 ---
 
-*This control framework provides comprehensive SOC2 Type II coverage while leveraging Plinto's existing security architecture. Each control includes detailed implementation guidance, testing procedures, and evidence requirements.*
+*This control framework provides comprehensive SOC2 Type II coverage while leveraging Janua's existing security architecture. Each control includes detailed implementation guidance, testing procedures, and evidence requirements.*

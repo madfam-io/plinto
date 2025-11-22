@@ -17,7 +17,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from pydantic import ValidationError
 
 # Import unified exception system
-from app.core.exceptions import PlintoException, PlintoAPIException
+from app.core.exceptions import JanuaException, JanuaAPIException
 
 logger = structlog.get_logger()
 
@@ -164,8 +164,8 @@ class ErrorHandlingMiddleware(BaseHTTPMiddleware):
     async def _create_error_response(self, exc: Exception, request_id: int) -> JSONResponse:
         """Create standardized error response"""
 
-        # Handle unified Plinto exceptions (from app.core.exceptions)
-        if isinstance(exc, PlintoAPIException):
+        # Handle unified Janua exceptions (from app.core.exceptions)
+        if isinstance(exc, JanuaAPIException):
             error_data = {
                 "error": {
                     "code": exc.error_code,
@@ -340,8 +340,8 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
     )
 
 
-async def plinto_exception_handler(request: Request, exc: PlintoAPIException) -> JSONResponse:
-    """Handler for unified Plinto exceptions"""
+async def janua_exception_handler(request: Request, exc: JanuaAPIException) -> JSONResponse:
+    """Handler for unified Janua exceptions"""
     error_data = {
         "error": {
             "code": exc.error_code,
@@ -354,7 +354,7 @@ async def plinto_exception_handler(request: Request, exc: PlintoAPIException) ->
 
     # Log the exception with context
     logger.error(
-        "Plinto exception occurred",
+        "Janua exception occurred",
         error_code=exc.error_code,
         message=exc.message,
         details=exc.details,

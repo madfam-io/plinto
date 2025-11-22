@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, X, ArrowRight } from 'lucide-react'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
@@ -17,7 +17,7 @@ export function PricingSection() {
       price: { monthly: 0, annual: 0 },
       featured: false,
       cta: 'Start Free',
-      href: 'https://app.plinto.dev/auth/signup',
+      href: 'https://app.janua.dev/auth/signup',
       features: [
         '2,000 monthly active users',
         'Passkey authentication',
@@ -40,7 +40,7 @@ export function PricingSection() {
       price: { monthly: 69, annual: 59 },
       featured: true,
       cta: 'Start 14-day trial',
-      href: 'https://app.plinto.dev/auth/signup?plan=pro',
+      href: 'https://app.janua.dev/auth/signup?plan=pro',
       features: [
         '10,000 monthly active users',
         'Everything in Community',
@@ -66,7 +66,7 @@ export function PricingSection() {
       price: { monthly: 299, annual: 249 },
       featured: false,
       cta: 'Start 14-day trial',
-      href: 'https://app.plinto.dev/auth/signup?plan=scale',
+      href: 'https://app.janua.dev/auth/signup?plan=scale',
       features: [
         '50,000 monthly active users',
         'Everything in Pro',
@@ -91,7 +91,7 @@ export function PricingSection() {
       price: { monthly: 'Custom', annual: 'Custom' },
       featured: false,
       cta: 'Contact Sales',
-      href: 'https://app.plinto.dev/contact-sales',
+      href: 'https://app.janua.dev/contact-sales',
       features: [
         'Unlimited MAU',
         'Everything in Scale',

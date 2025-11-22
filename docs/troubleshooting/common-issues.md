@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-Common issues and solutions for Plinto Identity Platform.
+Common issues and solutions for Janua Identity Platform.
 
 ## Authentication Issues
 
@@ -17,7 +17,7 @@ Common issues and solutions for Plinto Identity Platform.
 ```javascript
 // Debug authentication
 try {
-  const response = await plinto.auth.signIn({ email, password });
+  const response = await janua.auth.signIn({ email, password });
 } catch (error) {
   console.log('Error code:', error.code);
   console.log('Error details:', error.details);
@@ -41,9 +41,9 @@ try {
 
 ```javascript
 // Handle session expiration
-plinto.on('session_expired', async () => {
+janua.on('session_expired', async () => {
   try {
-    await plinto.auth.refreshToken();
+    await janua.auth.refreshToken();
   } catch (error) {
     // Redirect to login
     window.location.href = '/login';
@@ -64,7 +64,7 @@ plinto.on('session_expired', async () => {
 ```javascript
 // MFA debugging
 const debugMFA = async (code) => {
-  const serverTime = await plinto.getServerTime();
+  const serverTime = await janua.getServerTime();
   const clientTime = Date.now();
   const timeDiff = Math.abs(serverTime - clientTime);
   
@@ -90,7 +90,7 @@ const debugMFA = async (code) => {
 
 ```javascript
 // Correct redirect URI setup
-const plinto = new PlintoClient({
+const janua = new JanuaClient({
   redirectUri: 'https://app.example.com/auth/callback' // Must match exactly
 });
 ```
@@ -108,7 +108,7 @@ const plinto = new PlintoClient({
 // Proper state handling
 const handleOAuthCallback = async (code, state) => {
   // State is verified automatically by SDK
-  const response = await plinto.auth.handleOAuthCallback(code, state);
+  const response = await janua.auth.handleOAuthCallback(code, state);
 };
 ```
 
@@ -117,7 +117,7 @@ const handleOAuthCallback = async (code, state) => {
 **Problem**: Social login button doesn't work.
 
 **Solutions**:
-1. Verify provider is enabled in Plinto dashboard
+1. Verify provider is enabled in Janua dashboard
 2. Check client ID and secret are configured
 3. Ensure provider app is not in development mode
 
@@ -136,7 +136,7 @@ const handleOAuthCallback = async (code, state) => {
 // Manual token refresh
 const refreshTokens = async () => {
   try {
-    const tokens = await plinto.auth.refreshToken();
+    const tokens = await janua.auth.refreshToken();
     console.log('Tokens refreshed successfully');
   } catch (error) {
     if (error.code === 'REFRESH_TOKEN_EXPIRED') {
@@ -173,7 +173,7 @@ const secureStorage = {
   }
 };
 
-const plinto = new PlintoClient({
+const janua = new JanuaClient({
   storage: secureStorage
 });
 ```
@@ -185,14 +185,14 @@ const plinto = new PlintoClient({
 **Problem**: Browser blocks requests with CORS error.
 
 **Solutions**:
-1. Verify allowed origins in Plinto configuration
+1. Verify allowed origins in Janua configuration
 2. Check for preflight request issues
 3. Ensure credentials are included correctly
 
 ```javascript
 // CORS configuration
-const plinto = new PlintoClient({
-  baseURL: 'https://api.plinto.dev',
+const janua = new JanuaClient({
+  baseURL: 'https://api.janua.dev',
   credentials: 'include', // For cookies
   headers: {
     'Content-Type': 'application/json'
@@ -238,7 +238,7 @@ const handleRateLimit = async (fn, ...args) => {
 
 ```javascript
 // Timeout configuration
-const plinto = new PlintoClient({
+const janua = new JanuaClient({
   timeout: 30000, // 30 seconds
   retryConfig: {
     retries: 3,
@@ -311,10 +311,10 @@ adb shell am start -W -a android.intent.action.VIEW \
 const getToken = async () => {
   try {
     // Try secure storage first
-    return await Keychain.getInternetCredentials('plinto');
+    return await Keychain.getInternetCredentials('janua');
   } catch (error) {
     // Fallback to AsyncStorage
-    return await AsyncStorage.getItem('plinto_token');
+    return await AsyncStorage.getItem('janua_token');
   }
 };
 ```
@@ -389,13 +389,13 @@ const debugPasskey = async () => {
 // Organization switching
 const switchOrganization = async (orgId) => {
   // Clear current context
-  await plinto.clearOrganizationContext();
+  await janua.clearOrganizationContext();
   
   // Set new organization
-  await plinto.setOrganization(orgId);
+  await janua.setOrganization(orgId);
   
   // Refresh user permissions
-  await plinto.users.refreshPermissions();
+  await janua.users.refreshPermissions();
 };
 ```
 
@@ -413,7 +413,7 @@ const switchOrganization = async (orgId) => {
 // Invite handling
 const acceptInvite = async (inviteToken) => {
   try {
-    const result = await plinto.organizations.acceptInvite(inviteToken);
+    const result = await janua.organizations.acceptInvite(inviteToken);
     console.log('Joined organization:', result.organization.name);
   } catch (error) {
     if (error.code === 'INVITE_EXPIRED') {
@@ -443,7 +443,7 @@ const measureAuthTime = async () => {
   const start = performance.now();
   
   try {
-    await plinto.auth.signIn({ email, password });
+    await janua.auth.signIn({ email, password });
     const duration = performance.now() - start;
     
     if (duration > 3000) {
@@ -473,12 +473,12 @@ class AuthComponent {
       this.refreshToken();
     }, 30 * 60 * 1000);
     
-    plinto.on('session_expired', this.handleExpired);
+    janua.on('session_expired', this.handleExpired);
   }
   
   destroy() {
     clearInterval(this.refreshInterval);
-    plinto.off('session_expired', this.handleExpired);
+    janua.off('session_expired', this.handleExpired);
   }
 }
 ```
@@ -489,16 +489,16 @@ class AuthComponent {
 
 ```javascript
 // Enable verbose logging
-const plinto = new PlintoClient({
+const janua = new JanuaClient({
   debug: true,
   logLevel: 'verbose'
 });
 
 // Custom logger
-plinto.setLogger({
-  log: (...args) => console.log('[Plinto]', ...args),
-  error: (...args) => console.error('[Plinto Error]', ...args),
-  warn: (...args) => console.warn('[Plinto Warning]', ...args)
+janua.setLogger({
+  log: (...args) => console.log('[Janua]', ...args),
+  error: (...args) => console.error('[Janua Error]', ...args),
+  warn: (...args) => console.warn('[Janua Warning]', ...args)
 });
 ```
 
@@ -506,13 +506,13 @@ plinto.setLogger({
 
 ```javascript
 // Intercept requests
-plinto.interceptors.request.use(request => {
+janua.interceptors.request.use(request => {
   console.log('Request:', request);
   return request;
 });
 
 // Intercept responses
-plinto.interceptors.response.use(
+janua.interceptors.response.use(
   response => {
     console.log('Response:', response);
     return response;
@@ -529,11 +529,11 @@ plinto.interceptors.response.use(
 ```javascript
 // Get current state
 const debugState = () => {
-  console.log('User:', plinto.currentUser);
-  console.log('Authenticated:', plinto.isAuthenticated);
-  console.log('Organization:', plinto.currentOrganization);
-  console.log('Permissions:', plinto.permissions);
-  console.log('Token Expiry:', plinto.tokenExpiry);
+  console.log('User:', janua.currentUser);
+  console.log('Authenticated:', janua.isAuthenticated);
+  console.log('Organization:', janua.currentOrganization);
+  console.log('Permissions:', janua.permissions);
+  console.log('Token Expiry:', janua.tokenExpiry);
 };
 ```
 
@@ -541,10 +541,10 @@ const debugState = () => {
 
 If you continue to experience issues:
 
-1. **Check Documentation**: https://docs.plinto.dev
-2. **Search Issues**: https://github.com/plinto/plinto-sdks/issues
-3. **Community Forum**: https://community.plinto.dev
-4. **Contact Support**: support@plinto.dev
+1. **Check Documentation**: https://docs.janua.dev
+2. **Search Issues**: https://github.com/janua/janua-sdks/issues
+3. **Community Forum**: https://community.janua.dev
+4. **Contact Support**: support@janua.dev
 
 When reporting issues, include:
 - SDK version

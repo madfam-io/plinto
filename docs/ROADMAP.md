@@ -1,4 +1,4 @@
-# Plinto Development Roadmap
+# Janua Development Roadmap
 
 **Last Updated**: November 17, 2025  
 **Based On**: Strategic Positioning Audit (November 2025)
@@ -129,7 +129,7 @@ This roadmap prioritizes features and improvements based on competitive differen
 - Postman collection available
 
 ### Week 5: "Deploy to X" Buttons (Interim Cloud Solution)
-**Goal**: Make self-hosting easier while building Plinto Cloud
+**Goal**: Make self-hosting easier while building Janua Cloud
 
 - [ ] **Railway Integration**:
   - [ ] Create Railway blueprint template
@@ -179,13 +179,13 @@ This roadmap prioritizes features and improvements based on competitive differen
 **Goal**: Match Better-Auth's "bring your own ORM" capability
 
 - [ ] **Prisma Adapter** (~800 lines):
-  - [ ] `PrismaPlintoAdapter` class
+  - [ ] `PrismaJanuaAdapter` class
   - [ ] User CRUD operations
   - [ ] Session management
   - [ ] Organization queries
   - [ ] Type-safe query builders
 - [ ] **Drizzle Adapter** (~700 lines):
-  - [ ] `DrizzlePlintoAdapter` class
+  - [ ] `DrizzleJanuaAdapter` class
   - [ ] Same interface as Prisma adapter
   - [ ] Query builders for Drizzle ORM
 - [ ] **Documentation**:
@@ -232,7 +232,7 @@ This roadmap prioritizes features and improvements based on competitive differen
 
 **Competitive Impact**: Captures Svelte/Astro developers (Clerk can't serve), grows TAM
 
-### March 2026: Plinto Cloud MVP
+### March 2026: Janua Cloud MVP
 **Goal**: Launch managed hosting offering (primary revenue stream)
 
 **Infrastructure**:
@@ -325,7 +325,7 @@ This roadmap prioritizes features and improvements based on competitive differen
 - [ ] **Support Tooling**:
   - [ ] Zendesk or Intercom (ticketing)
   - [ ] Slack Connect (enterprise customers)
-  - [ ] Status page (status.plinto.dev)
+  - [ ] Status page (status.janua.dev)
 - [ ] **Support Tiers**:
   - [ ] Community (free): GitHub + Discord
   - [ ] Professional ($499/mo): Email 24hr SLA
@@ -377,7 +377,7 @@ This roadmap prioritizes features and improvements based on competitive differen
   - [ ] Devise migration guide
 - [ ] **Documentation**:
   - [ ] Rails quickstart
-  - [ ] Devise → Plinto migration
+  - [ ] Devise → Janua migration
   - [ ] Example Rails app
 
 **Success Metrics**:
@@ -431,7 +431,7 @@ This roadmap prioritizes features and improvements based on competitive differen
 - [ ] **1,000+ Discord members**
 - [ ] **100+ community contributors**
 - [ ] **Monthly community calls**
-- [ ] **Annual Plinto conference** (virtual or in-person)
+- [ ] **Annual Janua conference** (virtual or in-person)
 
 ---
 
@@ -490,9 +490,9 @@ This roadmap prioritizes features and improvements based on competitive differen
 
 We build in public and welcome community input:
 
-- **GitHub Discussions**: https://github.com/plinto/plinto/discussions
-- **Discord**: https://discord.gg/plinto
-- **Roadmap Feedback**: roadmap@plinto.dev
+- **GitHub Discussions**: https://github.com/janua/janua/discussions
+- **Discord**: https://discord.gg/janua
+- **Roadmap Feedback**: roadmap@janua.dev
 - **Feature Requests**: Use GitHub Issues with `enhancement` label
 
 **How to Influence the Roadmap**:
@@ -506,4 +506,4 @@ We build in public and welcome community input:
 
 **Last Updated**: November 17, 2025  
 **Next Review**: January 1, 2026  
-**Maintained By**: Plinto Core Team
+**Maintained By**: Janua Core Team

@@ -1,13 +1,13 @@
 # Development Documentation
 
-> **Complete developer onboarding and workflow documentation for the Plinto API**
+> **Complete developer onboarding and workflow documentation for the Janua API**
 
-This section provides comprehensive development documentation covering setup, workflows, testing, and contribution guidelines for developers working on the Plinto authentication platform.
+This section provides comprehensive development documentation covering setup, workflows, testing, and contribution guidelines for developers working on the Janua authentication platform.
 
 ## 🎯 Developer Onboarding
 
-### Welcome to Plinto Development
-Welcome to the Plinto API development team! This guide will help you get up and running with the codebase, understand our development workflows, and start contributing effectively.
+### Welcome to Janua Development
+Welcome to the Janua API development team! This guide will help you get up and running with the codebase, understand our development workflows, and start contributing effectively.
 
 ### Development Philosophy
 - **Security First**: Every feature considers security implications
@@ -38,8 +38,8 @@ Welcome to the Plinto API development team! This guide will help you get up and 
 #### 1. Clone Repository
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/plinto.git
-cd plinto/apps/api
+git clone https://github.com/your-org/janua.git
+cd janua/apps/api
 
 # Create development branch
 git checkout -b feature/your-feature-name
@@ -67,21 +67,21 @@ pre-commit install
 #### 3. Database Setup
 ```bash
 # Using Docker (recommended)
-docker run --name plinto-postgres \
-  -e POSTGRES_DB=plinto \
+docker run --name janua-postgres \
+  -e POSTGRES_DB=janua \
   -e POSTGRES_USER=postgres \
   -e POSTGRES_PASSWORD=postgres \
   -p 5432:5432 \
   -d postgres:14
 
 # Or install PostgreSQL locally and create database
-createdb plinto
+createdb janua
 ```
 
 #### 4. Redis Setup
 ```bash
 # Using Docker (recommended)
-docker run --name plinto-redis \
+docker run --name janua-redis \
   -p 6379:6379 \
   -d redis:6-alpine
 
@@ -108,7 +108,7 @@ BASE_URL=http://localhost:8000
 FRONTEND_URL=http://localhost:3000
 
 # Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/plinto
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/janua
 
 # Redis
 REDIS_URL=redis://localhost:6379/0
@@ -663,16 +663,16 @@ migrate:		## Apply migrations
 	alembic upgrade head
 
 shell:			## Start Python shell with app context
-	python -c "from app.main import app; import asyncio; print('Plinto API shell ready')"
+	python -c "from app.main import app; import asyncio; print('Janua API shell ready')"
 
 docs:			## Generate API documentation
 	python scripts/generate_openapi.py
 
 docker-build:		## Build Docker image
-	docker build -t plinto-api .
+	docker build -t janua-api .
 
 docker-run:		## Run Docker container
-	docker run -p 8000:8000 plinto-api
+	docker run -p 8000:8000 janua-api
 ```
 
 ### VS Code Configuration
@@ -755,8 +755,8 @@ docker-run:		## Run Docker container
 ## 🤝 Getting Help
 
 ### Team Communication
-- **Slack**: #plinto-dev channel
-- **GitHub Discussions**: [Project Discussions](https://github.com/your-org/plinto/discussions)
+- **Slack**: #janua-dev channel
+- **GitHub Discussions**: [Project Discussions](https://github.com/your-org/janua/discussions)
 - **Team Meetings**: Daily standups at 9 AM EST
 
 ### Getting Unstuck

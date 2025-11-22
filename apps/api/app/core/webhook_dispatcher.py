@@ -476,7 +476,7 @@ def verify_webhook_signature(
     max_age_seconds: int = 300
 ) -> bool:
     """
-    Verify webhook signature from Plinto
+    Verify webhook signature from Janua
 
     Args:
         payload: Request body bytes

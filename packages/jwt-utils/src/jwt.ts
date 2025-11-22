@@ -13,8 +13,8 @@ export async function verifyToken(
   options: VerifyOptions = {}
 ): Promise<JWTPayload> {
   const { 
-    audience = 'plinto.dev', 
-    issuer = 'https://plinto.dev',
+    audience = 'janua.dev', 
+    issuer = 'https://janua.dev',
     clockTolerance = 30
   } = options
 

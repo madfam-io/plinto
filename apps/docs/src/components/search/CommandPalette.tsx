@@ -193,7 +193,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
                   </div>
                 </div>
                 <div className="text-gray-500 dark:text-gray-400">
-                  Powered by Plinto Search
+                  Powered by Janua Search
                 </div>
               </div>
             </Dialog.Panel>

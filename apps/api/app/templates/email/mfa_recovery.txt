@@ -1,4 +1,4 @@
-PLINTO - Account Recovery Request
+JANUA - Account Recovery Request
 
 Hello {{ user_name or "there" }},
 
@@ -28,5 +28,5 @@ Browser: {{ user_agent }}
 Need help? Contact our support team at {{ support_email }}
 
 ---
-This email was sent by Plinto - Secure Identity Management
+This email was sent by Janua - Secure Identity Management
 If you didn't request this email, please ignore it or contact support.

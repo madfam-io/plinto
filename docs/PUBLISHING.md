@@ -1,11 +1,11 @@
 # SDK Publishing Guide
 
-Complete guide for publishing all Plinto SDKs to their respective package registries.
+Complete guide for publishing all Janua SDKs to their respective package registries.
 
 ## Prerequisites
 
 ### For NPM Packages (TypeScript, React, Next.js, Vue)
-- NPM account with access to `@plinto` organization
+- NPM account with access to `@janua` organization
 - Logged in: `npm login`
 - 2FA configured
 
@@ -94,12 +94,12 @@ npm publish --access public
 
 1. **Verify on NPM**:
    ```bash
-   npm view @plinto/<sdk-name>@<version>
+   npm view @janua/<sdk-name>@<version>
    ```
 
 2. **Test installation**:
    ```bash
-   npm install @plinto/<sdk-name>@<version>
+   npm install @janua/<sdk-name>@<version>
    ```
 
 3. **Create git tag**:
@@ -175,12 +175,12 @@ twine upload --repository pypi dist/*
 
 1. **Verify on PyPI**:
    ```bash
-   pip index versions plinto
+   pip index versions janua
    ```
 
 2. **Test installation**:
    ```bash
-   pip install plinto==<version>
+   pip install janua==<version>
    ```
 
 3. **Create git tag**:
@@ -217,10 +217,10 @@ Go modules are published via git tags, not a package registry.
 
 ```bash
 # Install specific version
-go get github.com/madfam-io/plinto/packages/go-sdk@v1.0.0
+go get github.com/madfam-io/janua/packages/go-sdk@v1.0.0
 
 # Install latest
-go get github.com/madfam-io/plinto/packages/go-sdk@latest
+go get github.com/madfam-io/janua/packages/go-sdk@latest
 ```
 
 ## Versioning Guidelines
@@ -316,9 +316,9 @@ password = <your-api-token>
 ### Permission Denied
 
 ```bash
-# NPM: Ensure you're logged in and have access to @plinto org
+# NPM: Ensure you're logged in and have access to @janua org
 npm login
-npm access ls-collaborators @plinto/<package>
+npm access ls-collaborators @janua/<package>
 
 # PyPI: Ensure you have maintainer access
 # Contact package owner to add you as maintainer
@@ -330,13 +330,13 @@ npm access ls-collaborators @plinto/<package>
 
 ```bash
 # Deprecate a version (preferred)
-npm deprecate @plinto/<package>@<version> "Deprecated due to security issue"
+npm deprecate @janua/<package>@<version> "Deprecated due to security issue"
 
 # Unpublish (within 72 hours only)
-npm unpublish @plinto/<package>@<version>
+npm unpublish @janua/<package>@<version>
 
 # Unpublish entire package (dangerous!)
-npm unpublish @plinto/<package> --force
+npm unpublish @janua/<package> --force
 ```
 
 ### PyPI

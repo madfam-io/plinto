@@ -24,8 +24,8 @@
 - **User Request**: "phase 1"
 - **Approach**: Hybrid setup (Docker databases + local API)
 - **Services Started**:
-  - PostgreSQL: `plinto-postgres-test` on port 5432
-  - Redis: `plinto-redis-test` on port 6379
+  - PostgreSQL: `janua-postgres-test` on port 5432
+  - Redis: `janua-redis-test` on port 6379
   - API: Local uvicorn on port 8000
 - **Test Results**: 10/11 passing (91% success rate)
 - **Files Modified**: `tests-e2e/simple-functionality-test.spec.ts` (port 3003→3002)
@@ -52,10 +52,10 @@
 ### Running Services
 ```bash
 # PostgreSQL
-docker ps --filter "name=plinto-postgres-test"  # ✅ Running
+docker ps --filter "name=janua-postgres-test"  # ✅ Running
 
 # Redis
-docker ps --filter "name=plinto-redis-test"     # ✅ Running
+docker ps --filter "name=janua-redis-test"     # ✅ Running
 
 # API
 # Background process from bash job 4905ad        # ✅ Running
@@ -128,7 +128,7 @@ docker-compose -f docker-compose.test.yml up -d postgres redis
 
 # API server
 ENVIRONMENT=test \
-DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/plinto_test" \
+DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/janua_test" \
 REDIS_URL="redis://localhost:6379/0" \
 JWT_SECRET_KEY="test_jwt_secret" \
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000

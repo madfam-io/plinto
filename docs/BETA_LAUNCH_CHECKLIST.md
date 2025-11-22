@@ -1,6 +1,6 @@
 # Beta Launch Checklist
 
-Comprehensive checklist for Plinto Beta launch preparation and go-live validation.
+Comprehensive checklist for Janua Beta launch preparation and go-live validation.
 
 ## Table of Contents
 
@@ -722,4 +722,4 @@ Comprehensive checklist for Plinto Beta launch preparation and go-live validatio
 
 **Last Updated**: 2025-11-16  
 **Version**: 1.0.0-beta  
-**Owner**: Plinto Beta Launch Team
+**Owner**: Janua Beta Launch Team

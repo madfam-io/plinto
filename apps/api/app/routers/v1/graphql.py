@@ -1,5 +1,5 @@
 """
-GraphQL endpoint for Plinto API.
+GraphQL endpoint for Janua API.
 """
 
 from fastapi import APIRouter, Depends, Request, WebSocket, BackgroundTasks
@@ -74,7 +74,7 @@ async def graphql_playground():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Plinto GraphQL Playground</title>
+        <title>Janua GraphQL Playground</title>
         <link rel="stylesheet" href="https://unpkg.com/graphql-playground-react/build/static/css/index.css" />
         <script src="https://unpkg.com/graphql-playground-react/build/static/js/middleware.js"></script>
     </head>

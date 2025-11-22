@@ -13,7 +13,7 @@ import {
   Lock,
   Settings
 } from 'lucide-react'
-import { Badge } from '@plinto/ui'
+import { Badge } from '@janua/ui'
 
 const features = [
   {
@@ -173,7 +173,7 @@ export function FeaturesGrid() {
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             From edge-fast verification to enterprise-grade security, 
-            Plinto provides the complete identity infrastructure your applications need.
+            Janua provides the complete identity infrastructure your applications need.
           </p>
         </motion.div>
 

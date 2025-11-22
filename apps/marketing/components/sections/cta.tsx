@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, Calendar, FileText, CreditCard } from 'lucide-react'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import Link from 'next/link'
 
 export function CTASection() {
@@ -48,7 +48,7 @@ export function CTASection() {
           transition={{ duration: 0.3, delay: 0.1 }}
           className="flex flex-wrap gap-4 justify-center"
         >
-          <Link href="https://app.plinto.dev/auth/signup">
+          <Link href="https://app.janua.dev/auth/signup">
             <Button
               size="lg"
               className="text-lg px-10 py-6 bg-white text-blue-600 hover:bg-gray-100"
@@ -57,7 +57,7 @@ export function CTASection() {
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
-          <Link href="https://app.plinto.dev/auth/signup">
+          <Link href="https://app.janua.dev/auth/signup">
             <Button
               size="lg"
               variant="outline"
@@ -78,13 +78,13 @@ export function CTASection() {
           className="mt-8 flex flex-wrap gap-6 justify-center text-sm"
         >
           <Link
-            href="https://demo.plinto.dev"
+            href="https://demo.janua.dev"
             className="text-white/80 hover:text-white underline underline-offset-4"
           >
             Schedule a demo
           </Link>
           <Link
-            href="https://docs.plinto.dev"
+            href="https://docs.janua.dev"
             className="text-white/80 hover:text-white underline underline-offset-4"
           >
             Read documentation

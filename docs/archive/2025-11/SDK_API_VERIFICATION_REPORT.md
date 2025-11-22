@@ -1,7 +1,7 @@
 # SDK API Verification Report - TypeScript SDK
 
 **Date**: November 14, 2025  
-**SDK Version**: @plinto/typescript-sdk v1.0.0  
+**SDK Version**: @janua/typescript-sdk v1.0.0  
 **Status**: ⚠️ **CRITICAL MISMATCHES FOUND**  
 **Priority**: 🔴 **PUBLICATION BLOCKER**
 
@@ -25,16 +25,16 @@ Comprehensive verification of TypeScript SDK implementation against user-facing 
 
 **Documented in**: apps/landing/app/docs/quickstart/page.tsx
 
-#### PlintoClient Initialization ✅
+#### JanuaClient Initialization ✅
 ```typescript
 // DOCUMENTED (lines 78-95)
-const plinto = new PlintoClient({
-  apiUrl: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  apiUrl: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 
 // ACTUAL IMPLEMENTATION (packages/typescript-sdk/src/client.ts:45-50)
-constructor(config: Partial<PlintoConfig> = {}) {
+constructor(config: Partial<JanuaConfig> = {}) {
   this.config = this.validateAndMergeConfig(config);
   // ...
 }
@@ -47,10 +47,10 @@ constructor(config: Partial<PlintoConfig> = {}) {
 #### Auth Methods ✅
 ```typescript
 // DOCUMENTED (apps/landing/app/docs/quickstart/page.tsx:100-115)
-await plinto.auth.signUp({ email, password, name });
-await plinto.auth.signIn({ email, password, mfa_code });
-await plinto.auth.verifyToken(accessToken);
-await plinto.auth.refreshToken(refreshToken);
+await janua.auth.signUp({ email, password, name });
+await janua.auth.signIn({ email, password, mfa_code });
+await janua.auth.verifyToken(accessToken);
+await janua.auth.refreshToken(refreshToken);
 
 // ACTUAL IMPLEMENTATION (packages/typescript-sdk/src/auth.ts)
 async signUp(request: SignUpRequest): Promise<AuthResponse>  // ✅ Line 34
@@ -69,8 +69,8 @@ async refreshToken(request?: RefreshTokenRequest): Promise<TokenResponse>  // �
 
 ```typescript
 // DOCUMENTED (apps/landing/app/docs/quickstart/page.tsx:242-260)
-await plinto.auth.enableMFA('totp', { headers: { Authorization: `Bearer ${token}` } });
-await plinto.auth.verifyMFA({ code });
+await janua.auth.enableMFA('totp', { headers: { Authorization: `Bearer ${token}` } });
+await janua.auth.verifyMFA({ code });
 
 // ACTUAL IMPLEMENTATION (packages/typescript-sdk/src/auth.ts)
 async enableMFA(method: string): Promise<MFAEnableResponse>  // ✅ Line 398
@@ -90,47 +90,47 @@ async disableMFA(password: string): Promise<{ message: string }>  // ✅ Line 42
 **DOCUMENTED** (apps/docs/content/guides/authentication/mfa.md - 2,750 lines):
 ```typescript
 // Documentation claims nested MFA namespace:
-plinto.auth.mfa.setup({ userId, method, phoneNumber?, label? })
-plinto.auth.mfa.verify({ sessionId, method, code })
-plinto.auth.mfa.getStatus({ userId })
-plinto.auth.mfa.disable({ userId, password, confirmationCode })
-plinto.auth.mfa.generateBackupCodes({ userId, count? })
-plinto.auth.mfa.webauthn.generateChallenge({ userId, type })
-plinto.auth.mfa.webauthn.verify({ challengeId, credential })
+janua.auth.mfa.setup({ userId, method, phoneNumber?, label? })
+janua.auth.mfa.verify({ sessionId, method, code })
+janua.auth.mfa.getStatus({ userId })
+janua.auth.mfa.disable({ userId, password, confirmationCode })
+janua.auth.mfa.generateBackupCodes({ userId, count? })
+janua.auth.mfa.webauthn.generateChallenge({ userId, type })
+janua.auth.mfa.webauthn.verify({ challengeId, credential })
 ```
 
 **ACTUAL IMPLEMENTATION**:
 ```typescript
 // NO nested mfa namespace - methods are directly on auth:
-plinto.auth.enableMFA(method)
-plinto.auth.verifyMFA(request)
-plinto.auth.getMFAStatus()
-plinto.auth.disableMFA(password)
-plinto.auth.regenerateMFABackupCodes(password)
+janua.auth.enableMFA(method)
+janua.auth.verifyMFA(request)
+janua.auth.getMFAStatus()
+janua.auth.disableMFA(password)
+janua.auth.regenerateMFABackupCodes(password)
 // No mfa.webauthn namespace - passkey methods are separate
 ```
 
 **Impact**: ⚠️ **CRITICAL** - Entire 2,750-line MFA guide uses non-existent API structure
 
 **Recommendation**: 
-- **Option A**: Update all MFA documentation to use correct `plinto.auth.*` structure
-- **Option B**: Refactor SDK to add `plinto.auth.mfa.*` namespace (breaking change)
+- **Option A**: Update all MFA documentation to use correct `janua.auth.*` structure
+- **Option B**: Refactor SDK to add `janua.auth.mfa.*` namespace (breaking change)
 - **Option C**: Mark MFA guide as "Coming Soon" until API aligned
 
 ### 2. Token Verification Method
 
 **DOCUMENTED**: 
 ```typescript
-const user = await plinto.auth.verifyToken(accessToken);
+const user = await janua.auth.verifyToken(accessToken);
 ```
 
 **ACTUAL**: 
 ```typescript
 // verifyToken() does NOT exist in auth.ts
 // Instead, use:
-const user = await plinto.auth.getCurrentUser();
+const user = await janua.auth.getCurrentUser();
 // Or check authentication:
-const isAuth = await plinto.isAuthenticated();
+const isAuth = await janua.isAuthenticated();
 ```
 
 **Impact**: ⚠️ **HIGH** - Auth middleware examples won't work
@@ -141,20 +141,20 @@ const isAuth = await plinto.isAuthenticated();
 
 **DOCUMENTED**:
 ```typescript
-plinto.auth.mfa.webauthn.generateChallenge({ userId, type })
-plinto.auth.mfa.webauthn.verify({ challengeId, credential })
+janua.auth.mfa.webauthn.generateChallenge({ userId, type })
+janua.auth.mfa.webauthn.verify({ challengeId, credential })
 ```
 
 **ACTUAL**:
 ```typescript
 // Passkey methods are on auth, NOT under mfa.webauthn:
-plinto.auth.getPasskeyRegistrationOptions(options)
-plinto.auth.verifyPasskeyRegistration(credential, name)
-plinto.auth.getPasskeyAuthenticationOptions(email)
-plinto.auth.verifyPasskeyAuthentication(credential, challenge, email)
-plinto.auth.listPasskeys()
-plinto.auth.updatePasskey(passkeyId, name)
-plinto.auth.deletePasskey(passkeyId, password)
+janua.auth.getPasskeyRegistrationOptions(options)
+janua.auth.verifyPasskeyRegistration(credential, name)
+janua.auth.getPasskeyAuthenticationOptions(email)
+janua.auth.verifyPasskeyAuthentication(credential, challenge, email)
+janua.auth.listPasskeys()
+janua.auth.updatePasskey(passkeyId, name)
+janua.auth.deletePasskey(passkeyId, password)
 ```
 
 **Impact**: ⚠️ **HIGH** - WebAuthn examples use wrong API structure
@@ -200,37 +200,37 @@ plinto.auth.deletePasskey(passkeyId, password)
 ### MFA Methods - STRUCTURE MISMATCH ❌
 
 **Documented Namespace** (WRONG):
-- `plinto.auth.mfa.setup()` - ❌ Does not exist
-- `plinto.auth.mfa.verify()` - ❌ Does not exist
-- `plinto.auth.mfa.getStatus()` - ❌ Does not exist
-- `plinto.auth.mfa.disable()` - ❌ Does not exist
+- `janua.auth.mfa.setup()` - ❌ Does not exist
+- `janua.auth.mfa.verify()` - ❌ Does not exist
+- `janua.auth.mfa.getStatus()` - ❌ Does not exist
+- `janua.auth.mfa.disable()` - ❌ Does not exist
 
 **Actual Implementation** (CORRECT):
-- `plinto.auth.enableMFA()` - ✅ Exists
-- `plinto.auth.verifyMFA()` - ✅ Exists
-- `plinto.auth.getMFAStatus()` - ✅ Exists
-- `plinto.auth.disableMFA()` - ✅ Exists
-- `plinto.auth.regenerateMFABackupCodes()` - ✅ Exists (bonus)
-- `plinto.auth.validateMFACode()` - ✅ Exists (bonus)
-- `plinto.auth.getMFARecoveryOptions()` - ✅ Exists (bonus)
-- `plinto.auth.initiateMFARecovery()` - ✅ Exists (bonus)
+- `janua.auth.enableMFA()` - ✅ Exists
+- `janua.auth.verifyMFA()` - ✅ Exists
+- `janua.auth.getMFAStatus()` - ✅ Exists
+- `janua.auth.disableMFA()` - ✅ Exists
+- `janua.auth.regenerateMFABackupCodes()` - ✅ Exists (bonus)
+- `janua.auth.validateMFACode()` - ✅ Exists (bonus)
+- `janua.auth.getMFARecoveryOptions()` - ✅ Exists (bonus)
+- `janua.auth.initiateMFARecovery()` - ✅ Exists (bonus)
 
 ### Passkey Methods - NAMESPACE MISMATCH ⚠️
 
 **Documented Namespace** (WRONG):
-- `plinto.auth.mfa.webauthn.generateChallenge()` - ❌ Does not exist
-- `plinto.auth.mfa.webauthn.verify()` - ❌ Does not exist
+- `janua.auth.mfa.webauthn.generateChallenge()` - ❌ Does not exist
+- `janua.auth.mfa.webauthn.verify()` - ❌ Does not exist
 
 **Actual Implementation** (CORRECT):
-- `plinto.auth.checkPasskeyAvailability()` - ✅ Exists
-- `plinto.auth.getPasskeyRegistrationOptions()` - ✅ Exists
-- `plinto.auth.verifyPasskeyRegistration()` - ✅ Exists
-- `plinto.auth.getPasskeyAuthenticationOptions()` - ✅ Exists
-- `plinto.auth.verifyPasskeyAuthentication()` - ✅ Exists
-- `plinto.auth.listPasskeys()` - ✅ Exists
-- `plinto.auth.updatePasskey()` - ✅ Exists
-- `plinto.auth.deletePasskey()` - ✅ Exists
-- `plinto.auth.regeneratePasskeySecret()` - ✅ Exists (bonus)
+- `janua.auth.checkPasskeyAvailability()` - ✅ Exists
+- `janua.auth.getPasskeyRegistrationOptions()` - ✅ Exists
+- `janua.auth.verifyPasskeyRegistration()` - ✅ Exists
+- `janua.auth.getPasskeyAuthenticationOptions()` - ✅ Exists
+- `janua.auth.verifyPasskeyAuthentication()` - ✅ Exists
+- `janua.auth.listPasskeys()` - ✅ Exists
+- `janua.auth.updatePasskey()` - ✅ Exists
+- `janua.auth.deletePasskey()` - ✅ Exists
+- `janua.auth.regeneratePasskeySecret()` - ✅ Exists (bonus)
 
 ### OAuth Methods - OVER-DELIVERED ✅
 
@@ -253,21 +253,21 @@ plinto.auth.deletePasskey(passkeyId, password)
 
 ### Package Name - VERIFIED ✅
 
-**Documented**: `@plinto/typescript-sdk`  
-**Actual** (package.json): `@plinto/typescript-sdk`  
+**Documented**: `@janua/typescript-sdk`  
+**Actual** (package.json): `@janua/typescript-sdk`  
 **Status**: ✅ **MATCH**
 
 ### Installation Command - VERIFIED ✅
 
 **Documented**: 
 ```bash
-npm install @plinto/typescript-sdk
+npm install @janua/typescript-sdk
 ```
 
 **Package.json Confirms**:
 ```json
 {
-  "name": "@plinto/typescript-sdk",
+  "name": "@janua/typescript-sdk",
   "version": "1.0.0",
   "publishConfig": {
     "access": "public",
@@ -305,18 +305,18 @@ npm install @plinto/typescript-sdk
 ### CRITICAL - Must Fix Before Publication
 
 1. **MFA Documentation Complete Rewrite** (2,750 lines)
-   - **Issue**: Entire MFA guide uses `plinto.auth.mfa.*` namespace that doesn't exist
+   - **Issue**: Entire MFA guide uses `janua.auth.mfa.*` namespace that doesn't exist
    - **Impact**: 100% of MFA examples will fail
    - **Estimated Effort**: 2-3 days to rewrite all examples
    - **Priority**: 🔴 CRITICAL
 
 2. **Remove verifyToken() from Quickstart** (1 location)
-   - **Issue**: `plinto.auth.verifyToken()` does not exist
+   - **Issue**: `janua.auth.verifyToken()` does not exist
    - **Impact**: Auth middleware example will fail
    - **Estimated Effort**: 30 minutes
    - **Priority**: 🔴 CRITICAL
 
-3. **Fix PlintoClient Constructor Parameters**
+3. **Fix JanuaClient Constructor Parameters**
    - **Issue**: Documentation uses `apiUrl`, implementation uses `baseURL`
    - **Impact**: Initialization code will fail
    - **Estimated Effort**: 15 minutes (find/replace)
@@ -356,7 +356,7 @@ npm install @plinto/typescript-sdk
 
 ### Before Publishing SDK Package
 
-- [x] **Package name verified**: @plinto/typescript-sdk ✅
+- [x] **Package name verified**: @janua/typescript-sdk ✅
 - [x] **Version set**: 1.0.0 ✅
 - [x] **Build configuration working**: rollup + TypeScript ✅
 - [x] **Exports configured**: ESM + CJS ✅
@@ -387,7 +387,7 @@ npm install @plinto/typescript-sdk
 
 **Day 2 Full Day** (8 hours):
 3. Rewrite MFA guide (apps/docs/content/guides/authentication/mfa.md)
-   - Document actual `plinto.auth.enableMFA()` structure (2 hours)
+   - Document actual `janua.auth.enableMFA()` structure (2 hours)
    - Rewrite Express.js examples with correct API (2 hours)
    - Rewrite FastAPI examples with correct API (2 hours)
    - Update React components with correct API (2 hours)

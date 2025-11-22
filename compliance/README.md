@@ -1,6 +1,6 @@
-# SOC2 Type II Compliance Framework for Plinto
+# SOC2 Type II Compliance Framework for Janua
 
-This directory contains the comprehensive SOC2 Type II compliance framework for the Plinto authentication platform, designed to meet enterprise audit requirements and demonstrate control effectiveness over time.
+This directory contains the comprehensive SOC2 Type II compliance framework for the Janua authentication platform, designed to meet enterprise audit requirements and demonstrate control effectiveness over time.
 
 ## Framework Overview
 
@@ -59,7 +59,7 @@ compliance/
 - Real-time alerting for control failures
 
 ### Enterprise Integration
-- Leverages existing Plinto security features
+- Leverages existing Janua security features
 - Compatible with current architecture
 - Minimal operational overhead
 - Audit-ready documentation
@@ -93,4 +93,4 @@ compliance/
 
 ---
 
-*This framework provides comprehensive SOC2 Type II compliance coverage for the Plinto authentication platform. All controls are designed to integrate seamlessly with existing platform capabilities while meeting enterprise audit requirements.*
+*This framework provides comprehensive SOC2 Type II compliance coverage for the Janua authentication platform. All controls are designed to integrate seamlessly with existing platform capabilities while meeting enterprise audit requirements.*

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database Optimization Script for Plinto Platform
+Database Optimization Script for Janua Platform
 Phase 2: Performance Optimization
 
 This script applies database indexes and optimizations for sub-100ms API performance.
@@ -348,7 +348,7 @@ class DatabaseOptimizer:
 
 async def main():
     """Main optimization execution"""
-    logger.info("🚀 Starting Plinto Database Optimization - Phase 2")
+    logger.info("🚀 Starting Janua Database Optimization - Phase 2")
     
     # Get database URL from environment
     database_url = os.getenv('DATABASE_URL')

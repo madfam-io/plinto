@@ -1,13 +1,13 @@
-# Plinto Project Context
+# Janua Project Context
 
 **Generated:** 2025-09-09  
-**Project:** Plinto - Secure substrate for identity  
+**Project:** Janua - Secure substrate for identity  
 **Status:** Private alpha  
 **Repository:** Clean (main branch)
 
 ## 🎯 Project Overview
 
-Plinto is a comprehensive identity platform providing secure authentication, session management, and organization control with edge-fast verification. The platform ships from a single domain (plinto.dev) during alpha.
+Janua is a comprehensive identity platform providing secure authentication, session management, and organization control with edge-fast verification. The platform ships from a single domain (janua.dev) during alpha.
 
 ### Core Features
 - **Identity & Auth**: Passkeys (WebAuthn), email/password, social logins (planned)
@@ -27,7 +27,7 @@ Plinto is a comprehensive identity platform providing secure authentication, ses
 
 ### Project Structure
 ```
-plinto/
+janua/
 ├── apps/               # Application workspaces
 │   ├── admin/         # Admin panel (port 3004)
 │   ├── api/           # FastAPI backend (port 8000)
@@ -102,7 +102,7 @@ yarn db:reset        # Reset database
 ### Authentication Flow
 1. Browser → Cloudflare (WAF/Turnstile)
 2. → Vercel (Next.js middleware)
-3. → Railway (Plinto Core API)
+3. → Railway (Janua Core API)
 4. Edge verification using cached JWKS
 
 ### Key Security Features
@@ -136,12 +136,12 @@ yarn db:reset        # Reset database
 
 ## 🔗 Key Resources
 
-- **Main Domain**: https://plinto.dev
-- **API**: https://api.plinto.dev
-- **Dashboard**: https://app.plinto.dev
-- **Admin**: https://admin.plinto.dev
-- **Docs**: https://docs.plinto.dev
-- **GitHub**: https://github.com/aureolabs/plinto
+- **Main Domain**: https://janua.dev
+- **API**: https://api.janua.dev
+- **Dashboard**: https://app.janua.dev
+- **Admin**: https://admin.janua.dev
+- **Docs**: https://docs.janua.dev
+- **GitHub**: https://github.com/aureolabs/janua
 
 ## 📚 Documentation Map
 

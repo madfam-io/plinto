@@ -72,7 +72,7 @@ These documents represented completed fixes and audits no longer needed in activ
 
 **Note**: Temporary logs exist in `/tmp/` (expected for running services):
 - `/tmp/api.log` - Current API server logs (background process)
-- `/tmp/plinto-sdk-test/` - Temporary SDK test directory
+- `/tmp/janua-sdk-test/` - Temporary SDK test directory
 
 ---
 

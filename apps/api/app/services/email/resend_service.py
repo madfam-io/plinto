@@ -46,8 +46,8 @@ class ResendService:
             template_dir: Directory for email templates
         """
         self.api_key = api_key or os.getenv("RESEND_API_KEY")
-        self.from_email = from_email or os.getenv("RESEND_FROM_EMAIL", "noreply@plinto.dev")
-        self.from_name = from_name or os.getenv("RESEND_FROM_NAME", "Plinto")
+        self.from_email = from_email or os.getenv("RESEND_FROM_EMAIL", "noreply@janua.dev")
+        self.from_name = from_name or os.getenv("RESEND_FROM_NAME", "Janua")
 
         if not self.api_key:
             raise ValueError("Resend API key is required")

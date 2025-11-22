@@ -1,4 +1,4 @@
--- Initial schema migration for Plinto multi-tenant platform
+-- Initial schema migration for Janua multi-tenant platform
 -- This migration creates all the core tables and indexes
 
 -- Enable required extensions

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, Download, Zap, Shield, Code, Check } from 'lucide-react'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 
 export default function GettingStartedPage() {
   return (
@@ -8,7 +8,7 @@ export default function GettingStartedPage() {
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-          Getting Started with Plinto
+          Getting Started with Janua
         </h1>
         <p className="mt-6 text-xl leading-8 text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
           Integrate secure identity management into your application in under 5 minutes. 
@@ -52,7 +52,7 @@ export default function GettingStartedPage() {
             icon={<Shield className="h-6 w-6" />}
             title="Authentication Setup"
             items={[
-              "Configure Plinto in your project",
+              "Configure Janua in your project",
               "Set up environment variables",
               "Initialize the authentication system"
             ]}
@@ -78,7 +78,7 @@ export default function GettingStartedPage() {
           <PrerequisiteItem text="Node.js 16.8 or later" />
           <PrerequisiteItem text="A JavaScript/TypeScript project (React, Next.js, Vue, etc.)" />
           <PrerequisiteItem text="Basic knowledge of your chosen framework" />
-          <PrerequisiteItem text="A Plinto account (sign up at app.plinto.dev)" />
+          <PrerequisiteItem text="A Janua account (sign up at app.janua.dev)" />
         </div>
       </div>
 

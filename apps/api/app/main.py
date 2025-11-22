@@ -37,10 +37,10 @@ from app.core.error_handling import (
     ErrorHandlingMiddleware,
     api_exception_handler,
     http_exception_handler,
-    plinto_exception_handler,
+    janua_exception_handler,
     validation_exception_handler,
 )
-from app.core.exceptions import PlintoAPIException
+from app.core.exceptions import JanuaAPIException
 from app.routers.v1 import (
     admin as admin_v1,
 )
@@ -196,10 +196,10 @@ alert_manager = AlertManager(metrics_collector)
 system_monitor = SystemMonitor(metrics_collector)
 
 app = FastAPI(
-    title="Plinto Authentication API",
+    title="Janua Authentication API",
     version="1.0.0",
     description="""
-# Plinto Authentication Platform
+# Janua Authentication Platform
 
 Modern, open-core authentication and identity management platform with enterprise features.
 
@@ -247,23 +247,23 @@ Rate limit headers returned in response:
 
 ## Environments
 
-- **Production**: https://api.plinto.dev
-- **Staging**: https://staging-api.plinto.dev
+- **Production**: https://api.janua.dev
+- **Staging**: https://staging-api.janua.dev
 - **Development**: http://localhost:8000
 
 ## Support
 
-- Documentation: https://docs.plinto.dev
-- GitHub: https://github.com/plinto/plinto
-- Discord: https://discord.gg/plinto
-- Email: support@plinto.dev
+- Documentation: https://docs.janua.dev
+- GitHub: https://github.com/janua/janua
+- Discord: https://discord.gg/janua
+- Email: support@janua.dev
 
 ## SDK Libraries
 
-- **TypeScript**: `npm install @plinto/typescript-sdk`
-- **React UI**: `npm install @plinto/ui`
-- **Python**: `pip install plinto` (coming soon)
-- **Go**: `go get github.com/plinto/plinto-go` (coming soon)
+- **TypeScript**: `npm install @janua/typescript-sdk`
+- **React UI**: `npm install @janua/ui`
+- **Python**: `pip install janua` (coming soon)
+- **Go**: `go get github.com/janua/janua-go` (coming soon)
     """,
     docs_url="/docs" if settings.ENABLE_DOCS else None,
     redoc_url="/redoc" if settings.ENABLE_DOCS else None,
@@ -330,21 +330,21 @@ Rate limit headers returned in response:
         },
     ],
     contact={
-        "name": "Plinto Support",
-        "url": "https://plinto.dev/support",
-        "email": "support@plinto.dev",
+        "name": "Janua Support",
+        "url": "https://janua.dev/support",
+        "email": "support@janua.dev",
     },
     license_info={
         "name": "MIT License (Core) + Commercial License (Enterprise)",
-        "url": "https://github.com/plinto/plinto/blob/main/LICENSE",
+        "url": "https://github.com/janua/janua/blob/main/LICENSE",
     },
     servers=[
         {
-            "url": "https://api.plinto.dev",
+            "url": "https://api.janua.dev",
             "description": "Production server",
         },
         {
-            "url": "https://staging-api.plinto.dev",
+            "url": "https://staging-api.janua.dev",
             "description": "Staging server",
         },
         {
@@ -356,8 +356,8 @@ Rate limit headers returned in response:
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# Add Plinto-specific exception handler
-app.add_exception_handler(PlintoAPIException, plinto_exception_handler)
+# Add Janua-specific exception handler
+app.add_exception_handler(JanuaAPIException, janua_exception_handler)
 
 # Add comprehensive error handling
 app.add_exception_handler(APIException, api_exception_handler)
@@ -385,7 +385,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
         )
         response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
-        response.headers["Server"] = "Plinto-API"  # Hide server version info
+        response.headers["Server"] = "Janua-API"  # Hide server version info
 
         return response
 
@@ -397,9 +397,9 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 # Add trusted host middleware
 allowed_hosts = [
-    "plinto.dev",
-    "*.plinto.dev",
-    "plinto-api.railway.app",
+    "janua.dev",
+    "*.janua.dev",
+    "janua-api.railway.app",
     "healthcheck.railway.app",
     "*.railway.app",
     "localhost",
@@ -519,9 +519,9 @@ async def test_json_endpoint(data: dict):
 # OpenID Connect discovery endpoints
 @app.get("/.well-known/openid-configuration")
 def openid_configuration():
-    base_url = settings.BASE_URL or "https://api.plinto.dev"
+    base_url = settings.BASE_URL or "https://api.janua.dev"
     return {
-        "issuer": settings.BASE_URL or "https://plinto.dev",
+        "issuer": settings.BASE_URL or "https://janua.dev",
         "authorization_endpoint": f"{base_url}/auth/authorize",
         "token_endpoint": f"{base_url}/auth/token",
         "userinfo_endpoint": f"{base_url}/auth/userinfo",
@@ -563,12 +563,12 @@ async def prometheus_metrics():
 
     try:
         # System metrics
-        system_cpu = GaugeMetricFamily("plinto_system_cpu_percent", "System CPU usage percentage")
+        system_cpu = GaugeMetricFamily("janua_system_cpu_percent", "System CPU usage percentage")
         system_memory = GaugeMetricFamily(
-            "plinto_system_memory_percent", "System memory usage percentage"
+            "janua_system_memory_percent", "System memory usage percentage"
         )
         system_disk = GaugeMetricFamily(
-            "plinto_system_disk_free_bytes", "System disk free space in bytes"
+            "janua_system_disk_free_bytes", "System disk free space in bytes"
         )
 
         # Collect system metrics if monitor is available
@@ -584,14 +584,14 @@ async def prometheus_metrics():
 
         # Application health
         app_health = GaugeMetricFamily(
-            "plinto_app_health_status", "Application health status (1=healthy, 0=unhealthy)"
+            "janua_app_health_status", "Application health status (1=healthy, 0=unhealthy)"
         )
         app_health.add_metric([], 1)  # Always 1 if this endpoint responds
         registry.register(lambda: [app_health])
 
         # API metrics (would be populated from monitoring service in production)
         http_requests = CounterMetricFamily(
-            "plinto_http_requests_total",
+            "janua_http_requests_total",
             "Total HTTP requests",
             labels=["method", "endpoint", "status_code"],
         )
@@ -603,7 +603,7 @@ async def prometheus_metrics():
 
         # Response time histogram
         response_duration = HistogramMetricFamily(
-            "plinto_http_request_duration_seconds",
+            "janua_http_request_duration_seconds",
             "HTTP request duration in seconds",
             labels=["method", "endpoint"],
         )
@@ -617,14 +617,14 @@ async def prometheus_metrics():
 
         # Database connection pool
         db_connections = GaugeMetricFamily(
-            "plinto_database_connections_active", "Active database connections"
+            "janua_database_connections_active", "Active database connections"
         )
         db_connections.add_metric([], 5)  # Sample data
         registry.register(lambda: [db_connections])
 
         # Redis connection status
         redis_connected = GaugeMetricFamily(
-            "plinto_redis_connected", "Redis connection status (1=connected, 0=disconnected)"
+            "janua_redis_connected", "Redis connection status (1=connected, 0=disconnected)"
         )
         redis_connected.add_metric([], 1)  # Sample data
         registry.register(lambda: [redis_connected])
@@ -632,7 +632,7 @@ async def prometheus_metrics():
     except Exception as e:
         # Fallback metrics if system monitoring fails
         error_metric = GaugeMetricFamily(
-            "plinto_metrics_collection_errors_total", "Total metrics collection errors"
+            "janua_metrics_collection_errors_total", "Total metrics collection errors"
         )
         error_metric.add_metric([], 1)
         registry.register(lambda: [error_metric])
@@ -848,7 +848,7 @@ async def beta_list_users():
 @app.get("/api/status")
 def api_status():
     return {
-        "status": "Plinto API v1.0.0 operational",
+        "status": "Janua API v1.0.0 operational",
         "version": "1.0.0",
         "authentication": "JWT with refresh tokens",
         "infrastructure": "Railway PostgreSQL + Redis",
@@ -910,7 +910,7 @@ for router_name, router_module in enterprise_routers.items():
 # Initialize database on startup
 @app.on_event("startup")
 async def startup_event():
-    logger.info("Starting Plinto API...")
+    logger.info("Starting Janua API...")
 
     # CRITICAL: Validate SECRET_KEY in production
     if settings.ENVIRONMENT == "production":
@@ -966,7 +966,7 @@ async def startup_event():
     except Exception as e:
         logger.error(f"Failed to initialize: {e}")
         raise
-    logger.info("Plinto API started successfully")
+    logger.info("Janua API started successfully")
 
 
 async def _check_redis_health():
@@ -982,7 +982,7 @@ async def _check_redis_health():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    logger.info("Shutting down Plinto API...")
+    logger.info("Shutting down Janua API...")
     try:
         # Graceful shutdown of scalability features
         await shutdown_scalability_features()
@@ -1004,17 +1004,17 @@ async def shutdown_event():
         logger.info("Database connections closed")
     except Exception as e:
         logger.error(f"Error during shutdown: {e}")
-    logger.info("Plinto API shutdown complete")
+    logger.info("Janua API shutdown complete")
 
 
 def create_app(
-    title: str = "Plinto API",
+    title: str = "Janua API",
     description: str = "Modern authentication and identity platform API",
     version: str = "1.0.0",
     **kwargs,
 ) -> FastAPI:
     """
-    Create and configure a FastAPI application with Plinto authentication.
+    Create and configure a FastAPI application with Janua authentication.
 
     Args:
         title: Application title

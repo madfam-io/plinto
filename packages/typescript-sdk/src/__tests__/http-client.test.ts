@@ -3,7 +3,7 @@
  */
 
 import { HttpClient, AxiosHttpClient, createHttpClient } from '../http-client';
-import { NetworkError, RateLimitError, ServerError, AuthenticationError, PlintoError } from '../errors';
+import { NetworkError, RateLimitError, ServerError, AuthenticationError, JanuaError } from '../errors';
 import { TokenManager } from '../utils';
 
 // Create a proper mock function for axios instance

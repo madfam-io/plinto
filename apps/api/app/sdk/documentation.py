@@ -257,9 +257,9 @@ def create_platform_examples() -> Dict[str, List[CodeExample]]:
             title="Sign In with Python",
             description="Authenticate a user with email and password",
             code="""
-from plinto import PlintoClient
+from janua import JanuaClient
 
-client = PlintoClient(base_url="https://api.plinto.dev")
+client = JanuaClient(base_url="https://api.janua.dev")
 
 try:
     response = await client.auth.sign_in(
@@ -281,8 +281,8 @@ except ValidationError as e:
 except AuthenticationError as e:
     print(f"Authentication failed: {e.message}")
             """,
-            imports=["from plinto import PlintoClient", "from plinto.exceptions import ValidationError, AuthenticationError"],
-            dependencies=["plinto>=1.0.0"]
+            imports=["from janua import JanuaClient", "from janua.exceptions import ValidationError, AuthenticationError"],
+            dependencies=["janua>=1.0.0"]
         ),
 
         CodeExample(
@@ -290,10 +290,10 @@ except AuthenticationError as e:
             title="Sign In with TypeScript",
             description="Authenticate a user with email and password",
             code="""
-import { PlintoClient, ValidationError, AuthenticationError } from '@plinto/typescript-sdk';
+import { JanuaClient, ValidationError, AuthenticationError } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  baseUrl: 'https://api.plinto.dev'
+const client = new JanuaClient({
+  baseUrl: 'https://api.janua.dev'
 });
 
 try {
@@ -313,8 +313,8 @@ try {
   }
 }
             """,
-            imports=["@plinto/typescript-sdk"],
-            dependencies=["@plinto/typescript-sdk@^1.0.0"]
+            imports=["@janua/typescript-sdk"],
+            dependencies=["@janua/typescript-sdk@^1.0.0"]
         ),
 
         CodeExample(
@@ -329,13 +329,13 @@ import (
     "fmt"
     "log"
 
-    "github.com/plinto/go-sdk/client"
-    "github.com/plinto/go-sdk/auth"
+    "github.com/janua/go-sdk/client"
+    "github.com/janua/go-sdk/auth"
 )
 
 func main() {
-    client := client.NewPlintoClient(&client.Config{
-        BaseURL: "https://api.plinto.dev",
+    client := client.NewJanuaClient(&client.Config{
+        BaseURL: "https://api.janua.dev",
     })
 
     request := &auth.SignInRequest{
@@ -358,8 +358,8 @@ func main() {
     fmt.Printf("Welcome, %s!\\n", response.Data.User.Email)
 }
             """,
-            imports=["github.com/plinto/go-sdk"],
-            dependencies=["github.com/plinto/go-sdk@v1.0.0"]
+            imports=["github.com/janua/go-sdk"],
+            dependencies=["github.com/janua/go-sdk@v1.0.0"]
         )
     ]
 
@@ -508,23 +508,23 @@ def export_sdk_spec(app: FastAPI, output_file: str = "openapi-sdk.json") -> None
 def generate_readme_examples() -> str:
     """Generate README examples for SDK documentation."""
     return """
-# Plinto SDK Examples
+# Janua SDK Examples
 
 ## Installation
 
 ### Python
 ```bash
-pip install plinto
+pip install janua
 ```
 
 ### TypeScript/JavaScript
 ```bash
-npm install @plinto/typescript-sdk
+npm install @janua/typescript-sdk
 ```
 
 ### Go
 ```bash
-go get github.com/plinto/go-sdk
+go get github.com/janua/go-sdk
 ```
 
 ## Quick Start
@@ -533,9 +533,9 @@ go get github.com/plinto/go-sdk
 
 #### Python
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-client = PlintoClient(base_url="https://api.plinto.dev")
+client = JanuaClient(base_url="https://api.janua.dev")
 response = await client.auth.sign_in(
     email="user@example.com",
     password="password"
@@ -544,10 +544,10 @@ response = await client.auth.sign_in(
 
 #### TypeScript
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  baseUrl: 'https://api.plinto.dev'
+const client = new JanuaClient({
+  baseUrl: 'https://api.janua.dev'
 });
 
 const response = await client.auth.signIn({
@@ -558,10 +558,10 @@ const response = await client.auth.signIn({
 
 #### Go
 ```go
-import "github.com/plinto/go-sdk/client"
+import "github.com/janua/go-sdk/client"
 
-client := client.NewPlintoClient(&client.Config{
-    BaseURL: "https://api.plinto.dev",
+client := client.NewJanuaClient(&client.Config{
+    BaseURL: "https://api.janua.dev",
 })
 
 response, err := client.Auth.SignIn(ctx, &auth.SignInRequest{
@@ -609,7 +609,7 @@ _, err := client.Users.UpdateMe(ctx, &users.UpdateMeRequest{
 
 ### Python
 ```python
-from plinto.exceptions import ValidationError, AuthenticationError
+from janua.exceptions import ValidationError, AuthenticationError
 
 try:
     await client.auth.sign_in(email="invalid", password="wrong")
@@ -621,7 +621,7 @@ except AuthenticationError as e:
 
 ### TypeScript
 ```typescript
-import { ValidationError, AuthenticationError } from '@plinto/typescript-sdk';
+import { ValidationError, AuthenticationError } from '@janua/typescript-sdk';
 
 try {
   await client.auth.signIn({ email: 'invalid', password: 'wrong' });
@@ -638,24 +638,24 @@ try {
 
 ### Python
 ```python
-from plinto import PlintoClient, ClientConfig, RetryConfig
+from janua import JanuaClient, ClientConfig, RetryConfig
 
 config = ClientConfig(
-    base_url="https://api.plinto.dev",
+    base_url="https://api.janua.dev",
     timeout=30.0,
     retry_config=RetryConfig(max_retries=3),
     debug=True
 )
 
-client = PlintoClient(config)
+client = JanuaClient(config)
 ```
 
 ### TypeScript
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  baseUrl: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  baseUrl: 'https://api.janua.dev',
   timeout: 30000,
   retryConfig: {
     maxRetries: 3,

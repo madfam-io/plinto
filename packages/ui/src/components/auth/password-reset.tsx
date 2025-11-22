@@ -27,8 +27,8 @@ export interface PasswordResetProps {
   onBackToSignIn?: () => void
   /** Custom logo URL */
   logoUrl?: string
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -44,7 +44,7 @@ export function PasswordReset({
   onError,
   onBackToSignIn,
   logoUrl,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: PasswordResetProps) {
   const [step, setStep] = React.useState(initialStep)
@@ -83,9 +83,9 @@ export function PasswordReset({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for password reset request
-        await plintoClient.auth.forgotPassword({ email })
+      if (januaClient) {
+        // Use Janua SDK for password reset request
+        await januaClient.auth.forgotPassword({ email })
         setStep('verify')
       } else if (onRequestReset) {
         // Use custom callback if provided
@@ -136,9 +136,9 @@ export function PasswordReset({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for password reset
-        await plintoClient.auth.resetPassword(token, newPassword)
+      if (januaClient) {
+        // Use Janua SDK for password reset
+        await januaClient.auth.resetPassword(token, newPassword)
         setStep('success')
       } else if (onResetPassword) {
         // Use custom callback if provided

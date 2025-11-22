@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Plinto Identity Platform API
+  title: Janua Identity Platform API
   description: |
     Complete authentication and identity management platform API.
     
@@ -12,22 +12,22 @@ info:
     - 100 requests per minute for unauthenticated requests
     
     ## Environments
-    - Production: https://api.plinto.dev
-    - Staging: https://staging-api.plinto.dev
+    - Production: https://api.janua.dev
+    - Staging: https://staging-api.janua.dev
     - Development: http://localhost:3000
   version: 1.0.0
   contact:
-    name: Plinto Support
-    email: support@plinto.dev
-    url: https://docs.plinto.dev
+    name: Janua Support
+    email: support@janua.dev
+    url: https://docs.janua.dev
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api.plinto.dev
+  - url: https://api.janua.dev
     description: Production
-  - url: https://staging-api.plinto.dev
+  - url: https://staging-api.janua.dev
     description: Staging
   - url: http://localhost:3000
     description: Development

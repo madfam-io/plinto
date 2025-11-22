@@ -10,11 +10,11 @@ WHAT DOES THIS MEAN FOR YOU?
 • Sign in with your {{ sso_provider }} credentials
 • No need to remember separate passwords
 • Enhanced security with your organization's identity provider
-• Seamless access to all Plinto services
+• Seamless access to all Janua services
 
 HOW TO SIGN IN
 --------------
-1. Visit the Plinto login page
+1. Visit the Janua login page
 2. Enter your email address
 3. Click "Sign in with {{ sso_provider }}"
 4. Authenticate with your organization's credentials
@@ -25,11 +25,11 @@ SIGN IN NOW
 {{ login_url }}
 
 💡 PRO TIP
-Your existing Plinto account and data remain intact. SSO simply provides
+Your existing Janua account and data remain intact. SSO simply provides
 a more convenient and secure way to access your account.
 
 Questions about SSO? Contact us at {{ support_email }}
 
 ---
-Plinto by Aureo Labs
+Janua by Aureo Labs
 {{ base_url }}

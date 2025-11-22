@@ -12,7 +12,7 @@
 - **__pycache__ directories**: 50+ removed
   - apps/api/app/routers/v1/__pycache__/
   - apps/api/app/alerting/__pycache__/
-  - packages/python-sdk/plinto/__pycache__/
+  - packages/python-sdk/janua/__pycache__/
   - Multiple other locations
 
 - **Compiled Python files**: 100+ files
@@ -22,14 +22,14 @@
 - **Test/Build directories**:
   - .pytest_cache/ (3 instances)
   - .mypy_cache/
-  - plinto.egg-info/
+  - janua.egg-info/
 
 ### NPM Build Artifacts
 - **Tarball packages**: 4 files removed from packages/python-sdk/
-  - plinto-typescript-sdk-1.0.0.tgz
-  - plinto-react-sdk-1.0.0.tgz
-  - plinto-nextjs-1.0.0.tgz
-  - plinto-vue-1.0.0.tgz
+  - janua-typescript-sdk-1.0.0.tgz
+  - janua-react-sdk-1.0.0.tgz
+  - janua-nextjs-1.0.0.tgz
+  - janua-vue-1.0.0.tgz
 
 - **Build logs**:
   - packages/typescript-sdk/build.log

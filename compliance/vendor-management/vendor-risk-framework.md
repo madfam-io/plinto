@@ -11,7 +11,7 @@
 ## 1. Purpose and Scope
 
 ### 1.1 Purpose
-This Vendor Risk Management Framework establishes comprehensive procedures for assessing, monitoring, and managing security and operational risks associated with third-party vendors, suppliers, and service providers supporting Plinto's authentication platform.
+This Vendor Risk Management Framework establishes comprehensive procedures for assessing, monitoring, and managing security and operational risks associated with third-party vendors, suppliers, and service providers supporting Janua's authentication platform.
 
 ### 1.2 Scope
 This framework applies to:
@@ -546,7 +546,7 @@ class VendorIncidentResponse:
 
 ### 8.2 Vendor Security Awareness
 **Vendor Orientation**:
-- Plinto security requirements
+- Janua security requirements
 - Compliance expectations
 - Incident reporting procedures
 - Performance monitoring standards
@@ -559,4 +559,4 @@ class VendorIncidentResponse:
 
 ---
 
-*This Vendor Risk Management Framework provides comprehensive guidance for managing third-party risks while supporting Plinto's SOC2 compliance objectives and maintaining strong security posture across the vendor ecosystem.*
+*This Vendor Risk Management Framework provides comprehensive guidance for managing third-party risks while supporting Janua's SOC2 compliance objectives and maintaining strong security posture across the vendor ecosystem.*

@@ -1,32 +1,32 @@
 /**
- * Error classes for the Plinto TypeScript SDK
+ * Error classes for the Janua TypeScript SDK
  */
 
 import type { ApiError, RateLimitInfo } from './types';
 
 /**
- * Base error class for all Plinto SDK errors
+ * Base error class for all Janua SDK errors
  */
-export class PlintoError extends Error {
+export class JanuaError extends Error {
   public readonly code: string;
   public readonly statusCode?: number;
   public readonly details?: Record<string, any>;
 
   constructor(
     message: string,
-    code = 'PLINTO_ERROR',
+    code = 'JANUA_ERROR',
     statusCode?: number,
     details?: Record<string, any>
   ) {
     super(message);
-    this.name = 'PlintoError';
+    this.name = 'JanuaError';
     this.code = code;
     this.statusCode = statusCode;
     this.details = details;
 
     // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, PlintoError);
+      Error.captureStackTrace(this, JanuaError);
     }
   }
 
@@ -45,9 +45,9 @@ export class PlintoError extends Error {
   }
 
   /**
-   * Create PlintoError from API error response
+   * Create JanuaError from API error response
    */
-  static fromApiError(apiError: ApiError): PlintoError {
+  static fromApiError(apiError: ApiError): JanuaError {
     const { error, message, details, status_code } = apiError;
     
     // Map common HTTP status codes to specific error classes
@@ -70,7 +70,7 @@ export class PlintoError extends Error {
       case 504:
         return new ServerError(message, status_code, details);
       default:
-        return new PlintoError(message, error, status_code, details);
+        return new JanuaError(message, error, status_code, details);
     }
   }
 }
@@ -78,7 +78,7 @@ export class PlintoError extends Error {
 /**
  * Authentication related errors (401)
  */
-export class AuthenticationError extends PlintoError {
+export class AuthenticationError extends JanuaError {
   constructor(message = 'Authentication failed', code?: string, statusCode?: number, details?: Record<string, any>) {
     super(message, code || 'AUTHENTICATION_ERROR', statusCode || 401, details);
     this.name = 'AuthenticationError';
@@ -88,7 +88,7 @@ export class AuthenticationError extends PlintoError {
 /**
  * Permission/authorization related errors (403)
  */
-export class PermissionError extends PlintoError {
+export class PermissionError extends JanuaError {
   constructor(message = 'Permission denied', details?: Record<string, any>) {
     super(message, 'PERMISSION_ERROR', 403, details);
     this.name = 'PermissionError';
@@ -98,7 +98,7 @@ export class PermissionError extends PlintoError {
 /**
  * Validation related errors (400)
  */
-export class ValidationError extends PlintoError {
+export class ValidationError extends JanuaError {
   public readonly field?: string;
   public readonly violations?: Array<{field: string, message: string}>;
 
@@ -118,7 +118,7 @@ export class ValidationError extends PlintoError {
 /**
  * Resource not found errors (404)
  */
-export class NotFoundError extends PlintoError {
+export class NotFoundError extends JanuaError {
   public readonly resource?: string;
 
   constructor(message = 'Resource not found', details?: Record<string, any>) {
@@ -134,7 +134,7 @@ export class NotFoundError extends PlintoError {
 /**
  * Conflict errors (409)
  */
-export class ConflictError extends PlintoError {
+export class ConflictError extends JanuaError {
   constructor(message = 'Resource conflict', details?: Record<string, any>) {
     super(message, 'CONFLICT', 409, details);
     this.name = 'ConflictError';
@@ -144,7 +144,7 @@ export class ConflictError extends PlintoError {
 /**
  * Rate limiting errors (429)
  */
-export class RateLimitError extends PlintoError {
+export class RateLimitError extends JanuaError {
   public readonly rateLimitInfo?: RateLimitInfo;
   public readonly retryAfter?: number;
 
@@ -163,7 +163,7 @@ export class RateLimitError extends PlintoError {
 /**
  * Server errors (5xx)
  */
-export class ServerError extends PlintoError {
+export class ServerError extends JanuaError {
   constructor(
     message = 'Internal server error',
     statusCode = 500,
@@ -177,7 +177,7 @@ export class ServerError extends PlintoError {
 /**
  * Network related errors
  */
-export class NetworkError extends PlintoError {
+export class NetworkError extends JanuaError {
   public readonly cause?: Error;
 
   constructor(message = 'Network error', cause?: Error, details?: Record<string, any>) {
@@ -190,7 +190,7 @@ export class NetworkError extends PlintoError {
 /**
  * Token related errors
  */
-export class TokenError extends PlintoError {
+export class TokenError extends JanuaError {
   constructor(message = 'Token error', details?: Record<string, any>) {
     super(message, 'TOKEN_ERROR', undefined, details);
     this.name = 'TokenError';
@@ -200,7 +200,7 @@ export class TokenError extends PlintoError {
 /**
  * Configuration errors
  */
-export class ConfigurationError extends PlintoError {
+export class ConfigurationError extends JanuaError {
   constructor(message = 'Configuration error', details?: Record<string, any>) {
     super(message, 'CONFIGURATION_ERROR', undefined, details);
     this.name = 'ConfigurationError';
@@ -210,7 +210,7 @@ export class ConfigurationError extends PlintoError {
 /**
  * MFA related errors
  */
-export class MFAError extends PlintoError {
+export class MFAError extends JanuaError {
   public readonly mfaRequired?: boolean;
   public readonly availableMethods?: string[];
 
@@ -230,7 +230,7 @@ export class MFAError extends PlintoError {
 /**
  * Webhook related errors
  */
-export class WebhookError extends PlintoError {
+export class WebhookError extends JanuaError {
   constructor(message = 'Webhook error', details?: Record<string, any>) {
     super(message, 'WEBHOOK_ERROR', undefined, details);
     this.name = 'WebhookError';
@@ -240,7 +240,7 @@ export class WebhookError extends PlintoError {
 /**
  * OAuth related errors
  */
-export class OAuthError extends PlintoError {
+export class OAuthError extends JanuaError {
   public readonly provider?: string;
   public readonly oauthCode?: string;
 
@@ -260,7 +260,7 @@ export class OAuthError extends PlintoError {
 /**
  * WebAuthn/Passkey related errors
  */
-export class PasskeyError extends PlintoError {
+export class PasskeyError extends JanuaError {
   public readonly webauthnError?: string;
 
   constructor(message = 'Passkey error', webauthnError?: string, details?: Record<string, any>) {
@@ -308,8 +308,8 @@ export class ErrorHandler {
       this.logger.error('Server error:', error);
     } else if (error instanceof NetworkError) {
       this.logger.error('Network error:', error);
-    } else if (error instanceof PlintoError) {
-      this.logger.error('Plinto error:', error);
+    } else if (error instanceof JanuaError) {
+      this.logger.error('Janua error:', error);
     } else {
       this.logger.error('Unknown error:', error);
     }
@@ -318,7 +318,7 @@ export class ErrorHandler {
   /**
    * Check if error is a specific type
    */
-  static isType<T extends PlintoError>(error: any, errorClass: new (...args: any[]) => T): error is T {
+  static isType<T extends JanuaError>(error: any, errorClass: new (...args: any[]) => T): error is T {
     return error instanceof errorClass;
   }
 
@@ -371,7 +371,7 @@ export class ErrorHandler {
     if (error instanceof ServerError) {
       return 'A server error occurred. Please try again later.';
     }
-    if (error instanceof PlintoError) {
+    if (error instanceof JanuaError) {
       return error.message;
     }
     
@@ -403,5 +403,5 @@ export const isNetworkError = (error: any): error is NetworkError =>
 export const isServerError = (error: any): error is ServerError =>
   ErrorHandler.isType(error, ServerError);
 
-export const isPlintoError = (error: any): error is PlintoError =>
-  ErrorHandler.isType(error, PlintoError);
+export const isJanuaError = (error: any): error is JanuaError =>
+  ErrorHandler.isType(error, JanuaError);

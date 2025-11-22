@@ -1,6 +1,6 @@
-# Plinto Database Schema
+# Janua Database Schema
 
-This directory contains the complete PostgreSQL database schema for Plinto, implemented using Prisma ORM. The schema supports enterprise-grade multi-tenancy, security, billing, and user management.
+This directory contains the complete PostgreSQL database schema for Janua, implemented using Prisma ORM. The schema supports enterprise-grade multi-tenancy, security, billing, and user management.
 
 ## Quick Start
 

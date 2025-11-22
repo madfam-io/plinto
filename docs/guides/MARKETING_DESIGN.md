@@ -1,8 +1,8 @@
-# Plinto Marketing Site Design
+# Janua Marketing Site Design
 
 ## Overview
 
-The Plinto marketing site serves as the primary entry point for developers discovering our identity platform. It must communicate our technical superiority, demonstrate ease of integration, and drive conversions through a compelling developer experience.
+The Janua marketing site serves as the primary entry point for developers discovering our identity platform. It must communicate our technical superiority, demonstrate ease of integration, and drive conversions through a compelling developer experience.
 
 **Core Value Proposition**: "The secure substrate for identity — Edge-fast verification with full control"
 
@@ -13,16 +13,16 @@ The Plinto marketing site serves as the primary entry point for developers disco
 ### URL Structure (Single Domain)
 
 ```
-plinto.dev/                     # Landing page
-plinto.dev/pricing              # Pricing & plans
-plinto.dev/developers           # Developer hub
-plinto.dev/playground           # Interactive demo
-plinto.dev/customers            # Case studies
-plinto.dev/compare/clerk        # Comparison pages
-plinto.dev/blog                 # Engineering blog
-plinto.dev/docs                 # Documentation
-plinto.dev/admin                # Admin panel (gated)
-plinto.dev/api/v1/*            # API endpoints
+janua.dev/                     # Landing page
+janua.dev/pricing              # Pricing & plans
+janua.dev/developers           # Developer hub
+janua.dev/playground           # Interactive demo
+janua.dev/customers            # Case studies
+janua.dev/compare/clerk        # Comparison pages
+janua.dev/blog                 # Engineering blog
+janua.dev/docs                 # Documentation
+janua.dev/admin                # Admin panel (gated)
+janua.dev/api/v1/*            # API endpoints
 ```
 
 ### Technical Stack
@@ -147,10 +147,10 @@ interface DeveloperSection {
     snippets: {
       typescript: `
 // 1. Install
-npm install @plinto/nextjs @plinto/react-sdk
+npm install @janua/nextjs @janua/react-sdk
 
 // 2. Add middleware
-export default withPlinto({
+export default withJanua({
   publicRoutes: ['/']
 })
 
@@ -165,7 +165,7 @@ export default withPlinto({
   
   timeline: {
     steps: [
-      { time: "0:00", action: "npm install @plinto/sdk" },
+      { time: "0:00", action: "npm install @janua/sdk" },
       { time: "1:00", action: "Add middleware" },
       { time: "3:00", action: "Configure environment" },
       { time: "4:00", action: "Add UI components" },
@@ -217,28 +217,28 @@ interface ComparisonSection {
     metrics: [
       {
         metric: "Edge Verification",
-        plinto: "<30ms",
+        janua: "<30ms",
         clerk: "50-100ms",
         auth0: "80-150ms",
         supabase: "60-120ms"
       },
       {
         metric: "Global PoPs",
-        plinto: "150+",
+        janua: "150+",
         clerk: "~30",
         auth0: "~20",
         supabase: "~15"
       },
       {
         metric: "Free Tier MAU",
-        plinto: "10,000",
+        janua: "10,000",
         clerk: "5,000",
         auth0: "7,000",
         supabase: "50,000"
       },
       {
         metric: "Passkey Support",
-        plinto: "Native",
+        janua: "Native",
         clerk: "Add-on",
         auth0: "Beta",
         supabase: "Planned"
@@ -471,7 +471,7 @@ interface ABTests {
 
 ### Target Keywords
 - Primary: "identity platform", "authentication api"
-- Comparison: "clerk alternative", "auth0 vs plinto"
+- Comparison: "clerk alternative", "auth0 vs janua"
 - Technical: "edge authentication", "passkey api"
 - Long-tail: "fastest jwt verification", "multi-region auth"
 
@@ -533,4 +533,4 @@ interface TrackedEvents {
 - [ ] Performance optimization
 - [ ] SEO implementation
 
-This design creates a marketing entry-point that clearly communicates Plinto's technical superiority while maintaining a smooth path to conversion for both developers and decision-makers.
+This design creates a marketing entry-point that clearly communicates Janua's technical superiority while maintaining a smooth path to conversion for both developers and decision-makers.

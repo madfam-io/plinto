@@ -20,7 +20,7 @@
 
 ## Overview
 
-Single Sign-On (SSO) allows your organization's users to authenticate using your existing identity provider, eliminating the need for separate Plinto credentials.
+Single Sign-On (SSO) allows your organization's users to authenticate using your existing identity provider, eliminating the need for separate Janua credentials.
 
 ### Benefits
 
@@ -34,7 +34,7 @@ Single Sign-On (SSO) allows your organization's users to authenticate using your
 
 ```
 ┌─────────┐           ┌─────────────┐           ┌────────┐
-│  User   │──(1)─────▶│   Plinto    │──(2)─────▶│  IdP   │
+│  User   │──(1)─────▶│   Janua    │──(2)─────▶│  IdP   │
 │         │           │             │           │        │
 │         │◀──(6)─────│             │◀──(3)─────│        │
 └─────────┘           └─────────────┘           └────────┘
@@ -42,12 +42,12 @@ Single Sign-On (SSO) allows your organization's users to authenticate using your
                              └──────(4)──────────────┘
                                     (5)
 
-1. User visits Plinto login page
-2. Plinto redirects to Identity Provider (IdP)
+1. User visits Janua login page
+2. Janua redirects to Identity Provider (IdP)
 3. User authenticates with IdP
-4. IdP sends SAML assertion/OAuth token to Plinto
-5. Plinto validates and creates session
-6. User is logged in to Plinto
+4. IdP sends SAML assertion/OAuth token to Janua
+5. Janua validates and creates session
+6. User is logged in to Janua
 ```
 
 ---
@@ -61,7 +61,7 @@ Before setting up SSO, ensure you have:
 - ✅ **Enterprise Plan**: SSO is available on Enterprise plan only
 - ✅ **Organization Admin Access**: You must be an organization administrator
 - ✅ **IdP Admin Access**: Access to configure your identity provider
-- ✅ **Domain Verification**: Verified domain ownership in Plinto
+- ✅ **Domain Verification**: Verified domain ownership in Janua
 - ✅ **SSL Certificate**: HTTPS endpoint for production use
 
 ### Information Needed
@@ -72,7 +72,7 @@ From your Identity Provider:
 - X.509 Certificate (for SAML)
 - Client ID / Client Secret (for OAuth)
 
-From Plinto (provided during setup):
+From Janua (provided during setup):
 - Service Provider Entity ID
 - Assertion Consumer Service (ACS) URL
 - Sign-on URL
@@ -104,7 +104,7 @@ From Plinto (provided during setup):
 
 ## SAML Integration
 
-### Step 1: Configure Plinto as Service Provider
+### Step 1: Configure Janua as Service Provider
 
 1. **Navigate to SSO Settings**
    - Go to Organization Settings → Security → Single Sign-On
@@ -114,26 +114,26 @@ From Plinto (provided during setup):
    - Choose your identity provider from the list
    - Or select "Generic SAML 2.0" for other providers
 
-3. **Copy Plinto Metadata**
+3. **Copy Janua Metadata**
    
    You'll need these values for your IdP configuration:
    
    ```
    Entity ID (Audience URI):
-   https://api.plinto.dev/sso/saml/{organization_id}
+   https://api.janua.dev/sso/saml/{organization_id}
    
    Assertion Consumer Service (ACS) URL:
-   https://api.plinto.dev/sso/saml/{organization_id}/acs
+   https://api.janua.dev/sso/saml/{organization_id}/acs
    
    Single Logout Service URL:
-   https://api.plinto.dev/sso/saml/{organization_id}/sls
+   https://api.janua.dev/sso/saml/{organization_id}/sls
    ```
 
 ### Step 2: Configure Identity Provider
 
 #### Required SAML Attributes
 
-Plinto requires the following SAML attributes:
+Janua requires the following SAML attributes:
 
 | Attribute | Required | Format | Example |
 |-----------|----------|--------|---------|
@@ -162,13 +162,13 @@ Plinto requires the following SAML attributes:
 </saml:AttributeStatement>
 ```
 
-### Step 3: Add IdP Metadata to Plinto
+### Step 3: Add IdP Metadata to Janua
 
 1. **Obtain IdP Metadata**
    - Download metadata XML from your IdP
    - Or manually enter Entity ID, SSO URL, and Certificate
 
-2. **Upload to Plinto**
+2. **Upload to Janua**
    - Paste metadata XML in configuration form
    - Or fill in manual fields:
      - **Entity ID**: Your IdP's entity identifier
@@ -198,18 +198,18 @@ Plinto requires the following SAML attributes:
 
 ## OAuth 2.0 / OIDC Integration
 
-### Step 1: Register Plinto Application
+### Step 1: Register Janua Application
 
 In your OAuth provider:
 
 1. **Create OAuth Application**
-   - Application Name: `Plinto SSO`
+   - Application Name: `Janua SSO`
    - Application Type: `Web Application`
    
 2. **Configure Redirect URIs**
    ```
-   https://api.plinto.dev/sso/oauth/{organization_id}/callback
-   https://app.plinto.dev/auth/callback
+   https://api.janua.dev/sso/oauth/{organization_id}/callback
+   https://app.janua.dev/auth/callback
    ```
 
 3. **Configure Scopes**
@@ -228,7 +228,7 @@ In your OAuth provider:
    - Note **Token URL**
    - Note **UserInfo URL** (if using OIDC)
 
-### Step 2: Configure OAuth in Plinto
+### Step 2: Configure OAuth in Janua
 
 1. **Navigate to SSO Settings**
    - Organization Settings → Security → Single Sign-On
@@ -244,9 +244,9 @@ In your OAuth provider:
    ```
 
 3. **Configure Attribute Mapping**
-   Map IdP attributes to Plinto fields:
+   Map IdP attributes to Janua fields:
    
-   | Plinto Field | IdP Attribute |
+   | Janua Field | IdP Attribute |
    |--------------|---------------|
    | Email | `email` |
    | First Name | `given_name` |
@@ -268,12 +268,12 @@ Same as SAML Step 4 above.
 1. **Create SAML Application in Okta**
    - Admin Console → Applications → Create App Integration
    - Sign-in method: SAML 2.0
-   - App name: Plinto
+   - App name: Janua
 
 2. **Configure SAML Settings**
    ```
-   Single sign-on URL: https://api.plinto.dev/sso/saml/{org_id}/acs
-   Audience URI: https://api.plinto.dev/sso/saml/{org_id}
+   Single sign-on URL: https://api.janua.dev/sso/saml/{org_id}/acs
+   Audience URI: https://api.janua.dev/sso/saml/{org_id}
    Name ID format: EmailAddress
    Application username: Email
    ```
@@ -288,12 +288,12 @@ Same as SAML Step 4 above.
 
 4. **Assign Users**
    - Assign individuals or groups
-   - Users will see Plinto in their Okta dashboard
+   - Users will see Janua in their Okta dashboard
 
 5. **Download Metadata**
    - Sign On tab → View SAML setup instructions
    - Copy "Identity Provider metadata" link
-   - Paste into Plinto SSO configuration
+   - Paste into Janua SSO configuration
 
 #### OIDC Configuration
 
@@ -304,11 +304,11 @@ Same as SAML Step 4 above.
 2. **Configure Application**
    ```
    Sign-in redirect URIs:
-   - https://api.plinto.dev/sso/oauth/{org_id}/callback
-   - https://app.plinto.dev/auth/callback
+   - https://api.janua.dev/sso/oauth/{org_id}/callback
+   - https://app.janua.dev/auth/callback
    
    Sign-out redirect URIs:
-   - https://app.plinto.dev/logout
+   - https://app.janua.dev/logout
    
    Assignments: Limit to selected groups
    ```
@@ -318,7 +318,7 @@ Same as SAML Step 4 above.
    - Client Secret
    - Okta domain: `https://{your-domain}.okta.com`
 
-4. **Configure in Plinto**
+4. **Configure in Janua**
    ```
    Authorization URL: https://{domain}.okta.com/oauth2/v1/authorize
    Token URL: https://{domain}.okta.com/oauth2/v1/token
@@ -334,16 +334,16 @@ Same as SAML Step 4 above.
 1. **Create Enterprise Application**
    - Azure Portal → Entra ID → Enterprise applications
    - New application → Create your own application
-   - Name: Plinto
+   - Name: Janua
    - Integrate any other application (non-gallery)
 
 2. **Configure Single Sign-On**
    - Single sign-on → SAML
    - Basic SAML Configuration:
      ```
-     Identifier (Entity ID): https://api.plinto.dev/sso/saml/{org_id}
-     Reply URL (ACS): https://api.plinto.dev/sso/saml/{org_id}/acs
-     Sign on URL: https://app.plinto.dev/login
+     Identifier (Entity ID): https://api.janua.dev/sso/saml/{org_id}
+     Reply URL (ACS): https://api.janua.dev/sso/saml/{org_id}/acs
+     Sign on URL: https://app.janua.dev/login
      ```
 
 3. **Configure Attributes & Claims**
@@ -370,11 +370,11 @@ Same as SAML Step 4 above.
 
 1. **Register Application**
    - App registrations → New registration
-   - Name: Plinto
+   - Name: Janua
    - Supported account types: Single tenant
    - Redirect URI:
      ```
-     Web: https://api.plinto.dev/sso/oauth/{org_id}/callback
+     Web: https://api.janua.dev/sso/oauth/{org_id}/callback
      ```
 
 2. **Configure API Permissions**
@@ -388,7 +388,7 @@ Same as SAML Step 4 above.
 
 3. **Create Client Secret**
    - Certificates & secrets → New client secret
-   - Description: Plinto SSO
+   - Description: Janua SSO
    - Copy secret value (only shown once!)
 
 4. **Copy Application Details**
@@ -398,7 +398,7 @@ Same as SAML Step 4 above.
    Client secret: {secret_value}
    ```
 
-5. **Configure in Plinto**
+5. **Configure in Janua**
    ```
    Client ID: {client_id}
    Client Secret: {secret_value}
@@ -416,7 +416,7 @@ Same as SAML Step 4 above.
 1. **Add Custom SAML Application**
    - Admin Console → Apps → Web and mobile apps
    - Add app → Add custom SAML app
-   - App name: Plinto
+   - App name: Janua
 
 2. **Download Google IdP Metadata**
    - Copy SSO URL
@@ -425,9 +425,9 @@ Same as SAML Step 4 above.
 
 3. **Configure Service Provider**
    ```
-   ACS URL: https://api.plinto.dev/sso/saml/{org_id}/acs
-   Entity ID: https://api.plinto.dev/sso/saml/{org_id}
-   Start URL: https://app.plinto.dev/login
+   ACS URL: https://api.janua.dev/sso/saml/{org_id}/acs
+   Entity ID: https://api.janua.dev/sso/saml/{org_id}
+   Start URL: https://app.janua.dev/login
    Name ID format: EMAIL
    Name ID: Basic Information > Primary email
    ```
@@ -449,13 +449,13 @@ Same as SAML Step 4 above.
    - Google Cloud Console → APIs & Services → Credentials
    - Create Credentials → OAuth client ID
    - Application type: Web application
-   - Name: Plinto
+   - Name: Janua
 
 2. **Configure Redirect URIs**
    ```
    Authorized redirect URIs:
-   - https://api.plinto.dev/sso/oauth/{org_id}/callback
-   - https://app.plinto.dev/auth/callback
+   - https://api.janua.dev/sso/oauth/{org_id}/callback
+   - https://app.janua.dev/auth/callback
    ```
 
 3. **Configure OAuth Consent Screen**
@@ -469,7 +469,7 @@ Same as SAML Step 4 above.
    - Client ID
    - Client Secret
 
-5. **Configure in Plinto**
+5. **Configure in Janua**
    ```
    Client ID: {client_id}.apps.googleusercontent.com
    Client Secret: {client_secret}
@@ -487,15 +487,15 @@ Same as SAML Step 4 above.
 1. **Add SAML Application**
    - Applications → Add App
    - Search: "SAML Custom Connector (Advanced)"
-   - Display Name: Plinto
+   - Display Name: Janua
 
 2. **Configure SSO**
    - Configuration tab:
      ```
-     Audience: https://api.plinto.dev/sso/saml/{org_id}
-     Recipient: https://api.plinto.dev/sso/saml/{org_id}/acs
-     ACS URL: https://api.plinto.dev/sso/saml/{org_id}/acs
-     ACS URL Validator: ^https://api\.plinto\.dev/.*$
+     Audience: https://api.janua.dev/sso/saml/{org_id}
+     Recipient: https://api.janua.dev/sso/saml/{org_id}/acs
+     ACS URL: https://api.janua.dev/sso/saml/{org_id}/acs
+     ACS URL Validator: ^https://api\.janua\.dev/.*$
      ```
 
 3. **Configure Parameters**
@@ -523,7 +523,7 @@ Same as SAML Step 4 above.
 Before enabling SSO for all users:
 
 - [ ] **Metadata Exchange Complete**
-  - IdP metadata uploaded to Plinto
+  - IdP metadata uploaded to Janua
   - SP metadata configured in IdP
 
 - [ ] **Attribute Mapping Verified**
@@ -532,17 +532,17 @@ Before enabling SSO for all users:
 
 - [ ] **Test User Authentication**
   - Create test user in IdP
-  - Initiate SSO from Plinto
+  - Initiate SSO from Janua
   - Verify successful login
-  - Check user profile data in Plinto
+  - Check user profile data in Janua
 
 - [ ] **Test Logout**
-  - Logout from Plinto
+  - Logout from Janua
   - Verify session terminated
   - Test Single Logout (SLO) if configured
 
 - [ ] **Test Edge Cases**
-  - User doesn't exist in Plinto (JIT provisioning)
+  - User doesn't exist in Janua (JIT provisioning)
   - User exists with different email
   - Invalid SAML assertion
   - Expired certificate
@@ -551,12 +551,12 @@ Before enabling SSO for all users:
 
 1. **Initiate SSO Login**
    ```
-   https://app.plinto.dev/login?domain=example.com
+   https://app.janua.dev/login?domain=example.com
    ```
    
    Or use direct SSO URL:
    ```
-   https://app.plinto.dev/sso/{organization_id}
+   https://app.janua.dev/sso/{organization_id}
    ```
 
 2. **Verify Redirect**
@@ -565,7 +565,7 @@ Before enabling SSO for all users:
 
 3. **Complete Authentication**
    - Login with test credentials
-   - Verify redirect back to Plinto
+   - Verify redirect back to Janua
 
 4. **Check User Session**
    - User logged in automatically
@@ -616,7 +616,7 @@ Enable debug mode for detailed SSO logs:
 - Incorrect entity ID
 
 **Solutions**:
-- Verify certificate in Plinto matches IdP
+- Verify certificate in Janua matches IdP
 - Check server time synchronization (NTP)
 - Confirm entity ID exactly matches
 - Check SAML assertion in debug logs
@@ -633,7 +633,7 @@ Enable debug mode for detailed SSO logs:
 **Solutions**:
 - Review SAML assertion in debug logs
 - Verify attribute names in IdP configuration
-- Check Plinto attribute mapping settings
+- Check Janua attribute mapping settings
 - Use attribute mapping overrides if needed
 
 #### 3. User Not Provisioned
@@ -666,7 +666,7 @@ Enable debug mode for detailed SSO logs:
 
 #### 5. Redirect Loop
 
-**Error**: Continuous redirects between Plinto and IdP
+**Error**: Continuous redirects between Janua and IdP
 
 **Causes**:
 - Incorrect redirect URLs
@@ -681,9 +681,9 @@ Enable debug mode for detailed SSO logs:
 
 ### Support Resources
 
-- **Documentation**: https://docs.plinto.dev/sso
-- **Community Forum**: https://community.plinto.dev
-- **Email Support**: sso-support@plinto.dev
+- **Documentation**: https://docs.janua.dev/sso
+- **Community Forum**: https://community.janua.dev
+- **Email Support**: sso-support@janua.dev
 - **Enterprise Support**: Available 24/7 for Enterprise customers
 
 ---
@@ -779,7 +779,7 @@ Automatically create user accounts on first SSO login:
 
 ### Role Mapping
 
-Map IdP groups to Plinto roles:
+Map IdP groups to Janua roles:
 
 ```javascript
 {
@@ -793,12 +793,12 @@ Map IdP groups to Plinto roles:
 
 ### Single Logout (SLO)
 
-Enable logout from Plinto to terminate IdP session:
+Enable logout from Janua to terminate IdP session:
 
 ```xml
 <SingleLogoutService
   Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
-  Location="https://api.plinto.dev/sso/saml/{org_id}/sls"
+  Location="https://api.janua.dev/sso/saml/{org_id}/sls"
 />
 ```
 
@@ -832,4 +832,4 @@ Enable logout from Plinto to terminate IdP session:
 
 **Last Updated**: November 16, 2025  
 **Version**: 1.0.0-beta  
-**Support**: sso-support@plinto.dev
+**Support**: sso-support@janua.dev

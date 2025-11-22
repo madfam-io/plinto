@@ -1,8 +1,8 @@
 # Developer Integrator Journey
 
-**Persona**: Software developers and technical teams integrating Plinto authentication into their applications
+**Persona**: Software developers and technical teams integrating Janua authentication into their applications
 
-**Primary Goal**: Successfully integrate Plinto authentication with minimal friction and achieve production readiness
+**Primary Goal**: Successfully integrate Janua authentication with minimal friction and achieve production readiness
 
 ## Journey Overview
 
@@ -26,7 +26,7 @@ graph LR
 - Developer community forums
 
 ### Goals
-- Understand what Plinto offers
+- Understand what Janua offers
 - Compare with Auth0, Clerk, Supabase
 - Assess technical fit for project needs
 
@@ -97,7 +97,7 @@ test('Evaluation: Documentation matches SDK capabilities', async ({ page }) => {
   const codeExample = await page.locator('[data-testid="quickstart-code"]').textContent();
   
   // Validate SDK initialization code is correct
-  expect(codeExample).toContain('new PlintoClient');
+  expect(codeExample).toContain('new JanuaClient');
   expect(codeExample).toContain('apiKey');
   
   // Verify pricing claims match billing service limits
@@ -153,7 +153,7 @@ test('Onboarding: SDK installation works as documented', async ({ page }) => {
   
   // Get installation command
   const installCmd = await page.locator('[data-testid="install-command"]').textContent();
-  expect(installCmd).toContain('npm install @plinto/typescript-sdk');
+  expect(installCmd).toContain('npm install @janua/typescript-sdk');
   
   // Validate package actually exists and is published
   // (In local testing, verify dist/ exists)
@@ -198,7 +198,7 @@ test('Onboarding: SDK installation works as documented', async ({ page }) => {
 ### Validation Tests
 ```typescript
 test('Integration: Core authentication workflows work', async ({ page }) => {
-  // Test app using Plinto SDK
+  // Test app using Janua SDK
   await page.goto('http://localhost:3001/test-app');
   
   // Complete signup flow
@@ -375,4 +375,4 @@ Before deploying updates affecting developers:
 
 - **End User**: Developers hand off to these users after integration
 - **Security Admin**: Developers may escalate to security team for enterprise setup
-- **Business Decision Maker**: Developers may recommend Plinto after successful integration
+- **Business Decision Maker**: Developers may recommend Janua after successful integration

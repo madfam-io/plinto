@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession, useOrganization } from '@plinto/react-sdk';
+import { useSession, useOrganization } from '@janua/react-sdk';
 
 export function Dashboard() {
   const { session, sessions } = useSession();

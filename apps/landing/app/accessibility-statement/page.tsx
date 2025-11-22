@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Accessibility Statement - Plinto',
-  description: 'Plinto is committed to ensuring digital accessibility for all users.',
+  title: 'Accessibility Statement - Janua',
+  description: 'Janua is committed to ensuring digital accessibility for all users.',
 }
 
 export default function AccessibilityPage() {
@@ -13,7 +13,7 @@ export default function AccessibilityPage() {
           <h1>Accessibility Statement</h1>
           
           <p className="lead">
-            Plinto is committed to ensuring digital accessibility for people with disabilities. 
+            Janua is committed to ensuring digital accessibility for people with disabilities. 
             We are continually improving the user experience for everyone and applying the 
             relevant accessibility standards.
           </p>
@@ -25,7 +25,7 @@ export default function AccessibilityPage() {
             It defines three levels of conformance: Level A, Level AA, and Level AAA.
           </p>
           <p>
-            <strong>Plinto is fully conformant with WCAG 2.1 Level AA.</strong> Fully conformant means that 
+            <strong>Janua is fully conformant with WCAG 2.1 Level AA.</strong> Fully conformant means that 
             the content fully conforms to the accessibility standard without any exceptions.
           </p>
 
@@ -95,7 +95,7 @@ export default function AccessibilityPage() {
 
           <h2>Assessment Approach</h2>
           <p>
-            Plinto assessed the accessibility of this website by the following approaches:
+            Janua assessed the accessibility of this website by the following approaches:
           </p>
           <ul>
             <li>Self-evaluation using automated testing tools</li>
@@ -107,15 +107,15 @@ export default function AccessibilityPage() {
 
           <h2>Feedback</h2>
           <p>
-            We welcome your feedback on the accessibility of Plinto. Please let us know if you 
+            We welcome your feedback on the accessibility of Janua. Please let us know if you 
             encounter accessibility barriers:
           </p>
           <ul>
             <li>
-              Email: <a href="mailto:accessibility@plinto.dev">accessibility@plinto.dev</a>
+              Email: <a href="mailto:accessibility@janua.dev">accessibility@janua.dev</a>
             </li>
             <li>
-              GitHub Issues: <a href="https://github.com/madfam-io/plinto/issues">Report an accessibility issue</a>
+              GitHub Issues: <a href="https://github.com/madfam-io/janua/issues">Report an accessibility issue</a>
             </li>
           </ul>
           <p>
@@ -124,7 +124,7 @@ export default function AccessibilityPage() {
 
           <h2>Compatibility with Browsers and Assistive Technology</h2>
           <p>
-            Plinto is designed to be compatible with the following assistive technologies:
+            Janua is designed to be compatible with the following assistive technologies:
           </p>
           <ul>
             <li>Latest versions of Chrome, Firefox, Safari, and Edge</li>
@@ -136,7 +136,7 @@ export default function AccessibilityPage() {
           <h2>Formal Complaints</h2>
           <p>
             If you are not satisfied with our response to your accessibility feedback, you may 
-            file a formal complaint by emailing <a href="mailto:legal@plinto.dev">legal@plinto.dev</a>.
+            file a formal complaint by emailing <a href="mailto:legal@janua.dev">legal@janua.dev</a>.
           </p>
 
           <h2>Last Updated</h2>

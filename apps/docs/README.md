@@ -1,8 +1,8 @@
-# Plinto Documentation
+# Janua Documentation
 
-> **Developer documentation portal** for the Plinto platform
+> **Developer documentation portal** for the Janua platform
 
-**Status:** In Development · **Domain:** `docs.plinto.dev` · **Port:** 3003 ⚠️
+**Status:** In Development · **Domain:** `docs.janua.dev` · **Port:** 3003 ⚠️
 
 ## ⚠️ Port Conflict Notice
 
@@ -12,7 +12,7 @@
 
 ## 📋 Overview
 
-The Plinto Documentation site provides comprehensive guides, API references, SDK documentation, and tutorials for developers integrating with the Plinto platform. Built with Next.js and MDX for a superior documentation experience.
+The Janua Documentation site provides comprehensive guides, API references, SDK documentation, and tutorials for developers integrating with the Janua platform. Built with Next.js and MDX for a superior documentation experience.
 
 ## 🚀 Quick Start
 
@@ -45,11 +45,11 @@ Create a `.env.local` file:
 # Search
 NEXT_PUBLIC_ALGOLIA_APP_ID=your-algolia-app-id
 NEXT_PUBLIC_ALGOLIA_API_KEY=your-search-api-key
-NEXT_PUBLIC_ALGOLIA_INDEX=plinto-docs
+NEXT_PUBLIC_ALGOLIA_INDEX=janua-docs
 
 # API
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
-NEXT_PUBLIC_GITHUB_REPO=plinto/plinto
+NEXT_PUBLIC_API_URL=https://api.janua.dev
+NEXT_PUBLIC_GITHUB_REPO=janua/janua
 
 # Features
 NEXT_PUBLIC_ENABLE_SEARCH=true
@@ -186,9 +186,9 @@ apps/docs/
   runnable
 >
   {`
-    import { PlintoClient } from '@plinto/sdk';
+    import { JanuaClient } from '@janua/sdk';
     
-    const client = new PlintoClient({
+    const client = new JanuaClient({
       apiKey: 'your-api-key'
     });
     
@@ -266,7 +266,7 @@ import { Callout, CodeBlock } from '@/components/mdx';
 export const searchConfig = {
   appId: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
   apiKey: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY,
-  indexName: 'plinto-docs',
+  indexName: 'janua-docs',
   facets: ['category', 'tags', 'version'],
 };
 ```
@@ -491,4 +491,4 @@ See [Documentation Contributing Guide](../../docs/contributing/documentation.md)
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

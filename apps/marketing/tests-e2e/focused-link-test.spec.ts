@@ -77,7 +77,7 @@ test.describe('Focused Link and Interactive Element Testing', () => {
       const currentUrl = page.url();
       if (currentUrl === 'http://localhost:3003/' || currentUrl.endsWith('localhost:3003')) {
         addResult({
-          element: 'Plinto Logo/Home Link',
+          element: 'Janua Logo/Home Link',
           location: 'Header Navigation',
           action: 'Click logo to return home',
           expected: 'Should navigate to home page',
@@ -86,7 +86,7 @@ test.describe('Focused Link and Interactive Element Testing', () => {
         });
       } else {
         addResult({
-          element: 'Plinto Logo/Home Link',
+          element: 'Janua Logo/Home Link',
           location: 'Header Navigation',
           action: 'Click logo',
           expected: 'Should navigate to home',
@@ -96,7 +96,7 @@ test.describe('Focused Link and Interactive Element Testing', () => {
       }
     } catch (error) {
       addResult({
-        element: 'Plinto Logo/Home Link',
+        element: 'Janua Logo/Home Link',
         location: 'Header Navigation',
         action: 'Click logo',
         expected: 'Should navigate to home',
@@ -210,8 +210,8 @@ test.describe('Focused Link and Interactive Element Testing', () => {
 
     // Test header buttons
     const headerButtons = [
-      { text: 'Sign In', expectedHref: 'https://app.plinto.dev/auth/signin' },
-      { text: 'Start Free', expectedHref: 'https://app.plinto.dev/auth/signup' }
+      { text: 'Sign In', expectedHref: 'https://app.janua.dev/auth/signin' },
+      { text: 'Start Free', expectedHref: 'https://app.janua.dev/auth/signup' }
     ];
 
     for (const button of headerButtons) {
@@ -445,9 +445,9 @@ test.describe('Focused Link and Interactive Element Testing', () => {
   test('External Links and GitHub Integration', async ({ page }) => {
     // Test GitHub links
     const githubSelectors = [
-      'a[href*="github.com/plinto/plinto"]',
-      'a[href*="github.com/plinto/typescript-sdk"]',
-      'a[href*="github.com/plinto/plinto/issues"]'
+      'a[href*="github.com/janua/janua"]',
+      'a[href*="github.com/janua/typescript-sdk"]',
+      'a[href*="github.com/janua/janua/issues"]'
     ];
 
     for (const selector of githubSelectors) {
@@ -493,8 +493,8 @@ test.describe('Focused Link and Interactive Element Testing', () => {
 
     // Test app links
     const appSelectors = [
-      'a[href*="app.plinto.dev/auth/signin"]',
-      'a[href*="app.plinto.dev/auth/signup"]'
+      'a[href*="app.janua.dev/auth/signin"]',
+      'a[href*="app.janua.dev/auth/signup"]'
     ];
 
     for (const selector of appSelectors) {
@@ -505,7 +505,7 @@ test.describe('Focused Link and Interactive Element Testing', () => {
           const href = await link.getAttribute('href');
           const linkText = await link.textContent();
 
-          if (href && href.includes('app.plinto.dev')) {
+          if (href && href.includes('app.janua.dev')) {
             addResult({
               element: `App Link: ${linkText?.trim() || `Link ${i + 1}`}`,
               location: 'Various Sections',
@@ -539,7 +539,7 @@ test.describe('Focused Link and Interactive Element Testing', () => {
 
     // Test external documentation links
     const externalSelectors = [
-      'a[href*="docs.plinto.dev"]'
+      'a[href*="docs.janua.dev"]'
     ];
 
     for (const selector of externalSelectors) {
@@ -550,7 +550,7 @@ test.describe('Focused Link and Interactive Element Testing', () => {
           const href = await link.getAttribute('href');
           const linkText = await link.textContent();
 
-          if (href && (href.includes('docs.plinto.dev') || href.includes('demo.plinto.dev'))) {
+          if (href && (href.includes('docs.janua.dev') || href.includes('demo.janua.dev'))) {
             addResult({
               element: `External Link: ${linkText?.trim() || `Link ${i + 1}`}`,
               location: 'Various Sections',
@@ -626,7 +626,7 @@ test.describe('Focused Link and Interactive Element Testing', () => {
 
     // Test footer navigation links
     const footerLinkTexts = [
-      'Plinto', 'About', 'Blog', 'Careers', 'Contact',
+      'Janua', 'About', 'Blog', 'Careers', 'Contact',
       'Pricing', 'Changelog', 'Documentation', 'API Reference',
       'SDKs', 'Examples', 'Playground', 'Status',
       'E-commerce', 'SaaS Platforms', 'Enterprise'

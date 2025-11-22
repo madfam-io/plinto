@@ -32,7 +32,7 @@ graph LR
 
 ### Expected Experience
 **Authentication Interface**:
-- Clear branding (client app + "Powered by Plinto")
+- Clear branding (client app + "Powered by Janua")
 - Multiple login options (email/password, OAuth, passkey)
 - Privacy-first messaging
 - Accessible design (WCAG 2.1 AA compliant)

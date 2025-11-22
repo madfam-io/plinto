@@ -1,4 +1,4 @@
-# Plinto - Self-Hosted Authentication
+# Janua - Self-Hosted Authentication
 
 **Open-source authentication for developers who want to own their auth infrastructure.**
 
@@ -50,14 +50,14 @@ So we built this. All features are free and open source. MIT licensed.
 
 **We built a migration tool to help you escape Auth0's pricing.**
 
-If you're paying **$2,000-5,000/month** for Auth0 (or more with SSO/SCIM), you can migrate to self-hosted Plinto and run it for **~$170/month**.
+If you're paying **$2,000-5,000/month** for Auth0 (or more with SSO/SCIM), you can migrate to self-hosted Janua and run it for **~$170/month**.
 
 **Savings: $24,000-58,000/year.**
 
 ### Migration Tool Features
 
 - ✅ **Export all users** from Auth0 (via Management API)
-- ✅ **Import to Plinto** with automatic data mapping
+- ✅ **Import to Janua** with automatic data mapping
 - ✅ **Preserve user data** - email, name, phone, metadata
 - ✅ **Migration report** showing success/failures
 - ✅ **Zero-downtime strategy** guide included
@@ -81,8 +81,8 @@ python auth0_migrate.py --config config.json
 
 ```bash
 # Clone the repository
-git clone https://github.com/madfam-io/plinto.git
-cd plinto
+git clone https://github.com/madfam-io/janua.git
+cd janua
 
 # Start the backend (PostgreSQL + Redis + FastAPI)
 cd apps/api
@@ -135,8 +135,8 @@ npm run dev
 **Docker Compose** (Recommended):
 ```bash
 # Clone and configure
-git clone https://github.com/madfam-io/plinto.git
-cd plinto/apps/api
+git clone https://github.com/madfam-io/janua.git
+cd janua/apps/api
 cp .env.example .env
 # Edit .env with your settings
 
@@ -153,7 +153,7 @@ docker-compose exec api python scripts/create_admin.py
 **Kubernetes:**
 ```bash
 # Helm chart available in deployment/helm
-helm install plinto ./deployment/helm/plinto \
+helm install janua ./deployment/helm/janua \
   --set postgresql.enabled=true \
   --set redis.enabled=true
 ```
@@ -168,13 +168,13 @@ helm install plinto ./deployment/helm/plinto \
 
 ### React
 ```tsx
-import { PlintoProvider, useAuth } from '@plinto/react-sdk';
+import { JanuaProvider, useAuth } from '@janua/react-sdk';
 
 function App() {
   return (
-    <PlintoProvider baseURL="https://your-api.com">
+    <JanuaProvider baseURL="https://your-api.com">
       <YourApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
@@ -186,9 +186,9 @@ function Profile() {
 
 ### Python
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-client = PlintoClient(base_url="https://your-api.com")
+client = JanuaClient(base_url="https://your-api.com")
 
 # Authenticate
 result = await client.auth.sign_in(
@@ -202,11 +202,11 @@ user = await client.users.get_current_user()
 
 ### Next.js
 ```typescript
-// app/api/auth/[...plinto]/route.ts
-import { PlintoNextAuth } from '@plinto/nextjs-sdk';
+// app/api/auth/[...janua]/route.ts
+import { JanuaNextAuth } from '@janua/nextjs-sdk';
 
-export const { GET, POST } = PlintoNextAuth({
-  baseURL: process.env.PLINTO_API_URL!,
+export const { GET, POST } = JanuaNextAuth({
+  baseURL: process.env.JANUA_API_URL!,
 });
 ```
 
@@ -217,12 +217,12 @@ export const { GET, POST } = PlintoNextAuth({
 ```
 ┌─────────────────────────────────────────┐
 │   Your Application (React/Vue/Next.js) │
-│         Uses: @plinto/sdk               │
+│         Uses: @janua/sdk               │
 └────────────────┬────────────────────────┘
                  │ HTTPS/JSON
                  ▼
 ┌─────────────────────────────────────────┐
-│      Plinto API (FastAPI)               │
+│      Janua API (FastAPI)               │
 │   • JWT authentication                  │
 │   • OAuth/SAML/WebAuthn                 │
 │   • User/org management                 │
@@ -351,9 +351,9 @@ See [LICENSE](LICENSE) for details.
 ## Support
 
 - 📖 **Documentation:** [docs/](docs/)
-- 🐛 **Bug Reports:** [GitHub Issues](https://github.com/madfam-io/plinto/issues)
-- 💬 **Questions:** [GitHub Discussions](https://github.com/madfam-io/plinto/discussions)
-- 📧 **Security Issues:** security@plinto.dev
+- 🐛 **Bug Reports:** [GitHub Issues](https://github.com/madfam-io/janua/issues)
+- 💬 **Questions:** [GitHub Discussions](https://github.com/madfam-io/janua/discussions)
+- 📧 **Security Issues:** security@janua.dev
 
 **No Discord/Slack yet.** We'll create them when we have enough users to justify it.
 

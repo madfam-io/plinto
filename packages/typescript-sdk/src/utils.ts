@@ -1,5 +1,5 @@
 /**
- * Utility functions for the Plinto TypeScript SDK
+ * Utility functions for the Janua TypeScript SDK
  * This file re-exports utilities from modular files for backward compatibility
  */
 

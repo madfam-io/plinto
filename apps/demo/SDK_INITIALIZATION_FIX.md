@@ -1,67 +1,67 @@
 # SDK Initialization Fix
 
-## Issue: "Plinto SDK not initialized" Error on Sign In
+## Issue: "Janua SDK not initialized" Error on Sign In
 
 ### Problem Description
 When clicking "Sign In" button, the application threw an error:
 ```
-Error: Plinto SDK not initialized
+Error: Janua SDK not initialized
 ```
 
 ### Root Cause
 
 **Incorrect SDK access pattern:**
 
-The signin page was trying to access the SDK from `window.plinto`:
+The signin page was trying to access the SDK from `window.janua`:
 ```tsx
 // WRONG - Looking for SDK on window object
-const plinto = (window as any).plinto
-if (!plinto) {
-  throw new Error('Plinto SDK not initialized')
+const janua = (window as any).janua
+if (!janua) {
+  throw new Error('Janua SDK not initialized')
 }
 
-const result = await plinto.signIn({ email, password })
+const result = await janua.signIn({ email, password })
 ```
 
 **But the SDK was actually initialized in React Context:**
 
-The demo app uses a proper React architecture with the SDK initialized in `@/lib/plinto-client.ts` and provided via `PlintoProvider` context, not attached to the global window object.
+The demo app uses a proper React architecture with the SDK initialized in `@/lib/janua-client.ts` and provided via `JanuaProvider` context, not attached to the global window object.
 
 ### Architecture Explanation
 
 **Correct SDK Architecture:**
 
-1. **SDK Client Initialization** (`lib/plinto-client.ts`):
+1. **SDK Client Initialization** (`lib/janua-client.ts`):
    ```tsx
-   export const plintoClient = new PlintoClient({
+   export const januaClient = new JanuaClient({
      baseURL: apiUrl + apiBasePath,
      debug: process.env.NODE_ENV === 'development',
      tokenStorage: 'localStorage',
    })
    ```
 
-2. **React Context Provider** (`components/providers/plinto-provider.tsx`):
+2. **React Context Provider** (`components/providers/janua-provider.tsx`):
    ```tsx
-   export function PlintoProvider({ children }) {
+   export function JanuaProvider({ children }) {
      return (
-       <PlintoContext.Provider value={{ client: plintoClient, ... }}>
+       <JanuaContext.Provider value={{ client: januaClient, ... }}>
          {children}
-       </PlintoContext.Provider>
+       </JanuaContext.Provider>
      )
    }
    ```
 
-3. **Custom Hook for Access** (`components/providers/plinto-provider.tsx`):
+3. **Custom Hook for Access** (`components/providers/janua-provider.tsx`):
    ```tsx
-   export function usePlinto() {
-     const context = useContext(PlintoContext)
+   export function useJanua() {
+     const context = useContext(JanuaContext)
      return context // { client, user, isAuthenticated, ... }
    }
    ```
 
 4. **Usage in Components**:
    ```tsx
-   const { client } = usePlinto()
+   const { client } = useJanua()
    await client.auth.signIn({ email, password })
    ```
 
@@ -71,13 +71,13 @@ The demo app uses a proper React architecture with the SDK initialized in `@/lib
 
 **Change 1: Import the hook**
 ```tsx
-import { usePlinto } from '@/components/providers/plinto-provider'
+import { useJanua } from '@/components/providers/janua-provider'
 ```
 
 **Change 2: Get client from context**
 ```tsx
 export default function SignInPage() {
-  const { client } = usePlinto()  // Get SDK client from React context
+  const { client } = useJanua()  // Get SDK client from React context
   // ... rest of component
 }
 ```
@@ -85,11 +85,11 @@ export default function SignInPage() {
 **Change 3: Use client directly**
 ```tsx
 // BEFORE (BROKEN)
-const plinto = (window as any).plinto
-if (!plinto) {
-  throw new Error('Plinto SDK not initialized')
+const janua = (window as any).janua
+if (!janua) {
+  throw new Error('Janua SDK not initialized')
 }
-const result = await plinto.signIn({ email, password })
+const result = await janua.signIn({ email, password })
 
 // AFTER (FIXED)
 const result = await client.auth.signIn({ email, password })
@@ -106,7 +106,7 @@ const result = await client.auth.signIn({ email, password })
 6. ✅ **Testability** - Easy to mock in tests via context override
 
 **Global Window Object Downsides:**
-1. ❌ **No Type Safety** - Requires `(window as any).plinto` casting
+1. ❌ **No Type Safety** - Requires `(window as any).janua` casting
 2. ❌ **SSR Issues** - `window` undefined during server-side rendering
 3. ❌ **Global Pollution** - Pollutes global namespace
 4. ❌ **Race Conditions** - SDK might not be loaded when accessed
@@ -114,10 +114,10 @@ const result = await client.auth.signIn({ email, password })
 
 ### SDK API Structure
 
-The Plinto SDK is organized into modules accessible via the client:
+The Janua SDK is organized into modules accessible via the client:
 
 ```tsx
-const { client } = usePlinto()
+const { client } = useJanua()
 
 // Authentication
 await client.auth.signIn({ email, password })
@@ -157,18 +157,18 @@ await client.invitations.accept(token)
 6. ✅ Should show error message if credentials invalid
 
 **Expected behavior:**
-- No more "Plinto SDK not initialized" error
+- No more "Janua SDK not initialized" error
 - Proper authentication flow
 - Type-safe API calls with full IntelliSense support
 
 ### Related Files
 
 **SDK Configuration:**
-- `apps/demo/lib/plinto-client.ts` - SDK client initialization
+- `apps/demo/lib/janua-client.ts` - SDK client initialization
 - `apps/demo/.env.local` - API URL configuration
 
 **Provider Setup:**
-- `apps/demo/components/providers/plinto-provider.tsx` - React context provider
+- `apps/demo/components/providers/janua-provider.tsx` - React context provider
 - `apps/demo/components/providers.tsx` - Root provider composition
 - `apps/demo/app/layout.tsx` - Provider wrapping
 
@@ -214,11 +214,11 @@ curl http://localhost:8000/health
 
 ### Summary
 
-**Issue:** Sign in failed with "Plinto SDK not initialized" error
+**Issue:** Sign in failed with "Janua SDK not initialized" error
 
-**Root Cause:** Code tried to access `window.plinto` but SDK was in React Context
+**Root Cause:** Code tried to access `window.janua` but SDK was in React Context
 
-**Fix:** Use `usePlinto()` hook to access SDK client from context
+**Fix:** Use `useJanua()` hook to access SDK client from context
 
 **Impact:** 
 - ✅ Sign in now works correctly

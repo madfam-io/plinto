@@ -17,7 +17,7 @@ Complete user journey validation framework with comprehensive Playwright tests c
 **Components Created**:
 - `package.json` - Dependencies and scripts
 - `tsconfig.json` - TypeScript configuration
-- `src/app.ts` - Express server with Plinto SDK integration
+- `src/app.ts` - Express server with Janua SDK integration
 - `Dockerfile` - Container image for test environment
 - `.env.example` - Environment configuration template
 
@@ -269,33 +269,33 @@ Complete user journey validation framework with comprehensive Playwright tests c
 
 ### SDK Integration
 
-**Plinto TypeScript SDK Usage**:
+**Janua TypeScript SDK Usage**:
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const plinto = new PlintoClient({
-  apiUrl: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  apiUrl: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 
 // Authentication
-await plinto.auth.signUp({ email, password, name });
-await plinto.auth.signIn({ email, password });
-await plinto.auth.enableMFA('totp');
-await plinto.auth.verifyMFA({ code });
+await janua.auth.signUp({ email, password, name });
+await janua.auth.signIn({ email, password });
+await janua.auth.enableMFA('totp');
+await janua.auth.verifyMFA({ code });
 
 // Profile Management
-await plinto.users.updateCurrentUser({ name, email });
+await janua.users.updateCurrentUser({ name, email });
 
 // Password Management
-await plinto.auth.changePassword({ 
+await janua.auth.changePassword({ 
   current_password, 
   new_password 
 });
 
 // Passkeys
-await plinto.auth.getPasskeyRegistrationOptions();
-await plinto.auth.verifyPasskeyRegistration(credential);
+await janua.auth.getPasskeyRegistrationOptions();
+await janua.auth.verifyPasskeyRegistration(credential);
 ```
 
 ### Performance Metrics
@@ -315,7 +315,7 @@ await plinto.auth.verifyPasskeyRegistration(credential);
 ### Test Infrastructure
 
 **Docker Compose Services** (`docker-compose.test.yml`):
-- `api` - Plinto API backend (port 8000)
+- `api` - Janua API backend (port 8000)
 - `test-app` - Express test app (port 3001)
 - `landing` - Marketing site (port 3000)
 - `dashboard` - Admin dashboard (port 3002)
@@ -325,8 +325,8 @@ await plinto.auth.verifyPasskeyRegistration(credential);
 
 **Environment Variables**:
 ```bash
-PLINTO_API_URL=http://localhost:8000
-PLINTO_API_KEY=test-api-key
+JANUA_API_URL=http://localhost:8000
+JANUA_API_KEY=test-api-key
 PORT=3001
 NODE_ENV=development
 ```

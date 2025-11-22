@@ -1,12 +1,12 @@
-# Plinto Edge Verify
+# Janua Edge Verify
 
-> **Ultra-fast edge runtime verification** for Plinto authentication
+> **Ultra-fast edge runtime verification** for Janua authentication
 
 **Status:** In Development · **Runtime:** Edge Functions · **Deployment:** Global CDN
 
 ## 📋 Overview
 
-Plinto Edge Verify provides millisecond-latency JWT verification and session validation at the edge, running on Vercel Edge Functions and Cloudflare Workers. This enables authentication checks without hitting origin servers, dramatically improving performance.
+Janua Edge Verify provides millisecond-latency JWT verification and session validation at the edge, running on Vercel Edge Functions and Cloudflare Workers. This enables authentication checks without hitting origin servers, dramatically improving performance.
 
 ## 🚀 Quick Start
 
@@ -124,7 +124,7 @@ export async function getJWKS(): Promise<JWKS> {
   if (cached) return cached;
   
   // Fetch from origin
-  const jwks = await fetch('https://api.plinto.dev/.well-known/jwks.json');
+  const jwks = await fetch('https://api.janua.dev/.well-known/jwks.json');
   
   // Cache at edge
   await cache.set('jwks', jwks, JWKS_CACHE_TTL);
@@ -206,12 +206,12 @@ const limits = {
 
 ```env
 # JWKS Configuration
-JWKS_URL=https://api.plinto.dev/.well-known/jwks.json
+JWKS_URL=https://api.janua.dev/.well-known/jwks.json
 JWKS_CACHE_TTL=3600
 
 # Token Configuration
-JWT_ISSUER=https://plinto.dev
-JWT_AUDIENCE=plinto.dev
+JWT_ISSUER=https://janua.dev
+JWT_AUDIENCE=janua.dev
 JWT_ALGORITHMS=RS256,ES256
 
 # Cache Configuration
@@ -219,7 +219,7 @@ CACHE_ENABLED=true
 CACHE_TTL=300
 
 # Security
-ALLOWED_ORIGINS=https://plinto.dev,https://app.plinto.dev
+ALLOWED_ORIGINS=https://janua.dev,https://app.janua.dev
 REQUIRE_HTTPS=true
 ```
 
@@ -247,11 +247,11 @@ REQUIRE_HTTPS=true
 
 ```toml
 # wrangler.toml
-name = "plinto-edge-verify"
+name = "janua-edge-verify"
 type = "javascript"
 account_id = "your-account-id"
 workers_dev = true
-routes = ["*plinto.dev/verify/*"]
+routes = ["*janua.dev/verify/*"]
 
 [build]
 command = "yarn build"
@@ -515,4 +515,4 @@ See [Edge Verify Contributing Guide](../../docs/contributing/edge-verify.md).
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

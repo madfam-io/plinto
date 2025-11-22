@@ -33,8 +33,8 @@ class ErrorResponse(BaseModel):
     error_code: Optional[str] = None
 
 
-class PlintoAPIException(HTTPException):
-    """Base exception for all Plinto API errors"""
+class JanuaAPIException(HTTPException):
+    """Base exception for all Janua API errors"""
     
     def __init__(
         self,
@@ -53,7 +53,7 @@ class PlintoAPIException(HTTPException):
 
 
 # Predefined API Exceptions
-class BadRequestError(PlintoAPIException):
+class BadRequestError(JanuaAPIException):
     """400 Bad Request"""
     def __init__(self, message: str = "Bad request", **kwargs):
         super().__init__(
@@ -64,7 +64,7 @@ class BadRequestError(PlintoAPIException):
         )
 
 
-class UnauthorizedError(PlintoAPIException):
+class UnauthorizedError(JanuaAPIException):
     """401 Unauthorized"""
     def __init__(self, message: str = "Authentication required", **kwargs):
         super().__init__(
@@ -76,7 +76,7 @@ class UnauthorizedError(PlintoAPIException):
         )
 
 
-class ForbiddenError(PlintoAPIException):
+class ForbiddenError(JanuaAPIException):
     """403 Forbidden"""
     def __init__(self, message: str = "Access forbidden", **kwargs):
         super().__init__(
@@ -88,7 +88,7 @@ class ForbiddenError(PlintoAPIException):
         )
 
 
-class NotFoundError(PlintoAPIException):
+class NotFoundError(JanuaAPIException):
     """404 Not Found"""
     def __init__(self, resource: str = "Resource", **kwargs):
         super().__init__(
@@ -100,7 +100,7 @@ class NotFoundError(PlintoAPIException):
         )
 
 
-class ConflictError(PlintoAPIException):
+class ConflictError(JanuaAPIException):
     """409 Conflict"""
     def __init__(self, message: str = "Resource conflict", **kwargs):
         super().__init__(
@@ -112,7 +112,7 @@ class ConflictError(PlintoAPIException):
         )
 
 
-class ValidationError(PlintoAPIException):
+class ValidationError(JanuaAPIException):
     """422 Validation Error"""
     def __init__(self, message: str = "Validation failed", details: Optional[List[ErrorDetail]] = None, **kwargs):
         super().__init__(
@@ -125,7 +125,7 @@ class ValidationError(PlintoAPIException):
         )
 
 
-class RateLimitError(PlintoAPIException):
+class RateLimitError(JanuaAPIException):
     """429 Too Many Requests"""
     def __init__(self, message: str = "Rate limit exceeded", retry_after: Optional[int] = None, **kwargs):
         headers = {"Retry-After": str(retry_after)} if retry_after else None
@@ -139,7 +139,7 @@ class RateLimitError(PlintoAPIException):
         )
 
 
-class InternalServerError(PlintoAPIException):
+class InternalServerError(JanuaAPIException):
     """500 Internal Server Error"""
     def __init__(self, message: str = "An internal error occurred", **kwargs):
         super().__init__(
@@ -151,7 +151,7 @@ class InternalServerError(PlintoAPIException):
         )
 
 
-class ServiceUnavailableError(PlintoAPIException):
+class ServiceUnavailableError(JanuaAPIException):
     """503 Service Unavailable"""
     def __init__(self, message: str = "Service temporarily unavailable", retry_after: Optional[int] = None, **kwargs):
         headers = {"Retry-After": str(retry_after)} if retry_after else None
@@ -166,8 +166,8 @@ class ServiceUnavailableError(PlintoAPIException):
 
 
 # Error Handlers
-async def plinto_exception_handler(request: Request, exc: PlintoAPIException) -> JSONResponse:
-    """Handler for PlintoAPIException"""
+async def janua_exception_handler(request: Request, exc: JanuaAPIException) -> JSONResponse:
+    """Handler for JanuaAPIException"""
     request_id = str(uuid.uuid4())
     
     # Log the error

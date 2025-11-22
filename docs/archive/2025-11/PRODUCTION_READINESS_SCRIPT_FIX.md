@@ -215,7 +215,7 @@ bash scripts/production-readiness-check.sh      # ✅ Executes successfully
 ✅ **Generate readiness report**
 ```
 ╔══════════════════════════════════════════════════════════╗
-║        Plinto Production Readiness Assessment            ║
+║        Janua Production Readiness Assessment            ║
 ╚══════════════════════════════════════════════════════════╝
 
 ✅ Infrastructure: Production deployed

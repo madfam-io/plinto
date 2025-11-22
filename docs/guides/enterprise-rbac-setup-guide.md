@@ -4,7 +4,7 @@
 
 ## Overview
 
-Plinto API provides enterprise-grade RBAC with hierarchical roles, custom permissions, fine-grained access control, and comprehensive audit logging. This system supports complex organizational structures and compliance requirements.
+Janua API provides enterprise-grade RBAC with hierarchical roles, custom permissions, fine-grained access control, and comprehensive audit logging. This system supports complex organizational structures and compliance requirements.
 
 ## 🎭 RBAC Features
 
@@ -37,7 +37,7 @@ Plinto API provides enterprise-grade RBAC with hierarchical roles, custom permis
 ### 1. Create Custom Role
 
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/organizations/org_123/roles" \
+curl -X POST "https://api.janua.dev/api/v1/organizations/org_123/roles" \
   -H "Authorization: Bearer <admin_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -59,7 +59,7 @@ curl -X POST "https://api.plinto.dev/api/v1/organizations/org_123/roles" \
 ### 2. Assign Role to User
 
 ```bash
-curl -X PUT "https://api.plinto.dev/api/v1/organizations/org_123/members/user_456" \
+curl -X PUT "https://api.janua.dev/api/v1/organizations/org_123/members/user_456" \
   -H "Authorization: Bearer <admin_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -72,7 +72,7 @@ curl -X PUT "https://api.plinto.dev/api/v1/organizations/org_123/members/user_45
 ### 3. Check User Permissions
 
 ```bash
-curl "https://api.plinto.dev/api/v1/organizations/org_123/members/user_456/permissions" \
+curl "https://api.janua.dev/api/v1/organizations/org_123/members/user_456/permissions" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -1297,7 +1297,7 @@ class ExternalSystemIntegration:
         # Fetch from HR API
         hr_data = await self.fetch_hr_data(organization_id)
 
-        # Map HR roles to Plinto roles
+        # Map HR roles to Janua roles
         role_mapping = {
             "Software Engineer": "developer",
             "Senior Engineer": "senior_developer",
@@ -1308,10 +1308,10 @@ class ExternalSystemIntegration:
         # Update user roles
         for employee in hr_data:
             hr_role = employee.get("job_title")
-            plinto_role = role_mapping.get(hr_role, "member")
+            janua_role = role_mapping.get(hr_role, "member")
 
             await self.update_user_role(
-                employee["email"], organization_id, plinto_role
+                employee["email"], organization_id, janua_role
             )
 ```
 

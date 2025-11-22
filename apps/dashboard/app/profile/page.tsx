@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui'
-import { Button } from '@plinto/ui'
-import { Input } from '@plinto/ui'
-import { Label } from '@plinto/ui'
-import { Avatar, AvatarFallback, AvatarImage } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
-import { Badge } from '@plinto/ui'
-import { Separator } from '@plinto/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui'
+import { Button } from '@janua/ui'
+import { Input } from '@janua/ui'
+import { Label } from '@janua/ui'
+import { Avatar, AvatarFallback, AvatarImage } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
+import { Badge } from '@janua/ui'
+import { Separator } from '@janua/ui'
 import { 
   User, 
   Mail, 
@@ -64,7 +64,7 @@ export default function ProfilePage() {
     setTimeout(() => {
       setProfile({
         id: 'user-123',
-        email: 'user@plinto.dev',
+        email: 'user@janua.dev',
         name: 'Beta User',
         avatar_url: null,
         email_verified: true,

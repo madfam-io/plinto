@@ -11,7 +11,7 @@
 GitHub Actions security workflow was failing when trying to run OWASP ZAP dynamic security testing:
 
 ```
-Error response from daemon: pull access denied for plinto/api,
+Error response from daemon: pull access denied for janua/api,
 repository does not exist or may require 'docker login':
 denied: requested access to the resource is denied
 Error: Docker pull failed with exit code 1
@@ -32,7 +32,7 @@ dast-zap:
 
   services:
     api:
-      image: plinto/api:latest  # ❌ This image doesn't exist on Docker Hub
+      image: janua/api:latest  # ❌ This image doesn't exist on Docker Hub
       ports:
         - 8000:8000
 ```
@@ -40,7 +40,7 @@ dast-zap:
 ### Why This Failed
 
 1. **Docker Image Not Published**:
-   - Workflow expected `plinto/api:latest` from Docker Hub
+   - Workflow expected `janua/api:latest` from Docker Hub
    - Image was never built or published to any container registry
    - No GitHub Container Registry (GHCR) configuration
 
@@ -97,7 +97,7 @@ The error message "may require 'docker login'" is misleading:
 ```yaml
 # Dynamic Application Security Testing (DAST)
 # NOTE: Disabled until API Docker image is published to container registry
-# Requires: plinto/api:latest image available in Docker Hub or GHCR
+# Requires: janua/api:latest image available in Docker Hub or GHCR
 # Re-enable when API is deployed and image publishing is configured
 # dast-zap:
 #   name: OWASP ZAP Scan
@@ -213,10 +213,10 @@ build-api-image:
     - uses: actions/checkout@v4
 
     - name: Build API image
-      run: docker build -t plinto/api:latest -f apps/api/Dockerfile apps/api
+      run: docker build -t janua/api:latest -f apps/api/Dockerfile apps/api
 
     - name: Save image
-      run: docker save plinto/api:latest | gzip > api-image.tar.gz
+      run: docker save janua/api:latest | gzip > api-image.tar.gz
 
     - name: Upload image artifact
       uses: actions/upload-artifact@v4
@@ -366,7 +366,7 @@ This fix resolves:
 
 ## Summary
 
-**Problem**: DAST job tried to pull non-existent `plinto/api:latest` Docker image
+**Problem**: DAST job tried to pull non-existent `janua/api:latest` Docker image
 **Solution**: Disabled DAST temporarily until image publishing is configured
 **Coverage**: Maintained comprehensive security scanning through SAST, dependency scanning, secrets detection, and container scanning
 **Future**: Clear path to re-enable when infrastructure supports it

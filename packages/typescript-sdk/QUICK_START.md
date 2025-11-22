@@ -1,15 +1,15 @@
-# Plinto TypeScript SDK Quick Start
+# Janua TypeScript SDK Quick Start
 
-> **Get started with Plinto authentication in your TypeScript/JavaScript application in 5 minutes**
+> **Get started with Janua authentication in your TypeScript/JavaScript application in 5 minutes**
 
 ## Installation
 
 ```bash
-npm install @plinto/typescript-sdk
+npm install @janua/typescript-sdk
 # or
-yarn add @plinto/typescript-sdk
+yarn add @janua/typescript-sdk
 # or
-pnpm add @plinto/typescript-sdk
+pnpm add @janua/typescript-sdk
 ```
 
 ## Basic Setup
@@ -17,11 +17,11 @@ pnpm add @plinto/typescript-sdk
 ### 1. Initialize the Client
 
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const plinto = new PlintoClient({
-  baseUrl: 'https://plinto.dev',
-  tenantId: 'your-tenant-id', // Get from Plinto Dashboard
+const janua = new JanuaClient({
+  baseUrl: 'https://janua.dev',
+  tenantId: 'your-tenant-id', // Get from Janua Dashboard
 });
 ```
 
@@ -31,7 +31,7 @@ const plinto = new PlintoClient({
 
 ```typescript
 // Email + Password
-const { user, session } = await plinto.auth.signUp({
+const { user, session } = await janua.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   firstName: 'John',
@@ -39,7 +39,7 @@ const { user, session } = await plinto.auth.signUp({
 });
 
 // With additional metadata
-const { user, session } = await plinto.auth.signUp({
+const { user, session } = await janua.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   metadata: {
@@ -53,7 +53,7 @@ const { user, session } = await plinto.auth.signUp({
 
 ```typescript
 // Email + Password
-const { session, user } = await plinto.auth.signIn({
+const { session, user } = await janua.auth.signIn({
   email: 'user@example.com',
   password: 'SecurePassword123!',
 });
@@ -67,7 +67,7 @@ console.log(session.expiresAt);
 #### Sign Out
 
 ```typescript
-await plinto.auth.signOut();
+await janua.auth.signOut();
 ```
 
 ### 3. Session Management
@@ -75,7 +75,7 @@ await plinto.auth.signOut();
 #### Get Current Session
 
 ```typescript
-const session = await plinto.auth.getSession();
+const session = await janua.auth.getSession();
 
 if (session) {
   console.log('User is authenticated:', session.userId);
@@ -88,19 +88,19 @@ if (session) {
 
 ```typescript
 // Automatic refresh
-plinto.auth.enableAutoRefresh(); // Refreshes before expiry
+janua.auth.enableAutoRefresh(); // Refreshes before expiry
 
 // Manual refresh
-const newSession = await plinto.auth.refreshSession();
+const newSession = await janua.auth.refreshSession();
 ```
 
 #### Verify Token
 
 ```typescript
-const isValid = await plinto.auth.verifyToken(token);
+const isValid = await janua.auth.verifyToken(token);
 
 // With claims extraction
-const claims = await plinto.auth.decodeToken(token);
+const claims = await janua.auth.decodeToken(token);
 console.log(claims.sub); // User ID
 console.log(claims.tid); // Tenant ID
 console.log(claims.exp); // Expiration
@@ -111,7 +111,7 @@ console.log(claims.exp); // Expiration
 #### Get Current User
 
 ```typescript
-const user = await plinto.users.getCurrentUser();
+const user = await janua.users.getCurrentUser();
 console.log(user.email);
 console.log(user.profile);
 ```
@@ -119,7 +119,7 @@ console.log(user.profile);
 #### Update Profile
 
 ```typescript
-const updatedUser = await plinto.users.updateProfile({
+const updatedUser = await janua.users.updateProfile({
   firstName: 'Jane',
   lastName: 'Smith',
   phoneNumber: '+1234567890',
@@ -132,7 +132,7 @@ const updatedUser = await plinto.users.updateProfile({
 #### Change Password
 
 ```typescript
-await plinto.users.changePassword({
+await janua.users.changePassword({
   currentPassword: 'OldPassword123!',
   newPassword: 'NewPassword456!',
 });
@@ -144,26 +144,26 @@ await plinto.users.changePassword({
 
 ```typescript
 // Start registration
-const options = await plinto.passkeys.startRegistration();
+const options = await janua.passkeys.startRegistration();
 
 // Use browser WebAuthn API
 const credential = await navigator.credentials.create(options);
 
 // Complete registration
-await plinto.passkeys.completeRegistration(credential);
+await janua.passkeys.completeRegistration(credential);
 ```
 
 #### Authenticate with Passkey
 
 ```typescript
 // Start authentication
-const options = await plinto.passkeys.startAuthentication();
+const options = await janua.passkeys.startAuthentication();
 
 // Use browser WebAuthn API
 const credential = await navigator.credentials.get(options);
 
 // Complete authentication
-const { session } = await plinto.passkeys.completeAuthentication(credential);
+const { session } = await janua.passkeys.completeAuthentication(credential);
 ```
 
 ### 6. Multi-Factor Authentication
@@ -172,13 +172,13 @@ const { session } = await plinto.passkeys.completeAuthentication(credential);
 
 ```typescript
 // Get QR code and secret
-const { qrCode, secret } = await plinto.mfa.enableTotp();
+const { qrCode, secret } = await janua.mfa.enableTotp();
 
 // Display QR code to user
 // User scans with authenticator app
 
 // Verify TOTP code
-await plinto.mfa.verifyTotp({
+await janua.mfa.verifyTotp({
   code: '123456', // Code from authenticator app
 });
 ```
@@ -187,14 +187,14 @@ await plinto.mfa.verifyTotp({
 
 ```typescript
 try {
-  const { session } = await plinto.auth.signIn({
+  const { session } = await janua.auth.signIn({
     email: 'user@example.com',
     password: 'password',
   });
 } catch (error) {
   if (error.code === 'MFA_REQUIRED') {
     // Prompt for MFA code
-    const { session } = await plinto.auth.verifyMfa({
+    const { session } = await janua.auth.verifyMfa({
       code: '123456',
       challengeId: error.challengeId,
     });
@@ -207,7 +207,7 @@ try {
 #### Create Organization
 
 ```typescript
-const org = await plinto.organizations.create({
+const org = await janua.organizations.create({
   name: 'Acme Corp',
   slug: 'acme-corp',
   metadata: {
@@ -220,7 +220,7 @@ const org = await plinto.organizations.create({
 #### Invite Members
 
 ```typescript
-await plinto.organizations.inviteMembers(orgId, [
+await janua.organizations.inviteMembers(orgId, [
   {
     email: 'colleague@example.com',
     role: 'member',
@@ -236,10 +236,10 @@ await plinto.organizations.inviteMembers(orgId, [
 
 ```typescript
 // List user's organizations
-const orgs = await plinto.organizations.list();
+const orgs = await janua.organizations.list();
 
 // Switch active organization
-await plinto.organizations.switchTo(orgId);
+await janua.organizations.switchTo(orgId);
 
 // All subsequent API calls use this org context
 ```
@@ -249,11 +249,11 @@ await plinto.organizations.switchTo(orgId);
 #### Verify Webhook Signature
 
 ```typescript
-import { verifyWebhookSignature } from '@plinto/typescript-sdk';
+import { verifyWebhookSignature } from '@janua/typescript-sdk';
 
 // In your webhook endpoint
 export async function handleWebhook(req: Request) {
-  const signature = req.headers['x-plinto-signature'];
+  const signature = req.headers['x-janua-signature'];
   const body = await req.text();
 
   const isValid = verifyWebhookSignature(
@@ -287,8 +287,8 @@ export async function handleWebhook(req: Request) {
 ### Custom Request Headers
 
 ```typescript
-const plinto = new PlintoClient({
-  baseUrl: 'https://plinto.dev',
+const janua = new JanuaClient({
+  baseUrl: 'https://janua.dev',
   tenantId: 'your-tenant-id',
   headers: {
     'X-Custom-Header': 'value',
@@ -300,13 +300,13 @@ const plinto = new PlintoClient({
 
 ```typescript
 // Add request interceptor
-plinto.interceptors.request.use((config) => {
+janua.interceptors.request.use((config) => {
   console.log('Request:', config);
   return config;
 });
 
 // Add response interceptor
-plinto.interceptors.response.use(
+janua.interceptors.response.use(
   (response) => {
     console.log('Response:', response);
     return response;
@@ -321,15 +321,15 @@ plinto.interceptors.response.use(
 ### Error Handling
 
 ```typescript
-import { PlintoError } from '@plinto/typescript-sdk';
+import { JanuaError } from '@janua/typescript-sdk';
 
 try {
-  await plinto.auth.signIn({
+  await janua.auth.signIn({
     email: 'user@example.com',
     password: 'wrong-password',
   });
 } catch (error) {
-  if (error instanceof PlintoError) {
+  if (error instanceof JanuaError) {
     switch (error.code) {
       case 'INVALID_CREDENTIALS':
         console.error('Wrong email or password');
@@ -359,11 +359,11 @@ import type {
   SignInOptions,
   SignUpOptions,
   UpdateProfileOptions,
-} from '@plinto/typescript-sdk';
+} from '@janua/typescript-sdk';
 
 // All methods have full type support
 const signIn = async (options: SignInOptions): Promise<Session> => {
-  return await plinto.auth.signIn(options);
+  return await janua.auth.signIn(options);
 };
 ```
 
@@ -371,18 +371,18 @@ const signIn = async (options: SignInOptions): Promise<Session> => {
 
 ### Next.js
 
-See [@plinto/nextjs](../react/README.md) for Next.js specific integration with middleware and server components support.
+See [@janua/nextjs](../react/README.md) for Next.js specific integration with middleware and server components support.
 
 ### Express
 
 ```typescript
 import express from 'express';
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
 const app = express();
-const plinto = new PlintoClient({
-  baseUrl: process.env.PLINTO_URL,
-  tenantId: process.env.PLINTO_TENANT_ID,
+const janua = new JanuaClient({
+  baseUrl: process.env.JANUA_URL,
+  tenantId: process.env.JANUA_TENANT_ID,
 });
 
 // Middleware to verify tokens
@@ -394,7 +394,7 @@ const authenticate = async (req, res, next) => {
   }
 
   try {
-    const claims = await plinto.auth.verifyToken(token);
+    const claims = await janua.auth.verifyToken(token);
     req.user = claims;
     next();
   } catch (error) {
@@ -413,15 +413,15 @@ app.get('/api/profile', authenticate, (req, res) => {
 ### 1. Environment Variables
 
 ```env
-PLINTO_BASE_URL=https://plinto.dev
-PLINTO_TENANT_ID=tenant_xxx
-PLINTO_WEBHOOK_SECRET=whsec_xxx
+JANUA_BASE_URL=https://janua.dev
+JANUA_TENANT_ID=tenant_xxx
+JANUA_WEBHOOK_SECRET=whsec_xxx
 ```
 
 ```typescript
-const plinto = new PlintoClient({
-  baseUrl: process.env.PLINTO_BASE_URL!,
-  tenantId: process.env.PLINTO_TENANT_ID!,
+const janua = new JanuaClient({
+  baseUrl: process.env.JANUA_BASE_URL!,
+  tenantId: process.env.JANUA_TENANT_ID!,
 });
 ```
 
@@ -438,7 +438,7 @@ const plinto = new PlintoClient({
 const signInWithRetry = async (credentials, maxRetries = 3) => {
   for (let i = 0; i < maxRetries; i++) {
     try {
-      return await plinto.auth.signIn(credentials);
+      return await janua.auth.signIn(credentials);
     } catch (error) {
       if (i === maxRetries - 1) throw error;
       
@@ -461,7 +461,7 @@ const signInWithRetry = async (credentials, maxRetries = 3) => {
 
 ### Common Issues
 
-**CORS Errors**: Ensure your domain is allowlisted in Plinto dashboard
+**CORS Errors**: Ensure your domain is allowlisted in Janua dashboard
 
 **Token Expired**: Implement auto-refresh or handle 401 responses
 
@@ -475,10 +475,10 @@ For complete API documentation, see [API Reference](../../docs/reference/API_SPE
 
 ## Support
 
-- **Documentation**: [docs.plinto.dev](https://docs.plinto.dev)
-- **GitHub Issues**: [github.com/plinto/sdk-js](https://github.com/plinto/sdk-js)
-- **Discord**: [discord.gg/plinto](https://discord.gg/plinto)
-- **Email**: sdk-support@plinto.dev
+- **Documentation**: [docs.janua.dev](https://docs.janua.dev)
+- **GitHub Issues**: [github.com/janua/sdk-js](https://github.com/janua/sdk-js)
+- **Discord**: [discord.gg/janua](https://discord.gg/janua)
+- **Email**: sdk-support@janua.dev
 
 ## License
 

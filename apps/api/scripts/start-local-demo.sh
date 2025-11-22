@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Plinto Local Demo - Start All Services
+# Janua Local Demo - Start All Services
 #
 # Launches complete local demonstration:
 # - API server with performance monitoring
@@ -22,7 +22,7 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}"
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║                                                            ║"
-echo "║              PLINTO LOCAL DEMO ENVIRONMENT                 ║"
+echo "║              JANUA LOCAL DEMO ENVIRONMENT                 ║"
 echo "║                                                            ║"
 echo "║  Complete authentication platform demonstration            ║"
 echo "║                                                            ║"
@@ -59,7 +59,7 @@ echo ""
 
 # Set up environment
 export ENVIRONMENT=development
-export DATABASE_URL="sqlite+aiosqlite:///./plinto_demo.db"
+export DATABASE_URL="sqlite+aiosqlite:///./janua_demo.db"
 export REDIS_URL="redis://localhost:6379/0"
 export DEBUG=true
 

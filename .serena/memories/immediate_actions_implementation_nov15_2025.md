@@ -35,11 +35,11 @@ Successfully completed all three immediate priority actions to secure the codeba
 
 **2. Created `apps/demo/.env.example`**
 ```env
-# Plinto Demo App Environment Configuration
+# Janua Demo App Environment Configuration
 # Copy this file to .env.local for local development
 # DO NOT commit actual .env files to git
 
-NEXT_PUBLIC_PLINTO_ENV=demo
+NEXT_PUBLIC_JANUA_ENV=demo
 NEXT_PUBLIC_DEMO_API_URL=http://localhost:4000
 NEXT_PUBLIC_APP_URL=http://localhost:3001
 ```
@@ -64,7 +64,7 @@ console.log('[Admin Monitoring]', metric)
 console.warn('[Admin Monitoring] Failed to track metric:', error)
 
 // After:
-import { createLogger } from '@plinto/core/utils/logger'
+import { createLogger } from '@janua/core/utils/logger'
 const logger = createLogger('AdminMonitoring')
 
 logger.debug('Metric tracked (development only)', metric)
@@ -78,7 +78,7 @@ console.log('[Monitoring]', metric)
 console.warn('[Monitoring] Failed to track metric:', error)
 
 // After:
-import { createLogger } from '@plinto/core/utils/logger'
+import { createLogger } from '@janua/core/utils/logger'
 const logger = createLogger('DashboardMonitoring')
 
 logger.debug('Metric tracked (development only)', metric)
@@ -189,7 +189,7 @@ $ git commit -m "add feature"
   - src/component.ts
 
 Consider using the logger utility instead:
-  TypeScript: import { createLogger } from '@plinto/core/utils/logger'
+  TypeScript: import { createLogger } from '@janua/core/utils/logger'
   Python: from app.utils.logger import create_logger
 
 Press Ctrl+C to cancel commit, or wait 2 seconds to continue...

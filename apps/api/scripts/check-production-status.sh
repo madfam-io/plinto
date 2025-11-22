@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Simple Plinto Production Status Check
+# Simple Janua Production Status Check
 # Quick validation script for alpha launch readiness
 
 set -e
@@ -12,7 +12,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 echo "════════════════════════════════════════════════════════"
-echo "     Plinto Alpha Launch Readiness Check - $(date)"
+echo "     Janua Alpha Launch Readiness Check - $(date)"
 echo "════════════════════════════════════════════════════════"
 echo ""
 
@@ -67,25 +67,25 @@ echo "━━━ Core Service Health Checks ━━━"
 echo ""
 
 # Check all core services
-check_service "API Health" "https://api.plinto.dev/health"
-check_service "API Auth" "https://api.plinto.dev/api/v1/auth/status"
-check_service "Marketing Site" "https://www.plinto.dev"
-check_service "Main App" "https://app.plinto.dev"
-check_service "Documentation" "https://docs.plinto.dev"
-check_service "Admin Panel" "https://admin.plinto.dev"
-check_service "Demo App" "https://demo.plinto.dev"
+check_service "API Health" "https://api.janua.dev/health"
+check_service "API Auth" "https://api.janua.dev/api/v1/auth/status"
+check_service "Marketing Site" "https://www.janua.dev"
+check_service "Main App" "https://app.janua.dev"
+check_service "Documentation" "https://docs.janua.dev"
+check_service "Admin Panel" "https://admin.janua.dev"
+check_service "Demo App" "https://demo.janua.dev"
 
 echo ""
 echo "━━━ SSL Certificate Checks ━━━"
 echo ""
 
 # Check SSL certificates
-check_ssl "api.plinto.dev"
-check_ssl "www.plinto.dev"
-check_ssl "app.plinto.dev"
-check_ssl "docs.plinto.dev"
-check_ssl "admin.plinto.dev"
-check_ssl "demo.plinto.dev"
+check_ssl "api.janua.dev"
+check_ssl "www.janua.dev"
+check_ssl "app.janua.dev"
+check_ssl "docs.janua.dev"
+check_ssl "admin.janua.dev"
+check_ssl "demo.janua.dev"
 
 echo ""
 echo "━━━ API Functionality Checks ━━━"
@@ -94,7 +94,7 @@ echo ""
 # Test API endpoints
 TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
 echo -n "🔧 API OpenAPI docs... "
-if curl -s "https://api.plinto.dev/openapi.json" | grep -q "Plinto API"; then
+if curl -s "https://api.janua.dev/openapi.json" | grep -q "Janua API"; then
     echo -e "${GREEN}✅ Available${NC}"
     PASSED_CHECKS=$((PASSED_CHECKS + 1))
 else
@@ -104,7 +104,7 @@ fi
 
 TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
 echo -n "🔧 Database connectivity... "
-if curl -s "https://api.plinto.dev/ready" | grep -q '"database":true'; then
+if curl -s "https://api.janua.dev/ready" | grep -q '"database":true'; then
     echo -e "${GREEN}✅ Connected${NC}"
     PASSED_CHECKS=$((PASSED_CHECKS + 1))
 else
@@ -114,7 +114,7 @@ fi
 
 TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
 echo -n "🔧 Redis connectivity... "
-if curl -s "https://api.plinto.dev/ready" | grep -q '"redis":true'; then
+if curl -s "https://api.janua.dev/ready" | grep -q '"redis":true'; then
     echo -e "${GREEN}✅ Connected${NC}"
     PASSED_CHECKS=$((PASSED_CHECKS + 1))
 else

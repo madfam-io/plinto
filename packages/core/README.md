@@ -1,23 +1,23 @@
-# @plinto/core
+# @janua/core
 
-> **Shared core utilities and business logic** for the Plinto platform
+> **Shared core utilities and business logic** for the Janua platform
 
 **Version:** 0.1.0 · **Type:** Internal Package · **Status:** Production Ready
 
 ## 📋 Overview
 
-@plinto/core provides the foundational utilities, types, constants, and business logic shared across all Plinto applications and services. This package ensures consistency, reduces duplication, and centralizes critical platform functionality.
+@janua/core provides the foundational utilities, types, constants, and business logic shared across all Janua applications and services. This package ensures consistency, reduces duplication, and centralizes critical platform functionality.
 
 ## 🚀 Quick Start
 
 ### Installation
 
 ```bash
-# From within a Plinto workspace
-yarn add @plinto/core
+# From within a Janua workspace
+yarn add @janua/core
 
 # External usage (not recommended)
-npm install @plinto/core
+npm install @janua/core
 ```
 
 ### Basic Usage
@@ -27,13 +27,13 @@ import {
   validateEmail,
   hashPassword,
   generateId,
-  PlintoError,
+  JanuaError,
   Logger
-} from '@plinto/core';
+} from '@janua/core';
 
 // Use validation utilities
 if (!validateEmail(email)) {
-  throw new PlintoError('Invalid email format', 'VALIDATION_ERROR');
+  throw new JanuaError('Invalid email format', 'VALIDATION_ERROR');
 }
 
 // Use crypto utilities
@@ -97,7 +97,7 @@ packages/core/
 
 ```
 ┌─────────────────────────────────────┐
-│            @plinto/core             │
+│            @janua/core             │
 ├─────────────────────────────────────┤
 │  Constants & Types                  │
 │  ├─ Error Definitions               │
@@ -127,7 +127,7 @@ import {
   validatePhone,
   validateUrl,
   sanitizeInput
-} from '@plinto/core/utils';
+} from '@janua/core/utils';
 
 // Email validation
 const isValid = validateEmail('user@example.com');
@@ -156,7 +156,7 @@ import {
   generateSecureCode,
   encrypt,
   decrypt
-} from '@plinto/core/crypto';
+} from '@janua/core/crypto';
 
 // Password hashing (Argon2)
 const hash = await hashPassword('plaintext');
@@ -179,7 +179,7 @@ import {
   generateUuid,
   generateSlug,
   parseId
-} from '@plinto/core/utils';
+} from '@janua/core/utils';
 
 // Prefixed IDs
 const userId = generateId('user'); // user_ks8d7f9a8s7df
@@ -204,7 +204,7 @@ import {
   addDays,
   isExpired,
   getTimezone
-} from '@plinto/core/datetime';
+} from '@janua/core/datetime';
 
 // Date formatting
 const formatted = formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss');
@@ -233,7 +233,7 @@ import type {
   AuthTokens,
   AuthProvider,
   MFAMethod
-} from '@plinto/core/types';
+} from '@janua/core/types';
 
 interface User {
   id: string;
@@ -270,7 +270,7 @@ import type {
   ApiResponse,
   PaginatedResponse,
   ErrorResponse
-} from '@plinto/core/types';
+} from '@janua/core/types';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -301,7 +301,7 @@ interface ErrorResponse {
 ### Logger Service
 
 ```typescript
-import { Logger } from '@plinto/core/services';
+import { Logger } from '@janua/core/services';
 
 const logger = new Logger('auth-service', {
   level: 'info',
@@ -329,7 +329,7 @@ const requestLogger = logger.child({ requestId: 'req_456' });
 ### Metrics Service
 
 ```typescript
-import { Metrics } from '@plinto/core/services';
+import { Metrics } from '@janua/core/services';
 
 const metrics = new Metrics({
   service: 'auth-api',
@@ -355,7 +355,7 @@ timer.end({ query: 'SELECT * FROM users' });
 ### Feature Flags
 
 ```typescript
-import { FeatureFlags } from '@plinto/core/services';
+import { FeatureFlags } from '@janua/core/services';
 
 const flags = new FeatureFlags({
   provider: 'local',
@@ -382,7 +382,7 @@ await flags.setFlag('new-auth-flow', true, {
 ### Audit Service
 
 ```typescript
-import { AuditLog } from '@plinto/core/services';
+import { AuditLog } from '@janua/core/services';
 
 const audit = new AuditLog({
   storage: 'database',
@@ -415,17 +415,17 @@ const logs = await audit.query({
 
 ```typescript
 import {
-  PlintoError,
+  JanuaError,
   ValidationError,
   AuthenticationError,
   AuthorizationError,
   NotFoundError,
   ConflictError,
   RateLimitError
-} from '@plinto/core/errors';
+} from '@janua/core/errors';
 
 // Base error
-throw new PlintoError('Something went wrong', 'INTERNAL_ERROR', {
+throw new JanuaError('Something went wrong', 'INTERNAL_ERROR', {
   statusCode: 500,
   details: { reason: 'Database connection failed' }
 });
@@ -451,7 +451,7 @@ throw new RateLimitError('Too many requests', {
 ### Error Constants
 
 ```typescript
-import { ErrorCodes, ErrorMessages } from '@plinto/core/constants';
+import { ErrorCodes, ErrorMessages } from '@janua/core/constants';
 
 // Error codes
 ErrorCodes.VALIDATION_ERROR // 'VALIDATION_ERROR'
@@ -472,7 +472,7 @@ import {
   escapeHtml,
   preventSqlInjection,
   validateCsrfToken
-} from '@plinto/core/security';
+} from '@janua/core/security';
 
 // HTML sanitization
 const safe = sanitizeHtml(userInput);
@@ -490,7 +490,7 @@ const isValid = validateCsrfToken(token, session);
 ### Rate Limiting
 
 ```typescript
-import { RateLimiter } from '@plinto/core/middleware';
+import { RateLimiter } from '@janua/core/middleware';
 
 const limiter = new RateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -508,7 +508,7 @@ app.use('/api', limiter.middleware());
 ### Platform Limits
 
 ```typescript
-import { Limits } from '@plinto/core/constants';
+import { Limits } from '@janua/core/constants';
 
 Limits.MAX_EMAIL_LENGTH      // 254
 Limits.MAX_PASSWORD_LENGTH   // 128
@@ -522,7 +522,7 @@ Limits.SESSION_DURATION      // 24 * 60 * 60 (24 hours)
 ### Regex Patterns
 
 ```typescript
-import { Patterns } from '@plinto/core/constants';
+import { Patterns } from '@janua/core/constants';
 
 Patterns.EMAIL     // Email validation regex
 Patterns.PASSWORD  // Password complexity regex
@@ -542,7 +542,7 @@ import {
   createMockOrganization,
   setupTestDatabase,
   cleanupTestData
-} from '@plinto/core/testing';
+} from '@janua/core/testing';
 
 // Create mock data
 const user = createMockUser({
@@ -565,13 +565,13 @@ await cleanupTestData(db);
 
 ```javascript
 // Main export
-import * from '@plinto/core';
+import * from '@janua/core';
 
 // Specific imports for tree shaking
-import { validateEmail } from '@plinto/core/utils';
-import { Logger } from '@plinto/core/services';
-import { PlintoError } from '@plinto/core/errors';
-import type { User } from '@plinto/core/types';
+import { validateEmail } from '@janua/core/utils';
+import { Logger } from '@janua/core/services';
+import { JanuaError } from '@janua/core/errors';
+import type { User } from '@janua/core/types';
 ```
 
 ### Bundle Sizes
@@ -589,7 +589,7 @@ import type { User } from '@plinto/core/types';
 
 ```bash
 # Clone the repo
-git clone https://github.com/plinto/plinto.git
+git clone https://github.com/janua/janua.git
 
 # Navigate to core package
 cd packages/core
@@ -625,9 +625,9 @@ yarn test:watch
 
 ## 📚 Resources
 
-- [Core API Documentation](https://docs.plinto.dev/packages/core)
-- [Type Definitions](https://docs.plinto.dev/packages/core/types)
-- [Security Guide](https://docs.plinto.dev/security)
+- [Core API Documentation](https://docs.janua.dev/packages/core)
+- [Type Definitions](https://docs.janua.dev/packages/core/types)
+- [Security Guide](https://docs.janua.dev/security)
 - [Contributing Guide](../../docs/contributing/core.md)
 
 ## 🎯 Roadmap
@@ -650,4 +650,4 @@ See [Core Contributing Guide](../../docs/contributing/core.md) for development g
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

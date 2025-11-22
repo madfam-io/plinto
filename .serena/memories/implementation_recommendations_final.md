@@ -21,7 +21,7 @@
 
 // Recommended approach:
 // 1. Build SSO configuration form in apps/demo
-// 2. Use existing @plinto/ui components for form
+// 2. Use existing @janua/ui components for form
 // 3. Connect to existing API endpoints:
 //    POST /sso/configurations
 //    GET /sso/configurations/{org_id}
@@ -194,7 +194,7 @@ describe('Compliance Workflow', () => {
 ### 1. Monorepo Structure (Current: ✅ Good)
 
 ```
-plinto/
+janua/
 ├── apps/
 │   ├── api/          # ✅ Backend complete
 │   ├── demo/         # ⚠️ Needs enterprise UI integration
@@ -295,8 +295,8 @@ ENCRYPTION_KEY=... # ✅ Already rotated
 
 # Production CORS settings
 CORS_ORIGINS = [
-    "https://app.plinto.com",
-    "https://demo.plinto.com",
+    "https://app.janua.com",
+    "https://demo.janua.com",
     # Add specific allowed origins
 ]
 

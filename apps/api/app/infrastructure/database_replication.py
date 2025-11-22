@@ -136,7 +136,7 @@ class DatabaseReplicationManager:
                     max_inactive_connection_lifetime=300.0,
                     command_timeout=60.0,
                     server_settings={
-                        'application_name': f'plinto_{server_name}',
+                        'application_name': f'janua_{server_name}',
                         'tcp_keepalives_idle': '600',
                         'tcp_keepalives_interval': '30',
                         'tcp_keepalives_count': '3',

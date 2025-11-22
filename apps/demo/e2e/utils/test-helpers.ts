@@ -1,7 +1,7 @@
 import { Page, expect } from '@playwright/test'
 
 /**
- * Test helper utilities for Plinto E2E tests
+ * Test helper utilities for Janua E2E tests
  */
 
 /**
@@ -10,7 +10,7 @@ import { Page, expect } from '@playwright/test'
 export function generateTestEmail(): string {
   const timestamp = Date.now()
   const random = Math.floor(Math.random() * 10000)
-  return `test-${timestamp}-${random}@plinto.dev`
+  return `test-${timestamp}-${random}@janua.dev`
 }
 
 /**

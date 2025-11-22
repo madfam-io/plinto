@@ -1,8 +1,8 @@
 /**
- * Tests for Plinto TypeScript SDK Client
+ * Tests for Janua TypeScript SDK Client
  */
 
-import { PlintoClient, createClient } from '../index';
+import { JanuaClient, createClient } from '../index';
 import { AuthenticationMethod, APIStatus } from '../types/base';
 import { AuthenticationError, ValidationError } from '../errors';
 
@@ -18,29 +18,29 @@ jest.mock('axios', () => ({
   isAxiosError: jest.fn()
 }));
 
-describe('PlintoClient', () => {
-  let client: PlintoClient;
+describe('JanuaClient', () => {
+  let client: JanuaClient;
 
   beforeEach(() => {
     client = createClient({
-      base_url: 'https://api.test.plinto.dev',
+      base_url: 'https://api.test.janua.dev',
       debug: true
     });
   });
 
   describe('Client Creation', () => {
     it('should create client with default configuration', () => {
-      const defaultClient = new PlintoClient({});
-      expect(defaultClient).toBeInstanceOf(PlintoClient);
+      const defaultClient = new JanuaClient({});
+      expect(defaultClient).toBeInstanceOf(JanuaClient);
     });
 
     it('should create client with custom configuration', () => {
-      const customClient = new PlintoClient({
+      const customClient = new JanuaClient({
         base_url: 'https://custom.api.com',
         timeout: 60000,
         debug: true
       });
-      expect(customClient).toBeInstanceOf(PlintoClient);
+      expect(customClient).toBeInstanceOf(JanuaClient);
     });
 
     it('should create client using factory function', () => {
@@ -48,7 +48,7 @@ describe('PlintoClient', () => {
         base_url: 'https://factory.api.com',
         api_key: 'test-key'
       });
-      expect(factoryClient).toBeInstanceOf(PlintoClient);
+      expect(factoryClient).toBeInstanceOf(JanuaClient);
     });
   });
 
@@ -328,7 +328,7 @@ describe('createClient Factory', () => {
       base_url: 'https://api.test.com'
     });
 
-    expect(client).toBeInstanceOf(PlintoClient);
+    expect(client).toBeInstanceOf(JanuaClient);
   });
 
   it('should create client with JWT authentication when no API key', () => {
@@ -336,6 +336,6 @@ describe('createClient Factory', () => {
       base_url: 'https://api.test.com'
     });
 
-    expect(client).toBeInstanceOf(PlintoClient);
+    expect(client).toBeInstanceOf(JanuaClient);
   });
 });

@@ -1,4 +1,4 @@
-# Final Test Coverage Report - Plinto Platform
+# Final Test Coverage Report - Janua Platform
 
 **Date:** $(date)
 **Goal:** 100% test coverage with all tests passing

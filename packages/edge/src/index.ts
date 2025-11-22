@@ -1,5 +1,5 @@
 /**
- * @plinto/edge - Edge-fast JWT verification for Cloudflare Workers
+ * @janua/edge - Edge-fast JWT verification for Cloudflare Workers
  * Ultra-lightweight JWT verification optimized for edge environments
  */
 
@@ -9,7 +9,7 @@ import type { JWTPayload, JWTHeaderParameters } from 'jose';
 export { JWTPayload };
 
 /**
- * Plinto Edge configuration
+ * Janua Edge configuration
  */
 export interface EdgeConfig {
   publicKey?: string;
@@ -21,7 +21,7 @@ export interface EdgeConfig {
 }
 
 /**
- * Verified token payload with Plinto-specific claims
+ * Verified token payload with Janua-specific claims
  */
 export interface VerifiedToken extends JWTPayload {
   userId?: string;
@@ -255,7 +255,7 @@ export function extractToken(request: Request): string | null {
   // Check cookie
   const cookie = request.headers.get('Cookie');
   if (cookie) {
-    const match = cookie.match(/plinto_token=([^;]+)/);
+    const match = cookie.match(/janua_token=([^;]+)/);
     if (match) {
       return match[1];
     }

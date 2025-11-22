@@ -1,10 +1,10 @@
 #!/bin/bash
 # Code Quality Check Script
-# Runs comprehensive code quality checks for Plinto project
+# Runs comprehensive code quality checks for Janua project
 
 set -e
 
-echo "🔍 Plinto Code Quality Check - $(date)"
+echo "🔍 Janua Code Quality Check - $(date)"
 echo "================================================"
 
 # Colors for output

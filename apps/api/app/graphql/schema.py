@@ -1,5 +1,5 @@
 """
-GraphQL schema definition for Plinto API.
+GraphQL schema definition for Janua API.
 """
 
 import strawberry

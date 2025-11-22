@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto provides comprehensive Single Sign-On (SSO) support for enterprise organizations, enabling seamless integration with existing identity providers while maintaining security and compliance requirements.
+Janua provides comprehensive Single Sign-On (SSO) support for enterprise organizations, enabling seamless integration with existing identity providers while maintaining security and compliance requirements.
 
 ## Supported Protocols
 
@@ -103,10 +103,10 @@ interface OIDCConfiguration {
 ### 1. Configuration Setup
 
 ```typescript
-import { PlintoSSO } from '@plinto/enterprise';
+import { JanuaSSO } from '@janua/enterprise';
 
-const ssoClient = new PlintoSSO({
-  apiKey: process.env.PLINTO_API_KEY,
+const ssoClient = new JanuaSSO({
+  apiKey: process.env.JANUA_API_KEY,
   organizationId: 'org_123'
 });
 
@@ -484,10 +484,10 @@ class SSOSessionManager {
 ```typescript
 // Integration tests
 describe('SSO Integration', () => {
-  let ssoClient: PlintoSSO;
+  let ssoClient: JanuaSSO;
   
   beforeEach(() => {
-    ssoClient = new PlintoSSO({
+    ssoClient = new JanuaSSO({
       apiKey: 'test-key',
       environment: 'test'
     });
@@ -708,7 +708,7 @@ class SSOmigration {
 ## Support
 
 For enterprise SSO support:
-- Email: enterprise@plinto.dev
-- Documentation: https://docs.plinto.dev/enterprise/sso
-- Status: https://status.plinto.dev
-- Enterprise Support Portal: https://support.plinto.dev
+- Email: enterprise@janua.dev
+- Documentation: https://docs.janua.dev/enterprise/sso
+- Status: https://status.janua.dev
+- Enterprise Support Portal: https://support.janua.dev

@@ -1,13 +1,13 @@
 /**
- * Plinto TypeScript SDK
+ * Janua TypeScript SDK
  * 
- * Official TypeScript/JavaScript SDK for the Plinto authentication API.
+ * Official TypeScript/JavaScript SDK for the Janua authentication API.
  * Provides a complete interface for user authentication, organization management,
  * webhooks, and administrative operations.
  */
 
 // Main client exports
-export { PlintoClient, createClient } from './client';
+export { JanuaClient, createClient } from './client';
 export { default } from './client';
 
 // Import createClient for local use
@@ -30,7 +30,7 @@ export type {
   UUID,
   ISODateString,
   Environment,
-  PlintoConfig,
+  JanuaConfig,
   
 
   
@@ -124,7 +124,7 @@ export {
 // Error exports
 export {
   // Base error
-  PlintoError,
+  JanuaError,
   
   // Specific errors
   AuthenticationError,
@@ -153,7 +153,7 @@ export {
   isRateLimitError,
   isNetworkError,
   isServerError,
-  isPlintoError
+  isJanuaError
 } from './errors';
 
 // Utility exports
@@ -216,7 +216,7 @@ export type {
 
 // Version and metadata
 export const SDK_VERSION = '1.0.0';
-export const SDK_NAME = 'plinto-typescript-sdk';
+export const SDK_NAME = 'janua-typescript-sdk';
 
 /**
  * Quick start examples and common usage patterns
@@ -226,7 +226,7 @@ export const examples = {
    * Basic client initialization
    */
   basicClient: `
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
   baseURL: 'https://api.yourapp.com'
@@ -285,7 +285,7 @@ const org = await client.organizations.createOrganization({
    */
   createWebhook: `
 const webhook = await client.webhooks.createEndpoint({
-  url: 'https://myapp.com/webhooks/plinto',
+  url: 'https://myapp.com/webhooks/janua',
   events: ['user.created', 'user.signed_in'],
   description: 'User events webhook'
 });
@@ -312,7 +312,7 @@ await client.auth.verifyMFA({ code: '123456' });
    * Error handling
    */
   errorHandling: `
-import { isValidationError, isAuthenticationError } from '@plinto/typescript-sdk';
+import { isValidationError, isAuthenticationError } from '@janua/typescript-sdk';
 
 try {
   await client.auth.signIn({ email: 'invalid', password: 'wrong' });
@@ -394,8 +394,8 @@ export const presets = {
  */
 export function createClientWithPreset(
   preset: keyof typeof presets,
-  overrides: Partial<import('./types').PlintoConfig> = {}
-): import('./client').PlintoClient {
+  overrides: Partial<import('./types').JanuaConfig> = {}
+): import('./client').JanuaClient {
   const presetConfig = presets[preset];
   // Use the already imported createClient function from the top of the file
   return createClient({ ...presetConfig, ...overrides });

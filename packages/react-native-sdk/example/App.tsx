@@ -1,5 +1,5 @@
 /**
- * Plinto React Native SDK Example App
+ * Janua React Native SDK Example App
  * Demonstrates all authentication features
  */
 
@@ -17,16 +17,16 @@ import {
   Platform,
   Switch,
 } from 'react-native';
-import PlintoClient from '@plinto/react-sdk-native';
+import JanuaClient from '@janua/react-sdk-native';
 import * as Keychain from 'react-native-keychain';
 import { Linking } from 'react-native';
 
-// Initialize Plinto client
-const plinto = new PlintoClient({
-  baseURL: 'https://api.plinto.dev',
+// Initialize Janua client
+const janua = new JanuaClient({
+  baseURL: 'https://api.janua.dev',
   tenantId: 'YOUR_TENANT_ID',
   clientId: 'YOUR_CLIENT_ID',
-  redirectUri: 'plinto-example://auth/callback',
+  redirectUri: 'janua-example://auth/callback',
 });
 
 const App: React.FC = () => {
@@ -68,7 +68,7 @@ const App: React.FC = () => {
 
   const checkAuthStatus = async () => {
     try {
-      const currentUser = await plinto.auth.getCurrentUser();
+      const currentUser = await janua.auth.getCurrentUser();
       if (currentUser) {
         setUser(currentUser);
         await loadUserData();
@@ -81,8 +81,8 @@ const App: React.FC = () => {
   const loadUserData = async () => {
     try {
       const [userSessions, userOrgs] = await Promise.all([
-        plinto.sessions.listSessions(),
-        plinto.organizations.listOrganizations(),
+        janua.sessions.listSessions(),
+        janua.organizations.listOrganizations(),
       ]);
       setSessions(userSessions);
       setOrganizations(userOrgs);
@@ -94,7 +94,7 @@ const App: React.FC = () => {
   const handleSignUp = async () => {
     setLoading(true);
     try {
-      const result = await plinto.auth.signUp({
+      const result = await janua.auth.signUp({
         email,
         password,
         firstName,
@@ -113,7 +113,7 @@ const App: React.FC = () => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const result = await plinto.auth.signIn({ email, password });
+      const result = await janua.auth.signIn({ email, password });
       setUser(result.user);
       Alert.alert('Success', 'Signed in successfully!');
       await loadUserData();
@@ -127,7 +127,7 @@ const App: React.FC = () => {
   const handleSignOut = async () => {
     setLoading(true);
     try {
-      await plinto.auth.signOut();
+      await janua.auth.signOut();
       setUser(null);
       setSessions([]);
       setOrganizations([]);
@@ -141,7 +141,7 @@ const App: React.FC = () => {
 
   const handleSocialLogin = async (provider: string) => {
     try {
-      const authUrl = await plinto.auth.signInWithProvider(provider);
+      const authUrl = await janua.auth.signInWithProvider(provider);
       await Linking.openURL(authUrl);
     } catch (error: any) {
       Alert.alert('Error', error.message);
@@ -151,7 +151,7 @@ const App: React.FC = () => {
   const handleOAuthCallback = async (code: string, state: string) => {
     setLoading(true);
     try {
-      const result = await plinto.auth.handleOAuthCallback(code, state);
+      const result = await janua.auth.handleOAuthCallback(code, state);
       setUser(result.user);
       Alert.alert('Success', 'Signed in with social provider!');
       await loadUserData();
@@ -165,7 +165,7 @@ const App: React.FC = () => {
   const handleEnableMFA = async () => {
     setLoading(true);
     try {
-      const result = await plinto.auth.enableMFA();
+      const result = await janua.auth.enableMFA();
       Alert.alert(
         'MFA Setup',
         `Scan this QR code with your authenticator app:\n${result.qr_code}\n\nRecovery codes:\n${result.recovery_codes.join('\n')}`,
@@ -181,7 +181,7 @@ const App: React.FC = () => {
   const handleVerifyMFA = async () => {
     setLoading(true);
     try {
-      await plinto.auth.verifyMFA(mfaCode, 'challenge_id');
+      await janua.auth.verifyMFA(mfaCode, 'challenge_id');
       Alert.alert('Success', 'MFA verified successfully!');
     } catch (error: any) {
       Alert.alert('Error', error.message);
@@ -198,7 +198,7 @@ const App: React.FC = () => {
         return;
       }
 
-      const result = await plinto.auth.enableBiometric();
+      const result = await janua.auth.enableBiometric();
       setBiometricEnabled(true);
       Alert.alert('Success', `${biometryType} authentication enabled!`);
     } catch (error: any) {
@@ -209,7 +209,7 @@ const App: React.FC = () => {
   const handleBiometricSignIn = async () => {
     setLoading(true);
     try {
-      const result = await plinto.auth.signInWithBiometric();
+      const result = await janua.auth.signInWithBiometric();
       setUser(result.user);
       Alert.alert('Success', 'Signed in with biometric authentication!');
       await loadUserData();
@@ -222,7 +222,7 @@ const App: React.FC = () => {
 
   const handleRevokeSession = async (sessionId: string) => {
     try {
-      await plinto.sessions.revokeSession(sessionId);
+      await janua.sessions.revokeSession(sessionId);
       Alert.alert('Success', 'Session revoked');
       await loadUserData();
     } catch (error: any) {
@@ -232,7 +232,7 @@ const App: React.FC = () => {
 
   const handleCreateOrganization = async () => {
     try {
-      const org = await plinto.organizations.createOrganization({
+      const org = await janua.organizations.createOrganization({
         name: 'New Organization',
         description: 'Created from mobile app',
       });
@@ -245,7 +245,7 @@ const App: React.FC = () => {
 
   const handlePasswordReset = async () => {
     try {
-      await plinto.auth.requestPasswordReset(email);
+      await janua.auth.requestPasswordReset(email);
       Alert.alert('Success', 'Password reset email sent!');
     } catch (error: any) {
       Alert.alert('Error', error.message);
@@ -268,7 +268,7 @@ const App: React.FC = () => {
       <SafeAreaView style={styles.container}>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View style={styles.authContainer}>
-            <Text style={styles.title}>Plinto Auth Example</Text>
+            <Text style={styles.title}>Janua Auth Example</Text>
             
             <TextInput
               style={styles.input}

@@ -6,7 +6,7 @@
 
 ## Summary
 
-Successfully migrated from SendGrid to Resend for all email delivery in Plinto platform. This migration provides better developer experience, modern API, superior deliverability, and significant cost savings for enterprise email volumes.
+Successfully migrated from SendGrid to Resend for all email delivery in Janua platform. This migration provides better developer experience, modern API, superior deliverability, and significant cost savings for enterprise email volumes.
 
 ## What Was Implemented
 
@@ -63,7 +63,7 @@ All templates have both HTML and TXT versions:
 - `welcome.html` + `welcome.txt` - Welcome emails
 - `security_alert.html` + `security_alert.txt` - Security notifications
 - `mfa_recovery.html` + `mfa_recovery.txt` - MFA recovery
-- `base.html` - Base template with Plinto branding
+- `base.html` - Base template with Janua branding
 
 ### 5. Router Updates
 **File**: `app/auth/router.py`
@@ -112,7 +112,7 @@ All templates have both HTML and TXT versions:
 - [x] Comprehensive documentation created
 
 ### Pending (Production Deployment)
-- [ ] Domain verification in Resend (plinto.dev)
+- [ ] Domain verification in Resend (janua.dev)
 - [ ] Production RESEND_API_KEY configured
 - [ ] Production email delivery testing
 - [ ] 7-day monitoring period
@@ -125,15 +125,15 @@ All templates have both HTML and TXT versions:
 EMAIL_ENABLED=true
 EMAIL_PROVIDER=resend
 RESEND_API_KEY=re_xxxxxxxxxxxxx
-EMAIL_FROM_ADDRESS=noreply@plinto.dev
-EMAIL_FROM_NAME=Plinto
+EMAIL_FROM_ADDRESS=noreply@janua.dev
+EMAIL_FROM_NAME=Janua
 ```
 
 ### Optional
 ```bash
-SUPPORT_EMAIL=support@plinto.dev
-BASE_URL=https://plinto.dev
-FRONTEND_URL=https://app.plinto.dev
+SUPPORT_EMAIL=support@janua.dev
+BASE_URL=https://janua.dev
+FRONTEND_URL=https://app.janua.dev
 ```
 
 ## Development Mode

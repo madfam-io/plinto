@@ -26,7 +26,7 @@ Set the following environment variables in Railway:
 ```bash
 # Required for all apps
 NODE_ENV=production
-NEXT_PUBLIC_APP_URL=https://plinto.railway.app
+NEXT_PUBLIC_APP_URL=https://janua.railway.app
 
 # For authentication (when backend is ready)
 JWT_SECRET=your-secret-key-here
@@ -49,14 +49,14 @@ railway link
 ## What's Deployed
 
 Currently, Railway will deploy the **marketing site** as the primary application:
-- URL: https://plinto.railway.app
-- Health check: https://plinto.railway.app/health
+- URL: https://janua.railway.app
+- Health check: https://janua.railway.app/health
 
 ## Build Configuration
 
 The `config/railway.json` file is configured with:
 - **Build Command**: `yarn install --frozen-lockfile && yarn build`
-- **Start Command**: `yarn workspace @plinto/marketing start`
+- **Start Command**: `yarn workspace @janua/marketing start`
 - **Health Check**: `/health` endpoint
 - **Restart Policy**: ON_FAILURE with 3 retries
 
@@ -105,10 +105,10 @@ railway service create demo
 railway service create dashboard
 
 # Configure each with appropriate start commands
-# admin: yarn workspace @plinto/admin start
-# docs: yarn workspace @plinto/docs start
-# demo: yarn workspace @plinto/demo start
-# dashboard: yarn workspace @plinto/dashboard start
+# admin: yarn workspace @janua/admin start
+# docs: yarn workspace @janua/docs start
+# demo: yarn workspace @janua/demo start
+# dashboard: yarn workspace @janua/dashboard start
 ```
 
 ## Troubleshooting

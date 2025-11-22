@@ -228,7 +228,7 @@ class SAMLProtocol(SSOProtocol):
         
         return {
             "sp": {
-                "entityId": config.get("sp_entity_id", "https://api.plinto.dev"),
+                "entityId": config.get("sp_entity_id", "https://api.janua.dev"),
                 "assertionConsumerService": {
                     "url": config["acs_url"],
                     "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"

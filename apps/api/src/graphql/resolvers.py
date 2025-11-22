@@ -1,5 +1,5 @@
 """
-GraphQL Resolvers for Plinto Platform
+GraphQL Resolvers for Janua Platform
 Implements all queries, mutations, and subscriptions defined in the schema
 """
 

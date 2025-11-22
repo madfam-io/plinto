@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/lib/auth'
-import { FeatureFlagProvider } from '@plinto/feature-flags'
+import { FeatureFlagProvider } from '@janua/feature-flags'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Plinto Dashboard',
+  title: 'Janua Dashboard',
   description: 'Manage your authentication and identity settings',
 }
 

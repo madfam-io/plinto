@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Documentation - Plinto',
-  description: 'Complete documentation for integrating Plinto authentication into your application.',
+  title: 'Documentation - Janua',
+  description: 'Complete documentation for integrating Janua authentication into your application.',
 }
 
 export default function DocsPage() {
@@ -12,13 +12,13 @@ export default function DocsPage() {
       <h1>Documentation</h1>
       
       <p className="lead">
-        Welcome to the Plinto documentation. Learn how to integrate enterprise-grade 
+        Welcome to the Janua documentation. Learn how to integrate enterprise-grade 
         authentication into your application in minutes.
       </p>
 
-      <h2>What is Plinto?</h2>
+      <h2>What is Janua?</h2>
       <p>
-        Plinto is an open-source authentication and user management platform that provides:
+        Janua is an open-source authentication and user management platform that provides:
       </p>
       <ul>
         <li>Email/password authentication with secure bcrypt hashing</li>
@@ -34,12 +34,12 @@ export default function DocsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 not-prose">
         <Link href="/docs/quickstart" className="block p-6 border border-gray-200 rounded-lg hover:border-primary-600 hover:shadow-md transition-all">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Quickstart Guide</h3>
-          <p className="text-gray-600">Get up and running with Plinto in 5 minutes</p>
+          <p className="text-gray-600">Get up and running with Janua in 5 minutes</p>
         </Link>
         
         <Link href="/docs/installation" className="block p-6 border border-gray-200 rounded-lg hover:border-primary-600 hover:shadow-md transition-all">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Installation</h3>
-          <p className="text-gray-600">Install and configure Plinto for your environment</p>
+          <p className="text-gray-600">Install and configure Janua for your environment</p>
         </Link>
         
         <Link href="/docs/sdk/typescript" className="block p-6 border border-gray-200 rounded-lg hover:border-primary-600 hover:shadow-md transition-all">
@@ -57,7 +57,7 @@ export default function DocsPage() {
       
       <h3>Authentication Flow</h3>
       <p>
-        Plinto uses JWT-based authentication with refresh token rotation for enhanced security. 
+        Janua uses JWT-based authentication with refresh token rotation for enhanced security. 
         The basic flow is:
       </p>
       <ol>
@@ -70,7 +70,7 @@ export default function DocsPage() {
       <h3>Multi-Factor Authentication</h3>
       <p>
         MFA adds an extra layer of security by requiring users to provide a second factor 
-        (TOTP code, SMS code) in addition to their password. Plinto supports:
+        (TOTP code, SMS code) in addition to their password. Janua supports:
       </p>
       <ul>
         <li>Time-based One-Time Passwords (TOTP) via authenticator apps</li>
@@ -91,7 +91,7 @@ export default function DocsPage() {
 
       <h2>Architecture</h2>
       <p>
-        Plinto is built with a modular architecture:
+        Janua is built with a modular architecture:
       </p>
       <ul>
         <li><strong>API Server</strong>: FastAPI backend with PostgreSQL</li>

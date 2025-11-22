@@ -99,7 +99,7 @@ usePasswordReset()  // Password reset flow
 
 #### Context Providers
 ```typescript
-<PlintoProvider>      // Root provider with configuration
+<JanuaProvider>      // Root provider with configuration
 <SessionProvider>     // Session state management
 <OrganizationProvider> // Multi-tenant context
 ```

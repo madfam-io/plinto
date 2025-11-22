@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { ArrowRight, ShoppingCart, Shield, Zap, Globe, CreditCard, Users, BarChart3 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'E-commerce Authentication | Plinto',
+  title: 'E-commerce Authentication | Janua',
   description: 'Secure, fast authentication for e-commerce platforms. Reduce cart abandonment and increase conversions with streamlined checkout flows.',
 }
 
@@ -36,14 +36,14 @@ export default function EcommercePage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="group" asChild>
-                <Link href="https://app.plinto.dev/auth/signup">
+                <Link href="https://app.janua.dev/auth/signup">
                   Start Free Trial
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
 
               <Button size="lg" variant="outline" asChild>
-                <Link href="https://docs.plinto.dev/solutions/ecommerce">
+                <Link href="https://docs.janua.dev/solutions/ecommerce">
                   View Documentation
                 </Link>
               </Button>
@@ -56,7 +56,7 @@ export default function EcommercePage() {
       <section className="py-20 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-16">
-            Why E-commerce Businesses Choose Plinto
+            Why E-commerce Businesses Choose Janua
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -160,10 +160,10 @@ export default function EcommercePage() {
                   Ready to Boost Conversions?
                 </h3>
                 <p className="text-slate-600 dark:text-slate-300 mb-8">
-                  Join leading e-commerce brands using Plinto for secure, fast checkout experiences.
+                  Join leading e-commerce brands using Janua for secure, fast checkout experiences.
                 </p>
                 <Button size="lg" className="w-full group" asChild>
-                  <Link href="https://app.plinto.dev/auth/signup">
+                  <Link href="https://app.janua.dev/auth/signup">
                     Get Started Free
                     <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Link>

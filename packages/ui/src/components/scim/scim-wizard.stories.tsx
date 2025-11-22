@@ -50,7 +50,7 @@ export const Step3SyncSettings: Story = {
   args: {
     initialStep: 3,
     selectedProvider: 'okta',
-    scimEndpoint: 'https://api.plinto.dev/scim/v2',
+    scimEndpoint: 'https://api.janua.dev/scim/v2',
     bearerToken: 'generated-token-abc123def456',
   },
 };
@@ -126,8 +126,8 @@ export const WithOneLogin: Story = {
 export const WithGeneratedToken: Story = {
   args: {
     initialStep: 2,
-    scimEndpoint: 'https://api.plinto.dev/scim/v2',
-    bearerToken: 'plinto_scim_abc123def456ghi789jkl012mno345pqr678',
+    scimEndpoint: 'https://api.janua.dev/scim/v2',
+    bearerToken: 'janua_scim_abc123def456ghi789jkl012mno345pqr678',
     showCopySuccess: true,
   },
 };
@@ -151,8 +151,8 @@ export const CompletedState: Story = {
     isComplete: true,
     configuration: {
       provider: 'okta',
-      endpoint: 'https://api.plinto.dev/scim/v2',
-      token: 'plinto_scim_***',
+      endpoint: 'https://api.janua.dev/scim/v2',
+      token: 'janua_scim_***',
       syncSettings: {
         userSync: true,
         groupSync: true,

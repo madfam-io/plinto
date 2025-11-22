@@ -8,7 +8,7 @@ export function CTASection() {
           Ready to get started?
         </h2>
         <p className="mt-4 text-xl text-primary-100">
-          Start building with Plinto in minutes. No credit card required.
+          Start building with Janua in minutes. No credit card required.
         </p>
         <div className="mt-8 flex justify-center gap-4">
           <Link

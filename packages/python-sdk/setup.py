@@ -1,4 +1,4 @@
-"""Setup configuration for the Plinto Python SDK.
+"""Setup configuration for the Janua Python SDK.
 
 This is a minimal setup.py for backward compatibility.
 All configuration is now in pyproject.toml (PEP 621).

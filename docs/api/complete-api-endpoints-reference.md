@@ -1,10 +1,10 @@
 # Complete API Endpoints Reference
 
-> **Comprehensive documentation of all 256+ REST API endpoints in the Plinto platform**
+> **Comprehensive documentation of all 256+ REST API endpoints in the Janua platform**
 
 ## Overview
 
-This document provides a complete reference to all API endpoints available in the Plinto authentication platform, organized by functional area. All endpoints are prefixed with `/api/v1` unless otherwise noted.
+This document provides a complete reference to all API endpoints available in the Janua authentication platform, organized by functional area. All endpoints are prefixed with `/api/v1` unless otherwise noted.
 
 ## 🔐 Authentication Endpoints
 
@@ -504,20 +504,20 @@ All endpoints implement intelligent rate limiting:
 
 All endpoints are supported by official SDKs:
 
-- **TypeScript/JavaScript**: `@plinto/typescript-sdk`
-- **React**: `@plinto/react-sdk`
-- **Next.js**: `@plinto/nextjs`
-- **Python**: `plinto-python`
-- **Go**: `github.com/plinto/go-sdk`
-- **Vue**: `@plinto/vue`
-- **Flutter**: `plinto_flutter`
+- **TypeScript/JavaScript**: `@janua/typescript-sdk`
+- **React**: `@janua/react-sdk`
+- **Next.js**: `@janua/nextjs`
+- **Python**: `janua-python`
+- **Go**: `github.com/janua/go-sdk`
+- **Vue**: `@janua/vue`
+- **Flutter**: `janua_flutter`
 
 ### SDK Example
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  baseUrl: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  baseUrl: 'https://api.janua.dev',
   apiKey: 'your_api_key'
 });
 

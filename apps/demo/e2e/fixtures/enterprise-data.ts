@@ -56,15 +56,15 @@ export const SSO_PROVIDERS = {
 
 export const SAML_CONFIGS = {
   standard: {
-    samlEntityId: 'https://plinto.dev/sp',
-    samlAcsUrl: 'https://plinto.dev/api/v1/sso/saml/acs',
+    samlEntityId: 'https://janua.dev/sp',
+    samlAcsUrl: 'https://janua.dev/api/v1/sso/saml/acs',
     signRequests: true,
     wantAssertionsSigned: true,
     nameIdFormat: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
   },
   advanced: {
-    samlEntityId: 'https://plinto.dev/sp',
-    samlAcsUrl: 'https://plinto.dev/api/v1/sso/saml/acs',
+    samlEntityId: 'https://janua.dev/sp',
+    samlAcsUrl: 'https://janua.dev/api/v1/sso/saml/acs',
     signRequests: false,
     wantAssertionsSigned: false,
     nameIdFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
@@ -118,31 +118,31 @@ export const SSO_TEST_RESULTS = {
 
 export const TEST_INVITATIONS = {
   memberInvite: {
-    email: 'new.member@plinto.dev',
+    email: 'new.member@janua.dev',
     role: 'member' as const,
     message: 'Welcome to our team!',
     expiresIn: 7,
   },
   adminInvite: {
-    email: 'new.admin@plinto.dev',
+    email: 'new.admin@janua.dev',
     role: 'admin' as const,
     message: 'Welcome as an administrator!',
     expiresIn: 14,
   },
   ownerInvite: {
-    email: 'new.owner@plinto.dev',
+    email: 'new.owner@janua.dev',
     role: 'owner' as const,
     message: 'Welcome as an owner!',
     expiresIn: 30,
   },
   shortExpiry: {
-    email: 'quick@plinto.dev',
+    email: 'quick@janua.dev',
     role: 'member' as const,
     message: 'Quick onboarding',
     expiresIn: 1, // 1 day
   },
   noMessage: {
-    email: 'no.message@plinto.dev',
+    email: 'no.message@janua.dev',
     role: 'member' as const,
     expiresIn: 7,
   },
@@ -156,28 +156,28 @@ export const TEST_INVITATIONS = {
 
 export const BULK_INVITATIONS = {
   valid: [
-    { email: 'bulk1@plinto.dev', role: 'member', message: 'Welcome bulk user 1!' },
-    { email: 'bulk2@plinto.dev', role: 'admin', message: 'Welcome bulk user 2!' },
-    { email: 'bulk3@plinto.dev', role: 'member', message: 'Welcome bulk user 3!' },
-    { email: 'bulk4@plinto.dev', role: 'member', message: 'Welcome bulk user 4!' },
-    { email: 'bulk5@plinto.dev', role: 'admin', message: 'Welcome bulk user 5!' },
+    { email: 'bulk1@janua.dev', role: 'member', message: 'Welcome bulk user 1!' },
+    { email: 'bulk2@janua.dev', role: 'admin', message: 'Welcome bulk user 2!' },
+    { email: 'bulk3@janua.dev', role: 'member', message: 'Welcome bulk user 3!' },
+    { email: 'bulk4@janua.dev', role: 'member', message: 'Welcome bulk user 4!' },
+    { email: 'bulk5@janua.dev', role: 'admin', message: 'Welcome bulk user 5!' },
   ],
   mixedValid: [
-    { email: 'valid1@plinto.dev', role: 'member', message: 'Valid user 1' },
+    { email: 'valid1@janua.dev', role: 'member', message: 'Valid user 1' },
     { email: 'invalid-email', role: 'member', message: 'Invalid email format' },
-    { email: 'valid2@plinto.dev', role: 'admin', message: 'Valid user 2' },
+    { email: 'valid2@janua.dev', role: 'admin', message: 'Valid user 2' },
     { email: '@nolocal.com', role: 'member', message: 'Invalid email format' },
-    { email: 'valid3@plinto.dev', role: 'member', message: 'Valid user 3' },
+    { email: 'valid3@janua.dev', role: 'member', message: 'Valid user 3' },
   ],
   tooMany: Array.from({ length: 105 }, (_, i) => ({
-    email: `bulk${i + 1}@plinto.dev`,
+    email: `bulk${i + 1}@janua.dev`,
     role: 'member',
     message: `Bulk user ${i + 1}`,
   })),
   duplicates: [
-    { email: 'duplicate@plinto.dev', role: 'member', message: 'First invite' },
-    { email: 'duplicate@plinto.dev', role: 'admin', message: 'Duplicate invite' },
-    { email: 'unique@plinto.dev', role: 'member', message: 'Unique invite' },
+    { email: 'duplicate@janua.dev', role: 'member', message: 'First invite' },
+    { email: 'duplicate@janua.dev', role: 'admin', message: 'Duplicate invite' },
+    { email: 'unique@janua.dev', role: 'member', message: 'Unique invite' },
   ],
 }
 
@@ -229,18 +229,18 @@ export const TEST_ENTERPRISE_ORGS = {
 export const INVITATION_ACCEPTANCE_USERS = {
   newUser: {
     name: 'New Invited User',
-    email: 'newinvited@plinto.dev',
+    email: 'newinvited@janua.dev',
     password: 'NewInvited123!',
     isNewUser: true,
   },
   existingUser: {
-    email: 'existing@plinto.dev',
+    email: 'existing@janua.dev',
     password: 'Existing123!',
     isNewUser: false,
   },
   weakPassword: {
     name: 'Weak Password User',
-    email: 'weak@plinto.dev',
+    email: 'weak@janua.dev',
     password: '123', // Should fail validation
     isNewUser: true,
   },
@@ -252,33 +252,33 @@ export const INVITATION_ACCEPTANCE_USERS = {
 
 export const CSV_TEST_DATA = {
   validCSV: `email,role,message
-member1@plinto.dev,member,Welcome to the team!
-admin1@plinto.dev,admin,Welcome as admin!
-member2@plinto.dev,member,Excited to have you join us`,
+member1@janua.dev,member,Welcome to the team!
+admin1@janua.dev,admin,Welcome as admin!
+member2@janua.dev,member,Excited to have you join us`,
 
   invalidFormatCSV: `no,header,row
-user@plinto.dev,member,message`,
+user@janua.dev,member,message`,
 
   missingEmailCSV: `email,role,message
 ,member,No email provided
-valid@plinto.dev,admin,Valid entry`,
+valid@janua.dev,admin,Valid entry`,
 
   invalidEmailsCSV: `email,role,message
 invalid-email,member,Invalid format
 @nodomain.com,admin,Invalid format
-valid@plinto.dev,member,Valid entry`,
+valid@janua.dev,member,Valid entry`,
 
   tooManyCSV: Array.from(
     { length: 105 },
-    (_, i) => `user${i + 1}@plinto.dev,member,Message ${i + 1}`
+    (_, i) => `user${i + 1}@janua.dev,member,Message ${i + 1}`
   ).join('\n'),
 
   emptyCSV: `email,role,message`,
 
   duplicateEmailsCSV: `email,role,message
-duplicate@plinto.dev,member,First
-duplicate@plinto.dev,admin,Second
-unique@plinto.dev,member,Third`,
+duplicate@janua.dev,member,First
+duplicate@janua.dev,admin,Second
+unique@janua.dev,member,Third`,
 }
 
 // ============================================================================

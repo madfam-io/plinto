@@ -18,13 +18,13 @@ def custom_openapi(app: FastAPI) -> Dict[str, Any]:
         return app.openapi_schema
     
     openapi_schema = get_openapi(
-        title="Plinto API",
+        title="Janua API",
         version="1.0.0",
         description="""
-# Plinto API Documentation
+# Janua API Documentation
 
 ## Overview
-Plinto is an enterprise-grade authentication and identity management platform that provides comprehensive security features including multi-factor authentication, single sign-on, and advanced user management.
+Janua is an enterprise-grade authentication and identity management platform that provides comprehensive security features including multi-factor authentication, single sign-on, and advanced user management.
 
 ## Features
 - 🔐 **Authentication**: JWT-based authentication with refresh tokens
@@ -76,7 +76,7 @@ The API is versioned using URL path versioning. Current version: v1
                 "description": "User authentication and session management",
                 "externalDocs": {
                     "description": "Authentication Guide",
-                    "url": "https://docs.plinto.dev/authentication"
+                    "url": "https://docs.janua.dev/authentication"
                 }
             },
             {
@@ -84,7 +84,7 @@ The API is versioned using URL path versioning. Current version: v1
                 "description": "Multi-factor authentication setup and verification",
                 "externalDocs": {
                     "description": "MFA Documentation",
-                    "url": "https://docs.plinto.dev/mfa"
+                    "url": "https://docs.janua.dev/mfa"
                 }
             },
             {
@@ -92,7 +92,7 @@ The API is versioned using URL path versioning. Current version: v1
                 "description": "WebAuthn/Passkey management for passwordless authentication",
                 "externalDocs": {
                     "description": "Passkeys Guide",
-                    "url": "https://docs.plinto.dev/passkeys"
+                    "url": "https://docs.janua.dev/passkeys"
                 }
             },
             {
@@ -100,7 +100,7 @@ The API is versioned using URL path versioning. Current version: v1
                 "description": "OAuth 2.0 and OpenID Connect endpoints",
                 "externalDocs": {
                     "description": "OAuth Documentation",
-                    "url": "https://docs.plinto.dev/oauth"
+                    "url": "https://docs.janua.dev/oauth"
                 }
             },
             {
@@ -108,7 +108,7 @@ The API is versioned using URL path versioning. Current version: v1
                 "description": "Single Sign-On with SAML 2.0",
                 "externalDocs": {
                     "description": "SSO Setup Guide",
-                    "url": "https://docs.plinto.dev/sso"
+                    "url": "https://docs.janua.dev/sso"
                 }
             },
             {
@@ -142,11 +142,11 @@ The API is versioned using URL path versioning. Current version: v1
         ],
         servers=[
             {
-                "url": "https://api.plinto.dev",
+                "url": "https://api.janua.dev",
                 "description": "Production server"
             },
             {
-                "url": "https://staging-api.plinto.dev",
+                "url": "https://staging-api.janua.dev",
                 "description": "Staging server"
             },
             {
@@ -172,9 +172,9 @@ The API is versioned using URL path versioning. Current version: v1
                     "type": "oauth2",
                     "flows": {
                         "authorizationCode": {
-                            "authorizationUrl": "https://api.plinto.dev/api/v1/oauth/authorize",
-                            "tokenUrl": "https://api.plinto.dev/api/v1/oauth/token",
-                            "refreshUrl": "https://api.plinto.dev/api/v1/oauth/refresh",
+                            "authorizationUrl": "https://api.janua.dev/api/v1/oauth/authorize",
+                            "tokenUrl": "https://api.janua.dev/api/v1/oauth/token",
+                            "refreshUrl": "https://api.janua.dev/api/v1/oauth/refresh",
                             "scopes": {
                                 "read:user": "Read user information",
                                 "write:user": "Modify user information",
@@ -184,7 +184,7 @@ The API is versioned using URL path versioning. Current version: v1
                             }
                         },
                         "clientCredentials": {
-                            "tokenUrl": "https://api.plinto.dev/api/v1/oauth/token",
+                            "tokenUrl": "https://api.janua.dev/api/v1/oauth/token",
                             "scopes": {
                                 "service": "Service-to-service authentication"
                             }
@@ -313,9 +313,9 @@ def add_code_samples(openapi_schema: Dict[str, Any]):
             "post": [
                 {
                     "lang": "Python",
-                    "source": """import plinto
+                    "source": """import janua
 
-client = plinto.Client(api_key="your_api_key")
+client = janua.Client(api_key="your_api_key")
 
 user = client.auth.signup(
     email="user@example.com",
@@ -327,9 +327,9 @@ print(f"User created: {user.id}")"""
                 },
                 {
                     "lang": "JavaScript",
-                    "source": """const plinto = require('plinto-js');
+                    "source": """const janua = require('janua-js');
 
-const client = new plinto.Client({ apiKey: 'your_api_key' });
+const client = new janua.Client({ apiKey: 'your_api_key' });
 
 const user = await client.auth.signup({
     email: 'user@example.com',
@@ -341,7 +341,7 @@ console.log(`User created: ${user.id}`);"""
                 },
                 {
                     "lang": "cURL",
-                    "source": """curl -X POST https://api.plinto.dev/api/v1/auth/signup \\
+                    "source": """curl -X POST https://api.janua.dev/api/v1/auth/signup \\
   -H "Content-Type: application/json" \\
   -d '{
     "email": "user@example.com",
@@ -356,9 +356,9 @@ console.log(`User created: ${user.id}`);"""
             "post": [
                 {
                     "lang": "Python",
-                    "source": """import plinto
+                    "source": """import janua
 
-client = plinto.Client()
+client = janua.Client()
 
 auth = client.auth.signin(
     email="user@example.com",
@@ -368,9 +368,9 @@ print(f"Access token: {auth.access_token}")"""
                 },
                 {
                     "lang": "JavaScript",
-                    "source": """const plinto = require('plinto-js');
+                    "source": """const janua = require('janua-js');
 
-const client = new plinto.Client();
+const client = new janua.Client();
 
 const auth = await client.auth.signin({
     email: 'user@example.com',
@@ -380,7 +380,7 @@ console.log(`Access token: ${auth.accessToken}`);"""
                 },
                 {
                     "lang": "cURL",
-                    "source": """curl -X POST https://api.plinto.dev/api/v1/auth/signin \\
+                    "source": """curl -X POST https://api.janua.dev/api/v1/auth/signin \\
   -H "Content-Type: application/json" \\
   -d '{
     "email": "user@example.com",
@@ -505,7 +505,7 @@ def get_custom_swagger_ui_html() -> str:
     <html>
     <head>
         <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
-        <title>Plinto API - Swagger UI</title>
+        <title>Janua API - Swagger UI</title>
         <style>
             .swagger-ui .topbar { display: none }
             .swagger-ui .info .title { color: #6366f1 }
@@ -549,7 +549,7 @@ def get_custom_redoc_html() -> str:
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Plinto API Documentation</title>
+        <title>Janua API Documentation</title>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>

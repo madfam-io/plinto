@@ -8,7 +8,7 @@ test.describe('Marketing Site Functionality', () => {
 
   test('Core functionality works', async ({ page }) => {
     // Test home page loads
-    await expect(page).toHaveTitle(/Plinto/);
+    await expect(page).toHaveTitle(/Janua/);
     
     // Test hero section exists
     await expect(page.locator('h1')).toContainText('Authentication at the');
@@ -27,7 +27,7 @@ test.describe('Marketing Site Functionality', () => {
     await expect(githubLinks.first()).toBeVisible();
     
     // Test app links
-    const signUpLinks = page.locator('a[href*="app.plinto.dev/auth/signup"]');
+    const signUpLinks = page.locator('a[href*="app.janua.dev/auth/signup"]');
     await expect(signUpLinks.first()).toBeVisible();
     
     // Test Get Started button exists

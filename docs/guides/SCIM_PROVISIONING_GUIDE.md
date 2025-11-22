@@ -23,14 +23,14 @@
 
 ## Overview
 
-SCIM (System for Cross-domain Identity Management) 2.0 automates user provisioning and deprovisioning between your identity provider and Plinto.
+SCIM (System for Cross-domain Identity Management) 2.0 automates user provisioning and deprovisioning between your identity provider and Janua.
 
 ### What is SCIM?
 
 SCIM is a standardized REST API protocol that enables:
-- **Automatic User Creation**: New users in your IdP automatically get Plinto accounts
+- **Automatic User Creation**: New users in your IdP automatically get Janua accounts
 - **Real-time Updates**: User changes sync instantly
-- **Automatic Deprovisioning**: Removing users from IdP removes Plinto access
+- **Automatic Deprovisioning**: Removing users from IdP removes Janua access
 - **Group Management**: Sync organizational structure and teams
 
 ### Benefits
@@ -45,14 +45,14 @@ SCIM is a standardized REST API protocol that enables:
 
 ```
 ┌──────────────┐         SCIM 2.0 API         ┌─────────────┐
-│   Identity   │────────────────────────────▶│   Plinto    │
+│   Identity   │────────────────────────────▶│   Janua    │
 │   Provider   │                              │             │
 │   (IdP)      │◀────────────────────────────│             │
 └──────────────┘                              └─────────────┘
      │                                              │
      │  1. User created/updated/deleted            │
      │  2. IdP sends SCIM request                  │
-     │  3. Plinto validates & processes            │
+     │  3. Janua validates & processes            │
      │  4. Returns success/error response          │
      │  5. IdP updates sync status                 │
      └──────────────────────────────────────────────┘
@@ -76,14 +76,14 @@ SCIM is a standardized REST API protocol that enables:
 ### Requirements
 
 - ✅ **Enterprise Plan**: SCIM is available on Enterprise plan only
-- ✅ **Organization Admin**: Administrative access to Plinto
+- ✅ **Organization Admin**: Administrative access to Janua
 - ✅ **IdP Admin**: Access to configure SCIM in your identity provider
-- ✅ **Verified Domain**: Domain ownership verified in Plinto
+- ✅ **Verified Domain**: Domain ownership verified in Janua
 - ✅ **SSO Configured**: SSO should be set up first (recommended)
 
 ### Supported Features
 
-Plinto's SCIM implementation supports:
+Janua's SCIM implementation supports:
 
 | Feature | Support | Notes |
 |---------|---------|-------|
@@ -119,10 +119,10 @@ Plinto's SCIM implementation supports:
 3. **Copy SCIM Endpoint**
    ```
    SCIM Base URL:
-   https://api.plinto.dev/scim/v2
+   https://api.janua.dev/scim/v2
    
    Organization-Specific URL:
-   https://api.plinto.dev/scim/v2?org={organization_id}
+   https://api.janua.dev/scim/v2?org={organization_id}
    ```
 
 ### Step 2: Test SCIM Connection
@@ -132,14 +132,14 @@ Use curl to verify SCIM endpoint:
 ```bash
 # Test ServiceProviderConfig endpoint
 curl -X GET \
-  'https://api.plinto.dev/scim/v2/ServiceProviderConfig' \
+  'https://api.janua.dev/scim/v2/ServiceProviderConfig' \
   -H 'Authorization: Bearer {your_scim_token}' \
   -H 'Content-Type: application/scim+json'
 
 # Expected response
 {
   "schemas": ["urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"],
-  "documentationUri": "https://docs.plinto.dev/scim",
+  "documentationUri": "https://docs.janua.dev/scim",
   "patch": {
     "supported": true
   },
@@ -167,7 +167,7 @@ curl -X GET \
       "name": "OAuth Bearer Token",
       "description": "Authentication scheme using the OAuth Bearer Token",
       "specUri": "http://www.rfc-editor.org/info/rfc6750",
-      "documentationUri": "https://docs.plinto.dev/scim/authentication"
+      "documentationUri": "https://docs.janua.dev/scim/authentication"
     }
   ]
 }
@@ -184,7 +184,7 @@ Proceed to [Provider-Specific Setup](#provider-specific-setup) for your identity
 ### Base URL
 
 ```
-https://api.plinto.dev/scim/v2
+https://api.janua.dev/scim/v2
 ```
 
 ### Authentication
@@ -242,7 +242,7 @@ Content-Type: application/scim+json
     "resourceType": "User",
     "created": "2025-01-15T10:30:00Z",
     "lastModified": "2025-11-16T14:22:00Z",
-    "location": "https://api.plinto.dev/scim/v2/Users/123e4567-e89b-12d3-a456-426614174000"
+    "location": "https://api.janua.dev/scim/v2/Users/123e4567-e89b-12d3-a456-426614174000"
   }
 }
 ```
@@ -295,7 +295,7 @@ Content-Type: application/scim+json
     "resourceType": "User",
     "created": "2025-11-16T15:45:00Z",
     "lastModified": "2025-11-16T15:45:00Z",
-    "location": "https://api.plinto.dev/scim/v2/Users/456e7890-e89b-12d3-a456-426614174001"
+    "location": "https://api.janua.dev/scim/v2/Users/456e7890-e89b-12d3-a456-426614174001"
   }
 }
 ```
@@ -441,12 +441,12 @@ Authorization: Bearer {token}
   "members": [
     {
       "value": "123e4567-e89b-12d3-a456-426614174000",
-      "$ref": "https://api.plinto.dev/scim/v2/Users/123e4567-e89b-12d3-a456-426614174000",
+      "$ref": "https://api.janua.dev/scim/v2/Users/123e4567-e89b-12d3-a456-426614174000",
       "display": "John Doe"
     },
     {
       "value": "456e7890-e89b-12d3-a456-426614174001",
-      "$ref": "https://api.plinto.dev/scim/v2/Users/456e7890-e89b-12d3-a456-426614174001",
+      "$ref": "https://api.janua.dev/scim/v2/Users/456e7890-e89b-12d3-a456-426614174001",
       "display": "Jane Smith"
     }
   ],
@@ -454,7 +454,7 @@ Authorization: Bearer {token}
     "resourceType": "Group",
     "created": "2025-01-15T10:30:00Z",
     "lastModified": "2025-11-16T15:45:00Z",
-    "location": "https://api.plinto.dev/scim/v2/Groups/group_123"
+    "location": "https://api.janua.dev/scim/v2/Groups/group_123"
   }
 }
 ```
@@ -539,7 +539,7 @@ Content-Type: application/scim+json
    
    ```
    SCIM 2.0 Base URL:
-   https://api.plinto.dev/scim/v2
+   https://api.janua.dev/scim/v2
    
    Unique identifier field: userName
    
@@ -575,7 +575,7 @@ Content-Type: application/scim+json
 
 7. **Assign Users/Groups**
    - Assignments tab → Assign → Assign to People/Groups
-   - Users will be automatically created in Plinto
+   - Users will be automatically created in Janua
 
 #### Okta-Specific Settings
 
@@ -583,7 +583,7 @@ Content-Type: application/scim+json
 - Navigate to Push Groups tab
 - Click "Push Groups" → Find groups by name
 - Select groups to sync
-- Members will be added to corresponding Plinto groups
+- Members will be added to corresponding Janua groups
 
 **Sync Schedule**:
 - Default: Real-time for user changes
@@ -598,7 +598,7 @@ Content-Type: application/scim+json
 1. **Add Enterprise Application**
    - Azure Portal → Entra ID → Enterprise applications
    - New application → Create your own application
-   - Name: Plinto SCIM
+   - Name: Janua SCIM
    - Integrate any other application (non-gallery)
 
 2. **Configure Provisioning**
@@ -606,7 +606,7 @@ Content-Type: application/scim+json
    
    ```
    Tenant URL:
-   https://api.plinto.dev/scim/v2
+   https://api.janua.dev/scim/v2
    
    Secret Token:
    {your_scim_token}
@@ -669,11 +669,11 @@ Content-Type: application/scim+json
    - Add app → Add custom SCIM app
 
 2. **Configure Application**
-   - App name: Plinto
+   - App name: Janua
    
    ```
    SCIM endpoint URL:
-   https://api.plinto.dev/scim/v2
+   https://api.janua.dev/scim/v2
    
    Authorization type: Bearer token
    Access token: {your_scim_token}
@@ -702,7 +702,7 @@ Content-Type: application/scim+json
 #### Google-Specific Settings
 
 **Group Sync**:
-- Google Admin SDK groups map to Plinto groups
+- Google Admin SDK groups map to Janua groups
 - Configure in Group provisioning settings
 
 **Sync Frequency**:
@@ -725,7 +725,7 @@ Content-Type: application/scim+json
    
    ```
    SCIM Base URL:
-   https://api.plinto.dev/scim/v2
+   https://api.janua.dev/scim/v2
    
    SCIM Bearer Token:
    {your_scim_token}
@@ -767,23 +767,23 @@ Content-Type: application/scim+json
 
 - [ ] **User Provisioning**
   - Create test user in IdP
-  - Verify user appears in Plinto
+  - Verify user appears in Janua
   - Check all attributes mapped correctly
 
 - [ ] **User Updates**
   - Update user name in IdP
-  - Verify change syncs to Plinto
+  - Verify change syncs to Janua
   - Check update timestamp
 
 - [ ] **User Deprovisioning**
   - Disable/delete user in IdP
-  - Verify user deactivated in Plinto
+  - Verify user deactivated in Janua
   - Check access revoked
 
 - [ ] **Group Sync** (if enabled)
   - Create group in IdP
   - Add users to group
-  - Verify group and members in Plinto
+  - Verify group and members in Janua
 
 ### Manual Testing
 
@@ -791,7 +791,7 @@ Content-Type: application/scim+json
 
 ```bash
 # Create user via SCIM API
-curl -X POST 'https://api.plinto.dev/scim/v2/Users' \
+curl -X POST 'https://api.janua.dev/scim/v2/Users' \
   -H 'Authorization: Bearer {token}' \
   -H 'Content-Type: application/scim+json' \
   -d '{
@@ -813,11 +813,11 @@ curl -X POST 'https://api.plinto.dev/scim/v2/Users' \
 
 ```bash
 # Get user by ID
-curl -X GET 'https://api.plinto.dev/scim/v2/Users/{user_id}' \
+curl -X GET 'https://api.janua.dev/scim/v2/Users/{user_id}' \
   -H 'Authorization: Bearer {token}'
 
 # Filter by userName
-curl -X GET 'https://api.plinto.dev/scim/v2/Users?filter=userName eq "testuser@example.com"' \
+curl -X GET 'https://api.janua.dev/scim/v2/Users?filter=userName eq "testuser@example.com"' \
   -H 'Authorization: Bearer {token}'
 ```
 
@@ -825,7 +825,7 @@ curl -X GET 'https://api.plinto.dev/scim/v2/Users?filter=userName eq "testuser@e
 
 ```bash
 # Update user
-curl -X PATCH 'https://api.plinto.dev/scim/v2/Users/{user_id}' \
+curl -X PATCH 'https://api.janua.dev/scim/v2/Users/{user_id}' \
   -H 'Authorization: Bearer {token}' \
   -H 'Content-Type: application/scim+json' \
   -d '{
@@ -842,7 +842,7 @@ curl -X PATCH 'https://api.plinto.dev/scim/v2/Users/{user_id}' \
 
 ```bash
 # Deactivate user
-curl -X PATCH 'https://api.plinto.dev/scim/v2/Users/{user_id}' \
+curl -X PATCH 'https://api.janua.dev/scim/v2/Users/{user_id}' \
   -H 'Authorization: Bearer {token}' \
   -H 'Content-Type: application/scim+json' \
   -d '{
@@ -857,7 +857,7 @@ curl -X PATCH 'https://api.plinto.dev/scim/v2/Users/{user_id}' \
 
 ### Monitoring Sync Status
 
-#### Plinto SCIM Dashboard
+#### Janua SCIM Dashboard
 
 1. **Navigate to SCIM Logs**
    - Organization Settings → SCIM Provisioning → Sync Logs
@@ -906,7 +906,7 @@ Authorization: abc123def456...
 Authorization: Token abc123def456...
 ```
 
-- Regenerate token in Plinto settings
+- Regenerate token in Janua settings
 - Verify no extra spaces in header
 
 #### 2. User Already Exists
@@ -953,7 +953,7 @@ Authorization: Token abc123def456...
 
 #### 5. Group Sync Not Working
 
-**Issue**: Groups not syncing to Plinto
+**Issue**: Groups not syncing to Janua
 
 **Causes**:
 - Group provisioning not enabled
@@ -1042,7 +1042,7 @@ Authorization: Token abc123def456...
 
 ### Custom Attributes
 
-Map custom IdP attributes to Plinto:
+Map custom IdP attributes to Janua:
 
 ```json
 {
@@ -1130,14 +1130,14 @@ GET /Users?startIndex=101&count=100
 
 ## Support & Resources
 
-- **Documentation**: https://docs.plinto.dev/scim
+- **Documentation**: https://docs.janua.dev/scim
 - **SCIM 2.0 Spec**: https://datatracker.ietf.org/doc/html/rfc7644
-- **Community Forum**: https://community.plinto.dev
-- **Email Support**: scim-support@plinto.dev
+- **Community Forum**: https://community.janua.dev
+- **Email Support**: scim-support@janua.dev
 - **Enterprise Support**: Available 24/7
 
 ---
 
 **Last Updated**: November 16, 2025  
 **Version**: 1.0.0-beta  
-**Support**: scim-support@plinto.dev
+**Support**: scim-support@janua.dev

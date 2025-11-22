@@ -16,5 +16,5 @@ jest.mock('next/navigation', () => ({
 }))
 
 // Mock environment
-process.env.NEXT_PUBLIC_PLINTO_ENV = 'test'
+process.env.NEXT_PUBLIC_JANUA_ENV = 'test'
 process.env.NEXT_PUBLIC_API_URL = 'http://localhost:4000'

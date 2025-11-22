@@ -1,4 +1,4 @@
-# Plinto - Suggested Development Commands
+# Janua - Suggested Development Commands
 
 ## Essential Development Commands
 

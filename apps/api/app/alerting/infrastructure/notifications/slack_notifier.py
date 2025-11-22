@@ -132,8 +132,8 @@ class SlackNotificationStrategy(AbstractNotificationStrategy):
             "title": f"🚨 {alert.severity.value.upper()} Alert: {alert.title}",
             "text": alert.description,
             "fields": self._create_slack_fields(request),
-            "footer": "Plinto Alert System",
-            "footer_icon": "https://plinto.dev/favicon.ico",  # Optional
+            "footer": "Janua Alert System",
+            "footer_icon": "https://janua.dev/favicon.ico",  # Optional
             "ts": int(alert.triggered_at.timestamp())
         }
         
@@ -306,11 +306,11 @@ class SlackConfigValidator:
             
             # Test with a simple message
             test_payload = {
-                "text": "Test message from Plinto Alert System",
+                "text": "Test message from Janua Alert System",
                 "attachments": [{
                     "color": "good",
                     "text": "This is a test to verify webhook connectivity.",
-                    "footer": "Plinto Alert System - Test"
+                    "footer": "Janua Alert System - Test"
                 }]
             }
             

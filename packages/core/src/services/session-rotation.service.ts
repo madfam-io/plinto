@@ -48,7 +48,7 @@ export class SessionRotationService extends EventEmitter {
       reuseWindow: config.reuseWindow || 10, // 10 seconds
       maxTokenFamilySize: config.maxTokenFamilySize || 5,
       jwtSecret: config.jwtSecret,
-      issuer: config.issuer || 'plinto',
+      issuer: config.issuer || 'janua',
     };
     this.redisService = redisService;
   }

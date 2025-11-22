@@ -1,6 +1,6 @@
 'use client'
 
-import { OrganizationSwitcher, OrganizationProfile } from '@plinto/ui'
+import { OrganizationSwitcher, OrganizationProfile } from '@janua/ui'
 import { useState } from 'react'
 
 export default function OrganizationShowcase() {
@@ -128,7 +128,7 @@ export default function OrganizationShowcase() {
 {`import {
   OrganizationSwitcher,
   OrganizationProfile
-} from '@plinto/ui'
+} from '@janua/ui'
 
 <OrganizationSwitcher
   currentOrganization={org}
@@ -246,7 +246,7 @@ export default function OrganizationShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Organization Switcher in Navigation</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { OrganizationSwitcher } from '@plinto/ui'
+import { OrganizationSwitcher } from '@janua/ui'
 import { useOrganization } from '@/hooks/useOrganization'
 
 export function AppHeader() {
@@ -276,7 +276,7 @@ export function AppHeader() {
           <div>
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Organization Settings Page</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-{`import { OrganizationProfile } from '@plinto/ui'
+{`import { OrganizationProfile } from '@janua/ui'
 
 export default function OrganizationSettingsPage({ params }) {
   const { organization, userRole } = await getOrganization(params.id)

@@ -282,7 +282,7 @@ class TokenManager:
 
 class AuthenticationFlow:
     """
-    Manages different authentication flows supported by Plinto.
+    Manages different authentication flows supported by Janua.
 
     Each flow represents a different way to authenticate with the API:
     - Email/password

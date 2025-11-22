@@ -47,7 +47,7 @@ class TestResendEmailService:
                 )
 
                 assert result.status == "sent"
-                assert result.message_id.startswith("plinto-")
+                assert result.message_id.startswith("janua-")
                 assert "test@example.com" in str(result.metadata) if result.metadata else True
 
     @pytest.mark.asyncio
@@ -122,7 +122,7 @@ class TestTransactionalEmails:
                 result = await email_service.send_verification_email(
                     to_email="user@example.com",
                     user_name="Test User",
-                    verification_url="https://plinto.dev/verify?token=abc123",
+                    verification_url="https://janua.dev/verify?token=abc123",
                 )
 
                 assert result.status == "sent"
@@ -136,7 +136,7 @@ class TestTransactionalEmails:
                 result = await email_service.send_password_reset_email(
                     to_email="user@example.com",
                     user_name="Test User",
-                    reset_url="https://plinto.dev/reset?token=xyz789",
+                    reset_url="https://janua.dev/reset?token=xyz789",
                 )
 
                 assert result.status == "sent"
@@ -170,7 +170,7 @@ class TestEnterpriseEmails:
                     inviter_name="Admin User",
                     organization_name="Acme Corp",
                     role="member",
-                    invitation_url="https://plinto.dev/invite?token=inv123",
+                    invitation_url="https://janua.dev/invite?token=inv123",
                     expires_at=expires_at,
                     teams=["engineering", "product"],
                 )
@@ -190,7 +190,7 @@ class TestEnterpriseEmails:
                     admin_name="Admin User",
                     organization_name="Acme Corp",
                     sso_provider="okta",
-                    configuration_url="https://plinto.dev/settings/sso",
+                    configuration_url="https://janua.dev/settings/sso",
                     domains=["company.com", "company.io"],
                 )
 
@@ -208,7 +208,7 @@ class TestEnterpriseEmails:
                     user_name="John Doe",
                     organization_name="Acme Corp",
                     sso_provider="okta",
-                    login_url="https://plinto.dev/login",
+                    login_url="https://janua.dev/login",
                 )
 
                 assert result.status == "sent"
@@ -229,7 +229,7 @@ class TestEnterpriseEmails:
                     alert_type="Data Subject Request",
                     alert_description="User requested data export under GDPR Article 15",
                     action_required=True,
-                    action_url="https://plinto.dev/compliance/requests/123",
+                    action_url="https://janua.dev/compliance/requests/123",
                     deadline=deadline,
                 )
 
@@ -268,7 +268,7 @@ class TestEnterpriseEmails:
                     to_email="user@company.com",
                     user_name="John Doe",
                     request_type="GDPR Data Access Request",
-                    download_url="https://plinto.dev/exports/xyz123",
+                    download_url="https://janua.dev/exports/xyz123",
                     expires_at=expires_at,
                 )
 
@@ -405,7 +405,7 @@ class TestEmailOptions:
                     to_email="user@example.com",
                     subject="Test with Reply-To",
                     html_content="<p>Test</p>",
-                    reply_to="support@plinto.dev",
+                    reply_to="support@janua.dev",
                 )
 
                 assert result.status == "sent"

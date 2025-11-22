@@ -759,7 +759,7 @@ export class BillingQuotasService extends EventEmitter {
         id: 'free',
         name: 'free',
         display_name: 'Free',
-        description: 'Perfect for trying out Plinto',
+        description: 'Perfect for trying out Janua',
         price_monthly: 0,
         price_yearly: 0,
         currency: 'USD',

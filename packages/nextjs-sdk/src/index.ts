@@ -1,15 +1,15 @@
-// Re-export everything from @plinto/typescript-sdk
-export * from '@plinto/typescript-sdk';
-export { PlintoClient } from '@plinto/typescript-sdk';
+// Re-export everything from @janua/typescript-sdk
+export * from '@janua/typescript-sdk';
+export { JanuaClient } from '@janua/typescript-sdk';
 
 // Export middleware utilities
-export { createPlintoMiddleware, withAuth, config } from './middleware';
-export type { PlintoMiddlewareConfig } from './middleware';
+export { createJanuaMiddleware, withAuth, config } from './middleware';
+export type { JanuaMiddlewareConfig } from './middleware';
 
 // Export App Router utilities (most common)
 export {
-  PlintoProvider,
-  usePlinto,
+  JanuaProvider,
+  useJanua,
   useAuth,
   useUser,
   useOrganizations,
@@ -20,14 +20,14 @@ export {
   SignedOut,
   RedirectToSignIn,
   Protect,
-  PlintoServerClient,
+  JanuaServerClient,
   getSession,
   requireAuth,
   validateRequest,
 } from './app';
 
 export type {
-  PlintoProviderProps,
+  JanuaProviderProps,
   SignInFormProps,
   SignUpFormProps,
   UserButtonProps,

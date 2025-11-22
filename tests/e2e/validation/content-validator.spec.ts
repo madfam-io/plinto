@@ -32,7 +32,7 @@ test.describe('Content Validation', () => {
     // Check code example is real
     const codeExample = page.locator('pre code');
     const code = await codeExample.textContent();
-    expect(code).toContain('PlintoClient');
+    expect(code).toContain('JanuaClient');
     expect(code).toContain('signUp');
     expect(code).toContain('enableMFA');
     expect(code).toContain('registerPasskey');
@@ -101,8 +101,8 @@ test.describe('Content Validation', () => {
     for (let i = 0; i < count; i++) {
       const code = await codeBlocks.nth(i).textContent();
       
-      // Skip if not a Plinto code example
-      if (!code?.includes('plinto')) continue;
+      // Skip if not a Janua code example
+      if (!code?.includes('janua')) continue;
 
       // Verify uses real SDK methods
       const hasValidCalls = 
@@ -121,26 +121,26 @@ test.describe('Content Validation', () => {
     await page.goto('http://localhost:3000/docs/quickstart');
 
     // Verify installation commands
-    await expect(page.locator('text=npm install @plinto/typescript-sdk')).toBeVisible();
-    await expect(page.locator('text=npm install @plinto/react-sdk')).toBeVisible();
-    await expect(page.locator('text=pip install plinto-sdk')).toBeVisible();
+    await expect(page.locator('text=npm install @janua/typescript-sdk')).toBeVisible();
+    await expect(page.locator('text=npm install @janua/react-sdk')).toBeVisible();
+    await expect(page.locator('text=pip install janua-sdk')).toBeVisible();
 
     // Verify environment variables match actual configuration
-    const envExample = page.locator('text=PLINTO_API_URL');
+    const envExample = page.locator('text=JANUA_API_URL');
     await expect(envExample).toBeVisible();
-    await expect(page.locator('text=PLINTO_API_KEY')).toBeVisible();
+    await expect(page.locator('text=JANUA_API_KEY')).toBeVisible();
 
     // Verify code examples use real methods
-    await expect(page.locator('text=plinto.auth.signUp')).toBeVisible();
-    await expect(page.locator('text=plinto.auth.signIn')).toBeVisible();
-    await expect(page.locator('text=plinto.auth.enableMFA')).toBeVisible();
+    await expect(page.locator('text=janua.auth.signUp')).toBeVisible();
+    await expect(page.locator('text=janua.auth.signIn')).toBeVisible();
+    await expect(page.locator('text=janua.auth.enableMFA')).toBeVisible();
   });
 
   test('Comparison page claims are accurate', async ({ page }) => {
     await page.goto('http://localhost:3000/compare');
 
-    // Verify Plinto claims
-    const plintoColumn = page.locator('th:has-text("Plinto")').locator('..');
+    // Verify Janua claims
+    const januaColumn = page.locator('th:has-text("Janua")').locator('..');
     
     // Check pricing claim
     await expect(page.locator('text=$0 - $49/mo')).toBeVisible();
@@ -150,18 +150,18 @@ test.describe('Content Validation', () => {
     
     // Open source
     const openSourceRow = page.locator('tr:has-text("Open Source")');
-    const plintoOpenSource = openSourceRow.locator('td').nth(1); // Plinto is 2nd column
-    await expect(plintoOpenSource).toContainText('✓');
+    const januaOpenSource = openSourceRow.locator('td').nth(1); // Janua is 2nd column
+    await expect(januaOpenSource).toContainText('✓');
 
     // Self-hosted
     const selfHostedRow = page.locator('tr:has-text("Self-Hosted")');
-    const plintoSelfHosted = selfHostedRow.locator('td').nth(1);
-    await expect(plintoSelfHosted).toContainText('✓');
+    const januaSelfHosted = selfHostedRow.locator('td').nth(1);
+    await expect(januaSelfHosted).toContainText('✓');
 
     // SAML SSO
     const samlRow = page.locator('tr:has-text("SAML SSO")');
-    const plintoSaml = samlRow.locator('td').nth(1);
-    await expect(plintoSaml).toContainText('✓');
+    const januaSaml = samlRow.locator('td').nth(1);
+    await expect(januaSaml).toContainText('✓');
   });
 
   test('Feature descriptions match implementation status', async ({ page }) => {

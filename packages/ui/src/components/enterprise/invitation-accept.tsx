@@ -35,7 +35,7 @@ export interface InvitationAcceptProps {
   onAccept?: (request: InvitationAcceptRequest) => Promise<InvitationAcceptResponse>
   onSuccess?: (response: InvitationAcceptResponse) => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   redirectUrl?: string
   currentUserId?: string
@@ -48,7 +48,7 @@ export function InvitationAccept({
   onAccept,
   onSuccess,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   redirectUrl = '/dashboard',
   currentUserId,
@@ -71,8 +71,8 @@ export function InvitationAccept({
       try {
         let response: InvitationValidateResponse
 
-        if (plintoClient) {
-          response = await plintoClient.invitations.validateToken(token)
+        if (januaClient) {
+          response = await januaClient.invitations.validateToken(token)
         } else if (onValidateToken) {
           response = await onValidateToken(token)
         } else {
@@ -102,7 +102,7 @@ export function InvitationAccept({
     }
 
     validate()
-  }, [token, plintoClient, onValidateToken, apiUrl, onError])
+  }, [token, januaClient, onValidateToken, apiUrl, onError])
 
   // Handle accept
   const handleAccept = async (e: React.FormEvent) => {
@@ -142,8 +142,8 @@ export function InvitationAccept({
 
       let response: InvitationAcceptResponse
 
-      if (plintoClient) {
-        response = await plintoClient.invitations.acceptInvitation(acceptData)
+      if (januaClient) {
+        response = await januaClient.invitations.acceptInvitation(acceptData)
       } else if (onAccept) {
         response = await onAccept(acceptData)
       } else {

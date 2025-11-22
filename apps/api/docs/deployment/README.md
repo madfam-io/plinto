@@ -1,6 +1,6 @@
 # Deployment Documentation
 
-> **Production-grade deployment strategies and operational guidance for the Plinto API**
+> **Production-grade deployment strategies and operational guidance for the Janua API**
 
 This section provides comprehensive deployment documentation covering production deployment strategies, infrastructure management, and operational best practices.
 
@@ -203,7 +203,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/plinto
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/janua
       - REDIS_URL=redis://redis:6379/0
       - ENVIRONMENT=development
     depends_on:
@@ -216,7 +216,7 @@ services:
   db:
     image: postgres:14
     environment:
-      - POSTGRES_DB=plinto
+      - POSTGRES_DB=janua
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
@@ -250,39 +250,39 @@ volumes:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: plinto-api
+  name: janua-api
   labels:
-    app: plinto-api
+    app: janua-api
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: plinto-api
+      app: janua-api
   template:
     metadata:
       labels:
-        app: plinto-api
+        app: janua-api
     spec:
       containers:
       - name: api
-        image: plinto/api:latest
+        image: janua/api:latest
         ports:
         - containerPort: 8000
         env:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: database-url
         - name: REDIS_URL
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: redis-url
         - name: JWT_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: jwt-secret
         resources:
           requests:
@@ -313,10 +313,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: plinto-api-service
+  name: janua-api-service
 spec:
   selector:
-    app: plinto-api
+    app: janua-api
   ports:
   - protocol: TCP
     port: 80
@@ -330,7 +330,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: plinto-api-ingress
+  name: janua-api-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
@@ -339,17 +339,17 @@ metadata:
 spec:
   tls:
   - hosts:
-    - api.plinto.dev
-    secretName: plinto-api-tls
+    - api.janua.dev
+    secretName: janua-api-tls
   rules:
-  - host: api.plinto.dev
+  - host: api.janua.dev
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: plinto-api-service
+            name: janua-api-service
             port:
               number: 80
 ```
@@ -361,7 +361,7 @@ spec:
 replicaCount: 3
 
 image:
-  repository: plinto/api
+  repository: janua/api
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -375,14 +375,14 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
-    - host: api.plinto.dev
+    - host: api.janua.dev
       paths:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: plinto-api-tls
+    - secretName: janua-api-tls
       hosts:
-        - api.plinto.dev
+        - api.janua.dev
 
 resources:
   limits:
@@ -402,7 +402,7 @@ postgresql:
   enabled: true
   auth:
     postgresPassword: "secure-password"
-    database: "plinto"
+    database: "janua"
   primary:
     persistence:
       enabled: true
@@ -426,7 +426,7 @@ redis:
 #### ECS Fargate Configuration
 ```json
 {
-  "family": "plinto-api",
+  "family": "janua-api",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "1024",
@@ -435,8 +435,8 @@ redis:
   "taskRoleArn": "arn:aws:iam::account:role/ecsTaskRole",
   "containerDefinitions": [
     {
-      "name": "plinto-api",
-      "image": "your-account.dkr.ecr.region.amazonaws.com/plinto-api:latest",
+      "name": "janua-api",
+      "image": "your-account.dkr.ecr.region.amazonaws.com/janua-api:latest",
       "portMappings": [
         {
           "containerPort": 8000,
@@ -452,13 +452,13 @@ redis:
       "secrets": [
         {
           "name": "DATABASE_URL",
-          "valueFrom": "arn:aws:ssm:region:account:parameter/plinto/database-url"
+          "valueFrom": "arn:aws:ssm:region:account:parameter/janua/database-url"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/plinto-api",
+          "awslogs-group": "/ecs/janua-api",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -483,7 +483,7 @@ provider "aws" {
 
 # ECS Cluster
 resource "aws_ecs_cluster" "main" {
-  name = "plinto-cluster"
+  name = "janua-cluster"
 
   setting {
     name  = "containerInsights"
@@ -493,7 +493,7 @@ resource "aws_ecs_cluster" "main" {
 
 # Application Load Balancer
 resource "aws_lb" "main" {
-  name               = "plinto-alb"
+  name               = "janua-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb.id]
@@ -504,7 +504,7 @@ resource "aws_lb" "main" {
 
 # RDS Instance
 resource "aws_db_instance" "main" {
-  identifier     = "plinto-db"
+  identifier     = "janua-db"
   engine         = "postgres"
   engine_version = "14.9"
   instance_class = "db.t3.medium"
@@ -513,7 +513,7 @@ resource "aws_db_instance" "main" {
   max_allocated_storage = 1000
   storage_encrypted     = true
 
-  db_name  = "plinto"
+  db_name  = "janua"
   username = "postgres"
   password = var.db_password
 
@@ -525,13 +525,13 @@ resource "aws_db_instance" "main" {
   maintenance_window     = "sun:04:00-sun:05:00"
 
   skip_final_snapshot = false
-  final_snapshot_identifier = "plinto-db-final-snapshot"
+  final_snapshot_identifier = "janua-db-final-snapshot"
 }
 
 # ElastiCache Redis
 resource "aws_elasticache_replication_group" "main" {
-  replication_group_id       = "plinto-redis"
-  description                = "Redis cluster for Plinto API"
+  replication_group_id       = "janua-redis"
+  description                = "Redis cluster for Janua API"
 
   port                       = 6379
   parameter_group_name       = "default.redis6.x"
@@ -558,7 +558,7 @@ global:
   evaluation_interval: 15s
 
 rule_files:
-  - "plinto_rules.yml"
+  - "janua_rules.yml"
 
 alerting:
   alertmanagers:
@@ -567,7 +567,7 @@ alerting:
           - alertmanager:9093
 
 scrape_configs:
-  - job_name: 'plinto-api'
+  - job_name: 'janua-api'
     static_configs:
       - targets: ['api:8000']
     metrics_path: '/metrics'
@@ -591,7 +591,7 @@ scrape_configs:
 ```json
 {
   "dashboard": {
-    "title": "Plinto API Dashboard",
+    "title": "Janua API Dashboard",
     "panels": [
       {
         "title": "Request Rate",
@@ -681,14 +681,14 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t plinto/api:${{ github.sha }} .
-        docker tag plinto/api:${{ github.sha }} plinto/api:latest
+        docker build -t janua/api:${{ github.sha }} .
+        docker tag janua/api:${{ github.sha }} janua/api:latest
 
     - name: Push to registry
       run: |
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-        docker push plinto/api:${{ github.sha }}
-        docker push plinto/api:latest
+        docker push janua/api:${{ github.sha }}
+        docker push janua/api:latest
 
   deploy:
     needs: build
@@ -698,8 +698,8 @@ jobs:
     steps:
     - name: Deploy to Kubernetes
       run: |
-        kubectl set image deployment/plinto-api api=plinto/api:${{ github.sha }}
-        kubectl rollout status deployment/plinto-api
+        kubectl set image deployment/janua-api api=janua/api:${{ github.sha }}
+        kubectl rollout status deployment/janua-api
 ```
 
 ## 🛡️ Production Security
@@ -775,7 +775,7 @@ export MONITORING_ENDPOINT="..."        # Metrics endpoint
 #### Database Connection Issues
 ```bash
 # Check database connectivity
-kubectl exec -it deployment/plinto-api -- python -c "
+kubectl exec -it deployment/janua-api -- python -c "
 import asyncpg
 import asyncio
 
@@ -792,7 +792,7 @@ asyncio.run(test_db())
 #### Redis Connection Issues
 ```bash
 # Check Redis connectivity
-kubectl exec -it deployment/plinto-api -- python -c "
+kubectl exec -it deployment/janua-api -- python -c "
 import redis
 r = redis.from_url('redis://...')
 print(f'Redis ping: {r.ping()}')

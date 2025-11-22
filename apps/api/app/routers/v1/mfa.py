@@ -178,7 +178,7 @@ async def enable_mfa(
     ]
 
     # Create provisioning URI for QR code
-    issuer_name = settings.APP_NAME or "Plinto"
+    issuer_name = settings.APP_NAME or "Janua"
     account_name = current_user.email
     provisioning_uri = pyotp.totp.TOTP(secret).provisioning_uri(
         name=account_name, issuer_name=issuer_name

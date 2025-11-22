@@ -52,7 +52,7 @@ Build production-ready, enterprise-competitive identity platform that can direct
 # Success Criteria
 - ✅ packages/vue-sdk/dist/ exists with CJS/ESM/types
 - ✅ npm run build completes without errors
-- ✅ Can import { usePlinto } from '@plinto/vue-sdk'
+- ✅ Can import { useJanua } from '@janua/vue-sdk'
 ```
 
 **Wednesday-Thursday: Python SDK**
@@ -63,7 +63,7 @@ Build production-ready, enterprise-competitive identity platform that can direct
 - Configure build system (setuptools or poetry)
 - Build wheel and sdist: python -m build
 - Test installation: pip install -e .
-- Verify imports: from plinto import Client
+- Verify imports: from janua import Client
 
 # Success Criteria
 - ✅ packages/python-sdk/dist/ has .whl and .tar.gz
@@ -76,10 +76,10 @@ Build production-ready, enterprise-competitive identity platform that can direct
 ```bash
 # Tasks
 - Review packages/go-sdk/go.mod
-- Ensure module path is correct: github.com/plinto-dev/plinto-go
+- Ensure module path is correct: github.com/janua-dev/janua-go
 - Add go.sum with dependencies
 - Test build: go build ./...
-- Test installation: go get github.com/plinto-dev/plinto-go
+- Test installation: go get github.com/janua-dev/janua-go
 - Create example usage
 
 # Success Criteria
@@ -96,7 +96,7 @@ npm link packages/nextjs-sdk
 npm link packages/react-sdk
 npm link packages/vue-sdk
 pip install -e packages/python-sdk
-go get github.com/plinto-dev/plinto-go
+go get github.com/janua-dev/janua-go
 
 # Create test projects for each
 mkdir -p test-installations/{ts,nextjs,react,vue,python,go}
@@ -120,14 +120,14 @@ mkdir -p test-installations/{ts,nextjs,react,vue,python,go}
 **Monday: NPM Organization Setup**
 ```bash
 # Tasks
-- Register @plinto organization on npmjs.com
+- Register @janua organization on npmjs.com
 - Add team members with appropriate permissions
 - Generate automation tokens for CI/CD
 - Configure organization settings
 - Setup 2FA for all maintainers
 
 # Success Criteria
-- ✅ @plinto organization exists
+- ✅ @janua organization exists
 - ✅ All team members have access
 - ✅ CI/CD tokens configured in GitHub Secrets
 ```
@@ -151,8 +151,8 @@ npm run build
 npm publish --access public
 
 # Create git tag
-git tag -a "@plinto/$SDK_NAME@$VERSION" -m "Release $SDK_NAME v$VERSION"
-git push origin "@plinto/$SDK_NAME@$VERSION"
+git tag -a "@janua/$SDK_NAME@$VERSION" -m "Release $SDK_NAME v$VERSION"
+git push origin "@janua/$SDK_NAME@$VERSION"
 
 # Success Criteria
 - ✅ Script works for TS, Next.js, React, Vue SDKs
@@ -271,12 +271,12 @@ jobs:
 ```typescript
 // tests/test-app/src/app.ts
 import express from 'express';
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
 const app = express();
-const plinto = new PlintoClient({
-  apiUrl: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  apiUrl: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 
 // Routes
@@ -286,13 +286,13 @@ app.get('/', (req, res) => {
 
 app.post('/signup', async (req, res) => {
   const { email, password, name } = req.body;
-  const result = await plinto.auth.signUp({ email, password, name });
+  const result = await janua.auth.signUp({ email, password, name });
   res.json(result);
 });
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const result = await plinto.auth.signIn({ email, password });
+  const result = await janua.auth.signIn({ email, password });
   res.json(result);
 });
 
@@ -301,7 +301,7 @@ app.post('/login', async (req, res) => {
 # Tasks
 - Build Express server with all auth routes
 - Create HTML views for all pages
-- Integrate @plinto/typescript-sdk
+- Integrate @janua/typescript-sdk
 - Implement signup, login, MFA, passkey flows
 - Add profile and security management
 - Add data-testid attributes for Playwright
@@ -641,7 +641,7 @@ class JITProvisioner:
 # Setup
 - Create Okta developer account
 - Configure SAML app in Okta
-- Point to Plinto ACS endpoint
+- Point to Janua ACS endpoint
 - Configure attribute mapping
 
 # Test scenarios
@@ -924,7 +924,7 @@ class DirectorySyncService:
         
     async def perform_full_sync(self, org_id: str):
         # Fetch all users and groups
-        # Update Plinto database
+        # Update Janua database
         # Handle conflicts
         # Audit log
         
@@ -1494,7 +1494,7 @@ async def test_rate_limiting():
 
 **Monday-Tuesday: Core Client Implementation**
 ```python
-# packages/python-sdk/plinto/client.py
+# packages/python-sdk/janua/client.py
 
 from typing import Optional, Dict, Any
 import httpx
@@ -1502,14 +1502,14 @@ from .auth import AuthClient
 from .users import UsersClient
 from .organizations import OrganizationsClient
 
-class PlintoClient:
+class JanuaClient:
     """
-    Official Plinto Python SDK
+    Official Janua Python SDK
     
     Example:
-        >>> from plinto import PlintoClient
-        >>> client = PlintoClient(
-        ...     api_url="https://api.plinto.dev",
+        >>> from janua import JanuaClient
+        >>> client = JanuaClient(
+        ...     api_url="https://api.janua.dev",
         ...     api_key="your-api-key"
         ... )
         >>> user = await client.auth.sign_up(
@@ -1529,7 +1529,7 @@ class PlintoClient:
             base_url=api_url,
             headers={
                 "Authorization": f"Bearer {api_key}",
-                "User-Agent": f"plinto-python/{__version__}"
+                "User-Agent": f"janua-python/{__version__}"
             },
             timeout=timeout
         )
@@ -1565,44 +1565,44 @@ class PlintoClient:
 **Wednesday: Framework Integrations**
 ```python
 # Flask integration
-from plinto.integrations.flask import PlintoFlask
+from janua.integrations.flask import JanuaFlask
 
 app = Flask(__name__)
-plinto = PlintoFlask(app, api_key=os.getenv("PLINTO_API_KEY"))
+janua = JanuaFlask(app, api_key=os.getenv("JANUA_API_KEY"))
 
 @app.route("/protected")
-@plinto.require_auth
+@janua.require_auth
 def protected_route():
-    user = plinto.current_user
+    user = janua.current_user
     return f"Hello {user.email}"
 
 # Django integration  
 # settings.py
 INSTALLED_APPS = [
-    'plinto.integrations.django',
+    'janua.integrations.django',
 ]
 
-PLINTO = {
-    'API_KEY': os.getenv('PLINTO_API_KEY'),
-    'API_URL': 'https://api.plinto.dev'
+JANUA = {
+    'API_KEY': os.getenv('JANUA_API_KEY'),
+    'API_URL': 'https://api.janua.dev'
 }
 
 # views.py
-from plinto.integrations.django.decorators import require_auth
+from janua.integrations.django.decorators import require_auth
 
 @require_auth
 def protected_view(request):
-    user = request.plinto_user
+    user = request.janua_user
     return JsonResponse({'user': user.email})
 
 # FastAPI integration
-from plinto.integrations.fastapi import PlintoFastAPI
+from janua.integrations.fastapi import JanuaFastAPI
 
 app = FastAPI()
-plinto = PlintoFastAPI(api_key=os.getenv("PLINTO_API_KEY"))
+janua = JanuaFastAPI(api_key=os.getenv("JANUA_API_KEY"))
 
 @app.get("/protected")
-async def protected_route(user = Depends(plinto.require_auth)):
+async def protected_route(user = Depends(janua.require_auth)):
     return {"user": user.email}
 
 # Tasks
@@ -1665,7 +1665,7 @@ async def protected_route(user = Depends(plinto.require_auth)):
 // packages/vue-sdk/src/composables/useAuth.ts
 
 import { ref, computed } from 'vue';
-import { PlintoClient } from './client';
+import { JanuaClient } from './client';
 
 export function useAuth() {
   const user = ref(null);
@@ -1745,7 +1745,7 @@ export function usePasskey() { ... }
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useAuth } from '@plinto/vue-sdk';
+import { useAuth } from '@janua/vue-sdk';
 
 const { signIn, isLoading } = useAuth();
 const email = ref('');
@@ -1786,7 +1786,7 @@ async function handleLogin() {
 ```typescript
 // stores/auth.ts
 import { defineStore } from 'pinia';
-import { PlintoClient } from '@plinto/vue-sdk';
+import { JanuaClient } from '@janua/vue-sdk';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -1866,9 +1866,9 @@ export const useAuthStore = defineStore('auth', {
 
 **Monday-Tuesday: Core Package**
 ```go
-// packages/go-sdk/plinto/client.go
+// packages/go-sdk/janua/client.go
 
-package plinto
+package janua
 
 import (
     "context"
@@ -1933,8 +1933,8 @@ func (s *AuthService) SignIn(ctx context.Context, req *SignInRequest) (*SignInRe
 **Wednesday: Middleware & Framework Integration**
 ```go
 // Gin middleware
-func PlintoMiddleware(apiKey string) gin.HandlerFunc {
-    client := plinto.NewClient("https://api.plinto.dev", apiKey)
+func JanuaMiddleware(apiKey string) gin.HandlerFunc {
+    client := janua.NewClient("https://api.janua.dev", apiKey)
     
     return func(c *gin.Context) {
         token := extractToken(c.Request)
@@ -1951,17 +1951,17 @@ func PlintoMiddleware(apiKey string) gin.HandlerFunc {
 }
 
 // Echo middleware
-func PlintoEchoMiddleware(apiKey string) echo.MiddlewareFunc {
+func JanuaEchoMiddleware(apiKey string) echo.MiddlewareFunc {
     // Similar implementation
 }
 
 // Chi middleware
-func PlintoChiMiddleware(apiKey string) func(http.Handler) http.Handler {
+func JanuaChiMiddleware(apiKey string) func(http.Handler) http.Handler {
     // Similar implementation
 }
 
 // Standard library middleware
-func PlintoHandler(apiKey string, next http.Handler) http.Handler {
+func JanuaHandler(apiKey string, next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         // Authentication logic
         next.ServeHTTP(w, r)
@@ -2168,7 +2168,7 @@ Tools:
 - Generate OpenAPI spec from API
 - Setup interactive docs site
 - Add try-it-now functionality
-- Deploy to docs.plinto.dev
+- Deploy to docs.janua.dev
 
 # Success Criteria
 - ✅ Interactive API explorer live
@@ -2181,7 +2181,7 @@ Tools:
 # Create video content
 
 Videos:
-1. "Getting Started with Plinto" (5 min)
+1. "Getting Started with Janua" (5 min)
 2. "Implementing Authentication in 5 Minutes" (5 min)
 3. "Setting up SSO with Okta" (10 min)
 4. "SCIM Provisioning Setup" (10 min)
@@ -2203,14 +2203,14 @@ Videos:
 
 **Wednesday: CLI Tool**
 ```bash
-# plinto-cli for project scaffolding
+# janua-cli for project scaffolding
 
-npm install -g @plinto/cli
+npm install -g @janua/cli
 
-plinto init my-app --framework nextjs
-plinto add-auth
-plinto add-mfa
-plinto generate-api-key
+janua init my-app --framework nextjs
+janua add-auth
+janua add-mfa
+janua generate-api-key
 
 # Features:
 - Project initialization
@@ -2233,7 +2233,7 @@ plinto generate-api-key
 
 **Thursday: VS Code Extension**
 ```typescript
-// Plinto for VS Code
+// Janua for VS Code
 
 Features:
 - SDK autocomplete
@@ -2243,11 +2243,11 @@ Features:
 - Quick fixes
 
 Snippets:
-- plinto-setup: Full client setup
-- plinto-signup: Signup implementation
-- plinto-login: Login implementation
-- plinto-mfa: MFA setup
-- plinto-passkey: Passkey implementation
+- janua-setup: Full client setup
+- janua-signup: Signup implementation
+- janua-login: Login implementation
+- janua-mfa: MFA setup
+- janua-passkey: Passkey implementation
 
 # Tasks
 - Build VS Code extension
@@ -2335,16 +2335,16 @@ Snippets:
 # Create 10+ starter templates
 
 Starters:
-1. Next.js App Router + Plinto
-2. Next.js Pages Router + Plinto
-3. React + Vite + Plinto
-4. Vue 3 + Plinto
-5. Express + Plinto
-6. FastAPI + Plinto
-7. Django + Plinto
-8. Nuxt 3 + Plinto
-9. SvelteKit + Plinto
-10. Remix + Plinto
+1. Next.js App Router + Janua
+2. Next.js Pages Router + Janua
+3. React + Vite + Janua
+4. Vue 3 + Janua
+5. Express + Janua
+6. FastAPI + Janua
+7. Django + Janua
+8. Nuxt 3 + Janua
+9. SvelteKit + Janua
+10. Remix + Janua
 
 # Each template includes:
 - Full authentication setup
@@ -2357,7 +2357,7 @@ Starters:
 - Deployment ready
 
 # Publish to:
-- GitHub (plinto-dev/starters)
+- GitHub (janua-dev/starters)
 - Vercel templates
 - Netlify templates
 

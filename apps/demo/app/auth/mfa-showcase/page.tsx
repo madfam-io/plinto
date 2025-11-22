@@ -1,9 +1,9 @@
 'use client'
 
-import { MFASetup, MFAChallenge, BackupCodes } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { MFASetup, MFAChallenge, BackupCodes } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 import { useState } from 'react'
-import { plintoClient } from '@/lib/plinto-client'
+import { januaClient } from '@/lib/janua-client'
 
 export default function MFAShowcase() {
   const [setupComplete, setSetupComplete] = useState(false)
@@ -109,7 +109,7 @@ export default function MFAShowcase() {
           <TabsContent value="setup" className="mt-6">
             <div className="max-w-md mx-auto">
               <MFASetup
-                plintoClient={plintoClient}
+                januaClient={januaClient}
                 onComplete={handleSetupComplete}
                 onError={(error) => console.error('MFA Setup Error:', error)}
               />
@@ -163,7 +163,7 @@ export default function MFAShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Complete MFA Flow</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { MFASetup, MFAChallenge, BackupCodes } from '@plinto/ui'
+import { MFASetup, MFAChallenge, BackupCodes } from '@janua/ui'
 import { useState } from 'react'
 
 export default function MFAPage() {
@@ -241,7 +241,7 @@ export default function MFAPage() {
           <div>
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">MFA Challenge with Rate Limiting</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-{`import { MFAChallenge } from '@plinto/ui'
+{`import { MFAChallenge } from '@janua/ui'
 
 const [attempts, setAttempts] = useState(0)
 const MAX_ATTEMPTS = 3

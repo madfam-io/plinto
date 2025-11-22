@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui'
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui'
 import { Users, RefreshCw, Database, Plus } from 'lucide-react'
 import { useDemoFeatures } from '@/hooks/useEnvironment'
 

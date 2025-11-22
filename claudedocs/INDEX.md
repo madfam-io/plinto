@@ -166,4 +166,4 @@ claudedocs/
 ---
 
 **Maintained by**: Claude Code sessions  
-**Repository**: github.com/madfam-io/plinto
+**Repository**: github.com/madfam-io/janua

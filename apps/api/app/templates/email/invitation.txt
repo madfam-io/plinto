@@ -2,7 +2,7 @@ You've been invited to {{ organization_name }}!
 
 Hi there,
 
-{{ inviter_name }} has invited you to join {{ organization_name }} on Plinto.
+{{ inviter_name }} has invited you to join {{ organization_name }} on Janua.
 
 INVITATION DETAILS
 ------------------
@@ -16,13 +16,13 @@ Click the link below to accept your invitation:
 
 ⏰ IMPORTANT: This invitation expires on {{ expires_at }}
 
-ABOUT PLINTO
+ABOUT JANUA
 ------------
-Plinto is an enterprise authentication platform that provides secure access management,
+Janua is an enterprise authentication platform that provides secure access management,
 SSO integration, multi-factor authentication, and comprehensive user identity features.
 
 Questions? Contact us at {{ support_email }}
 
 ---
-Plinto by Aureo Labs
+Janua by Aureo Labs
 {{ base_url }}

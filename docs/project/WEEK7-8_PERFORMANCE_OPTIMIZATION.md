@@ -93,7 +93,7 @@ CREATE INDEX idx_audit_event_type ON audit_logs(event_type, created_at DESC);
 alembic upgrade head
 
 # Verify indexes
-psql -d plinto_db -c "\di"
+psql -d janua_db -c "\di"
 ```
 
 ---
@@ -186,7 +186,7 @@ await cache.invalidate_user(user.id, user.email)
 
 **Request Latency**
 ```python
-plinto_request_latency_milliseconds
+janua_request_latency_milliseconds
   - Histogram with p50, p95, p99
   - Labels: method, path, status
   - Buckets: 10ms to 10s
@@ -194,21 +194,21 @@ plinto_request_latency_milliseconds
 
 **Database Queries**
 ```python
-plinto_db_queries_total
+janua_db_queries_total
   - Counter of total queries
   - Labels: path
 ```
 
 **Cache Hit Rate**
 ```python
-plinto_cache_hit_rate_percent
+janua_cache_hit_rate_percent
   - Gauge of cache effectiveness
   - Target: >80%
 ```
 
 **Auth Operations**
 ```python
-plinto_auth_operation_milliseconds
+janua_auth_operation_milliseconds
   - Histogram of auth operation latency
   - Labels: operation (login, signup, validate)
   - Target: p95 < 100ms
@@ -239,9 +239,9 @@ X-Cache-Hit-Rate: 85.5%
 curl http://localhost:8000/metrics
 
 # Example output
-plinto_request_latency_milliseconds_sum{method="POST",path="/api/v1/auth/login",status="200"} 1234.56
-plinto_db_queries_total{path="/api/v1/auth/login"} 456
-plinto_cache_hit_rate_percent 82.3
+janua_request_latency_milliseconds_sum{method="POST",path="/api/v1/auth/login",status="200"} 1234.56
+janua_db_queries_total{path="/api/v1/auth/login"} 456
+janua_cache_hit_rate_percent 82.3
 ```
 
 ---
@@ -343,13 +343,13 @@ Total Iterations: 12,345
 
 ```bash
 # Backup database first
-pg_dump plinto_db > backup_$(date +%Y%m%d).sql
+pg_dump janua_db > backup_$(date +%Y%m%d).sql
 
 # Run migration
 alembic upgrade head
 
 # Verify indexes created
-psql -d plinto_db -c "
+psql -d janua_db -c "
   SELECT
     tablename,
     indexname,

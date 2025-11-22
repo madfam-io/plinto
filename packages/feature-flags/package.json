@@ -1,7 +1,7 @@
 {
-  "name": "@plinto/feature-flags",
+  "name": "@janua/feature-flags",
   "version": "1.0.0-beta",
-  "description": "Feature flag system for Plinto platform",
+  "description": "Feature flag system for Janua platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -14,9 +14,9 @@
     "feature-flags",
     "feature-toggles",
     "gradual-rollout",
-    "plinto"
+    "janua"
   ],
-  "author": "Plinto",
+  "author": "Janua",
   "license": "MIT",
   "dependencies": {
     "zod": "^3.22.4"

@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Shield, Lock, CheckCircle, AlertTriangle, Activity, FileCheck, Key, Eye } from 'lucide-react'
-import { Badge } from '@plinto/ui'
-import { Button } from '@plinto/ui'
+import { Badge } from '@janua/ui'
+import { Button } from '@janua/ui'
 
 interface SecurityMetric {
   label: string

@@ -1,5 +1,5 @@
 /**
- * Error handling system for Plinto TypeScript SDK.
+ * Error handling system for Janua TypeScript SDK.
  *
  * Mirrors the comprehensive error hierarchy from app.sdk.error_handling
  * for consistent cross-platform error handling experience.

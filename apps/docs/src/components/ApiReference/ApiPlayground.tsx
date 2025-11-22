@@ -43,7 +43,7 @@ interface ApiPlaygroundProps {
 export function ApiPlayground({
   method,
   path,
-  baseUrl: _baseUrl = 'https://api.plinto.dev',
+  baseUrl: _baseUrl = 'https://api.janua.dev',
   defaultEnvironment = 'test',
   headers = {},
   parameters
@@ -59,8 +59,8 @@ export function ApiPlayground({
   const [copied, setCopied] = useState(false);
 
   const environments = {
-    test: 'https://api-test.plinto.dev',
-    live: 'https://api.plinto.dev'
+    test: 'https://api-test.janua.dev',
+    live: 'https://api.janua.dev'
   };
 
   const buildUrl = () => {

@@ -192,7 +192,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
 
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">Plinto</span>
+            <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">Janua</span>
             <span className="text-sm text-gray-500 dark:text-gray-400">Docs</span>
           </Link>
 
@@ -236,7 +236,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
 
             {/* GitHub link */}
             <a
-              href="https://github.com/plinto/plinto"
+              href="https://github.com/janua/janua"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-md p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"

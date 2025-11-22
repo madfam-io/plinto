@@ -1,5 +1,5 @@
 {
-  "name": "@plinto/marketing",
+  "name": "@janua/marketing",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,8 +17,8 @@
     "test:all": "npm run test && npm run test:e2e"
   },
   "dependencies": {
-    "@plinto/react-sdk": "*",
-    "@plinto/ui": "*",
+    "@janua/react-sdk": "*",
+    "@janua/ui": "*",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-navigation-menu": "^1.1.4",

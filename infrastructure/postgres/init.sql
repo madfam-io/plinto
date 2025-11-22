@@ -1,4 +1,4 @@
--- Plinto Database Initialization Script
+-- Janua Database Initialization Script
 -- This script sets up the initial database schema
 
 -- Enable required extensions

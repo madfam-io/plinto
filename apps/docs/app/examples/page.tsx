@@ -9,7 +9,7 @@ export default function ExamplesPage() {
           Examples & Templates
         </h1>
         <p className="mt-6 text-xl leading-8 text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-          Complete sample applications and code snippets to help you integrate Plinto quickly.
+          Complete sample applications and code snippets to help you integrate Janua quickly.
           Copy, customize, and deploy in minutes.
         </p>
       </div>
@@ -24,8 +24,8 @@ export default function ExamplesPage() {
             title="Next.js SaaS Starter"
             description="Complete SaaS application with authentication, organizations, billing, and admin dashboard"
             tech={["Next.js 14", "TypeScript", "Tailwind CSS", "Prisma"]}
-            githubUrl="https://github.com/plinto/nextjs-saas-starter"
-            demoUrl="https://nextjs-saas-starter.plinto.dev"
+            githubUrl="https://github.com/janua/nextjs-saas-starter"
+            demoUrl="https://nextjs-saas-starter.janua.dev"
             difficulty="Advanced"
             stars={1240}
             featured
@@ -34,8 +34,8 @@ export default function ExamplesPage() {
             title="React Dashboard"
             description="Modern admin dashboard with role-based access control and real-time updates"
             tech={["React 18", "TypeScript", "Vite", "TanStack Query"]}
-            githubUrl="https://github.com/plinto/react-dashboard"
-            demoUrl="https://react-dashboard.plinto.dev"
+            githubUrl="https://github.com/janua/react-dashboard"
+            demoUrl="https://react-dashboard.janua.dev"
             difficulty="Intermediate"
             stars={856}
             featured
@@ -53,48 +53,48 @@ export default function ExamplesPage() {
             title="Next.js App Router"
             description="Modern Next.js app with App Router, server components, and middleware"
             tech={["Next.js 14", "TypeScript", "App Router"]}
-            githubUrl="https://github.com/plinto/nextjs-app-router-example"
-            demoUrl="https://nextjs-app-router.plinto.dev"
+            githubUrl="https://github.com/janua/nextjs-app-router-example"
+            demoUrl="https://nextjs-app-router.janua.dev"
             difficulty="Beginner"
           />
           <ExampleCard
             title="Next.js Pages Router"
             description="Traditional Next.js setup with Pages Router and API routes"
             tech={["Next.js 13", "TypeScript", "Pages Router"]}
-            githubUrl="https://github.com/plinto/nextjs-pages-router-example"
-            demoUrl="https://nextjs-pages-router.plinto.dev"
+            githubUrl="https://github.com/janua/nextjs-pages-router-example"
+            demoUrl="https://nextjs-pages-router.janua.dev"
             difficulty="Beginner"
           />
           <ExampleCard
             title="React + Vite SPA"
             description="Single-page application with React Router and modern tooling"
             tech={["React 18", "Vite", "React Router"]}
-            githubUrl="https://github.com/plinto/react-vite-spa-example"
-            demoUrl="https://react-vite-spa.plinto.dev"
+            githubUrl="https://github.com/janua/react-vite-spa-example"
+            demoUrl="https://react-vite-spa.janua.dev"
             difficulty="Beginner"
           />
           <ExampleCard
             title="Vue 3 + Nuxt"
             description="Full-stack Vue application with Nuxt 3 and server-side rendering"
             tech={["Vue 3", "Nuxt 3", "TypeScript"]}
-            githubUrl="https://github.com/plinto/vue-nuxt-example"
-            demoUrl="https://vue-nuxt.plinto.dev"
+            githubUrl="https://github.com/janua/vue-nuxt-example"
+            demoUrl="https://vue-nuxt.janua.dev"
             difficulty="Intermediate"
           />
           <ExampleCard
             title="Express API"
             description="Node.js REST API with Express and authentication middleware"
             tech={["Express", "Node.js", "TypeScript"]}
-            githubUrl="https://github.com/plinto/express-api-example"
-            demoUrl="https://express-api.plinto.dev"
+            githubUrl="https://github.com/janua/express-api-example"
+            demoUrl="https://express-api.janua.dev"
             difficulty="Intermediate"
           />
           <ExampleCard
             title="FastAPI Backend"
             description="Python API with FastAPI, async/await, and OpenAPI documentation"
             tech={["FastAPI", "Python", "Pydantic"]}
-            githubUrl="https://github.com/plinto/fastapi-example"
-            demoUrl="https://fastapi.plinto.dev"
+            githubUrl="https://github.com/janua/fastapi-example"
+            demoUrl="https://fastapi.janua.dev"
             difficulty="Intermediate"
           />
         </div>
@@ -111,32 +111,32 @@ export default function ExamplesPage() {
             description="Complete online store with user accounts, order management, and payment integration"
             features={["User Registration", "Shopping Cart", "Order History", "Admin Panel"]}
             tech={["Next.js", "Stripe", "Prisma", "PostgreSQL"]}
-            githubUrl="https://github.com/plinto/ecommerce-example"
-            demoUrl="https://ecommerce.plinto.dev"
+            githubUrl="https://github.com/janua/ecommerce-example"
+            demoUrl="https://ecommerce.janua.dev"
           />
           <UseCaseExample
             title="SaaS Application"
             description="Multi-tenant SaaS with organizations, billing, and feature flags"
             features={["Organizations", "RBAC", "Billing", "Feature Flags"]}
             tech={["Next.js", "Stripe", "Vercel", "PlanetScale"]}
-            githubUrl="https://github.com/plinto/saas-example"
-            demoUrl="https://saas.plinto.dev"
+            githubUrl="https://github.com/janua/saas-example"
+            demoUrl="https://saas.janua.dev"
           />
           <UseCaseExample
             title="Social Platform"
             description="Social networking app with user profiles, posts, and real-time chat"
             features={["User Profiles", "Posts & Comments", "Real-time Chat", "File Uploads"]}
             tech={["React", "Socket.io", "MongoDB", "Cloudinary"]}
-            githubUrl="https://github.com/plinto/social-platform-example"
-            demoUrl="https://social.plinto.dev"
+            githubUrl="https://github.com/janua/social-platform-example"
+            demoUrl="https://social.janua.dev"
           />
           <UseCaseExample
             title="Project Management"
             description="Team collaboration tool with projects, tasks, and time tracking"
             features={["Team Management", "Projects & Tasks", "Time Tracking", "Notifications"]}
             tech={["Vue", "Nuxt", "Supabase", "Tailwind"]}
-            githubUrl="https://github.com/plinto/project-management-example"
-            demoUrl="https://pm.plinto.dev"
+            githubUrl="https://github.com/janua/project-management-example"
+            demoUrl="https://pm.janua.dev"
           />
         </div>
       </section>
@@ -152,7 +152,7 @@ export default function ExamplesPage() {
             description="Secure your API endpoints with middleware"
             language="TypeScript"
             code={`export async function GET(request: NextRequest) {
-  const session = await plinto.getSession(request)
+  const session = await janua.getSession(request)
   
   if (!session) {
     return new Response('Unauthorized', { status: 401 })
@@ -166,7 +166,7 @@ export default function ExamplesPage() {
             description="React component for user authentication"
             language="TypeScript"
             code={`export function LoginForm() {
-  const { signIn, loading } = usePlinto()
+  const { signIn, loading } = useJanua()
   
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -181,7 +181,7 @@ export default function ExamplesPage() {
             description="Client-side route protection"
             language="TypeScript"
             code={`export function ProtectedRoute({ children }) {
-  const { user, loading } = usePlinto()
+  const { user, loading } = useJanua()
   
   if (loading) return <Loading />
   if (!user) return <Navigate to="/login" />
@@ -194,7 +194,7 @@ export default function ExamplesPage() {
             description="Display and update user information"
             language="TypeScript"
             code={`export function UserProfile() {
-  const { user, updateProfile } = usePlinto()
+  const { user, updateProfile } = useJanua()
   
   const handleUpdate = async (data) => {
     await updateProfile(data)
@@ -213,9 +213,9 @@ export default function ExamplesPage() {
         </h2>
         <div className="space-y-4">
           <StarterTemplate
-            name="create-plinto-app"
-            description="CLI tool to scaffold new applications with Plinto authentication"
-            command="npx create-plinto-app my-app"
+            name="create-janua-app"
+            description="CLI tool to scaffold new applications with Janua authentication"
+            command="npx create-janua-app my-app"
             frameworks={["Next.js", "React", "Vue", "Express"]}
           />
           <StarterTemplate
@@ -223,14 +223,14 @@ export default function ExamplesPage() {
             description="One-click deployment template for Vercel"
             command="Deploy with Vercel"
             frameworks={["Next.js"]}
-            deployUrl="https://vercel.com/new/clone?repository-url=https://github.com/plinto/nextjs-starter"
+            deployUrl="https://vercel.com/new/clone?repository-url=https://github.com/janua/nextjs-starter"
           />
           <StarterTemplate
             name="Netlify Template"
             description="One-click deployment template for Netlify"
             command="Deploy to Netlify"
             frameworks={["React", "Vue"]}
-            deployUrl="https://app.netlify.com/start/deploy?repository=https://github.com/plinto/react-starter"
+            deployUrl="https://app.netlify.com/start/deploy?repository=https://github.com/janua/react-starter"
           />
         </div>
       </section>
@@ -242,8 +242,8 @@ export default function ExamplesPage() {
         </h2>
         <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-6 mb-6">
           <p className="text-blue-800 dark:text-blue-200 mb-4">
-            Community examples are built and maintained by the Plinto community.
-            Want to add your example? <a href="mailto:examples@plinto.dev" className="underline">Contact us</a> or submit a PR!
+            Community examples are built and maintained by the Janua community.
+            Want to add your example? <a href="mailto:examples@janua.dev" className="underline">Contact us</a> or submit a PR!
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -252,14 +252,14 @@ export default function ExamplesPage() {
             description="SvelteKit application with authentication"
             author="@johndoe"
             tech={["Svelte", "SvelteKit", "TypeScript"]}
-            githubUrl="https://github.com/community/svelte-plinto-example"
+            githubUrl="https://github.com/community/svelte-janua-example"
           />
           <CommunityExample
             title="Angular Dashboard"
             description="Angular admin dashboard with guards and services"
             author="@janedoe"
             tech={["Angular", "TypeScript", "RxJS"]}
-            githubUrl="https://github.com/community/angular-plinto-example"
+            githubUrl="https://github.com/community/angular-janua-example"
           />
         </div>
       </section>

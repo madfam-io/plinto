@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Plinto Enterprise Compliance Infrastructure provides comprehensive SOC2, GDPR, and enterprise compliance capabilities through five integrated components:
+The Janua Enterprise Compliance Infrastructure provides comprehensive SOC2, GDPR, and enterprise compliance capabilities through five integrated components:
 
 1. **Compliance Audit Trail System** (`audit.py`)
 2. **Data Privacy and GDPR Automation** (`privacy.py`)
@@ -224,7 +224,7 @@ ack_id = await policy_manager.track_acknowledgment(
 
 ### Database Models
 
-All components integrate with existing Plinto models:
+All components integrate with existing Janua models:
 - `app.models.compliance` - Compliance-specific models
 - `app.models.audit` - Audit logging
 - `app.models.users` - User management

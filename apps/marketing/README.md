@@ -1,12 +1,12 @@
-# Plinto Marketing
+# Janua Marketing
 
-> **Landing pages and marketing site** for Plinto platform
+> **Landing pages and marketing site** for Janua platform
 
-**Status:** Production Ready · **Domain:** `plinto.dev` · **Port:** 3003
+**Status:** Production Ready · **Domain:** `janua.dev` · **Port:** 3003
 
 ## 📋 Overview
 
-The Plinto Marketing site is the primary landing experience showcasing the platform's capabilities, pricing, and documentation. Features interactive 3D visualizations, optimized performance, and conversion-focused design.
+The Janua Marketing site is the primary landing experience showcasing the platform's capabilities, pricing, and documentation. Features interactive 3D visualizations, optimized performance, and conversion-focused design.
 
 ## 🚀 Quick Start
 
@@ -37,8 +37,8 @@ Create a `.env.local` file:
 
 ```env
 # API Configuration
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
-NEXT_PUBLIC_APP_URL=https://app.plinto.dev
+NEXT_PUBLIC_API_URL=https://api.janua.dev
+NEXT_PUBLIC_APP_URL=https://app.janua.dev
 
 # Analytics
 NEXT_PUBLIC_GA_ID=your-ga-id
@@ -105,7 +105,7 @@ apps/marketing/
 - **Animations:** Framer Motion + Lottie
 - **Content:** MDX for blog/documentation
 - **Styling:** Tailwind CSS + CSS Modules
-- **UI Components:** @plinto/ui design system
+- **UI Components:** @janua/ui design system
 - **Analytics:** PostHog, Google Analytics, Clarity
 
 ## 🎨 Features
@@ -117,7 +117,7 @@ apps/marketing/
 // Interactive 3D hero with scroll animations
 <HeroSection>
   <Canvas>
-    <PlintoLogo3D />
+    <JanuaLogo3D />
     <OrbitControls />
   </Canvas>
   <HeroContent />
@@ -168,7 +168,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 
 export function AnimatedLogo() {
-  const { scene } = useGLTF('/models/plinto-logo.glb');
+  const { scene } = useGLTF('/models/janua-logo.glb');
   
   useFrame((state) => {
     scene.rotation.y = Math.sin(state.clock.elapsedTime) * 0.3;
@@ -197,7 +197,7 @@ import Image from 'next/image';
 // Automatic optimization with Next.js
 <Image
   src="/hero-image.png"
-  alt="Plinto Platform"
+  alt="Janua Platform"
   width={1200}
   height={600}
   priority
@@ -214,7 +214,7 @@ import Image from 'next/image';
 ```tsx
 // app/layout.tsx
 export const metadata = {
-  title: 'Plinto - Secure Identity Platform',
+  title: 'Janua - Secure Identity Platform',
   description: 'Unify auth, orgs, and policy with edge-fast verification',
   openGraph: {
     images: ['/og-image.png'],
@@ -285,9 +285,9 @@ return variant === 'b' ? <HeroVariantB /> : <HeroVariantA />;
 
 ```markdown
 ---
-title: "Introduction to Plinto"
+title: "Introduction to Janua"
 date: "2024-01-15"
-author: "Team Plinto"
+author: "Team Janua"
 category: "Product"
 tags: ["authentication", "security"]
 ---
@@ -349,7 +349,7 @@ yarn start
   "redirects": [
     {
       "source": "/docs",
-      "destination": "https://docs.plinto.dev",
+      "destination": "https://docs.janua.dev",
       "permanent": false
     }
   ]
@@ -362,11 +362,11 @@ yarn start
 
 ```css
 :root {
-  --plinto-primary: #6366f1;
-  --plinto-secondary: #8b5cf6;
-  --plinto-accent: #ec4899;
-  --plinto-dark: #1e293b;
-  --plinto-light: #f8fafc;
+  --janua-primary: #6366f1;
+  --janua-secondary: #8b5cf6;
+  --janua-accent: #ec4899;
+  --janua-dark: #1e293b;
+  --janua-light: #f8fafc;
 }
 ```
 
@@ -452,4 +452,4 @@ See [Contributing Guide](../../CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

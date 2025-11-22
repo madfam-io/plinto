@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: plinto-api
-  namespace: plinto-production
+  name: janua-api
+  namespace: janua-production
   labels:
-    app: plinto-api
+    app: janua-api
     tier: backend
     environment: production
 spec:
@@ -16,11 +16,11 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: plinto-api
+      app: janua-api
   template:
     metadata:
       labels:
-        app: plinto-api
+        app: janua-api
         tier: backend
         environment: production
       annotations:
@@ -28,15 +28,15 @@ spec:
         prometheus.io/port: "8000"
         prometheus.io/path: "/metrics"
     spec:
-      serviceAccountName: plinto-api
+      serviceAccountName: janua-api
       securityContext:
         runAsNonRoot: true
         runAsUser: 10001
         runAsGroup: 10001
         fsGroup: 10001
       containers:
-      - name: plinto-api
-        image: plinto/api:latest
+      - name: janua-api
+        image: janua/api:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -48,32 +48,32 @@ spec:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: database-url
         - name: REDIS_URL
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: redis-url
         - name: JWT_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: jwt-secret-key
         - name: SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: secret-key
         - name: SENDGRID_API_KEY
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: sendgrid-api-key
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:
-              name: plinto-secrets
+              name: janua-secrets
               key: sentry-dsn
         resources:
           requests:
@@ -145,13 +145,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: plinto-api-service
-  namespace: plinto-production
+  name: janua-api-service
+  namespace: janua-production
   labels:
-    app: plinto-api
+    app: janua-api
 spec:
   selector:
-    app: plinto-api
+    app: janua-api
   ports:
   - name: http
     port: 80
@@ -162,8 +162,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: plinto-api-ingress
-  namespace: plinto-production
+  name: janua-api-ingress
+  namespace: janua-production
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -176,30 +176,30 @@ metadata:
 spec:
   tls:
   - hosts:
-    - api.plinto.dev
-    secretName: plinto-api-tls
+    - api.janua.dev
+    secretName: janua-api-tls
   rules:
-  - host: api.plinto.dev
+  - host: api.janua.dev
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: plinto-api-service
+            name: janua-api-service
             port:
               number: 80
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: plinto-api-hpa
-  namespace: plinto-production
+  name: janua-api-hpa
+  namespace: janua-production
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: plinto-api
+    name: janua-api
   minReplicas: 3
   maxReplicas: 10
   metrics:
@@ -235,10 +235,10 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: plinto-api-pdb
-  namespace: plinto-production
+  name: janua-api-pdb
+  namespace: janua-production
 spec:
   minAvailable: 2
   selector:
     matchLabels:
-      app: plinto-api
+      app: janua-api

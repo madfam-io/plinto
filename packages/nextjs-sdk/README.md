@@ -1,15 +1,15 @@
-# @plinto/nextjs
+# @janua/nextjs
 
-Official Plinto SDK for Next.js applications with App Router and Pages Router support.
+Official Janua SDK for Next.js applications with App Router and Pages Router support.
 
 ## Installation
 
 ```bash
-npm install @plinto/nextjs
+npm install @janua/nextjs
 # or
-yarn add @plinto/nextjs
+yarn add @janua/nextjs
 # or
-pnpm add @plinto/nextjs
+pnpm add @janua/nextjs
 ```
 
 ## Features
@@ -27,29 +27,29 @@ pnpm add @plinto/nextjs
 
 ### 1. Environment Configuration
 
-Add your Plinto credentials to `.env.local`:
+Add your Janua credentials to `.env.local`:
 
 ```env
-PLINTO_PUBLISHABLE_KEY=pk_live_...
-PLINTO_SECRET_KEY=sk_live_...
-PLINTO_API_URL=https://api.plinto.dev
+JANUA_PUBLISHABLE_KEY=pk_live_...
+JANUA_SECRET_KEY=sk_live_...
+JANUA_API_URL=https://api.janua.dev
 ```
 
 ### 2. App Router Setup
 
-Wrap your app with the `PlintoProvider`:
+Wrap your app with the `JanuaProvider`:
 
 ```tsx
 // app/layout.tsx
-import { PlintoProvider } from '@plinto/nextjs';
+import { JanuaProvider } from '@janua/nextjs';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <PlintoProvider>
+        <JanuaProvider>
           {children}
-        </PlintoProvider>
+        </JanuaProvider>
       </body>
     </html>
   );
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ```tsx
 // app/page.tsx
-import { SignedIn, SignedOut, SignInForm, UserButton } from '@plinto/nextjs';
+import { SignedIn, SignedOut, SignInForm, UserButton } from '@janua/nextjs';
 
 export default function HomePage() {
   return (
@@ -83,9 +83,9 @@ export default function HomePage() {
 
 ```tsx
 // middleware.ts
-import { createPlintoMiddleware } from '@plinto/nextjs';
+import { createJanuaMiddleware } from '@janua/nextjs';
 
-export default createPlintoMiddleware({
+export default createJanuaMiddleware({
   publicRoutes: ["/", "/sign-in", "/sign-up"],
   protectedRoutes: ["/dashboard", "/profile"]
 });
@@ -101,7 +101,7 @@ export const config = {
 
 ```tsx
 // app/dashboard/page.tsx
-import { getSession, requireAuth } from '@plinto/nextjs';
+import { getSession, requireAuth } from '@janua/nextjs';
 
 export default async function DashboardPage() {
   // Require authentication (redirects if not signed in)
@@ -120,7 +120,7 @@ export default async function DashboardPage() {
 
 ```tsx
 'use client';
-import { useAuth, useUser } from '@plinto/nextjs';
+import { useAuth, useUser } from '@janua/nextjs';
 
 export default function ProfileComponent() {
   const { isSignedIn, isLoading } = useAuth();
@@ -143,7 +143,7 @@ export default function ProfileComponent() {
 
 ```tsx
 'use client';
-import { useOrganizations } from '@plinto/nextjs';
+import { useOrganizations } from '@janua/nextjs';
 
 export default function OrganizationsComponent() {
   const { organizations, activeOrganization, setActiveOrganization } = useOrganizations();
@@ -169,13 +169,13 @@ export default function OrganizationsComponent() {
 
 ### Components
 
-#### `<PlintoProvider>`
+#### `<JanuaProvider>`
 Root provider component that wraps your app.
 
 ```tsx
-<PlintoProvider>
+<JanuaProvider>
   {children}
-</PlintoProvider>
+</JanuaProvider>
 ```
 
 #### `<SignInForm>`
@@ -256,12 +256,12 @@ const {
 } = useUser();
 ```
 
-#### `usePlinto()`
-Access the Plinto client instance.
+#### `useJanua()`
+Access the Janua client instance.
 
 ```tsx
-const plinto = usePlinto();
-await plinto.users.updateProfile({ name: 'New Name' });
+const janua = useJanua();
+await janua.users.updateProfile({ name: 'New Name' });
 ```
 
 ### Server Functions
@@ -289,7 +289,7 @@ Validate request in API routes.
 
 ```tsx
 // app/api/protected/route.ts
-import { validateRequest } from '@plinto/nextjs';
+import { validateRequest } from '@janua/nextjs';
 
 export async function GET() {
   const session = await validateRequest();
@@ -303,13 +303,13 @@ export async function GET() {
 
 ### Middleware
 
-#### `createPlintoMiddleware()`
+#### `createJanuaMiddleware()`
 Create authentication middleware.
 
 ```tsx
-import { createPlintoMiddleware } from '@plinto/nextjs';
+import { createJanuaMiddleware } from '@janua/nextjs';
 
-export default createPlintoMiddleware({
+export default createJanuaMiddleware({
   publicRoutes: ["/", "/about"],
   protectedRoutes: ["/dashboard/*"],
   signInUrl: "/sign-in",
@@ -324,10 +324,10 @@ export default createPlintoMiddleware({
 This package includes full TypeScript definitions. All components and hooks are fully typed.
 
 ```tsx
-import type { User, Organization, Session } from '@plinto/nextjs';
+import type { User, Organization, Session } from '@janua/nextjs';
 
-const user: User = await plinto.users.getCurrent();
-const org: Organization = await plinto.organizations.get('org_123');
+const user: User = await janua.users.getCurrent();
+const org: Organization = await janua.organizations.get('org_123');
 ```
 
 ## Requirements
@@ -342,7 +342,7 @@ MIT License - see [LICENSE](./LICENSE) file for details.
 
 ## Support
 
-- 📖 [Documentation](https://docs.plinto.dev)
-- 💬 [Discord Community](https://discord.gg/plinto)
-- 🐛 [Report Issues](https://github.com/plinto/plinto/issues)
-- 📧 [Email Support](mailto:support@plinto.dev)
+- 📖 [Documentation](https://docs.janua.dev)
+- 💬 [Discord Community](https://discord.gg/janua)
+- 🐛 [Report Issues](https://github.com/janua/janua/issues)
+- 📧 [Email Support](mailto:support@janua.dev)

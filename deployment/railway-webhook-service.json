@@ -1,5 +1,5 @@
 {
-  "name": "plinto-webhook-service",
+  "name": "janua-webhook-service",
   "source": "apps/webhook-service",
   "build": {
     "builder": "DOCKERFILE",
@@ -12,17 +12,17 @@
   },
   "variables": {
     "PORT": "8003",
-    "PLINTO_ENV": "production",
-    "JWT_AUDIENCE": "plinto.dev",
-    "JWT_ISSUER": "https://plinto.dev"
+    "JANUA_ENV": "production",
+    "JWT_AUDIENCE": "janua.dev",
+    "JWT_ISSUER": "https://janua.dev"
   },
   "domains": [
     {
-      "domain": "webhooks.plinto.dev"
+      "domain": "webhooks.janua.dev"
     }
   ],
   "networking": {
-    "serviceName": "plinto-webhook-service",
+    "serviceName": "janua-webhook-service",
     "internalPort": 8003
   }
 }

@@ -59,7 +59,7 @@ else:
     if not DATABASE_URL:
         raise RuntimeError(
             "DATABASE_URL environment variable must be set. "
-            "Example: postgresql://user:password@localhost:5432/plinto"
+            "Example: postgresql://user:password@localhost:5432/janua"
         )
 
     # Convert to async URL

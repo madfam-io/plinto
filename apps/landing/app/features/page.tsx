@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { CodeExample } from '@/components/CodeExample'
 
 export const metadata: Metadata = {
-  title: 'Features - Plinto Authentication Platform',
+  title: 'Features - Janua Authentication Platform',
   description: 'Comprehensive authentication features including MFA, passkeys, SSO, RBAC, and more.',
 }
 
@@ -34,15 +34,15 @@ export default function FeaturesPage() {
             <CodeExample
               title="Signup Example"
               language="typescript"
-              code={`import { PlintoClient } from '@plinto/typescript-sdk';
+              code={`import { JanuaClient } from '@janua/typescript-sdk';
 
-const plinto = new PlintoClient({
-  baseURL: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  baseURL: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 
 // Sign up new user
-const result = await plinto.auth.signUp({
+const result = await janua.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePass123!',
   name: 'John Doe',
@@ -56,7 +56,7 @@ console.log('User ID:', result.user.id);
 console.log('Access Token:', result.tokens.access_token);
 
 // Login existing user
-const loginResult = await plinto.auth.signIn({
+const loginResult = await janua.auth.signIn({
   email: 'user@example.com',
   password: 'SecurePass123!'
 });`}
@@ -75,7 +75,7 @@ const loginResult = await plinto.auth.signIn({
               title="MFA Setup"
               language="typescript"
               code={`// Enable MFA for user
-const mfaSetup = await plinto.auth.enableMFA('totp', {
+const mfaSetup = await janua.auth.enableMFA('totp', {
   headers: { Authorization: \`Bearer \${accessToken}\` }
 });
 
@@ -86,13 +86,13 @@ console.log('QR Code URL:', mfaSetup.qr_code);
 console.log('Backup Codes:', mfaSetup.backup_codes);
 
 // Verify MFA code
-const verified = await plinto.auth.verifyMFA({
+const verified = await janua.auth.verifyMFA({
   code: '123456',
   headers: { Authorization: \`Bearer \${accessToken}\` }
 });
 
 // Login with MFA
-const loginResult = await plinto.auth.signIn({
+const loginResult = await janua.auth.signIn({
   email: 'user@example.com',
   password: 'SecurePass123!',
   mfa_code: '123456'
@@ -111,7 +111,7 @@ const loginResult = await plinto.auth.signIn({
               title="Passkey Registration"
               language="typescript"
               code={`// Get registration options from server
-const options = await plinto.auth.getPasskeyOptions({
+const options = await janua.auth.getPasskeyOptions({
   headers: { Authorization: \`Bearer \${accessToken}\` }
 });
 
@@ -128,7 +128,7 @@ const credential = await navigator.credentials.create({
 });
 
 // Verify and save credential
-const result = await plinto.auth.verifyPasskey({
+const result = await janua.auth.verifyPasskey({
   credential: {
     id: credential.id,
     rawId: bufferToBase64url(credential.rawId),
@@ -164,10 +164,10 @@ const result = await plinto.auth.verifyPasskey({
               title="SSO Configuration"
               language="typescript"
               code={`// Configure SAML SSO
-const ssoConfig = await plinto.sso.configureSAML({
+const ssoConfig = await janua.sso.configureSAML({
   provider: 'okta',
   entity_id: 'https://your-company.okta.com',
-  sso_url: 'https://your-company.okta.com/app/plinto/sso/saml',
+  sso_url: 'https://your-company.okta.com/app/janua/sso/saml',
   x509_certificate: '-----BEGIN CERTIFICATE-----\\n...',
   attribute_mapping: {
     email: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
@@ -176,7 +176,7 @@ const ssoConfig = await plinto.sso.configureSAML({
 });
 
 // Initiate SSO login
-const loginUrl = await plinto.sso.initiateSAMLLogin({
+const loginUrl = await janua.sso.initiateSAMLLogin({
   connection_id: ssoConfig.id,
   callback_url: 'https://app.example.com/auth/callback'
 });
@@ -196,27 +196,27 @@ const loginUrl = await plinto.sso.initiateSAMLLogin({
               title="RBAC Management"
               language="typescript"
               code={`// Create custom role
-const role = await plinto.rbac.createRole({
+const role = await janua.rbac.createRole({
   name: 'editor',
   description: 'Can edit content',
   permissions: ['content:read', 'content:write']
 });
 
 // Assign role to user
-await plinto.rbac.assignRole({
+await janua.rbac.assignRole({
   user_id: 'user_123',
   role_id: role.id
 });
 
 // Check permission
-const hasPermission = await plinto.rbac.checkPermission({
+const hasPermission = await janua.rbac.checkPermission({
   user_id: 'user_123',
   permission: 'content:write',
   resource: 'article:456'
 });
 
 // Create resource policy
-await plinto.rbac.createPolicy({
+await janua.rbac.createPolicy({
   name: 'article-ownership',
   effect: 'allow',
   actions: ['article:delete'],
@@ -242,7 +242,7 @@ await plinto.rbac.createPolicy({
               <CodeExample
                 title="React Component"
                 language="tsx"
-                code={`import { useAuth } from '@plinto/react-sdk';
+                code={`import { useAuth } from '@janua/react-sdk';
 
 function LoginForm() {
   const { signIn, loading, error } = useAuth();
@@ -276,7 +276,7 @@ function LoginForm() {
                 title="Next.js Middleware"
                 language="typescript"
                 code={`import { NextResponse } from 'next/server';
-import { withAuth } from '@plinto/nextjs-sdk';
+import { withAuth } from '@janua/nextjs-sdk';
 
 export default withAuth({
   callbacks: {
@@ -302,7 +302,7 @@ export const config = {
                 title="Vue Composition API"
                 language="vue"
                 code={`<script setup>
-import { useAuth } from '@plinto/vue-sdk';
+import { useAuth } from '@janua/vue-sdk';
 
 const { user, signIn, loading } = useAuth();
 
@@ -333,17 +333,17 @@ const handleLogin = async () => {
               <CodeExample
                 title="Python FastAPI"
                 language="python"
-                code={`from plinto_sdk import PlintoClient
+                code={`from janua_sdk import JanuaClient
 from fastapi import Depends, HTTPException
 
-plinto = PlintoClient(
-    api_url=os.getenv('PLINTO_API_URL'),
-    api_key=os.getenv('PLINTO_API_KEY')
+janua = JanuaClient(
+    api_url=os.getenv('JANUA_API_URL'),
+    api_key=os.getenv('JANUA_API_KEY')
 )
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
-        user = await plinto.auth.verify_token(token)
+        user = await janua.auth.verify_token(token)
         return user
     except Exception:
         raise HTTPException(status_code=401)

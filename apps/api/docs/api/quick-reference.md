@@ -8,7 +8,7 @@ This quick reference provides the most commonly used API endpoints with working 
 
 ### User Registration
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/auth/signup" \
+curl -X POST "https://api.janua.dev/api/v1/auth/signup" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -38,7 +38,7 @@ curl -X POST "https://api.plinto.dev/api/v1/auth/signup" \
 
 ### User Login
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/auth/signin" \
+curl -X POST "https://api.janua.dev/api/v1/auth/signin" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -48,7 +48,7 @@ curl -X POST "https://api.plinto.dev/api/v1/auth/signin" \
 
 ### Token Refresh
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/auth/refresh" \
+curl -X POST "https://api.janua.dev/api/v1/auth/refresh" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <refresh_token>"
 ```
@@ -56,14 +56,14 @@ curl -X POST "https://api.plinto.dev/api/v1/auth/refresh" \
 ### Get Current User
 ```bash
 curl -H "Authorization: Bearer <access_token>" \
-     "https://api.plinto.dev/api/v1/auth/me"
+     "https://api.janua.dev/api/v1/auth/me"
 ```
 
 ## 👥 User Management
 
 ### Update User Profile
 ```bash
-curl -X PUT "https://api.plinto.dev/api/v1/users/me" \
+curl -X PUT "https://api.janua.dev/api/v1/users/me" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -74,7 +74,7 @@ curl -X PUT "https://api.plinto.dev/api/v1/users/me" \
 
 ### Change Password
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/users/me/password" \
+curl -X POST "https://api.janua.dev/api/v1/users/me/password" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -87,7 +87,7 @@ curl -X POST "https://api.plinto.dev/api/v1/users/me/password" \
 
 ### Create Organization
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/organizations" \
+curl -X POST "https://api.janua.dev/api/v1/organizations" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -99,12 +99,12 @@ curl -X POST "https://api.plinto.dev/api/v1/organizations" \
 ### List Organizations
 ```bash
 curl -H "Authorization: Bearer <access_token>" \
-     "https://api.plinto.dev/api/v1/organizations"
+     "https://api.janua.dev/api/v1/organizations"
 ```
 
 ### Invite User to Organization
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/organizations/123/invitations" \
+curl -X POST "https://api.janua.dev/api/v1/organizations/123/invitations" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -117,14 +117,14 @@ curl -X POST "https://api.plinto.dev/api/v1/organizations/123/invitations" \
 
 ### Register Passkey - Get Options
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/passkeys/register/options" \
+curl -X POST "https://api.janua.dev/api/v1/passkeys/register/options" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json"
 ```
 
 ### Register Passkey - Complete Registration
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/passkeys/register" \
+curl -X POST "https://api.janua.dev/api/v1/passkeys/register" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -141,7 +141,7 @@ curl -X POST "https://api.plinto.dev/api/v1/passkeys/register" \
 
 ### Authenticate with Passkey - Get Options
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/passkeys/authenticate/options" \
+curl -X POST "https://api.janua.dev/api/v1/passkeys/authenticate/options" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com"
@@ -150,7 +150,7 @@ curl -X POST "https://api.plinto.dev/api/v1/passkeys/authenticate/options" \
 
 ### Authenticate with Passkey - Complete Authentication
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/passkeys/authenticate" \
+curl -X POST "https://api.janua.dev/api/v1/passkeys/authenticate" \
   -H "Content-Type: application/json" \
   -d '{
     "credential": {
@@ -168,7 +168,7 @@ curl -X POST "https://api.plinto.dev/api/v1/passkeys/authenticate" \
 
 ### Setup MFA
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/mfa/setup" \
+curl -X POST "https://api.janua.dev/api/v1/mfa/setup" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json"
 ```
@@ -190,7 +190,7 @@ curl -X POST "https://api.plinto.dev/api/v1/mfa/setup" \
 
 ### Verify MFA Setup
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/mfa/verify" \
+curl -X POST "https://api.janua.dev/api/v1/mfa/verify" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -203,18 +203,18 @@ curl -X POST "https://api.plinto.dev/api/v1/mfa/verify" \
 ### List Active Sessions
 ```bash
 curl -H "Authorization: Bearer <access_token>" \
-     "https://api.plinto.dev/api/v1/sessions"
+     "https://api.janua.dev/api/v1/sessions"
 ```
 
 ### Terminate Session
 ```bash
-curl -X DELETE "https://api.plinto.dev/api/v1/sessions/session_id" \
+curl -X DELETE "https://api.janua.dev/api/v1/sessions/session_id" \
   -H "Authorization: Bearer <access_token>"
 ```
 
 ### Terminate All Sessions
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/sessions/terminate-all" \
+curl -X POST "https://api.janua.dev/api/v1/sessions/terminate-all" \
   -H "Authorization: Bearer <access_token>"
 ```
 
@@ -222,11 +222,11 @@ curl -X POST "https://api.plinto.dev/api/v1/sessions/terminate-all" \
 
 ### Create Webhook
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/webhooks" \
+curl -X POST "https://api.janua.dev/api/v1/webhooks" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
-    "url": "https://your-app.com/webhooks/plinto",
+    "url": "https://your-app.com/webhooks/janua",
     "events": ["user.created", "user.updated", "user.deleted"],
     "secret": "your_webhook_secret"
   }'
@@ -234,7 +234,7 @@ curl -X POST "https://api.plinto.dev/api/v1/webhooks" \
 
 ### Test Webhook
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/webhooks/123/test" \
+curl -X POST "https://api.janua.dev/api/v1/webhooks/123/test" \
   -H "Authorization: Bearer <access_token>"
 ```
 
@@ -243,12 +243,12 @@ curl -X POST "https://api.plinto.dev/api/v1/webhooks/123/test" \
 ### List SSO Providers
 ```bash
 curl -H "Authorization: Bearer <access_token>" \
-     "https://api.plinto.dev/api/v1/sso/providers"
+     "https://api.janua.dev/api/v1/sso/providers"
 ```
 
 ### SAML Authentication Initiation
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/sso/saml/initiate" \
+curl -X POST "https://api.janua.dev/api/v1/sso/saml/initiate" \
   -H "Content-Type: application/json" \
   -d '{
     "provider_id": "provider_123",
@@ -262,12 +262,12 @@ curl -X POST "https://api.plinto.dev/api/v1/sso/saml/initiate" \
 ```bash
 curl -H "Authorization: Bearer <scim_token>" \
      -H "Content-Type: application/scim+json" \
-     "https://api.plinto.dev/api/v1/scim/Users"
+     "https://api.janua.dev/api/v1/scim/Users"
 ```
 
 ### Create SCIM User
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/scim/Users" \
+curl -X POST "https://api.janua.dev/api/v1/scim/Users" \
   -H "Authorization: Bearer <scim_token>" \
   -H "Content-Type: application/scim+json" \
   -d '{
@@ -289,7 +289,7 @@ curl -X POST "https://api.plinto.dev/api/v1/scim/Users" \
 
 ### Health Check
 ```bash
-curl "https://api.plinto.dev/health"
+curl "https://api.janua.dev/health"
 ```
 
 **Response:**
@@ -303,7 +303,7 @@ curl "https://api.plinto.dev/health"
 
 ### Readiness Check
 ```bash
-curl "https://api.plinto.dev/ready"
+curl "https://api.janua.dev/ready"
 ```
 
 **Response:**
@@ -320,7 +320,7 @@ curl "https://api.plinto.dev/ready"
 
 ### Prometheus Metrics
 ```bash
-curl "https://api.plinto.dev/metrics"
+curl "https://api.janua.dev/metrics"
 ```
 
 ## 🚨 Error Handling
@@ -372,10 +372,10 @@ curl "https://api.plinto.dev/metrics"
 ### Using Pagination
 ```bash
 # First page
-curl "https://api.plinto.dev/api/v1/users?limit=20"
+curl "https://api.janua.dev/api/v1/users?limit=20"
 
 # Next page
-curl "https://api.plinto.dev/api/v1/users?cursor=eyJpZCI6MTIzfQ==&limit=20"
+curl "https://api.janua.dev/api/v1/users?cursor=eyJpZCI6MTIzfQ==&limit=20"
 ```
 
 ## 🔍 Filtering & Sorting
@@ -383,25 +383,25 @@ curl "https://api.plinto.dev/api/v1/users?cursor=eyJpZCI6MTIzfQ==&limit=20"
 ### Filter Examples
 ```bash
 # Filter by status
-curl "https://api.plinto.dev/api/v1/users?status=active"
+curl "https://api.janua.dev/api/v1/users?status=active"
 
 # Filter by date range
-curl "https://api.plinto.dev/api/v1/users?created_after=2025-01-01&created_before=2025-01-31"
+curl "https://api.janua.dev/api/v1/users?created_after=2025-01-01&created_before=2025-01-31"
 
 # Multiple filters
-curl "https://api.plinto.dev/api/v1/users?status=active&role=admin"
+curl "https://api.janua.dev/api/v1/users?status=active&role=admin"
 ```
 
 ### Sorting Examples
 ```bash
 # Sort by creation date (descending)
-curl "https://api.plinto.dev/api/v1/users?sort=created_at:desc"
+curl "https://api.janua.dev/api/v1/users?sort=created_at:desc"
 
 # Sort by name (ascending)
-curl "https://api.plinto.dev/api/v1/users?sort=name:asc"
+curl "https://api.janua.dev/api/v1/users?sort=name:asc"
 
 # Multiple sort fields
-curl "https://api.plinto.dev/api/v1/users?sort=status:asc,created_at:desc"
+curl "https://api.janua.dev/api/v1/users?sort=status:asc,created_at:desc"
 ```
 
 ## 🌐 Internationalization
@@ -410,7 +410,7 @@ curl "https://api.plinto.dev/api/v1/users?sort=status:asc,created_at:desc"
 ```bash
 curl -H "Accept-Language: es-ES" \
      -H "Authorization: Bearer <access_token>" \
-     "https://api.plinto.dev/api/v1/auth/me"
+     "https://api.janua.dev/api/v1/auth/me"
 ```
 
 ### Supported Languages
@@ -493,19 +493,19 @@ curl -X POST "http://localhost:8000/api/v1/auth/signin" \
 
 ### Environment URLs
 - **Development**: `http://localhost:8000`
-- **Staging**: `https://staging-api.plinto.dev`
-- **Production**: `https://api.plinto.dev`
+- **Staging**: `https://staging-api.janua.dev`
+- **Production**: `https://api.janua.dev`
 
 ## 📚 SDK Examples
 
 ### Python SDK
 ```python
 import asyncio
-from plinto_sdk import PlintoClient
+from janua_sdk import JanuaClient
 
 async def main():
-    client = PlintoClient(
-        base_url="https://api.plinto.dev",
+    client = JanuaClient(
+        base_url="https://api.janua.dev",
         api_key="your_api_key"
     )
 
@@ -525,10 +525,10 @@ asyncio.run(main())
 
 ### JavaScript SDK
 ```javascript
-import { PlintoClient } from '@plinto/sdk';
+import { JanuaClient } from '@janua/sdk';
 
-const client = new PlintoClient({
-  baseUrl: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  baseUrl: 'https://api.janua.dev',
   apiKey: 'your_api_key'
 });
 

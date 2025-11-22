@@ -29,7 +29,7 @@ class CertificateManager:
         Args:
             storage_path: Directory path for storing certificates
         """
-        self.storage_path = storage_path or os.getenv('CERT_STORAGE_PATH', '/var/plinto/certs')
+        self.storage_path = storage_path or os.getenv('CERT_STORAGE_PATH', '/var/janua/certs')
         self._ensure_storage_directory()
     
     def _ensure_storage_directory(self):

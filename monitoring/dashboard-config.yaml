@@ -1,16 +1,16 @@
-# Plinto Platform Monitoring Dashboard Configuration
+# Janua Platform Monitoring Dashboard Configuration
 # This configuration can be used with Grafana, DataDog, or NewRelic
 
 apiVersion: v1
 kind: MonitoringDashboard
 metadata:
-  name: plinto-production-dashboard
+  name: janua-production-dashboard
   namespace: monitoring
   
 dashboards:
   # Main Overview Dashboard
-  - name: "Plinto Platform Overview"
-    uid: "plinto-overview"
+  - name: "Janua Platform Overview"
+    uid: "janua-overview"
     refresh: "30s"
     panels:
       
@@ -20,7 +20,7 @@ dashboards:
         gridPos: { h: 4, w: 6, x: 0, y: 0 }
         targets:
           - metric: "api.health.status"
-            query: "sum(up{job='plinto-api'})"
+            query: "sum(up{job='janua-api'})"
             thresholds:
               - value: 0
                 color: "red"
@@ -138,7 +138,7 @@ dashboards:
 
   # Security Dashboard
   - name: "Security Monitoring"
-    uid: "plinto-security"
+    uid: "janua-security"
     refresh: "10s"
     panels:
       
@@ -167,7 +167,7 @@ dashboards:
 
   # Database Dashboard
   - name: "Database Performance"
-    uid: "plinto-database"
+    uid: "janua-database"
     refresh: "30s"
     panels:
       
@@ -222,7 +222,7 @@ alerts:
     severity: "critical"
     annotations:
       summary: "API is not responding"
-      description: "The Plinto API has been down for more than 1 minute"
+      description: "The Janua API has been down for more than 1 minute"
     notifications:
       - channel: "pagerduty"
       - channel: "slack-incidents"
@@ -277,7 +277,7 @@ datasources:
   
   - name: "PostgreSQL"
     type: "postgres"
-    url: "postgres://plinto:password@db:5432/plinto"
+    url: "postgres://janua:password@db:5432/janua"
     access: "proxy"
     jsonData:
       sslmode: "require"
@@ -303,14 +303,14 @@ notification_channels:
     settings:
       url: "${SLACK_WEBHOOK_URL}"
       channel: "#incidents"
-      username: "Plinto Monitoring"
+      username: "Janua Monitoring"
   
   - name: "slack-alerts"
     type: "slack"
     settings:
       url: "${SLACK_WEBHOOK_URL}"
       channel: "#alerts"
-      username: "Plinto Monitoring"
+      username: "Janua Monitoring"
   
   - name: "pagerduty"
     type: "pagerduty"
@@ -322,7 +322,7 @@ notification_channels:
     type: "email"
     settings:
       addresses:
-        - "security@plinto.dev"
+        - "security@janua.dev"
       subject: "Security Alert: {{ .GroupLabels.alertname }}"
 
 # Service Level Objectives (SLOs)
@@ -330,7 +330,7 @@ slos:
   - name: "API Availability"
     target: 99.9
     window: "30d"
-    query: "sum(up{job='plinto-api'})"
+    query: "sum(up{job='janua-api'})"
     
   - name: "API Latency"
     target: 95

@@ -4,16 +4,16 @@ Secure password-based authentication with industry best practices and advanced s
 
 ## Overview
 
-Password authentication provides a familiar and secure way for users to access your application. Plinto implements password authentication with multiple layers of security including bcrypt hashing, rate limiting, and breach detection.
+Password authentication provides a familiar and secure way for users to access your application. Janua implements password authentication with multiple layers of security including bcrypt hashing, rate limiting, and breach detection.
 
 ## Quick Start
 
 ### 1. Sign Up with Password
 
 ```typescript
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
-const { user, session } = await plinto.auth.signUp({
+const { user, session } = await janua.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   metadata: {
@@ -29,7 +29,7 @@ console.log('Welcome', user.email)
 ### 2. Sign In with Password
 
 ```typescript
-const { user, session } = await plinto.auth.signIn({
+const { user, session } = await janua.auth.signIn({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   rememberMe: true // Extended session duration
@@ -48,13 +48,13 @@ setCookie('session', session.token, {
 
 ```typescript
 // Request password reset
-await plinto.auth.requestPasswordReset({
+await janua.auth.requestPasswordReset({
   email: 'user@example.com'
 })
 
 // User receives email with reset token
 // In your reset handler:
-await plinto.auth.resetPassword({
+await janua.auth.resetPassword({
   token: resetToken,
   newPassword: 'NewSecurePassword456!',
   logoutEverywhere: true // Invalidate all sessions
@@ -69,11 +69,11 @@ await plinto.auth.resetPassword({
 
 ```javascript
 const express = require('express')
-const { Plinto } = require('@plinto/typescript-sdk')
+const { Janua } = require('@janua/typescript-sdk')
 
 const app = express()
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY
 })
 
 // Sign up endpoint
@@ -82,7 +82,7 @@ app.post('/auth/signup', async (req, res) => {
 
   try {
     // Validate password strength
-    const strength = await plinto.auth.checkPasswordStrength(password)
+    const strength = await janua.auth.checkPasswordStrength(password)
     if (strength.score < 3) {
       return res.status(400).json({
         error: 'Password too weak',
@@ -91,7 +91,7 @@ app.post('/auth/signup', async (req, res) => {
     }
 
     // Check for breached passwords
-    const breached = await plinto.auth.checkPasswordBreach(password)
+    const breached = await janua.auth.checkPasswordBreach(password)
     if (breached) {
       return res.status(400).json({
         error: 'This password has been found in data breaches'
@@ -99,7 +99,7 @@ app.post('/auth/signup', async (req, res) => {
     }
 
     // Create account
-    const { user, session } = await plinto.auth.signUp({
+    const { user, session } = await janua.auth.signUp({
       email,
       password,
       name,
@@ -127,7 +127,7 @@ app.post('/auth/signin', async (req, res) => {
 
   try {
     // Check rate limit
-    const rateLimited = await plinto.auth.checkRateLimit(ip, 'signin')
+    const rateLimited = await janua.auth.checkRateLimit(ip, 'signin')
     if (rateLimited) {
       return res.status(429).json({
         error: 'Too many attempts. Please try again later.',
@@ -135,7 +135,7 @@ app.post('/auth/signin', async (req, res) => {
       })
     }
 
-    const { user, session, requiresMfa } = await plinto.auth.signIn({
+    const { user, session, requiresMfa } = await janua.auth.signIn({
       email,
       password,
       rememberMe,
@@ -165,7 +165,7 @@ app.post('/auth/signin', async (req, res) => {
     res.json({ user, session })
   } catch (error) {
     // Log failed attempt
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'auth.failed',
       email,
       ip,
@@ -181,7 +181,7 @@ app.post('/auth/password/reset-request', async (req, res) => {
   const { email } = req.body
 
   try {
-    await plinto.auth.requestPasswordReset({
+    await janua.auth.requestPasswordReset({
       email,
       redirectUrl: `${process.env.APP_URL}/reset-password`
     })
@@ -204,7 +204,7 @@ app.post('/auth/password/reset', async (req, res) => {
   const { token, newPassword } = req.body
 
   try {
-    const { user, session } = await plinto.auth.resetPassword({
+    const { user, session } = await janua.auth.resetPassword({
       token,
       newPassword,
       logoutEverywhere: true
@@ -228,11 +228,11 @@ app.post('/auth/password/reset', async (req, res) => {
 ```python
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from plinto import Plinto
+from janua import Janua
 import os
 
 app = FastAPI()
-plinto = Plinto(api_key=os.getenv("PLINTO_API_KEY"))
+janua = Janua(api_key=os.getenv("JANUA_API_KEY"))
 security = HTTPBearer()
 
 @app.post("/auth/signup")
@@ -242,7 +242,7 @@ async def signup(
     name: str = None
 ):
     # Check password strength
-    strength = await plinto.auth.check_password_strength(password)
+    strength = await janua.auth.check_password_strength(password)
     if strength.score < 3:
         raise HTTPException(
             status_code=400,
@@ -253,14 +253,14 @@ async def signup(
         )
 
     # Check for breached passwords
-    if await plinto.auth.check_password_breach(password):
+    if await janua.auth.check_password_breach(password):
         raise HTTPException(
             status_code=400,
             detail="This password has been found in data breaches"
         )
 
     try:
-        result = await plinto.auth.sign_up(
+        result = await janua.auth.sign_up(
             email=email,
             password=password,
             name=name,
@@ -285,7 +285,7 @@ async def signin(
 ):
     # Check rate limit
     ip = request.client.host
-    rate_limited = await plinto.auth.check_rate_limit(ip, "signin")
+    rate_limited = await janua.auth.check_rate_limit(ip, "signin")
     if rate_limited:
         raise HTTPException(
             status_code=429,
@@ -296,7 +296,7 @@ async def signin(
         )
 
     try:
-        result = await plinto.auth.sign_in(
+        result = await janua.auth.sign_in(
             email=email,
             password=password,
             remember_me=remember_me,
@@ -319,7 +319,7 @@ async def signin(
         }
     except Exception as e:
         # Log failed attempt
-        await plinto.audit.log(
+        await janua.audit.log(
             event="auth.failed",
             email=email,
             ip=ip,
@@ -336,15 +336,15 @@ async def change_password(
 ):
     try:
         # Verify current session
-        session = await plinto.auth.verify_session(credentials.credentials)
+        session = await janua.auth.verify_session(credentials.credentials)
 
         # Validate new password
-        strength = await plinto.auth.check_password_strength(new_password)
+        strength = await janua.auth.check_password_strength(new_password)
         if strength.score < 3:
             raise HTTPException(400, "New password too weak")
 
         # Change password
-        result = await plinto.auth.change_password(
+        result = await janua.auth.change_password(
             user_id=session.user_id,
             current_password=current_password,
             new_password=new_password,
@@ -362,11 +362,11 @@ async def change_password(
 
 ```jsx
 import React, { useState } from 'react'
-import { usePlinto } from '@plinto/react-sdk'
+import { useJanua } from '@janua/react-sdk'
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/24/outline'
 
 function PasswordAuth() {
-  const { signUp, signIn, checkPasswordStrength } = usePlinto()
+  const { signUp, signIn, checkPasswordStrength } = useJanua()
   const [mode, setMode] = useState('signin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -556,7 +556,7 @@ function PasswordStrengthIndicator({ strength }) {
 
 ```typescript
 // Check if password has been compromised
-const breached = await plinto.auth.checkPasswordBreach(password)
+const breached = await janua.auth.checkPasswordBreach(password)
 
 if (breached) {
   // Password found in breach databases
@@ -602,7 +602,7 @@ if (breached) {
 Prevent users from reusing recent passwords:
 
 ```typescript
-await plinto.auth.changePassword({
+await janua.auth.changePassword({
   userId,
   newPassword,
   enforceHistory: true,
@@ -626,7 +626,7 @@ Force periodic password changes:
 }
 
 // Check if password is expired
-const status = await plinto.auth.checkPasswordStatus(userId)
+const status = await janua.auth.checkPasswordStatus(userId)
 if (status.expired) {
   // Redirect to password change
 }
@@ -638,13 +638,13 @@ Offer alternatives when users forget passwords:
 
 ```typescript
 // If password reset fails, offer magic link
-await plinto.auth.sendMagicLink({
+await janua.auth.sendMagicLink({
   email,
   reason: 'password_recovery'
 })
 
 // Or use security questions
-const verified = await plinto.auth.verifySecurityQuestions({
+const verified = await janua.auth.verifySecurityQuestions({
   userId,
   answers: {
     question1: 'answer1',
@@ -659,7 +659,7 @@ Allow administrators to set temporary passwords:
 
 ```typescript
 // Admin sets temporary password
-await plinto.auth.setTemporaryPassword({
+await janua.auth.setTemporaryPassword({
   userId,
   tempPassword: generateSecurePassword(),
   requireChange: true, // Force change on first login
@@ -742,7 +742,7 @@ if (failedAttempts > 10) {
 ```typescript
 // Handle specific errors
 try {
-  await plinto.auth.signIn({ email, password })
+  await janua.auth.signIn({ email, password })
 } catch (error) {
   switch (error.code) {
     case 'invalid_credentials':
@@ -771,14 +771,14 @@ try {
 describe('Password Authentication', () => {
   it('should enforce password strength requirements', async () => {
     const weakPassword = '12345678'
-    const result = await plinto.auth.checkPasswordStrength(weakPassword)
+    const result = await janua.auth.checkPasswordStrength(weakPassword)
     expect(result.score).toBeLessThan(3)
     expect(result.suggestions).toContain('Add uppercase letters')
   })
 
   it('should detect breached passwords', async () => {
     const commonPassword = 'password123'
-    const breached = await plinto.auth.checkPasswordBreach(commonPassword)
+    const breached = await janua.auth.checkPasswordBreach(commonPassword)
     expect(breached).toBeTruthy()
     expect(breached.count).toBeGreaterThan(0)
   })
@@ -787,7 +787,7 @@ describe('Password Authentication', () => {
     // Make multiple failed attempts
     for (let i = 0; i < 6; i++) {
       try {
-        await plinto.auth.signIn({
+        await janua.auth.signIn({
           email: 'test@example.com',
           password: 'wrong'
         })
@@ -797,7 +797,7 @@ describe('Password Authentication', () => {
     }
 
     // Next attempt should be rate limited
-    await expect(plinto.auth.signIn({
+    await expect(janua.auth.signIn({
       email: 'test@example.com',
       password: 'correct'
     })).rejects.toThrow('rate_limited')
@@ -811,7 +811,7 @@ describe('Password Authentication', () => {
 describe('Password Flow E2E', () => {
   it('should complete full authentication flow', async () => {
     // Sign up
-    const { user } = await plinto.auth.signUp({
+    const { user } = await janua.auth.signUp({
       email: 'newuser@example.com',
       password: 'SecurePass123!'
     })
@@ -819,23 +819,23 @@ describe('Password Flow E2E', () => {
 
     // Verify email
     const verifyToken = await getEmailVerificationToken('newuser@example.com')
-    await plinto.auth.verifyEmail({ token: verifyToken })
+    await janua.auth.verifyEmail({ token: verifyToken })
 
     // Sign in
-    const { session } = await plinto.auth.signIn({
+    const { session } = await janua.auth.signIn({
       email: 'newuser@example.com',
       password: 'SecurePass123!'
     })
     expect(session.token).toBeDefined()
 
     // Change password
-    await plinto.auth.changePassword({
+    await janua.auth.changePassword({
       currentPassword: 'SecurePass123!',
       newPassword: 'NewSecurePass456!'
     })
 
     // Verify old password no longer works
-    await expect(plinto.auth.signIn({
+    await expect(janua.auth.signIn({
       email: 'newuser@example.com',
       password: 'SecurePass123!'
     })).rejects.toThrow('invalid_credentials')
@@ -845,15 +845,15 @@ describe('Password Flow E2E', () => {
 
 ## Migration Guide
 
-### From Basic Auth to Plinto
+### From Basic Auth to Janua
 
 ```typescript
 // Before: Basic implementation
 const hashedPassword = await bcrypt.hash(password, 10)
 await db.users.create({ email, password: hashedPassword })
 
-// After: Plinto with full security
-const { user, session } = await plinto.auth.signUp({
+// After: Janua with full security
+const { user, session } = await janua.auth.signUp({
   email,
   password,
   // Automatic: hashing, breach check, strength validation,
@@ -867,7 +867,7 @@ const { user, session } = await plinto.auth.signUp({
 // Migrate from Auth0
 const auth0Users = await auth0.getUsers()
 for (const user of auth0Users) {
-  await plinto.auth.importUser({
+  await janua.auth.importUser({
     email: user.email,
     hashedPassword: user.password_hash,
     hashAlgorithm: 'bcrypt',
@@ -879,7 +879,7 @@ for (const user of auth0Users) {
 // Migrate from Firebase
 const firebaseUsers = await admin.auth().listUsers()
 for (const user of firebaseUsers.users) {
-  await plinto.auth.importUser({
+  await janua.auth.importUser({
     email: user.email,
     hashedPassword: user.passwordHash,
     hashAlgorithm: 'scrypt',
@@ -896,14 +896,14 @@ for (const user of firebaseUsers.users) {
 
 ```typescript
 // Right to be forgotten
-await plinto.auth.deleteUser({
+await janua.auth.deleteUser({
   userId,
   deleteData: true,
   anonymize: false // Or true to keep anonymized records
 })
 
 // Data portability
-const userData = await plinto.auth.exportUserData({
+const userData = await janua.auth.exportUserData({
   userId,
   format: 'json' // or 'csv'
 })
@@ -913,7 +913,7 @@ const userData = await plinto.auth.exportUserData({
 
 ```typescript
 // Audit all authentication events
-plinto.configure({
+janua.configure({
   audit: {
     enabled: true,
     events: ['auth.*'],
@@ -927,7 +927,7 @@ plinto.configure({
 
 ```typescript
 // Enforce strong passwords
-plinto.configure({
+janua.configure({
   password: {
     minLength: 12,
     requireMfa: true, // For privileged accounts

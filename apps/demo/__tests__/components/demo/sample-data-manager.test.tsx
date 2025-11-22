@@ -17,8 +17,8 @@ jest.mock('@/hooks/useEnvironment', () => ({
   useDemoFeatures: jest.fn(),
 }))
 
-// Mock @plinto/ui components
-jest.mock('@plinto/ui', () => {
+// Mock @janua/ui components
+jest.mock('@janua/ui', () => {
   const React = require('react');
   return {
     Button: (props) => React.createElement('button', props, props.children),

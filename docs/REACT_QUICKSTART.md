@@ -3,7 +3,7 @@
 **Time to Integration**: < 5 minutes ⚡
 **Difficulty**: Beginner-friendly
 
-Get authentication running in your React or Next.js app in under 5 minutes with Plinto's pre-built components and TypeScript SDK.
+Get authentication running in your React or Next.js app in under 5 minutes with Janua's pre-built components and TypeScript SDK.
 
 ---
 
@@ -18,32 +18,32 @@ Get authentication running in your React or Next.js app in under 5 minutes with 
 ## Installation (1 minute)
 
 ```bash
-npm install @plinto/ui @plinto/typescript-sdk
+npm install @janua/ui @janua/typescript-sdk
 ```
 
 **What you get**:
-- `@plinto/ui`: Pre-built React components (SignIn, SignUp, UserButton, etc.)
-- `@plinto/typescript-sdk`: Type-safe API client for backend communication
+- `@janua/ui`: Pre-built React components (SignIn, SignUp, UserButton, etc.)
+- `@janua/typescript-sdk`: Type-safe API client for backend communication
 
 ---
 
 ## Setup (2 minutes)
 
-### Step 1: Configure the Plinto Client
+### Step 1: Configure the Janua Client
 
-Create `lib/plinto-client.ts`:
+Create `lib/janua-client.ts`:
 
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk'
+import { JanuaClient } from '@janua/typescript-sdk'
 
-export const plintoClient = new PlintoClient({
+export const januaClient = new JanuaClient({
   apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 })
 
-export default plintoClient
+export default januaClient
 ```
 
-### Step 2: Wrap Your App with PlintoProvider
+### Step 2: Wrap Your App with JanuaProvider
 
 **For Next.js (App Router)**:
 
@@ -52,14 +52,14 @@ Create `app/providers.tsx`:
 ```typescript
 'use client'
 
-import { PlintoProvider } from '@plinto/ui'
-import { plintoClient } from '@/lib/plinto-client'
+import { JanuaProvider } from '@janua/ui'
+import { januaClient } from '@/lib/janua-client'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <PlintoProvider client={plintoClient}>
+    <JanuaProvider client={januaClient}>
       {children}
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 ```
@@ -87,14 +87,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 Update `pages/_app.tsx` or `App.tsx`:
 
 ```typescript
-import { PlintoProvider } from '@plinto/ui'
-import { plintoClient } from '@/lib/plinto-client'
+import { JanuaProvider } from '@janua/ui'
+import { januaClient } from '@/lib/janua-client'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <PlintoProvider client={plintoClient}>
+    <JanuaProvider client={januaClient}>
       <Component {...pageProps} />
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 
@@ -112,7 +112,7 @@ Create `app/auth/sign-in/page.tsx` (or `pages/sign-in.tsx`):
 ```typescript
 'use client' // Only for Next.js App Router
 
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 export default function SignInPage() {
   return (
@@ -130,7 +130,7 @@ Create `app/auth/sign-up/page.tsx`:
 ```typescript
 'use client'
 
-import { SignUp } from '@plinto/ui'
+import { SignUp } from '@janua/ui'
 
 export default function SignUpPage() {
   return (
@@ -146,7 +146,7 @@ export default function SignUpPage() {
 Add to your navigation/header:
 
 ```typescript
-import { UserButton } from '@plinto/ui'
+import { UserButton } from '@janua/ui'
 
 export function Header() {
   return (
@@ -169,8 +169,8 @@ export function Header() {
 ```typescript
 'use client'
 
-import { useAuth } from '@plinto/ui'
-import { SignIn } from '@plinto/ui'
+import { useAuth } from '@janua/ui'
+import { SignIn } from '@janua/ui'
 
 export default function DashboardPage() {
   const { user, isLoading } = useAuth()
@@ -246,7 +246,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 **For production**:
 
 ```bash
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
+NEXT_PUBLIC_API_URL=https://api.janua.dev
 ```
 
 ---
@@ -256,24 +256,24 @@ NEXT_PUBLIC_API_URL=https://api.plinto.dev
 Here's a complete minimal example:
 
 ```typescript
-// lib/plinto-client.ts
-import { PlintoClient } from '@plinto/typescript-sdk'
+// lib/janua-client.ts
+import { JanuaClient } from '@janua/typescript-sdk'
 
-export const plintoClient = new PlintoClient({
+export const januaClient = new JanuaClient({
   apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 })
 
 // app/providers.tsx
 'use client'
 
-import { PlintoProvider } from '@plinto/ui'
-import { plintoClient } from '@/lib/plinto-client'
+import { JanuaProvider } from '@janua/ui'
+import { januaClient } from '@/lib/janua-client'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <PlintoProvider client={plintoClient}>
+    <JanuaProvider client={januaClient}>
       {children}
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 
@@ -315,7 +315,7 @@ export default function HomePage() {
 // app/auth/sign-in/page.tsx
 'use client'
 
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 export default function SignInPage() {
   return (
@@ -328,7 +328,7 @@ export default function SignInPage() {
 // app/auth/sign-up/page.tsx
 'use client'
 
-import { SignUp } from '@plinto/ui'
+import { SignUp } from '@janua/ui'
 
 export default function SignUpPage() {
   return (
@@ -341,8 +341,8 @@ export default function SignUpPage() {
 // app/dashboard/page.tsx
 'use client'
 
-import { useAuth } from '@plinto/ui'
-import { UserButton, SignIn } from '@plinto/ui'
+import { useAuth } from '@janua/ui'
+import { UserButton, SignIn } from '@janua/ui'
 
 export default function DashboardPage() {
   const { user, isLoading } = useAuth()
@@ -388,13 +388,13 @@ export default function DashboardPage() {
 For multi-tenant applications:
 
 ```typescript
-import { OrganizationSwitcher } from '@plinto/ui'
+import { OrganizationSwitcher } from '@janua/ui'
 
 export function Header() {
   return (
     <header>
       <OrganizationSwitcher
-        plintoClient={plintoClient}
+        januaClient={januaClient}
         showCreateOrganization={true}
       />
     </header>
@@ -407,13 +407,13 @@ export function Header() {
 View and manage active sessions:
 
 ```typescript
-import { SessionManagement } from '@plinto/ui'
+import { SessionManagement } from '@janua/ui'
 
 export function SecuritySettings() {
   return (
     <div>
       <h2>Active Sessions</h2>
-      <SessionManagement plintoClient={plintoClient} />
+      <SessionManagement januaClient={januaClient} />
     </div>
   )
 }
@@ -422,12 +422,12 @@ export function SecuritySettings() {
 ### Email Verification
 
 ```typescript
-import { EmailVerification } from '@plinto/ui'
+import { EmailVerification } from '@janua/ui'
 
 export function VerifyEmailPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <EmailVerification plintoClient={plintoClient} />
+      <EmailVerification januaClient={januaClient} />
     </div>
   )
 }
@@ -436,12 +436,12 @@ export function VerifyEmailPage() {
 ### Password Reset
 
 ```typescript
-import { PasswordReset } from '@plinto/ui'
+import { PasswordReset } from '@janua/ui'
 
 export function ResetPasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <PasswordReset plintoClient={plintoClient} />
+      <PasswordReset januaClient={januaClient} />
     </div>
   )
 }
@@ -450,13 +450,13 @@ export function ResetPasswordPage() {
 ### MFA Setup
 
 ```typescript
-import { MFASetup } from '@plinto/ui'
+import { MFASetup } from '@janua/ui'
 
 export function SecurityPage() {
   return (
     <div>
       <h2>Two-Factor Authentication</h2>
-      <MFASetup plintoClient={plintoClient} />
+      <MFASetup januaClient={januaClient} />
     </div>
   )
 }
@@ -469,10 +469,10 @@ export function SecurityPage() {
 For custom implementations or advanced use cases:
 
 ```typescript
-import { plintoClient } from '@/lib/plinto-client'
+import { januaClient } from '@/lib/janua-client'
 
 // Sign up
-const { user, tokens } = await plintoClient.auth.signUp({
+const { user, tokens } = await januaClient.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePass123!',
   first_name: 'John',
@@ -480,34 +480,34 @@ const { user, tokens } = await plintoClient.auth.signUp({
 })
 
 // Sign in
-const { user, tokens } = await plintoClient.auth.signIn({
+const { user, tokens } = await januaClient.auth.signIn({
   email: 'user@example.com',
   password: 'SecurePass123!'
 })
 
 // Get current user
-const user = await plintoClient.auth.getCurrentUser()
+const user = await januaClient.auth.getCurrentUser()
 
 // Update profile
-const updatedUser = await plintoClient.users.updateProfile({
+const updatedUser = await januaClient.users.updateProfile({
   first_name: 'Jane',
   profile_image_url: 'https://example.com/avatar.jpg'
 })
 
 // List sessions
-const sessions = await plintoClient.sessions.listSessions()
+const sessions = await januaClient.sessions.listSessions()
 
 // Revoke session
-await plintoClient.sessions.revokeSession(sessionId)
+await januaClient.sessions.revokeSession(sessionId)
 
 // Create organization
-const org = await plintoClient.organizations.createOrganization({
+const org = await januaClient.organizations.createOrganization({
   name: 'Acme Corp',
   slug: 'acme-corp'
 })
 
 // List organization members
-const members = await plintoClient.organizations.listMembers(orgId)
+const members = await januaClient.organizations.listMembers(orgId)
 ```
 
 ---
@@ -527,9 +527,9 @@ All components are built with Tailwind CSS and support custom styling:
 **Dark Mode Support**:
 
 ```typescript
-<PlintoProvider client={plintoClient} theme="dark">
+<JanuaProvider client={januaClient} theme="dark">
   {children}
-</PlintoProvider>
+</JanuaProvider>
 ```
 
 ---
@@ -539,7 +539,7 @@ All components are built with Tailwind CSS and support custom styling:
 Full type safety out of the box:
 
 ```typescript
-import type { User, Organization, Session } from '@plinto/typescript-sdk'
+import type { User, Organization, Session } from '@janua/typescript-sdk'
 
 const handleUser = (user: User) => {
   console.log(user.email) // ✅ Type-safe
@@ -554,7 +554,7 @@ const handleUser = (user: User) => {
 ```typescript
 'use client'
 
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 import { useState } from 'react'
 
 export default function SignInPage() {
@@ -591,22 +591,22 @@ export default function SignInPage() {
 
 ## Troubleshooting
 
-### "Module not found: @plinto/ui"
+### "Module not found: @janua/ui"
 
 Make sure you installed the packages:
 
 ```bash
-npm install @plinto/ui @plinto/typescript-sdk
+npm install @janua/ui @janua/typescript-sdk
 ```
 
-### "PlintoProvider is not a client component"
+### "JanuaProvider is not a client component"
 
 Add `'use client'` at the top of your `providers.tsx` file (Next.js App Router only):
 
 ```typescript
 'use client'
 
-import { PlintoProvider } from '@plinto/ui'
+import { JanuaProvider } from '@janua/ui'
 ```
 
 ### CORS errors
@@ -618,7 +618,7 @@ Make sure your API URL is correct in `.env.local` and the API server allows your
 NEXT_PUBLIC_API_URL=http://localhost:8000
 
 # Production
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
+NEXT_PUBLIC_API_URL=https://api.janua.dev
 ```
 
 ### Styles not loading
@@ -636,11 +636,11 @@ Import Tailwind CSS in your global styles:
 
 ## Support
 
-- **Documentation**: [https://docs.plinto.dev](https://docs.plinto.dev)
+- **Documentation**: [https://docs.janua.dev](https://docs.janua.dev)
 - **API Reference**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **GitHub**: [https://github.com/plinto/plinto](https://github.com/plinto/plinto)
-- **Discord**: [https://discord.gg/plinto](https://discord.gg/plinto)
-- **Email**: support@plinto.dev
+- **GitHub**: [https://github.com/janua/janua](https://github.com/janua/janua)
+- **Discord**: [https://discord.gg/janua](https://discord.gg/janua)
+- **Email**: support@janua.dev
 
 ---
 

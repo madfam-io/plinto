@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { ArrowRight, Mail, MessageCircle, Phone, MapPin, Clock, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Plinto',
-  description: 'Get in touch with the Plinto team. Sales inquiries, technical support, partnerships, and general questions.',
+  title: 'Contact Us | Janua',
+  description: 'Get in touch with the Janua team. Sales inquiries, technical support, partnerships, and general questions.',
 }
 
 export default function ContactPage() {
@@ -22,7 +22,7 @@ export default function ContactPage() {
               </span>
             </h1>
             <p className="text-xl text-slate-600 dark:text-slate-300 mb-10">
-              Have questions about Plinto? We're here to help with sales, technical support, partnerships, and more.
+              Have questions about Janua? We're here to help with sales, technical support, partnerships, and more.
             </p>
           </div>
         </div>
@@ -40,10 +40,10 @@ export default function ContactPage() {
                 Sales & Enterprise
               </h3>
               <p className="text-slate-600 dark:text-slate-400 mb-4">
-                Interested in Plinto for your organization? Let's discuss your authentication needs.
+                Interested in Janua for your organization? Let's discuss your authentication needs.
               </p>
               <Button className="w-full group" asChild>
-                <Link href="mailto:sales@plinto.dev">
+                <Link href="mailto:sales@janua.dev">
                   Contact Sales
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -61,7 +61,7 @@ export default function ContactPage() {
                 Need help with integration or have technical questions? Our team is here to assist.
               </p>
               <Button className="w-full group" asChild>
-                <Link href="mailto:support@plinto.dev">
+                <Link href="mailto:support@janua.dev">
                   Get Support
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -79,7 +79,7 @@ export default function ContactPage() {
                 Questions about partnerships, press, or anything else? We'd love to hear from you.
               </p>
               <Button className="w-full group" asChild>
-                <Link href="mailto:hello@plinto.dev">
+                <Link href="mailto:hello@janua.dev">
                   Say Hello
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -112,8 +112,8 @@ export default function ContactPage() {
                   <p className="text-slate-600 dark:text-slate-400 mb-2">
                     Specialized support for healthcare organizations requiring HIPAA compliance.
                   </p>
-                  <Link href="mailto:healthcare@plinto.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
-                    healthcare@plinto.dev
+                  <Link href="mailto:healthcare@janua.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    healthcare@janua.dev
                   </Link>
                 </div>
               </div>
@@ -127,8 +127,8 @@ export default function ContactPage() {
                   <p className="text-slate-600 dark:text-slate-400 mb-2">
                     Large-scale deployments, custom SLAs, and enterprise-specific requirements.
                   </p>
-                  <Link href="mailto:enterprise@plinto.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
-                    enterprise@plinto.dev
+                  <Link href="mailto:enterprise@janua.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    enterprise@janua.dev
                   </Link>
                 </div>
               </div>
@@ -142,8 +142,8 @@ export default function ContactPage() {
                   <p className="text-slate-600 dark:text-slate-400 mb-2">
                     Interested in joining our team? View open positions and submit applications.
                   </p>
-                  <Link href="mailto:careers@plinto.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
-                    careers@plinto.dev
+                  <Link href="mailto:careers@janua.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    careers@janua.dev
                   </Link>
                 </div>
               </div>
@@ -180,7 +180,7 @@ export default function ContactPage() {
               <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-600">
                 <p className="text-sm text-slate-600 dark:text-slate-400">
                   For immediate technical assistance, check our{' '}
-                  <Link href="https://docs.plinto.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
+                  <Link href="https://docs.janua.dev" className="text-blue-600 dark:text-blue-400 hover:underline">
                     documentation
                   </Link>{' '}
                   or join our developer Discord.
@@ -198,19 +198,19 @@ export default function ContactPage() {
             Other Ways to Connect
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-300 mb-10">
-            Join our community and stay updated with the latest from Plinto.
+            Join our community and stay updated with the latest from Janua.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="outline" className="group" asChild>
-              <Link href="https://github.com/plinto/plinto" target="_blank" rel="noopener">
+              <Link href="https://github.com/janua/janua" target="_blank" rel="noopener">
                 GitHub Community
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
 
             <Button variant="outline" className="group" asChild>
-              <Link href="https://docs.plinto.dev" target="_blank" rel="noopener">
+              <Link href="https://docs.janua.dev" target="_blank" rel="noopener">
                 Documentation
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>

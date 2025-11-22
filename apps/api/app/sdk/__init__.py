@@ -1,5 +1,5 @@
 """
-SDK support utilities and base classes for Plinto API consumption.
+SDK support utilities and base classes for Janua API consumption.
 
 This module provides the foundation for generating robust, platform-specific
 SDKs that work consistently across TypeScript, Python, Go, Java, and mobile platforms.

@@ -1,4 +1,4 @@
-# Plinto - Code Style and Conventions
+# Janua - Code Style and Conventions
 
 ## TypeScript/JavaScript Conventions
 

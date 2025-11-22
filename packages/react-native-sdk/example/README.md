@@ -1,6 +1,6 @@
-# Plinto React Native SDK Example
+# Janua React Native SDK Example
 
-This example app demonstrates all features of the Plinto React Native SDK including:
+This example app demonstrates all features of the Janua React Native SDK including:
 
 ## Features Demonstrated
 
@@ -46,13 +46,13 @@ npm install
 yarn install
 ```
 
-2. Configure your Plinto credentials in `App.tsx`:
+2. Configure your Janua credentials in `App.tsx`:
 ```typescript
-const plinto = new PlintoClient({
-  baseURL: 'https://api.plinto.dev',
+const janua = new JanuaClient({
+  baseURL: 'https://api.janua.dev',
   tenantId: 'YOUR_TENANT_ID',
   clientId: 'YOUR_CLIENT_ID',
-  redirectUri: 'plinto-example://auth/callback',
+  redirectUri: 'janua-example://auth/callback',
 });
 ```
 
@@ -65,7 +65,7 @@ const plinto = new PlintoClient({
   <dict>
     <key>CFBundleURLSchemes</key>
     <array>
-      <string>plinto-example</string>
+      <string>janua-example</string>
     </array>
   </dict>
 </array>
@@ -77,7 +77,7 @@ const plinto = new PlintoClient({
   <action android:name="android.intent.action.VIEW" />
   <category android:name="android.intent.category.DEFAULT" />
   <category android:name="android.intent.category.BROWSABLE" />
-  <data android:scheme="plinto-example" />
+  <data android:scheme="janua-example" />
 </intent-filter>
 ```
 
@@ -150,7 +150,7 @@ The app demonstrates comprehensive session management:
 
 ### OAuth Callbacks Not Working
 - Verify deep linking configuration
-- Check redirect URI matches your Plinto app settings
+- Check redirect URI matches your Janua app settings
 - Ensure URL schemes are properly registered
 
 ### Build Issues
@@ -161,6 +161,6 @@ The app demonstrates comprehensive session management:
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/plinto/plinto-sdks
-- Documentation: https://docs.plinto.dev
-- Support: support@plinto.dev
+- GitHub Issues: https://github.com/janua/janua-sdks
+- Documentation: https://docs.janua.dev
+- Support: support@janua.dev

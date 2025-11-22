@@ -83,7 +83,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment:
       name: staging
-      url: https://staging.plinto.io
+      url: https://staging.janua.io
     steps:
       - uses: actions/checkout@v4
 
@@ -109,7 +109,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment:
       name: production
-      url: https://plinto.io
+      url: https://janua.io
     steps:
       - uses: actions/checkout@v4
 
@@ -137,9 +137,9 @@ jobs:
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
-            https://plinto.io
-            https://plinto.io/pricing
-            https://plinto.io/about
+            https://janua.io
+            https://janua.io/pricing
+            https://janua.io/about
           uploadArtifacts: true
           temporaryPublicStorage: true
 

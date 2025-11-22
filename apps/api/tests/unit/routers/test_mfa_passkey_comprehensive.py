@@ -45,7 +45,7 @@ class TestMFARouter:
             mock_user.return_value = {"id": "user_123"}
             mock_totp.return_value = {
                 "secret": "JBSWY3DPEHPK3PXP",
-                "qr_code_url": "otpauth://totp/Plinto:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Plinto",
+                "qr_code_url": "otpauth://totp/Janua:user@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Janua",
                 "backup_codes": ["123456", "789012", "345678"]
             }
 
@@ -204,7 +204,7 @@ class TestPasskeyRouter:
             mock_begin.return_value = {
                 "publicKey": {
                     "challenge": "base64_challenge",
-                    "rp": {"id": "plinto.dev", "name": "Plinto"},
+                    "rp": {"id": "janua.dev", "name": "Janua"},
                     "user": {
                         "id": "base64_user_id",
                         "name": "user@example.com",
@@ -258,7 +258,7 @@ class TestPasskeyRouter:
                 "publicKey": {
                     "challenge": "base64_challenge",
                     "timeout": 60000,
-                    "rpId": "plinto.dev",
+                    "rpId": "janua.dev",
                     "allowCredentials": [
                         {
                             "id": "credential_id_base64",

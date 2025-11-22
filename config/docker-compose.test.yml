@@ -13,12 +13,12 @@ services:
     build:
       context: ./apps/api
       dockerfile: Dockerfile.dev
-    container_name: plinto-api-test
+    container_name: janua-api-test
     ports:
       - "8000:8000"
     environment:
       - ENVIRONMENT=test
-      - DATABASE_URL=postgresql://test_user:test_pass@postgres:5432/plinto_test
+      - DATABASE_URL=postgresql://test_user:test_pass@postgres:5432/janua_test
       - REDIS_URL=redis://redis:6379/0
       - JWT_SECRET=test_jwt_secret_key_for_journey_tests_only
       - API_KEY=test-api-key-journey-validation
@@ -36,58 +36,58 @@ services:
       retries: 5
       start_period: 30s
     networks:
-      - plinto-test-network
+      - janua-test-network
 
   # Marketing/Landing Page
   landing:
     build:
       context: ./apps/landing
       dockerfile: Dockerfile.dev
-    container_name: plinto-landing-test
+    container_name: janua-landing-test
     ports:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://api:8000
-      - NEXT_PUBLIC_PLINTO_API_KEY=test-api-key-journey-validation
+      - NEXT_PUBLIC_JANUA_API_KEY=test-api-key-journey-validation
       - NODE_ENV=development
     depends_on:
       - api
     networks:
-      - plinto-test-network
+      - janua-test-network
 
   # Test Application (using SDK)
   test-app:
     build:
       context: ./tests/test-app
       dockerfile: Dockerfile
-    container_name: plinto-test-app
+    container_name: janua-test-app
     ports:
       - "3001:3001"
     environment:
-      - PLINTO_API_URL=http://api:8000
-      - PLINTO_API_KEY=test-api-key-journey-validation
+      - JANUA_API_URL=http://api:8000
+      - JANUA_API_KEY=test-api-key-journey-validation
       - NODE_ENV=development
     depends_on:
       - api
     networks:
-      - plinto-test-network
+      - janua-test-network
 
   # Admin Dashboard
   dashboard:
     build:
       context: ./apps/dashboard
       dockerfile: Dockerfile.dev
-    container_name: plinto-dashboard-test
+    container_name: janua-dashboard-test
     ports:
       - "3002:3002"
     environment:
       - NEXT_PUBLIC_API_URL=http://api:8000
-      - NEXT_PUBLIC_PLINTO_API_KEY=test-api-key-journey-validation
+      - NEXT_PUBLIC_JANUA_API_KEY=test-api-key-journey-validation
       - NODE_ENV=development
     depends_on:
       - api
     networks:
-      - plinto-test-network
+      - janua-test-network
 
   # ==========================================================================
   # Data Services
@@ -96,28 +96,28 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: plinto-postgres-test
+    container_name: janua-postgres-test
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=test_user
       - POSTGRES_PASSWORD=test_pass
-      - POSTGRES_DB=plinto_test
+      - POSTGRES_DB=janua_test
     volumes:
       - postgres-test-data:/var/lib/postgresql/data
       - ./tests/fixtures/db-init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U test_user -d plinto_test"]
+      test: ["CMD-SHELL", "pg_isready -U test_user -d janua_test"]
       interval: 5s
       timeout: 5s
       retries: 5
     networks:
-      - plinto-test-network
+      - janua-test-network
 
   # Redis Cache
   redis:
     image: redis:7-alpine
-    container_name: plinto-redis-test
+    container_name: janua-redis-test
     ports:
       - "6379:6379"
     healthcheck:
@@ -126,7 +126,7 @@ services:
       timeout: 3s
       retries: 5
     networks:
-      - plinto-test-network
+      - janua-test-network
 
   # ==========================================================================
   # Testing Infrastructure
@@ -137,7 +137,7 @@ services:
     build:
       context: .
       dockerfile: tests/e2e/Dockerfile.playwright
-    container_name: plinto-playwright-test
+    container_name: janua-playwright-test
     environment:
       - PLAYWRIGHT_BASE_URL=http://landing:3000
       - TEST_APP_URL=http://test-app:3001
@@ -158,7 +158,7 @@ services:
       - ./test-results:/test-results
     command: npx playwright test
     networks:
-      - plinto-test-network
+      - janua-test-network
 
 # ==========================================================================
 # Volumes
@@ -171,5 +171,5 @@ volumes:
 # Networks
 # ==========================================================================
 networks:
-  plinto-test-network:
+  janua-test-network:
     driver: bridge

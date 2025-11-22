@@ -4,7 +4,7 @@ Enhance your application's security with comprehensive multi-factor authenticati
 
 ## Overview
 
-Multi-Factor Authentication (MFA) adds an essential layer of security by requiring users to provide multiple forms of verification. Plinto's MFA implementation supports multiple authentication factors and provides a seamless user experience while maintaining the highest security standards.
+Multi-Factor Authentication (MFA) adds an essential layer of security by requiring users to provide multiple forms of verification. Janua's MFA implementation supports multiple authentication factors and provides a seamless user experience while maintaining the highest security standards.
 
 ### Supported MFA Methods
 
@@ -28,10 +28,10 @@ Multi-Factor Authentication (MFA) adds an essential layer of security by requiri
 ### 1. Enable MFA for User
 
 ```typescript
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 // Enable TOTP for user
-const mfaSetup = await plinto.auth.enableMFA({
+const mfaSetup = await janua.auth.enableMFA({
   userId: user.id,
   method: 'totp',
   label: 'MyApp Account'
@@ -46,7 +46,7 @@ console.log('Manual Entry Key:', mfaSetup.secret)
 
 ```typescript
 // User enters code from authenticator app
-const verificationResult = await plinto.auth.verifyMFA({
+const verificationResult = await janua.auth.verifyMFA({
   userId: user.id,
   method: 'totp',
   code: '123456'
@@ -57,7 +57,7 @@ if (verificationResult.success) {
   console.log('MFA enabled successfully')
   
   // Generate backup codes
-  const backupCodes = await plinto.auth.regenerateMFABackupCodes({
+  const backupCodes = await janua.auth.regenerateMFABackupCodes({
     userId: user.id
   })
   
@@ -70,7 +70,7 @@ if (verificationResult.success) {
 
 ```typescript
 // Step 1: Primary authentication
-const primaryAuth = await plinto.auth.signIn({
+const primaryAuth = await janua.auth.signIn({
   email: 'user@example.com',
   password: 'password123'
 })
@@ -81,7 +81,7 @@ if (primaryAuth.requiresMfa) {
   // ['totp', 'sms', 'email']
   
   // User chooses TOTP
-  const mfaResult = await plinto.auth.mfa.challenge({
+  const mfaResult = await janua.auth.mfa.challenge({
     sessionId: primaryAuth.sessionId,
     method: 'totp',
     code: '654321'
@@ -103,7 +103,7 @@ if (primaryAuth.requiresMfa) {
 ```typescript
 // server.js
 import express from 'express'
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 import rateLimit from 'express-rate-limit'
 
 const app = express()
@@ -120,7 +120,7 @@ app.post('/api/auth/mfa/setup', authenticate, async (req, res) => {
   try {
     const { method, phoneNumber, label } = req.body
     
-    const mfaSetup = await plinto.auth.enableMFA({
+    const mfaSetup = await janua.auth.enableMFA({
       userId: req.user.id,
       method,
       phoneNumber, // for SMS
@@ -147,7 +147,7 @@ app.post('/api/auth/mfa/verify', mfaLimiter, async (req, res) => {
   try {
     const { sessionId, method, code } = req.body
     
-    const result = await plinto.auth.verifyMFA({
+    const result = await janua.auth.verifyMFA({
       sessionId,
       method,
       code
@@ -185,7 +185,7 @@ app.post('/api/auth/mfa/verify', mfaLimiter, async (req, res) => {
 // MFA status endpoint
 app.get('/api/auth/mfa/status', authenticate, async (req, res) => {
   try {
-    const status = await plinto.auth.getMFAStatus({
+    const status = await janua.auth.getMFAStatus({
       userId: req.user.id
     })
     
@@ -207,12 +207,12 @@ app.post('/api/auth/mfa/disable', authenticate, async (req, res) => {
     const { password, confirmationCode } = req.body
     
     // Verify password for security
-    await plinto.auth.verifyPassword({
+    await janua.auth.verifyPassword({
       userId: req.user.id,
       password
     })
     
-    await plinto.auth.disableMFA({
+    await janua.auth.disableMFA({
       userId: req.user.id,
       confirmationCode
     })
@@ -233,12 +233,12 @@ app.post('/api/auth/mfa/backup-codes/regenerate', authenticate, async (req, res)
     const { password } = req.body
     
     // Verify password for security
-    await plinto.auth.verifyPassword({
+    await janua.auth.verifyPassword({
       userId: req.user.id,
       password
     })
     
-    const backupCodes = await plinto.auth.regenerateMFABackupCodes({
+    const backupCodes = await janua.auth.regenerateMFABackupCodes({
       userId: req.user.id
     })
     
@@ -265,7 +265,7 @@ async function authenticate(req, res, next) {
       return res.status(401).json({ error: 'No authentication token' })
     }
     
-    const session = await plinto.auth.verifySession(token)
+    const session = await janua.auth.verifySession(token)
     
     if (!session.valid) {
       return res.status(401).json({ error: 'Invalid or expired session' })
@@ -295,7 +295,7 @@ async function authenticate(req, res, next) {
 
 ```typescript
 // middleware/mfa.js
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 // MFA requirement levels
 export const MfaLevel = {
@@ -319,7 +319,7 @@ export function requireMfa(level = MfaLevel.REQUIRED) {
       }
       
       // Check if user has MFA enabled
-      const mfaStatus = await plinto.auth.getMFAStatus({
+      const mfaStatus = await janua.auth.getMFAStatus({
         userId: user.id
       })
       
@@ -388,7 +388,7 @@ from fastapi import FastAPI, HTTPException, Depends, Cookie
 from fastapi.security import HTTPBearer
 from pydantic import BaseModel
 from typing import Optional, List
-import plinto
+import janua
 
 app = FastAPI()
 security = HTTPBearer()
@@ -415,7 +415,7 @@ async def setup_mfa(
     current_user: dict = Depends(get_current_user)
 ):
     try:
-        mfa_setup = await plinto.auth.enableMFA(
+        mfa_setup = await janua.auth.enableMFA(
             user_id=current_user["id"],
             method=request.method,
             phone_number=request.phone_number,
@@ -437,7 +437,7 @@ async def setup_mfa(
 @app.post("/api/auth/mfa/verify")
 async def verify_mfa(request: MfaVerifyRequest):
     try:
-        result = await plinto.auth.verifyMFA(
+        result = await janua.auth.verifyMFA(
             session_id=request.session_id,
             method=request.method,
             code=request.code
@@ -478,7 +478,7 @@ async def verify_mfa(request: MfaVerifyRequest):
 @app.get("/api/auth/mfa/status", response_model=MfaStatusResponse)
 async def get_mfa_status(current_user: dict = Depends(get_current_user)):
     try:
-        status = await plinto.auth.getMFAStatus(
+        status = await janua.auth.getMFAStatus(
             user_id=current_user["id"]
         )
         
@@ -502,12 +502,12 @@ async def disable_mfa(
 ):
     try:
         # Verify password for security
-        await plinto.auth.verify_password(
+        await janua.auth.verify_password(
             user_id=current_user["id"],
             password=password
         )
         
-        await plinto.auth.disableMFA(
+        await janua.auth.disableMFA(
             user_id=current_user["id"],
             confirmation_code=confirmation_code
         )
@@ -533,7 +533,7 @@ async def get_current_user(
         )
     
     try:
-        session_data = await plinto.auth.verify_session(auth_token)
+        session_data = await janua.auth.verify_session(auth_token)
         
         if not session_data.valid:
             raise HTTPException(
@@ -577,7 +577,7 @@ def require_mfa(level: str = "required"):
 from fastapi import HTTPException, Depends
 from enum import Enum
 from typing import Optional
-import plinto
+import janua
 
 class MfaLevel(str, Enum):
     NONE = "none"
@@ -601,7 +601,7 @@ class MfaRequirement:
             return current_user
         
         # Check if user has MFA enabled
-        mfa_status = await plinto.auth.getMFAStatus(
+        mfa_status = await janua.auth.getMFAStatus(
             user_id=current_user["id"]
         )
         
@@ -669,7 +669,7 @@ async def process_payment(
 // components/MfaSetup.tsx
 import React, { useState, useEffect } from 'react'
 import QRCode from 'qrcode.react'
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 interface MfaSetupProps {
   onComplete: () => void
@@ -716,7 +716,7 @@ export const MfaSetup: React.FC<MfaSetupProps> = ({ onComplete, onCancel }) => {
       setLoading(true)
       setError('')
 
-      const setup = await plinto.auth.enableMFA({
+      const setup = await janua.auth.enableMFA({
         method: selectedMethod,
         phoneNumber: selectedMethod === 'sms' ? phoneNumber : undefined,
         label: 'MyApp Account'
@@ -736,7 +736,7 @@ export const MfaSetup: React.FC<MfaSetupProps> = ({ onComplete, onCancel }) => {
       setLoading(true)
       setError('')
 
-      const result = await plinto.auth.verifyMFA({
+      const result = await janua.auth.verifyMFA({
         method: selectedMethod,
         code: verificationCode
       })
@@ -850,7 +850,7 @@ export const MfaSetup: React.FC<MfaSetupProps> = ({ onComplete, onCancel }) => {
 ```tsx
 // components/MfaChallenge.tsx
 import React, { useState } from 'react'
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 interface MfaChallengeProps {
   sessionId: string
@@ -878,7 +878,7 @@ export const MfaChallenge: React.FC<MfaChallengeProps> = ({
       setLoading(true)
       setError('')
 
-      const result = await plinto.auth.mfa.challenge({
+      const result = await janua.auth.mfa.challenge({
         sessionId,
         method: selectedMethod,
         code
@@ -902,7 +902,7 @@ export const MfaChallenge: React.FC<MfaChallengeProps> = ({
     if (selectedMethod === 'totp') return // TOTP doesn't need new codes
 
     try {
-      await plinto.auth.mfa.requestNewCode({
+      await janua.auth.mfa.requestNewCode({
         sessionId,
         method: selectedMethod
       })
@@ -1004,7 +1004,7 @@ export const MfaChallenge: React.FC<MfaChallengeProps> = ({
 ```tsx
 // components/MfaSettings.tsx
 import React, { useState, useEffect } from 'react'
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 import { MfaSetup } from './MfaSetup'
 
 interface MfaStatus {
@@ -1029,7 +1029,7 @@ export const MfaSettings: React.FC = () => {
   const loadMfaStatus = async () => {
     try {
       setLoading(true)
-      const status = await plinto.auth.getMFAStatus()
+      const status = await janua.auth.getMFAStatus()
       setMfaStatus(status)
     } catch (err: any) {
       setError(err.message || 'Failed to load MFA status')
@@ -1047,7 +1047,7 @@ export const MfaSettings: React.FC = () => {
     if (!password) return
 
     try {
-      await plinto.auth.disableMFA({ password })
+      await janua.auth.disableMFA({ password })
       await loadMfaStatus()
       alert('MFA has been disabled')
     } catch (err: any) {
@@ -1064,7 +1064,7 @@ export const MfaSettings: React.FC = () => {
     if (!password) return
 
     try {
-      const result = await plinto.auth.regenerateMFABackupCodes({ password })
+      const result = await janua.auth.regenerateMFABackupCodes({ password })
       setBackupCodes(result.codes)
       setShowBackupCodes(true)
       await loadMfaStatus()
@@ -1156,7 +1156,7 @@ export const MfaSettings: React.FC = () => {
 ```tsx
 // hooks/useMfa.ts
 import { useState, useEffect, useCallback } from 'react'
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 interface MfaState {
   isEnabled: boolean
@@ -1185,7 +1185,7 @@ export const useMfa = (): MfaHookReturn => {
     try {
       setLoading(true)
       setError(null)
-      const status = await plinto.auth.getMFAStatus()
+      const status = await janua.auth.getMFAStatus()
       setMfaState({
         isEnabled: status.enabled,
         methods: status.methods,
@@ -1206,7 +1206,7 @@ export const useMfa = (): MfaHookReturn => {
   const setupMfa = useCallback(async (method: string, options: any = {}) => {
     try {
       setError(null)
-      const result = await plinto.auth.enableMFA({
+      const result = await janua.auth.enableMFA({
         method,
         ...options
       })
@@ -1221,7 +1221,7 @@ export const useMfa = (): MfaHookReturn => {
   const verifyMfa = useCallback(async (sessionId: string, method: string, code: string) => {
     try {
       setError(null)
-      const result = await plinto.auth.verifyMFA({
+      const result = await janua.auth.verifyMFA({
         sessionId,
         method,
         code
@@ -1236,7 +1236,7 @@ export const useMfa = (): MfaHookReturn => {
   const disableMfa = useCallback(async (password: string) => {
     try {
       setError(null)
-      await plinto.auth.disableMFA({ password })
+      await janua.auth.disableMFA({ password })
       await loadMfaStatus()
     } catch (err: any) {
       setError(err.message || 'Failed to disable MFA')
@@ -1247,7 +1247,7 @@ export const useMfa = (): MfaHookReturn => {
   const regenerateBackupCodes = useCallback(async (password: string) => {
     try {
       setError(null)
-      const result = await plinto.auth.regenerateMFABackupCodes({ password })
+      const result = await janua.auth.regenerateMFABackupCodes({ password })
       await loadMfaStatus()
       return result.codes
     } catch (err: any) {
@@ -1359,7 +1359,7 @@ const requireStepUp = async (session: SecureSession, operation: string) => {
 ```typescript
 // WebAuthn integration for hardware tokens
 const setupHardwareToken = async (userId: string) => {
-  const challenge = await plinto.auth.getPasskeyRegistrationOptions({
+  const challenge = await janua.auth.getPasskeyRegistrationOptions({
     userId,
     type: 'registration'
   })
@@ -1385,7 +1385,7 @@ const setupHardwareToken = async (userId: string) => {
   })
 
   // Verify and store credential
-  const verification = await plinto.auth.verifyPasskeyRegistration({
+  const verification = await janua.auth.verifyPasskeyRegistration({
     challengeId: challenge.id,
     credential: {
       id: credential.id,
@@ -1402,7 +1402,7 @@ const setupHardwareToken = async (userId: string) => {
 }
 
 const verifyHardwareToken = async (sessionId: string) => {
-  const challenge = await plinto.auth.getPasskeyRegistrationOptions({
+  const challenge = await janua.auth.getPasskeyRegistrationOptions({
     sessionId,
     type: 'authentication'
   })
@@ -1419,7 +1419,7 @@ const verifyHardwareToken = async (sessionId: string) => {
     }
   })
 
-  const verification = await plinto.auth.verifyPasskeyRegistration({
+  const verification = await janua.auth.verifyPasskeyRegistration({
     challengeId: challenge.id,
     assertion: {
       id: assertion.id,
@@ -1599,7 +1599,7 @@ const handleMfaServiceDegradation = async (error: any, context: any) => {
 ```typescript
 // mfa.test.ts
 import { describe, it, expect, jest, beforeEach } from '@jest/globals'
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 describe('MFA Implementation', () => {
   beforeEach(() => {
@@ -1614,9 +1614,9 @@ describe('MFA Implementation', () => {
         backupCodes: ['123456', '789012']
       }
 
-      jest.spyOn(plinto.auth.mfa, 'setup').mockResolvedValue(mockSetup)
+      jest.spyOn(janua.auth.mfa, 'setup').mockResolvedValue(mockSetup)
 
-      const result = await plinto.auth.enableMFA({
+      const result = await janua.auth.enableMFA({
         userId: 'user123',
         method: 'totp',
         label: 'MyApp'
@@ -1634,9 +1634,9 @@ describe('MFA Implementation', () => {
         session: { token: 'session123' }
       }
 
-      jest.spyOn(plinto.auth.mfa, 'verify').mockResolvedValue(mockVerification)
+      jest.spyOn(janua.auth.mfa, 'verify').mockResolvedValue(mockVerification)
 
-      const result = await plinto.auth.verifyMFA({
+      const result = await janua.auth.verifyMFA({
         sessionId: 'session123',
         method: 'totp',
         code: '123456'
@@ -1653,9 +1653,9 @@ describe('MFA Implementation', () => {
         error: 'Invalid code'
       }
 
-      jest.spyOn(plinto.auth.mfa, 'verify').mockResolvedValue(mockVerification)
+      jest.spyOn(janua.auth.mfa, 'verify').mockResolvedValue(mockVerification)
 
-      const result = await plinto.auth.verifyMFA({
+      const result = await janua.auth.verifyMFA({
         sessionId: 'session123',
         method: 'totp',
         code: 'invalid'
@@ -1674,9 +1674,9 @@ describe('MFA Implementation', () => {
         expiresIn: 300
       }
 
-      jest.spyOn(plinto.auth.mfa, 'setup').mockResolvedValue(mockSetup)
+      jest.spyOn(janua.auth.mfa, 'setup').mockResolvedValue(mockSetup)
 
-      const result = await plinto.auth.enableMFA({
+      const result = await janua.auth.enableMFA({
         userId: 'user123',
         method: 'sms',
         phoneNumber: '+1234567890'
@@ -1687,12 +1687,12 @@ describe('MFA Implementation', () => {
     })
 
     it('should handle SMS delivery failure', async () => {
-      jest.spyOn(plinto.auth.mfa, 'setup').mockRejectedValue(
+      jest.spyOn(janua.auth.mfa, 'setup').mockRejectedValue(
         new Error('SMS delivery failed')
       )
 
       await expect(
-        plinto.auth.enableMFA({
+        janua.auth.enableMFA({
           userId: 'user123',
           method: 'sms',
           phoneNumber: 'invalid'
@@ -1710,10 +1710,10 @@ describe('MFA Implementation', () => {
         generatedAt: new Date()
       }
 
-      jest.spyOn(plinto.auth.mfa, 'generateBackupCodes')
+      jest.spyOn(janua.auth.mfa, 'generateBackupCodes')
         .mockResolvedValue(mockCodes)
 
-      const result = await plinto.auth.regenerateMFABackupCodes({
+      const result = await janua.auth.regenerateMFABackupCodes({
         userId: 'user123'
       })
 
@@ -1727,12 +1727,12 @@ describe('MFA Implementation', () => {
         { success: false, error: 'Code already used' }
       ]
 
-      jest.spyOn(plinto.auth.mfa, 'verify')
+      jest.spyOn(janua.auth.mfa, 'verify')
         .mockResolvedValueOnce(mockVerifications[0])
         .mockResolvedValueOnce(mockVerifications[1])
 
       // First use - should work
-      const result1 = await plinto.auth.verifyMFA({
+      const result1 = await janua.auth.verifyMFA({
         sessionId: 'session123',
         method: 'backup',
         code: 'backup123'
@@ -1740,7 +1740,7 @@ describe('MFA Implementation', () => {
       expect(result1.success).toBe(true)
 
       // Second use - should fail
-      const result2 = await plinto.auth.verifyMFA({
+      const result2 = await janua.auth.verifyMFA({
         sessionId: 'session123',
         method: 'backup',
         code: 'backup123'
@@ -1759,7 +1759,7 @@ describe('MFA Implementation', () => {
         { success: false, attemptsRemaining: 0, rateLimited: true }
       ]
 
-      jest.spyOn(plinto.auth.mfa, 'verify')
+      jest.spyOn(janua.auth.mfa, 'verify')
         .mockImplementation((_, index) => 
           Promise.resolve(mockResponses[index] || mockResponses[4])
         )
@@ -1767,7 +1767,7 @@ describe('MFA Implementation', () => {
       // Make 5 failed attempts
       const attempts = []
       for (let i = 0; i < 5; i++) {
-        const result = await plinto.auth.verifyMFA({
+        const result = await janua.auth.verifyMFA({
           sessionId: 'session123',
           method: 'totp',
           code: 'wrong'
@@ -1789,7 +1789,7 @@ describe('MFA Implementation', () => {
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals'
 import request from 'supertest'
 import { app } from '../server'
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 describe('MFA Integration Tests', () => {
   let testUser: any
@@ -1797,7 +1797,7 @@ describe('MFA Integration Tests', () => {
 
   beforeAll(async () => {
     // Create test user
-    testUser = await plinto.auth.signUp({
+    testUser = await janua.auth.signUp({
       email: 'mfa-test@example.com',
       password: 'TestPassword123!'
     })
@@ -1806,7 +1806,7 @@ describe('MFA Integration Tests', () => {
 
   afterAll(async () => {
     // Cleanup test user
-    await plinto.auth.deleteUser({ userId: testUser.user.id })
+    await janua.auth.deleteUser({ userId: testUser.user.id })
   })
 
   describe('TOTP Flow', () => {
@@ -2195,7 +2195,7 @@ async function migrateMfaFeatures() {
   console.log('Starting MFA migration...')
   
   // Add new columns to users table
-  await plinto.db.query(`
+  await janua.db.query(`
     ALTER TABLE users 
     ADD COLUMN mfa_enabled BOOLEAN DEFAULT FALSE,
     ADD COLUMN mfa_methods TEXT[] DEFAULT '{}',
@@ -2206,7 +2206,7 @@ async function migrateMfaFeatures() {
   `)
   
   // Create MFA sessions table
-  await plinto.db.query(`
+  await janua.db.query(`
     CREATE TABLE mfa_sessions (
       id VARCHAR(255) PRIMARY KEY,
       user_id VARCHAR(255) REFERENCES users(id),
@@ -2219,7 +2219,7 @@ async function migrateMfaFeatures() {
   `)
   
   // Create MFA audit log
-  await plinto.db.query(`
+  await janua.db.query(`
     CREATE TABLE mfa_audit_log (
       id SERIAL PRIMARY KEY,
       user_id VARCHAR(255) REFERENCES users(id),
@@ -2241,7 +2241,7 @@ class MfaRolloutManager {
   
   async setRolloutPercentage(percentage: number) {
     this.rolloutPercentage = percentage
-    await plinto.config.set('mfa_rollout_percentage', percentage)
+    await janua.config.set('mfa_rollout_percentage', percentage)
   }
   
   shouldEnableMfaForUser(user: any): boolean {
@@ -2253,7 +2253,7 @@ class MfaRolloutManager {
   }
   
   async getEligibleUsers(batchSize: number = 1000) {
-    return plinto.db.query(`
+    return janua.db.query(`
       SELECT id, email FROM users 
       WHERE mfa_enabled = FALSE 
       LIMIT $1
@@ -2274,7 +2274,7 @@ class MfaRolloutManager {
 const authenticationMiddleware = async (req: any, res: any, next: any) => {
   try {
     const token = req.headers.authorization?.split(' ')[1]
-    const session = await plinto.auth.verifySession(token)
+    const session = await janua.auth.verifySession(token)
     
     if (!session.valid) {
       return res.status(401).json({ error: 'Invalid session' })
@@ -2305,7 +2305,7 @@ const authenticationMiddleware = async (req: any, res: any, next: any) => {
 
 // Step 5: Data migration utilities
 async function migrateUserMfaSettings(userId: string, settings: any) {
-  await plinto.db.transaction(async (trx) => {
+  await janua.db.transaction(async (trx) => {
     // Update user record
     await trx.query(`
       UPDATE users 
@@ -2388,12 +2388,12 @@ class MfaProgressiveRollout {
     }
     
     this.currentPhase = phase
-    await plinto.config.set('mfa_current_phase', phase)
+    await janua.config.set('mfa_current_phase', phase)
   }
   
   private async enableOptionalMfa() {
     // Phase 1: Make MFA available but not required
-    await plinto.config.set('mfa_available', true)
+    await janua.config.set('mfa_available', true)
     await this.notifyUsers('mfa_now_available')
     
     // Add MFA setup prompts to dashboard
@@ -2409,7 +2409,7 @@ class MfaProgressiveRollout {
   
   private async requireMfaForAdmins() {
     // Phase 3: Require MFA for admin users
-    const adminUsers = await plinto.db.query(
+    const adminUsers = await janua.db.query(
       'SELECT id FROM users WHERE role IN (?, ?)',
       ['admin', 'super_admin']
     )
@@ -2428,7 +2428,7 @@ class MfaProgressiveRollout {
     let offset = 0
     
     while (true) {
-      const users = await plinto.db.query(`
+      const users = await janua.db.query(`
         SELECT id, email FROM users 
         WHERE mfa_enabled = FALSE 
         ORDER BY created_at ASC 
@@ -2457,7 +2457,7 @@ class MfaProgressiveRollout {
   
   private async enforceMfaForUser(userId: string) {
     // Set MFA requirement flag
-    await plinto.db.query(`
+    await janua.db.query(`
       UPDATE users 
       SET mfa_required = TRUE, mfa_deadline = ? 
       WHERE id = ?
@@ -2466,7 +2466,7 @@ class MfaProgressiveRollout {
   
   private async addMfaPrompts(locations: string[]) {
     // Add in-app prompts encouraging MFA setup
-    await plinto.config.set('mfa_prompt_locations', locations)
+    await janua.config.set('mfa_prompt_locations', locations)
   }
   
   private async implementMfaIncentives() {
@@ -2477,11 +2477,11 @@ class MfaProgressiveRollout {
       beta_feature_access: true
     }
     
-    await plinto.config.set('mfa_incentives', incentives)
+    await janua.config.set('mfa_incentives', incentives)
   }
   
   private async getSupportTicketVolume(): Promise<number> {
-    const result = await plinto.db.query(`
+    const result = await janua.db.query(`
       SELECT COUNT(*) as count 
       FROM support_tickets 
       WHERE created_at > ? AND tags LIKE '%mfa%'
@@ -2511,7 +2511,7 @@ await rollout.advanceToPhase(MfaPhase.REQUIRED_ALL)
 
 ### Core MFA Methods
 
-#### `plinto.auth.enableMFA(options)`
+#### `janua.auth.enableMFA(options)`
 
 Setup MFA for a user.
 
@@ -2535,14 +2535,14 @@ Setup MFA for a user.
 
 **Example:**
 ```typescript
-const result = await plinto.auth.enableMFA({
+const result = await janua.auth.enableMFA({
   userId: 'user123',
   method: 'totp',
   label: 'MyApp Account'
 })
 ```
 
-#### `plinto.auth.verifyMFA(options)`
+#### `janua.auth.verifyMFA(options)`
 
 Verify MFA code during authentication or setup.
 
@@ -2564,7 +2564,7 @@ Verify MFA code during authentication or setup.
 }
 ```
 
-#### `plinto.auth.getMFAStatus(options)`
+#### `janua.auth.getMFAStatus(options)`
 
 Get MFA status for a user.
 
@@ -2582,7 +2582,7 @@ Get MFA status for a user.
 }
 ```
 
-#### `plinto.auth.disableMFA(options)`
+#### `janua.auth.disableMFA(options)`
 
 Disable MFA for a user.
 
@@ -2599,7 +2599,7 @@ Disable MFA for a user.
 }
 ```
 
-#### `plinto.auth.regenerateMFABackupCodes(options)`
+#### `janua.auth.regenerateMFABackupCodes(options)`
 
 Generate new backup codes for a user.
 
@@ -2617,7 +2617,7 @@ Generate new backup codes for a user.
 
 ### Advanced MFA Methods
 
-#### `plinto.auth.getPasskeyRegistrationOptions(options)`
+#### `janua.auth.getPasskeyRegistrationOptions(options)`
 
 Generate WebAuthn challenge for hardware token registration or authentication.
 
@@ -2644,7 +2644,7 @@ Generate WebAuthn challenge for hardware token registration or authentication.
 }
 ```
 
-#### `plinto.auth.verifyPasskeyRegistration(options)`
+#### `janua.auth.verifyPasskeyRegistration(options)`
 
 Verify WebAuthn credential.
 
@@ -2663,7 +2663,7 @@ Verify WebAuthn credential.
 }
 ```
 
-#### `plinto.auth.mfa.requestNewCode(options)`
+#### `janua.auth.mfa.requestNewCode(options)`
 
 Request a new verification code for SMS or email methods.
 
@@ -2682,7 +2682,7 @@ Request a new verification code for SMS or email methods.
 
 ### Configuration Methods
 
-#### `plinto.auth.mfa.configure(options)`
+#### `janua.auth.mfa.configure(options)`
 
 Configure global MFA settings.
 
@@ -2749,4 +2749,4 @@ Configure global MFA settings.
 }
 ```
 
-This comprehensive MFA guide provides everything needed to implement secure multi-factor authentication with Plinto, from basic setup to advanced security features and testing strategies.
+This comprehensive MFA guide provides everything needed to implement secure multi-factor authentication with Janua, from basic setup to advanced security features and testing strategies.

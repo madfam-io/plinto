@@ -24,8 +24,8 @@ export interface EmailVerificationProps {
   showResend?: boolean
   /** Custom logo URL */
   logoUrl?: string
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -41,7 +41,7 @@ export function EmailVerification({
   onComplete,
   showResend = true,
   logoUrl,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: EmailVerificationProps) {
   const [status, setStatus] = React.useState(initialStatus)
@@ -54,9 +54,9 @@ export function EmailVerification({
       setStatus('verifying')
 
       const verify = async () => {
-        if (plintoClient) {
-          // Use Plinto SDK for email verification
-          await plintoClient.auth.verifyEmail(initialToken)
+        if (januaClient) {
+          // Use Janua SDK for email verification
+          await januaClient.auth.verifyEmail(initialToken)
         } else if (onVerify) {
           // Use custom callback if provided
           await onVerify(initialToken)
@@ -88,7 +88,7 @@ export function EmailVerification({
           setStatus('error')
         })
     }
-  }, [initialToken, plintoClient, onVerify, onError, onComplete, apiUrl, status])
+  }, [initialToken, januaClient, onVerify, onError, onComplete, apiUrl, status])
 
   // Cooldown timer for resend
   React.useEffect(() => {
@@ -104,9 +104,9 @@ export function EmailVerification({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK to resend verification email
-        await plintoClient.auth.resendVerificationEmail({ email })
+      if (januaClient) {
+        // Use Janua SDK to resend verification email
+        await januaClient.auth.resendVerificationEmail({ email })
         setResendCooldown(60) // 60 second cooldown
       } else if (onResendEmail) {
         // Use custom callback if provided

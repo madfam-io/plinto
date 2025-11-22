@@ -1,6 +1,6 @@
 'use client'
 
-import { SCIMConfigWizard, SCIMSyncStatus, RoleManager } from '@plinto/ui'
+import { SCIMConfigWizard, SCIMSyncStatus, RoleManager } from '@janua/ui'
 import { useState } from 'react'
 
 export default function SCIMRBACShowcase() {

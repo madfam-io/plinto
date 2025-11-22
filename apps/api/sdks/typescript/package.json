@@ -1,7 +1,7 @@
 {
-  "name": "@plinto/typescript-sdk",
+  "name": "@janua/typescript-sdk",
   "version": "0.1.0",
-  "description": "TypeScript SDK for Plinto authentication platform",
+  "description": "TypeScript SDK for Janua authentication platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -23,7 +23,7 @@
   "keywords": [
     "authentication",
     "auth",
-    "plinto",
+    "janua",
     "sdk",
     "typescript",
     "oauth",
@@ -31,15 +31,15 @@
     "sso",
     "identity"
   ],
-  "author": "Plinto Team <team@plinto.dev>",
+  "author": "Janua Team <team@janua.dev>",
   "license": "MIT",
-  "homepage": "https://plinto.dev",
+  "homepage": "https://janua.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/plinto/typescript-sdk.git"
+    "url": "https://github.com/janua/typescript-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/plinto/typescript-sdk/issues"
+    "url": "https://github.com/janua/typescript-sdk/issues"
   },
   "dependencies": {
     "axios": "^1.6.0",

@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui'
 import { Users, Shield, Key, Activity, TrendingUp, TrendingDown } from 'lucide-react'
 
 interface StatCard {

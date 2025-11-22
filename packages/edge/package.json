@@ -1,5 +1,5 @@
 {
-  "name": "@plinto/edge",
+  "name": "@janua/edge",
   "version": "1.0.0",
   "description": "Edge-fast JWT verification for Cloudflare Workers and Edge environments",
   "main": "./dist/index.js",
@@ -23,7 +23,7 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "plinto",
+    "janua",
     "edge",
     "jwt",
     "verification",
@@ -31,11 +31,11 @@
     "workers",
     "edge-computing"
   ],
-  "author": "Plinto Team",
+  "author": "Janua Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/madfam-io/plinto.git",
+    "url": "https://github.com/madfam-io/janua.git",
     "directory": "packages/edge"
   },
   "devDependencies": {

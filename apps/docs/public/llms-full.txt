@@ -1,14 +1,14 @@
-PLINTO API DOCUMENTATION - LLM-FRIENDLY COMPENDIUM
+JANUA API DOCUMENTATION - LLM-FRIENDLY COMPENDIUM
 =====================================================
 
 OVERVIEW
 --------
-Plinto is a secure identity platform API that provides authentication, user management, and session handling capabilities for developers. This document contains the complete API reference in a format optimized for LLMs and easy integration.
+Janua is a secure identity platform API that provides authentication, user management, and session handling capabilities for developers. This document contains the complete API reference in a format optimized for LLMs and easy integration.
 
 VERSION: 0.1.0 (Beta)
-BASE URL: https://api.plinto.dev
-DOCUMENTATION: https://docs.plinto.dev
-SUPPORT: api-support@plinto.dev
+BASE URL: https://api.janua.dev
+DOCUMENTATION: https://docs.janua.dev
+SUPPORT: api-support@janua.dev
 
 AUTHENTICATION
 --------------
@@ -33,7 +33,7 @@ POST /beta/signup
 -----------------
 Create a new beta user account.
 
-URL: https://api.plinto.dev/beta/signup
+URL: https://api.janua.dev/beta/signup
 Method: POST
 Content-Type: application/json
 
@@ -68,7 +68,7 @@ Error Responses:
 }
 
 Example cURL:
-curl -X POST https://api.plinto.dev/beta/signup \
+curl -X POST https://api.janua.dev/beta/signup \
   -H "Content-Type: application/json" \
   -d '{
     "email": "developer@example.com",
@@ -80,7 +80,7 @@ POST /beta/signin
 -----------------
 Authenticate user and obtain access token.
 
-URL: https://api.plinto.dev/beta/signin
+URL: https://api.janua.dev/beta/signin
 Method: POST
 Content-Type: application/json
 
@@ -114,7 +114,7 @@ Error Responses:
 }
 
 Example cURL:
-curl -X POST https://api.plinto.dev/beta/signin \
+curl -X POST https://api.janua.dev/beta/signin \
   -H "Content-Type: application/json" \
   -d '{
     "email": "developer@example.com",
@@ -125,7 +125,7 @@ GET /beta/users
 ---------------
 List all beta users (admin endpoint).
 
-URL: https://api.plinto.dev/beta/users
+URL: https://api.janua.dev/beta/users
 Method: GET
 
 Request Headers: None required
@@ -156,7 +156,7 @@ Error Response:
 }
 
 Example cURL:
-curl -X GET https://api.plinto.dev/beta/users
+curl -X GET https://api.janua.dev/beta/users
 
 HEALTH CHECK ENDPOINTS
 -----------------------
@@ -165,7 +165,7 @@ GET /
 -----
 Root endpoint with basic API information.
 
-URL: https://api.plinto.dev/
+URL: https://api.janua.dev/
 Method: GET
 
 Success Response (200):
@@ -179,7 +179,7 @@ GET /health
 -----------
 Basic health check endpoint.
 
-URL: https://api.plinto.dev/health
+URL: https://api.janua.dev/health
 Method: GET
 
 Success Response (200):
@@ -191,7 +191,7 @@ GET /ready
 ----------
 Comprehensive infrastructure readiness check.
 
-URL: https://api.plinto.dev/ready
+URL: https://api.janua.dev/ready
 Method: GET
 
 Success Response (200):
@@ -205,7 +205,7 @@ GET /api/status
 ---------------
 Detailed API status and capabilities.
 
-URL: https://api.plinto.dev/api/status
+URL: https://api.janua.dev/api/status
 Method: GET
 
 Success Response (200):
@@ -236,7 +236,7 @@ Error Response Format:
 
 INFRASTRUCTURE
 --------------
-Plinto API runs on Railway infrastructure with:
+Janua API runs on Railway infrastructure with:
 - PostgreSQL database for persistent storage
 - Redis for session management and caching
 - Automatic failover to in-memory storage if Redis unavailable
@@ -254,7 +254,7 @@ INTEGRATION EXAMPLES
 JavaScript/Node.js Example:
 ```javascript
 // Sign up a new user
-const signupResponse = await fetch('https://api.plinto.dev/beta/signup', {
+const signupResponse = await fetch('https://api.janua.dev/beta/signup', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ const signupData = await signupResponse.json();
 console.log('User created:', signupData.id);
 
 // Sign in to get access token
-const signinResponse = await fetch('https://api.plinto.dev/beta/signin', {
+const signinResponse = await fetch('https://api.janua.dev/beta/signin', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ console.log('Access token:', accessToken);
 
 // Use access token for authenticated requests (when available)
 // Note: Current beta API doesn't require tokens for user listing
-const usersResponse = await fetch('https://api.plinto.dev/beta/users');
+const usersResponse = await fetch('https://api.janua.dev/beta/users');
 const usersData = await usersResponse.json();
 console.log('Total users:', usersData.total);
 ```
@@ -305,7 +305,7 @@ signup_data = {
 }
 
 signup_response = requests.post(
-    'https://api.plinto.dev/beta/signup',
+    'https://api.janua.dev/beta/signup',
     headers={'Content-Type': 'application/json'},
     data=json.dumps(signup_data)
 )
@@ -320,7 +320,7 @@ signin_data = {
 }
 
 signin_response = requests.post(
-    'https://api.plinto.dev/beta/signin',
+    'https://api.janua.dev/beta/signin',
     headers={'Content-Type': 'application/json'},
     data=json.dumps(signin_data)
 )
@@ -330,7 +330,7 @@ access_token = signin_result['access_token']
 print(f"Access token: {access_token}")
 
 # List users
-users_response = requests.get('https://api.plinto.dev/beta/users')
+users_response = requests.get('https://api.janua.dev/beta/users')
 users_result = users_response.json()
 print(f"Total users: {users_result['total']}")
 ```
@@ -338,20 +338,20 @@ print(f"Total users: {users_result['total']}")
 cURL Example Workflow:
 ```bash
 # 1. Sign up a new user
-curl -X POST https://api.plinto.dev/beta/signup \
+curl -X POST https://api.janua.dev/beta/signup \
   -H "Content-Type: application/json" \
   -d '{"email":"developer@example.com","password":"securepass123","name":"Developer Name"}'
 
 # 2. Sign in to get access token
-curl -X POST https://api.plinto.dev/beta/signin \
+curl -X POST https://api.janua.dev/beta/signin \
   -H "Content-Type: application/json" \
   -d '{"email":"developer@example.com","password":"securepass123"}'
 
 # 3. List all users
-curl -X GET https://api.plinto.dev/beta/users
+curl -X GET https://api.janua.dev/beta/users
 
 # 4. Check API health
-curl -X GET https://api.plinto.dev/ready
+curl -X GET https://api.janua.dev/ready
 ```
 
 RATE LIMITING
@@ -404,10 +404,10 @@ v0.1.0 (Beta) - September 11, 2025:
 
 SUPPORT AND RESOURCES
 ---------------------
-Documentation: https://docs.plinto.dev
-API Status: https://api.plinto.dev/api/status
-Health Check: https://api.plinto.dev/health
-Support Email: api-support@plinto.dev
+Documentation: https://docs.janua.dev
+API Status: https://api.janua.dev/api/status
+Health Check: https://api.janua.dev/health
+Support Email: api-support@janua.dev
 GitHub Issues: Contact support for repository access
 
 FUTURE ROADMAP
@@ -425,7 +425,7 @@ Planned features for upcoming releases:
 
 API TESTING CHECKLIST
 ----------------------
-Before integrating Plinto API into your application:
+Before integrating Janua API into your application:
 
 □ Test user registration with valid email/password
 □ Test user authentication and token retrieval
@@ -438,7 +438,7 @@ Before integrating Plinto API into your application:
 □ Verify password validation requirements
 □ Test infrastructure connectivity endpoints
 
-For additional support or questions about integration, contact api-support@plinto.dev
+For additional support or questions about integration, contact api-support@janua.dev
 
 ---
 Generated: September 11, 2025

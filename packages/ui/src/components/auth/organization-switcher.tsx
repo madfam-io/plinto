@@ -21,9 +21,9 @@ export interface Organization {
 export interface OrganizationSwitcherProps {
   /** Optional custom class name */
   className?: string
-  /** Currently active organization (optional if plintoClient provided) */
+  /** Currently active organization (optional if januaClient provided) */
   currentOrganization?: Organization
-  /** List of organizations user belongs to (optional if plintoClient provided) */
+  /** List of organizations user belongs to (optional if januaClient provided) */
   organizations?: Organization[]
   /** Callback to fetch organizations */
   onFetchOrganizations?: () => Promise<Organization[]>
@@ -42,8 +42,8 @@ export interface OrganizationSwitcherProps {
     id: string
     name: string
   }
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -59,7 +59,7 @@ export function OrganizationSwitcher({
   showCreateOrganization = true,
   showPersonalWorkspace = true,
   personalWorkspace,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: OrganizationSwitcherProps) {
   const [organizations, setOrganizations] = React.useState(initialOrganizations)
@@ -73,9 +73,9 @@ export function OrganizationSwitcher({
       setIsLoading(true)
       const fetchOrganizations = async () => {
         try {
-          if (plintoClient) {
-            // Use Plinto SDK client for real API integration
-            const response = await plintoClient.organizations.listOrganizations()
+          if (januaClient) {
+            // Use Janua SDK client for real API integration
+            const response = await januaClient.organizations.listOrganizations()
             setOrganizations(response.data || response)
           } else if (onFetchOrganizations) {
             // Use custom callback
@@ -105,7 +105,7 @@ export function OrganizationSwitcher({
 
       fetchOrganizations()
     }
-  }, [organizations, onFetchOrganizations, onError, isOpen, plintoClient, apiUrl])
+  }, [organizations, onFetchOrganizations, onError, isOpen, januaClient, apiUrl])
 
   const handleSwitchOrganization = (org: Organization) => {
     onSwitchOrganization?.(org)

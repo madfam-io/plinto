@@ -10,9 +10,9 @@ const withMDX = require('@next/mdx')({
 const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   reactStrictMode: true,
-  transpilePackages: ['@plinto/ui'],
+  transpilePackages: ['@janua/ui'],
   images: {
-    domains: ['plinto.dev', 'github.com', 'raw.githubusercontent.com'],
+    domains: ['janua.dev', 'github.com', 'raw.githubusercontent.com'],
   },
   async headers() {
     return [

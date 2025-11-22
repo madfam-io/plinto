@@ -1,16 +1,16 @@
-# Plinto Enterprise Architecture Design
+# Janua Enterprise Architecture Design
 
 ## Overview
 
-Enterprise-grade architecture design with proper separation of concerns, distinct service ports, and microservice-style organization for the Plinto identity platform.
+Enterprise-grade architecture design with proper separation of concerns, distinct service ports, and microservice-style organization for the Janua identity platform.
 
 ## Frontend Applications
 
 ### 1. Marketing Site (Port 3000)
 - **Location**: `/apps/marketing`
-- **URL**: `https://plinto.dev`
+- **URL**: `https://janua.dev`
 - **Purpose**: Public website, documentation, pricing, onboarding
-- **Tech Stack**: Next.js 14 (Static/SSG), Tailwind CSS, @plinto/ui
+- **Tech Stack**: Next.js 14 (Static/SSG), Tailwind CSS, @janua/ui
 - **Features**:
   - Landing pages and product information
   - Documentation browser with MDX support
@@ -21,9 +21,9 @@ Enterprise-grade architecture design with proper separation of concerns, distinc
 
 ### 2. Application Dashboard (Port 3001)
 - **Location**: `/apps/dashboard`
-- **URL**: `https://app.plinto.dev`
+- **URL**: `https://app.janua.dev`
 - **Purpose**: Main user application for authenticated users
-- **Tech Stack**: Next.js 14 (App Router), @plinto/react-sdk, @plinto/ui, TanStack Query
+- **Tech Stack**: Next.js 14 (App Router), @janua/react-sdk, @janua/ui, TanStack Query
 - **Features**:
   - User authentication dashboard
   - Organization management and RBAC
@@ -35,9 +35,9 @@ Enterprise-grade architecture design with proper separation of concerns, distinc
 
 ### 3. Demo Environment (Port 3002)
 - **Location**: `/apps/demo`
-- **URL**: `https://demo.plinto.dev`
+- **URL**: `https://demo.janua.dev`
 - **Purpose**: Interactive product demonstration with mock data
-- **Tech Stack**: Next.js 14 (App Router), @plinto/react-sdk, @plinto/ui, Mock API integration
+- **Tech Stack**: Next.js 14 (App Router), @janua/react-sdk, @janua/ui, Mock API integration
 - **Features**:
   - Sandbox authentication flows
   - Pre-populated demo data and scenarios
@@ -48,9 +48,9 @@ Enterprise-grade architecture design with proper separation of concerns, distinc
 
 ### 4. Documentation Portal (Port 3003)
 - **Location**: `/apps/docs`
-- **URL**: `https://docs.plinto.dev`
+- **URL**: `https://docs.janua.dev`
 - **Purpose**: Developer documentation and API references
-- **Tech Stack**: Next.js 14 (Static), MDX, Algolia Search, @plinto/ui
+- **Tech Stack**: Next.js 14 (Static), MDX, Algolia Search, @janua/ui
 - **Features**:
   - API documentation with OpenAPI integration
   - SDK guides and code examples
@@ -61,9 +61,9 @@ Enterprise-grade architecture design with proper separation of concerns, distinc
 
 ### 5. Admin Portal (Port 3004)
 - **Location**: `/apps/admin`
-- **URL**: `https://admin.plinto.dev`
+- **URL**: `https://admin.janua.dev`
 - **Purpose**: Superuser administration and system management
-- **Tech Stack**: Next.js 14 (App Router), @plinto/react-sdk, @plinto/ui, Advanced RBAC
+- **Tech Stack**: Next.js 14 (App Router), @janua/react-sdk, @janua/ui, Advanced RBAC
 - **Features**:
   - System-wide tenant management
   - Platform monitoring and health dashboards
@@ -75,9 +75,9 @@ Enterprise-grade architecture design with proper separation of concerns, distinc
 
 ### 5. Enhanced Demo Application (Port 3002)
 - **Location**: `/apps/demo`
-- **URL**: `https://demo.plinto.dev`
+- **URL**: `https://demo.janua.dev`
 - **Purpose**: Comprehensive demo with authentication flows and interactive features
-- **Tech Stack**: Next.js 14 (App Router), @plinto/sdk, @plinto/ui, Environment-aware
+- **Tech Stack**: Next.js 14 (App Router), @janua/sdk, @janua/ui, Environment-aware
 - **Features**:
   - Interactive product demonstration with mock data
   - Complete authentication flows (sign-in, sign-up, dashboard)
@@ -92,7 +92,7 @@ Enterprise-grade architecture design with proper separation of concerns, distinc
 
 ### 1. Core API Service (Port 8000)
 - **Location**: `/apps/api`
-- **URL**: `https://api.plinto.dev` (internal: `localhost:8000`)
+- **URL**: `https://api.janua.dev` (internal: `localhost:8000`)
 - **Purpose**: Main authentication and identity API
 - **Tech Stack**: FastAPI (Python), PostgreSQL, Redis, SuperTokens core
 - **Features**:
@@ -156,22 +156,22 @@ Enterprise-grade architecture design with proper separation of concerns, distinc
 
 ## Shared Packages
 
-### 1. UI Component Library (`@plinto/ui`)
+### 1. UI Component Library (`@janua/ui`)
 - **Location**: `/packages/ui`
 - **Purpose**: Shared design system and React components
 - **Features**: Buttons, forms, modals, tables, navigation, theming
 
-### 2. React SDK (`@plinto/react-sdk`)
+### 2. React SDK (`@janua/react-sdk`)
 - **Location**: `/packages/react`
-- **Purpose**: React hooks and components for Plinto integration
+- **Purpose**: React hooks and components for Janua integration
 - **Features**: Authentication hooks, session management, protected routes
 
-### 3. Core SDK (`@plinto/sdk`)
+### 3. Core SDK (`@janua/sdk`)
 - **Location**: `/packages/sdk`
 - **Purpose**: Framework-agnostic JavaScript/TypeScript client
 - **Features**: API client, token management, authentication flows
 
-### 4. Edge SDK (`@plinto/edge`)
+### 4. Edge SDK (`@janua/edge`)
 - **Location**: `/packages/edge`
 - **Purpose**: Edge runtime token verification utilities
 - **Features**: JWT validation, middleware helpers, performance optimization
@@ -202,17 +202,17 @@ Infrastructure:
 ### Production Environment
 ```yaml
 Frontend Applications:
-  marketing: plinto.dev (Vercel)
-  dashboard: app.plinto.dev (Vercel)
-  demo: demo.plinto.dev (Vercel)
-  docs: docs.plinto.dev (Vercel)
-  admin: admin.plinto.dev (Vercel)
+  marketing: janua.dev (Vercel)
+  dashboard: app.janua.dev (Vercel)
+  demo: demo.janua.dev (Vercel)
+  docs: docs.janua.dev (Vercel)
+  admin: admin.janua.dev (Vercel)
 
 Backend Services:
-  core-api: api.plinto.dev (Railway)
-  auth-service: auth.plinto.dev (Railway)
+  core-api: api.janua.dev (Railway)
+  auth-service: auth.janua.dev (Railway)
   edge-verify: Cloudflare Workers (Global Edge)
-  webhook-service: webhooks.plinto.dev (Railway)
+  webhook-service: webhooks.janua.dev (Railway)
 ```
 
 ## Development Workflow
@@ -226,8 +226,8 @@ yarn install
 yarn dev:all
 
 # Start specific service
-yarn workspace @plinto/marketing dev
-yarn workspace @plinto/api dev
+yarn workspace @janua/marketing dev
+yarn workspace @janua/api dev
 ```
 
 ### 2. Service Communication
@@ -245,38 +245,38 @@ yarn workspace @plinto/api dev
 ### 1. Vercel (Frontend Applications)
 ```yaml
 marketing:
-  domain: plinto.dev
+  domain: janua.dev
   build: apps/marketing
   
 dashboard:
-  domain: app.plinto.dev
+  domain: app.janua.dev
   build: apps/dashboard
   
 demo:
-  domain: demo.plinto.dev
+  domain: demo.janua.dev
   build: apps/demo
   
 docs:
-  domain: docs.plinto.dev
+  domain: docs.janua.dev
   build: apps/docs
   
 admin:
-  domain: admin.plinto.dev
+  domain: admin.janua.dev
   build: apps/admin
 ```
 
 ### 2. Railway (Backend Services)
 ```yaml
 core-api:
-  domain: api.plinto.dev
+  domain: api.janua.dev
   dockerfile: apps/api/Dockerfile
   
 auth-service:
-  domain: auth.plinto.dev
+  domain: auth.janua.dev
   dockerfile: apps/auth-service/Dockerfile
   
 webhook-service:
-  domain: webhooks.plinto.dev
+  domain: webhooks.janua.dev
   dockerfile: apps/webhook-service/Dockerfile
 ```
 
@@ -285,8 +285,8 @@ webhook-service:
 edge-verify:
   workers: apps/edge-verify
   domains: 
-    - plinto.dev/api/v1/verify/*
-    - "*.plinto.dev/api/v1/verify/*"
+    - janua.dev/api/v1/verify/*
+    - "*.janua.dev/api/v1/verify/*"
 ```
 
 ## Security Architecture

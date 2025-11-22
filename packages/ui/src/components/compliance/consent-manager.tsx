@@ -36,7 +36,7 @@ export interface ConsentManagerProps {
   onSubmit?: (consents: Record<string, boolean>) => Promise<void>
   onWithdraw?: (purposeId: string) => Promise<void>
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   showLegalBasis?: boolean
   mode?: 'initial' | 'manage'
@@ -50,7 +50,7 @@ export function ConsentManager({
   onSubmit,
   onWithdraw,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   showLegalBasis = true,
   mode = 'initial',
@@ -96,8 +96,8 @@ export function ConsentManager({
     setIsSubmitting(true)
 
     try {
-      if (plintoClient) {
-        await plintoClient.compliance.recordConsents(userId, consents)
+      if (januaClient) {
+        await januaClient.compliance.recordConsents(userId, consents)
       } else if (onSubmit) {
         await onSubmit(consents)
       } else {
@@ -141,8 +141,8 @@ export function ConsentManager({
     setWithdrawing(purposeId)
 
     try {
-      if (plintoClient) {
-        await plintoClient.compliance.withdrawConsent(userId, purposeId)
+      if (januaClient) {
+        await januaClient.compliance.withdrawConsent(userId, purposeId)
       } else if (onWithdraw) {
         await onWithdraw(purposeId)
       } else {

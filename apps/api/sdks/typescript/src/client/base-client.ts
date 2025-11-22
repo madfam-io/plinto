@@ -1,5 +1,5 @@
 /**
- * Base HTTP client for Plinto TypeScript SDK.
+ * Base HTTP client for Janua TypeScript SDK.
  *
  * Mirrors the architecture from app.sdk.client_base with TypeScript-specific
  * implementation using axios for HTTP requests.
@@ -48,12 +48,12 @@ export abstract class BaseAPIClient {
     };
 
     return {
-      base_url: config.base_url || 'https://api.plinto.dev',
+      base_url: config.base_url || 'https://api.janua.dev',
       api_key: config.api_key,
       authentication_method: config.authentication_method || AuthenticationMethod.JWT_TOKEN,
       timeout: config.timeout || 30000,
       retry_config: { ...default_retry_config, ...config.retry_config },
-      user_agent: config.user_agent || `plinto-typescript-sdk/0.1.0`,
+      user_agent: config.user_agent || `janua-typescript-sdk/0.1.0`,
       debug: config.debug || false
     };
   }
@@ -167,7 +167,7 @@ export abstract class BaseAPIClient {
     for (let attempt = 0; attempt <= max_retries; attempt++) {
       try {
         if (this.config.debug) {
-          console.log(`[Plinto SDK] ${method.toUpperCase()} ${endpoint} (attempt ${attempt + 1})`);
+          console.log(`[Janua SDK] ${method.toUpperCase()} ${endpoint} (attempt ${attempt + 1})`);
         }
 
         const response = await this.http.request(config);
@@ -187,7 +187,7 @@ export abstract class BaseAPIClient {
         );
 
         if (this.config.debug) {
-          console.log(`[Plinto SDK] Retrying after ${delay}ms...`);
+          console.log(`[Janua SDK] Retrying after ${delay}ms...`);
         }
 
         await this.sleep(delay);

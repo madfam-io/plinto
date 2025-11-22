@@ -1,20 +1,20 @@
 """
-Plinto - Enterprise-grade authentication and user management platform
+Janua - Enterprise-grade authentication and user management platform
 
 A comprehensive authentication platform providing SSO, RBAC, multi-tenancy,
 and enterprise security features for modern applications.
 """
 
 __version__ = "0.1.0-beta.1"
-__author__ = "Plinto Team"
-__email__ = "team@plinto.dev"
+__author__ = "Janua Team"
+__email__ = "team@janua.dev"
 __license__ = "MIT"
-__url__ = "https://plinto.dev"
+__url__ = "https://janua.dev"
 
 # Core API exports for package consumers
 from .config import Settings, get_settings
 from .exceptions import (
-    PlintoAPIException,
+    JanuaAPIException,
     AuthenticationError,
     AuthorizationError,
     ValidationError,
@@ -88,7 +88,7 @@ __all__ = [
     "get_settings",
 
     # Exceptions
-    "PlintoAPIException",
+    "JanuaAPIException",
     "AuthenticationError",
     "AuthorizationError",
     "ValidationError",

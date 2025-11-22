@@ -4,7 +4,7 @@
     "client_id": "your_client_id",
     "client_secret": "your_client_secret"
   },
-  "plinto": {
+  "janua": {
     "api_url": "http://localhost:8000",
     "admin_token": "your_admin_token"
   }

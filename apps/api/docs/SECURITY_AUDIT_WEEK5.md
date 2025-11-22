@@ -2,7 +2,7 @@
 
 **Date**: November 16, 2025  
 **Scope**: Email Service, GraphQL/WebSocket, UI Components, Compliance Features  
-**Auditor**: Plinto Security Team / Claude Code
+**Auditor**: Janua Security Team / Claude Code
 
 ## Executive Summary
 
@@ -437,4 +437,4 @@ The Week 4 enterprise features implementation demonstrates **strong security pra
 
 **Audit Date**: November 16, 2025  
 **Next Audit**: Week 6 (Pre-Production)  
-**Auditor**: Plinto Security Team
+**Auditor**: Janua Security Team

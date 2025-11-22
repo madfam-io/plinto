@@ -36,7 +36,7 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_APP_URL": "https://plinto.dev",
-    "NEXT_PUBLIC_API_URL": "https://api.plinto.dev"
+    "NEXT_PUBLIC_APP_URL": "https://janua.dev",
+    "NEXT_PUBLIC_API_URL": "https://api.janua.dev"
   }
 }

@@ -1,11 +1,11 @@
 Hi {{ user_name }},
 
-Welcome to Plinto! Your account has been successfully created and verified.
+Welcome to Janua! Your account has been successfully created and verified.
 
 Get started by visiting your dashboard:
 {{ dashboard_url }}
 
-What you can do with Plinto:
+What you can do with Janua:
 • Manage your digital identity
 • Connect with secure applications
 • Control your data and privacy
@@ -15,5 +15,5 @@ Need help getting started? Check out our documentation or contact us at {{ suppo
 We're excited to have you on board!
 
 ---
-Plinto Team
+Janua Team
 {{ base_url }}

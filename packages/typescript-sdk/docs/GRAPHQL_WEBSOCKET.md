@@ -1,6 +1,6 @@
 # GraphQL & WebSocket Client Integration
 
-This document describes the GraphQL and WebSocket client integrations added to the Plinto TypeScript SDK.
+This document describes the GraphQL and WebSocket client integrations added to the Janua TypeScript SDK.
 
 ## Overview
 
@@ -16,12 +16,12 @@ The SDK now includes two powerful real-time features:
 Enable GraphQL by providing `graphqlUrl` (and optionally `graphqlWsUrl` for subscriptions) in the SDK configuration:
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  graphqlUrl: 'https://api.plinto.dev/graphql',
-  graphqlWsUrl: 'wss://api.plinto.dev/graphql', // Optional, for subscriptions
+  baseURL: 'https://api.janua.dev',
+  graphqlUrl: 'https://api.janua.dev/graphql',
+  graphqlWsUrl: 'wss://api.janua.dev/graphql', // Optional, for subscriptions
 });
 ```
 
@@ -178,11 +178,11 @@ class GraphQL {
 Enable WebSocket by providing `wsUrl` in the SDK configuration:
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  wsUrl: 'wss://api.plinto.dev/ws',
+  baseURL: 'https://api.janua.dev',
+  wsUrl: 'wss://api.janua.dev/ws',
   wsAutoConnect: true, // Auto-connect on initialization (default: true)
   wsReconnect: true, // Enable auto-reconnection (default: true)
   wsReconnectInterval: 5000, // Reconnect delay in ms (default: 5000)
@@ -355,14 +355,14 @@ type WebSocketStatus =
 Combine GraphQL queries with WebSocket subscriptions for powerful real-time applications:
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 import { gql } from '@apollo/client';
 
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  graphqlUrl: 'https://api.plinto.dev/graphql',
-  graphqlWsUrl: 'wss://api.plinto.dev/graphql',
-  wsUrl: 'wss://api.plinto.dev/ws',
+  baseURL: 'https://api.janua.dev',
+  graphqlUrl: 'https://api.janua.dev/graphql',
+  graphqlWsUrl: 'wss://api.janua.dev/graphql',
+  wsUrl: 'wss://api.janua.dev/ws',
 });
 
 // Initial data load via GraphQL
@@ -406,7 +406,7 @@ Configure Apollo Client cache for optimal performance:
 
 ```typescript
 import { InMemoryCache } from '@apollo/client/core';
-import { createGraphQLClient } from '@plinto/typescript-sdk';
+import { createGraphQLClient } from '@janua/typescript-sdk';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -426,8 +426,8 @@ const cache = new InMemoryCache({
 });
 
 const graphqlClient = createGraphQLClient({
-  httpUrl: 'https://api.plinto.dev/graphql',
-  wsUrl: 'wss://api.plinto.dev/graphql',
+  httpUrl: 'https://api.janua.dev/graphql',
+  wsUrl: 'wss://api.janua.dev/graphql',
   cache,
   getAuthToken: () => client.getAccessToken(),
   debug: true,
@@ -482,7 +482,7 @@ import type {
   WebSocketMessage,
   WebSocketEventMap,
   WebSocketStatus,
-} from '@plinto/typescript-sdk';
+} from '@janua/typescript-sdk';
 ```
 
 ---
@@ -576,14 +576,14 @@ Add the GraphQL URL to your configuration:
 ```typescript
 // Before
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
+  baseURL: 'https://api.janua.dev',
 });
 
 // After
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  graphqlUrl: 'https://api.plinto.dev/graphql',
-  graphqlWsUrl: 'wss://api.plinto.dev/graphql',
+  baseURL: 'https://api.janua.dev',
+  graphqlUrl: 'https://api.janua.dev/graphql',
+  graphqlWsUrl: 'wss://api.janua.dev/graphql',
 });
 ```
 
@@ -594,13 +594,13 @@ Add the WebSocket URL to your configuration:
 ```typescript
 // Before
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
+  baseURL: 'https://api.janua.dev',
 });
 
 // After
 const client = createClient({
-  baseURL: 'https://api.plinto.dev',
-  wsUrl: 'wss://api.plinto.dev/ws',
+  baseURL: 'https://api.janua.dev',
+  wsUrl: 'wss://api.janua.dev/ws',
 });
 ```
 
@@ -610,9 +610,9 @@ const client = createClient({
 
 For issues, questions, or feature requests:
 
-- GitHub Issues: https://github.com/madfam-io/plinto/issues
-- Documentation: https://docs.plinto.dev
-- Community: https://community.plinto.dev
+- GitHub Issues: https://github.com/madfam-io/janua/issues
+- Documentation: https://docs.janua.dev
+- Community: https://community.janua.dev
 
 ---
 

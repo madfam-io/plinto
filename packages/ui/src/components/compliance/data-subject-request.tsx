@@ -42,7 +42,7 @@ export interface DataSubjectRequestFormProps {
   onSuccess?: (request: DataSubjectRequest) => void
   onCancel?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   defaultRequestType?: DataSubjectRightType
   existingRequests?: DataSubjectRequest[]
@@ -56,7 +56,7 @@ export function DataSubjectRequestForm({
   onSuccess,
   onCancel,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   defaultRequestType = 'access',
   existingRequests = [],
@@ -144,8 +144,8 @@ export function DataSubjectRequestForm({
 
       let request: DataSubjectRequest
 
-      if (plintoClient) {
-        request = await plintoClient.compliance.createDataSubjectRequest(requestData)
+      if (januaClient) {
+        request = await januaClient.compliance.createDataSubjectRequest(requestData)
       } else if (onSubmit) {
         request = await onSubmit(requestData)
       } else {

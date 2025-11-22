@@ -1,12 +1,12 @@
-# @plinto/config
+# @janua/config
 
-> **Centralized configuration management** for the Plinto platform
+> **Centralized configuration management** for the Janua platform
 
 **Version:** 0.1.0 · **Type:** Configuration Layer · **Status:** Production Ready
 
 ## 📋 Overview
 
-@plinto/config provides centralized, type-safe configuration management across all Plinto services and applications. It supports environment-based configs, runtime validation, secret management, feature flags, and dynamic configuration updates without restarts.
+@janua/config provides centralized, type-safe configuration management across all Janua services and applications. It supports environment-based configs, runtime validation, secret management, feature flags, and dynamic configuration updates without restarts.
 
 ## 🚀 Quick Start
 
@@ -14,7 +14,7 @@
 
 ```bash
 # Install package
-yarn add @plinto/config
+yarn add @janua/config
 
 # Install optional integrations
 yarn add dotenv joi
@@ -23,7 +23,7 @@ yarn add dotenv joi
 ### Basic Usage
 
 ```typescript
-import { Config } from '@plinto/config';
+import { Config } from '@janua/config';
 
 // Load configuration
 const config = Config.load({
@@ -46,7 +46,7 @@ const dbConfig = config.getTyped<DatabaseConfig>('database');
 // config/default.ts
 export default {
   app: {
-    name: 'Plinto',
+    name: 'Janua',
     version: '1.0.0'
   },
   server: {
@@ -125,7 +125,7 @@ packages/config/
 ┌─────────────────────────────────────┐
 │         Application Layer           │
 ├─────────────────────────────────────┤
-│         @plinto/config              │
+│         @janua/config              │
 │  ┌───────────────────────────────┐  │
 │  │   Configuration Manager       │  │
 │  │  ┌──────────────────────┐     │  │
@@ -145,7 +145,7 @@ packages/config/
 ### Loading Configuration
 
 ```typescript
-import { Config } from '@plinto/config';
+import { Config } from '@janua/config';
 
 // Simple loading
 const config = Config.load();
@@ -165,7 +165,7 @@ const config = await Config.loadAsync({
   sources: ['consul', 'vault'],
   consul: {
     host: 'consul.example.com',
-    key: 'plinto/config'
+    key: 'janua/config'
   }
 });
 ```
@@ -183,11 +183,11 @@ const config = Config.load({
 // With prefix
 const config = Config.load({
   sources: ['env'],
-  envPrefix: 'PLINTO_'
+  envPrefix: 'JANUA_'
 });
 
 // .env file
-DATABASE_URL=postgresql://localhost/plinto
+DATABASE_URL=postgresql://localhost/janua
 REDIS_URL=redis://localhost:6379
 JWT_SECRET=secret123
 ```
@@ -198,7 +198,7 @@ JWT_SECRET=secret123
 // config/default.json
 {
   "app": {
-    "name": "Plinto",
+    "name": "Janua",
     "version": "1.0.0"
   },
   "database": {
@@ -224,7 +224,7 @@ const config = await Config.loadAsync({
   consul: {
     host: 'consul.example.com',
     port: 8500,
-    key: 'plinto/config',
+    key: 'janua/config',
     watch: true // Auto-reload on changes
   }
 });
@@ -233,7 +233,7 @@ const config = await Config.loadAsync({
 const config = await Config.loadAsync({
   sources: ['remote'],
   remote: {
-    url: 'https://config.example.com/plinto',
+    url: 'https://config.example.com/janua',
     headers: {
       'Authorization': 'Bearer token'
     },
@@ -270,7 +270,7 @@ const config = Config.load({
 ### Secret Providers
 
 ```typescript
-import { SecretManager } from '@plinto/config/secrets';
+import { SecretManager } from '@janua/config/secrets';
 
 // AWS Secrets Manager
 const secrets = new SecretManager({
@@ -325,7 +325,7 @@ const apiKey = await secrets.getSecret('external/api-key');
 ### Secret Rotation
 
 ```typescript
-import { SecretRotation } from '@plinto/config/secrets';
+import { SecretRotation } from '@janua/config/secrets';
 
 const rotation = new SecretRotation({
   provider: secrets,
@@ -350,7 +350,7 @@ await rotation.start();
 ### Schema Validation
 
 ```typescript
-import { Schema } from '@plinto/config';
+import { Schema } from '@janua/config';
 
 // Define schema
 const schema = Schema.object({
@@ -418,7 +418,7 @@ try {
 ### Feature Flag Management
 
 ```typescript
-import { FeatureFlags } from '@plinto/config/features';
+import { FeatureFlags } from '@janua/config/features';
 
 const flags = new FeatureFlags({
   provider: 'local', // or 'launchdarkly', 'split', 'unleash'
@@ -443,7 +443,7 @@ if (flags.isEnabled('beta-features', { userId, plan: 'pro' })) {
 ### A/B Testing
 
 ```typescript
-import { Experiments } from '@plinto/config/features';
+import { Experiments } from '@janua/config/features';
 
 const experiments = new Experiments({
   provider: 'optimizely',
@@ -475,7 +475,7 @@ experiments.track('purchase-completed', userId, {
 ### Gradual Rollout
 
 ```typescript
-import { Rollout } from '@plinto/config/features';
+import { Rollout } from '@janua/config/features';
 
 const rollout = new Rollout({
   feature: 'new-dashboard',
@@ -580,7 +580,7 @@ const poolMax = config.get('database.pool.max'); // number
 
 ```typescript
 // Generate TypeScript types from schema
-import { generateTypes } from '@plinto/config/generator';
+import { generateTypes } from '@janua/config/generator';
 
 const types = generateTypes(schema);
 // Outputs TypeScript interface definitions
@@ -623,7 +623,7 @@ const config = Config.load({
 ### Mock Configuration
 
 ```typescript
-import { MockConfig } from '@plinto/config/testing';
+import { MockConfig } from '@janua/config/testing';
 
 // Create mock config for tests
 const mockConfig = new MockConfig({
@@ -650,7 +650,7 @@ describe('Configuration', () => {
       configPath: './test/fixtures'
     });
     
-    expect(config.get('app.name')).toBe('Plinto');
+    expect(config.get('app.name')).toBe('Janua');
   });
   
   test('validates configuration', () => {
@@ -671,22 +671,22 @@ describe('Configuration', () => {
 
 ```bash
 # Validate configuration
-plinto-config validate --schema ./schema.json
+janua-config validate --schema ./schema.json
 
 # Generate TypeScript types
-plinto-config generate-types --output ./types.ts
+janua-config generate-types --output ./types.ts
 
 # Encrypt secrets
-plinto-config encrypt --key $ENCRYPTION_KEY
+janua-config encrypt --key $ENCRYPTION_KEY
 
 # Decrypt secrets
-plinto-config decrypt --key $ENCRYPTION_KEY
+janua-config decrypt --key $ENCRYPTION_KEY
 
 # Compare configurations
-plinto-config diff ./config/prod.json ./config/staging.json
+janua-config diff ./config/prod.json ./config/staging.json
 
 # Export configuration
-plinto-config export --format json > config.json
+janua-config export --format json > config.json
 ```
 
 ## 📊 Monitoring
@@ -694,7 +694,7 @@ plinto-config export --format json > config.json
 ### Configuration Metrics
 
 ```typescript
-import { ConfigMonitor } from '@plinto/config/monitoring';
+import { ConfigMonitor } from '@janua/config/monitoring';
 
 const monitor = new ConfigMonitor(config);
 
@@ -722,7 +722,7 @@ monitor.on('change', (event) => {
 // Good: Hierarchical and organized
 {
   "app": {
-    "name": "Plinto",
+    "name": "Janua",
     "version": "1.0.0"
   },
   "services": {
@@ -735,7 +735,7 @@ monitor.on('change', (event) => {
 
 // Bad: Flat and unorganized
 {
-  "appName": "Plinto",
+  "appName": "Janua",
   "appVersion": "1.0.0",
   "databaseHost": "localhost",
   "databasePort": 5432
@@ -767,7 +767,7 @@ monitor.on('change', (event) => {
 
 ```bash
 # Clone the repo
-git clone https://github.com/plinto/plinto.git
+git clone https://github.com/janua/janua.git
 
 # Navigate to config package
 cd packages/config
@@ -784,9 +784,9 @@ yarn build
 
 ## 📚 Resources
 
-- [Configuration Best Practices](https://docs.plinto.dev/config/best-practices)
-- [Schema Documentation](https://docs.plinto.dev/config/schemas)
-- [Secret Management Guide](https://docs.plinto.dev/config/secrets)
+- [Configuration Best Practices](https://docs.janua.dev/config/best-practices)
+- [Schema Documentation](https://docs.janua.dev/config/schemas)
+- [Secret Management Guide](https://docs.janua.dev/config/secrets)
 
 ## 🎯 Roadmap
 
@@ -808,4 +808,4 @@ See [Config Contributing Guide](../../docs/contributing/config.md) for developme
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

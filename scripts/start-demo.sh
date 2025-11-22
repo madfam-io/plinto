@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Plinto Local Demo Startup Script
+# Janua Local Demo Startup Script
 # Starts all services needed for local testing and demonstration
 
 set -e
@@ -18,7 +18,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 echo -e "${BLUE}"
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║          PLINTO LOCAL DEMO - STARTUP SCRIPT                ║"
+echo "║          JANUA LOCAL DEMO - STARTUP SCRIPT                ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 

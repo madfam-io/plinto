@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GraphQL } from '../../src/graphql';
 import { WebSocket } from '../../src/websocket';
-import { PlintoClient } from '../../src/client';
+import { JanuaClient } from '../../src/client';
 import { gql } from '@apollo/client';
 
 describe('GraphQL Client Integration', () => {
@@ -464,11 +464,11 @@ describe('WebSocket Client Integration', () => {
   });
 });
 
-describe('PlintoClient Integration', () => {
-  let client: PlintoClient;
+describe('JanuaClient Integration', () => {
+  let client: JanuaClient;
 
   beforeEach(() => {
-    client = new PlintoClient({
+    client = new JanuaClient({
       apiUrl: 'http://localhost:4000',
       graphqlUrl: 'http://localhost:4000/graphql',
       graphqlWsUrl: 'ws://localhost:4000/graphql',
@@ -506,7 +506,7 @@ describe('PlintoClient Integration', () => {
     });
 
     it('should handle WebSocket auto-connect configuration', () => {
-      const autoClient = new PlintoClient({
+      const autoClient = new JanuaClient({
         apiUrl: 'http://localhost:4000',
         wsUrl: 'ws://localhost:4000/ws',
         wsAutoConnect: true,

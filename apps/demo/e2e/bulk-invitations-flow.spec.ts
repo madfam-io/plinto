@@ -71,8 +71,8 @@ test.describe('Bulk Invitation Upload', () => {
       await expect(page.getByText(/preview/i)).toBeVisible()
 
       // Verify parsed data displayed
-      await expect(page.getByText(/member1@plinto.dev/i)).toBeVisible()
-      await expect(page.getByText(/admin1@plinto.dev/i)).toBeVisible()
+      await expect(page.getByText(/member1@janua.dev/i)).toBeVisible()
+      await expect(page.getByText(/admin1@janua.dev/i)).toBeVisible()
     })
 
     test('should validate CSV format', async ({ page }) => {
@@ -122,7 +122,7 @@ test.describe('Bulk Invitation Upload', () => {
       await expect(page.getByText(/duplicate.*email/i)).toBeVisible()
 
       // Verify which email is duplicated
-      await expect(page.getByText(/duplicate@plinto.dev/i)).toBeVisible()
+      await expect(page.getByText(/duplicate@janua.dev/i)).toBeVisible()
     })
 
     test('should validate email formats in bulk', async ({ page }) => {
@@ -184,8 +184,8 @@ test.describe('Bulk Invitation Upload', () => {
       await expect(page.getByRole('columnheader', { name: /message/i })).toBeVisible()
 
       // Verify data rows
-      await expect(page.getByRole('cell', { name: /member1@plinto.dev/i })).toBeVisible()
-      await expect(page.getByRole('cell', { name: /admin1@plinto.dev/i })).toBeVisible()
+      await expect(page.getByRole('cell', { name: /member1@janua.dev/i })).toBeVisible()
+      await expect(page.getByRole('cell', { name: /admin1@janua.dev/i })).toBeVisible()
     })
 
     test('should show validation status for each row', async ({ page }) => {
@@ -197,7 +197,7 @@ test.describe('Bulk Invitation Upload', () => {
       const previewTable = page.locator('table')
 
       // Check for success indicators on valid rows
-      await expect(previewTable.getByText(/valid1@plinto.dev/i).locator('..')).toContainText(
+      await expect(previewTable.getByText(/valid1@janua.dev/i).locator('..')).toContainText(
         /(✓|valid|success)/i
       )
 
@@ -266,7 +266,7 @@ test.describe('Bulk Invitation Upload', () => {
         await page.waitForTimeout(3000)
 
         // Verify detailed results with specific emails
-        await expect(page.getByText(/valid1@plinto.dev.*success/i)).toBeVisible()
+        await expect(page.getByText(/valid1@janua.dev.*success/i)).toBeVisible()
         await expect(page.getByText(/invalid-email.*failed/i)).toBeVisible()
       }
     })
@@ -371,7 +371,7 @@ test.describe('Bulk Invitation Upload', () => {
     test('should show progress indicator during upload', async ({ page }) => {
       const largeCSV = generateBulkInvitationsCSV(
         Array.from({ length: 50 }, (_, i) => ({
-          email: `user${i}@plinto.dev`,
+          email: `user${i}@janua.dev`,
           role: 'member',
           message: `Welcome user ${i}`,
         }))

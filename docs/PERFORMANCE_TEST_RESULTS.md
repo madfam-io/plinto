@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-Comprehensive performance testing of real-time features (GraphQL subscriptions and WebSocket pub/sub) demonstrates that the Plinto platform meets all production performance requirements:
+Comprehensive performance testing of real-time features (GraphQL subscriptions and WebSocket pub/sub) demonstrates that the Janua platform meets all production performance requirements:
 
 - ✅ **Concurrent Connections**: Handles 100+ concurrent WebSocket connections with <250ms P95 latency
 - ✅ **Message Throughput**: Achieves 100+ msg/s sustained throughput with <100ms P50 latency
@@ -572,7 +572,7 @@ Recommended SLOs for production:
 
 ### Performance Summary
 
-The Plinto platform **exceeds all performance requirements** for beta launch:
+The Janua platform **exceeds all performance requirements** for beta launch:
 
 - ✅ **Concurrent Connections**: Handles 100+ connections (2.3% error rate at capacity)
 - ✅ **Message Throughput**: Achieves 98.7 msg/s sustained (98.7% of target)

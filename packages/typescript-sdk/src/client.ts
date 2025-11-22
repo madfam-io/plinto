@@ -1,9 +1,9 @@
 /**
- * Main Plinto SDK client
+ * Main Janua SDK client
  */
 
 import type {
-  PlintoConfig,
+  JanuaConfig,
   SdkEventMap,
   SdkEventType,
   SdkEventHandler,
@@ -29,10 +29,10 @@ import { GraphQL } from './graphql';
 import { WebSocket } from './websocket';
 
 /**
- * Main Plinto SDK client class
+ * Main Janua SDK client class
  */
-export class PlintoClient extends EventEmitter<SdkEventMap> {
-  private config: Required<PlintoConfig>;
+export class JanuaClient extends EventEmitter<SdkEventMap> {
+  private config: Required<JanuaConfig>;
   private tokenManager: TokenManager;
   private httpClient: HttpClient;
 
@@ -55,7 +55,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   private enterprise: EnterpriseFeatures;
   private licenseInfo?: LicenseInfo;
 
-  constructor(config: Partial<PlintoConfig> = {}) {
+  constructor(config: Partial<JanuaConfig> = {}) {
     super();
 
     // Validate and merge configuration
@@ -134,7 +134,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   /**
    * Validate and merge configuration with defaults
    */
-  private validateAndMergeConfig(config: Partial<PlintoConfig>): Required<PlintoConfig> {
+  private validateAndMergeConfig(config: Partial<JanuaConfig>): Required<JanuaConfig> {
     // Validate required configuration
     if (!config.baseURL) {
       throw new ConfigurationError('baseURL is required');
@@ -154,7 +154,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
       customStorage: undefined
     };
 
-    const mergedConfig = { ...defaults, ...config } as Required<PlintoConfig>;
+    const mergedConfig = { ...defaults, ...config } as Required<JanuaConfig>;
 
     // Validate baseURL format
     try {
@@ -348,14 +348,14 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   /**
    * Update configuration
    */
-  updateConfig(updates: Partial<PlintoConfig>): void {
+  updateConfig(updates: Partial<JanuaConfig>): void {
     this.config = this.validateAndMergeConfig({ ...this.config, ...updates });
   }
 
   /**
    * Get current configuration
    */
-  getConfig(): Required<PlintoConfig> {
+  getConfig(): Required<JanuaConfig> {
     return { ...this.config };
   }
 
@@ -552,12 +552,12 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
     const version = this.getVersion();
 
     if (EnvUtils.isBrowser()) {
-      return `plinto-typescript-sdk/${version} (Browser)`;
+      return `janua-typescript-sdk/${version} (Browser)`;
     } else if (EnvUtils.isNode()) {
       const nodeVersion = typeof process !== 'undefined' ? process.version : 'unknown';
-      return `plinto-typescript-sdk/${version} (Node.js ${nodeVersion})`;
+      return `janua-typescript-sdk/${version} (Node.js ${nodeVersion})`;
     } else {
-      return `plinto-typescript-sdk/${version}`;
+      return `janua-typescript-sdk/${version}`;
     }
   }
 
@@ -628,13 +628,13 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
 }
 
 /**
- * Create a new Plinto client instance
+ * Create a new Janua client instance
  */
-export function createClient(config: Partial<PlintoConfig> = {}): PlintoClient {
-  return new PlintoClient(config);
+export function createClient(config: Partial<JanuaConfig> = {}): JanuaClient {
+  return new JanuaClient(config);
 }
 
 /**
  * Default export
  */
-export default PlintoClient;
+export default JanuaClient;

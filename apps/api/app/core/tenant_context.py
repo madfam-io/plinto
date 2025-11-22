@@ -122,7 +122,7 @@ class TenantMiddleware(BaseHTTPMiddleware):
             organization_id = None
             user_id = None
 
-            # 1. Check subdomain (e.g., acme.plinto.dev)
+            # 1. Check subdomain (e.g., acme.janua.dev)
             host = request.headers.get("host", "")
             if "." in host:
                 subdomain = host.split(".")[0]

@@ -125,7 +125,7 @@ class APMConfig:
         # DataDog configuration
         if self.datadog_enabled:
             ddtrace.config.env = self._get_env('DD_ENV', 'production')
-            ddtrace.config.service = self._get_env('DD_SERVICE', 'plinto-api')
+            ddtrace.config.service = self._get_env('DD_SERVICE', 'janua-api')
             ddtrace.config.version = self._get_env('DD_VERSION', '1.0.0')
         
         # New Relic configuration
@@ -140,7 +140,7 @@ class APMConfig:
                 'ssl': self._get_env_bool('APPD_SSL', True),
                 'account': self._get_env('APPD_ACCOUNT'),
                 'access_key': self._get_env('APPD_ACCESS_KEY'),
-                'app': self._get_env('APPD_APP_NAME', 'Plinto'),
+                'app': self._get_env('APPD_APP_NAME', 'Janua'),
                 'tier': self._get_env('APPD_TIER_NAME', 'API'),
                 'node': self._get_env('APPD_NODE_NAME', 'api-node-1')
             }
@@ -149,7 +149,7 @@ class APMConfig:
         # OpenTelemetry configuration
         if self.opentelemetry_enabled:
             resource = Resource.create({
-                "service.name": "plinto-api",
+                "service.name": "janua-api",
                 "service.version": "1.0.0"
             })
             
@@ -223,7 +223,7 @@ class ProductionMonitoringMiddleware(BaseHTTPMiddleware):
         if self.config.datadog_enabled:
             dd_span = dd_tracer.trace(
                 request.url.path,
-                service="plinto-api",
+                service="janua-api",
                 resource=f"{request.method} {request.url.path}",
                 span_type="web"
             )

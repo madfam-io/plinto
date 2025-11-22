@@ -9,7 +9,7 @@ if (typeof global !== 'undefined') {
 
   // Set test environment variable
   process.env.NODE_ENV = 'test';
-  process.env.PLINTO_ENV = 'test';
+  process.env.JANUA_ENV = 'test';
 }
 
 // Clean up after each test

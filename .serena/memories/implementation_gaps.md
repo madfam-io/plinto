@@ -1,4 +1,4 @@
-# Plinto Implementation Gaps Summary
+# Janua Implementation Gaps Summary
 
 ## Critical Missing Features (100% Gap)
 1. **Policies & Authorization** - No OPA-compatible policy system

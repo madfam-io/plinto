@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
-  title: Plinto Enterprise Authentication API
+  title: Janua Enterprise Authentication API
   description: |
-    Comprehensive authentication and enterprise features API for Plinto platform.
+    Comprehensive authentication and enterprise features API for Janua platform.
 
     ## Features
     - JWT-based authentication with refresh tokens
@@ -29,7 +29,7 @@ info:
     All errors follow RFC 7807 Problem Details format:
     ```json
     {
-      "type": "https://api.plinto.dev/errors/validation",
+      "type": "https://api.janua.dev/errors/validation",
       "title": "Validation Error",
       "status": 400,
       "detail": "Email format is invalid",
@@ -38,17 +38,17 @@ info:
     ```
   version: 1.0.0-beta
   contact:
-    name: Plinto API Support
-    url: https://plinto.dev/support
-    email: api@plinto.dev
+    name: Janua API Support
+    url: https://janua.dev/support
+    email: api@janua.dev
   license:
     name: Proprietary
-    url: https://plinto.dev/license
+    url: https://janua.dev/license
 
 servers:
-  - url: https://api.plinto.dev/v1
+  - url: https://api.janua.dev/v1
     description: Production server
-  - url: https://staging-api.plinto.dev/v1
+  - url: https://staging-api.janua.dev/v1
     description: Staging server
   - url: http://localhost:8000/v1
     description: Local development server
@@ -293,10 +293,10 @@ components:
           properties:
             name:
               type: string
-              example: Plinto
+              example: Janua
             id:
               type: string
-              example: plinto.dev
+              example: janua.dev
         user:
           type: object
           properties:
@@ -673,7 +673,7 @@ components:
         type:
           type: string
           format: uri
-          example: https://api.plinto.dev/errors/validation
+          example: https://api.janua.dev/errors/validation
         title:
           type: string
           example: Validation Error

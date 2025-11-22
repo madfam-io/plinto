@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, X, AlertCircle, Users, Zap, Shield, Code2, HelpCircle } from 'lucide-react'
-import { Button } from '@plinto/ui'
-import { Badge } from '@plinto/ui'
+import { Button } from '@janua/ui'
+import { Badge } from '@janua/ui'
 import Link from 'next/link'
 
 interface PricingTier {

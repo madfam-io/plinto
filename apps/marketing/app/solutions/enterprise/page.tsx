@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { ArrowRight, Building2, Shield, Globe, Users, Settings, Lock, FileText, Award } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Enterprise Authentication | Plinto',
+  title: 'Enterprise Authentication | Janua',
   description: 'Enterprise-grade authentication with SOC 2 compliance, 99.99% uptime, and dedicated support. Secure your organization at scale.',
 }
 
@@ -36,14 +36,14 @@ export default function EnterprisePage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="group" asChild>
-                <Link href="mailto:enterprise@plinto.dev">
+                <Link href="mailto:enterprise@janua.dev">
                   Contact Sales
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
 
               <Button size="lg" variant="outline" asChild>
-                <Link href="https://docs.plinto.dev/enterprise">
+                <Link href="https://docs.janua.dev/enterprise">
                   Enterprise Docs
                 </Link>
               </Button>
@@ -202,7 +202,7 @@ export default function EnterprisePage() {
             Ready for Enterprise Authentication?
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-300 mb-10">
-            Join Fortune 500 companies using Plinto to secure their organizations.
+            Join Fortune 500 companies using Janua to secure their organizations.
             Let's discuss your specific requirements and compliance needs.
           </p>
 
@@ -223,14 +223,14 @@ export default function EnterprisePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="group" asChild>
-              <Link href="mailto:enterprise@plinto.dev">
+              <Link href="mailto:enterprise@janua.dev">
                 Contact Enterprise Sales
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
 
             <Button size="lg" variant="outline" asChild>
-              <Link href="https://calendly.com/plinto/enterprise-demo">
+              <Link href="https://calendly.com/janua/enterprise-demo">
                 Schedule Demo
               </Link>
             </Button>

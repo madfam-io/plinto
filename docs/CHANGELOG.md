@@ -9,14 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial package structure for PyPI distribution
-- Comprehensive CLI interface with `plinto` command
+- Comprehensive CLI interface with `janua` command
 - Middleware stack for easy FastAPI integration
 - Complete package documentation and examples
 
 ## [0.1.0] - 2025-01-19
 
 ### Added
-- Initial release of Plinto authentication platform
+- Initial release of Janua authentication platform
 - Core authentication services (AuthService, JWTService, CacheService)
 - User and organization management models
 - Multi-tenancy support with organization-based access
@@ -85,10 +85,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Package Distribution Features
 
 ### Added in Package Release
-- **PyPI Distribution**: Available via `pip install plinto`
+- **PyPI Distribution**: Available via `pip install janua`
 - **CLI Interface**: Complete command-line tools for deployment and management
 - **Middleware Stack**: Pre-configured FastAPI middleware for easy integration
-- **Optional Dependencies**: Modular installation with `plinto[email]`, `plinto[sso]`, `plinto[dev]`
+- **Optional Dependencies**: Modular installation with `janua[email]`, `janua[sso]`, `janua[dev]`
 - **Entry Points**: Package scripts and FastAPI middleware entry points
 - **Development Tools**: Integrated linting, formatting, and testing tools
 - **Docker Support**: Container-ready deployment configuration
@@ -96,20 +96,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Installation
 ```bash
-pip install plinto
+pip install janua
 ```
 
 ### Quick Start
 ```python
-from plinto import create_app
+from janua import create_app
 app = create_app(title="My App")
 ```
 
 ### CLI Usage
 ```bash
-plinto server --host 0.0.0.0 --port 8000
-plinto migrate
-plinto create-user --email admin@example.com --admin
+janua server --host 0.0.0.0 --port 8000
+janua migrate
+janua create-user --email admin@example.com --admin
 ```
 
 ---
@@ -138,7 +138,7 @@ plinto create-user --email admin@example.com --admin
 - See `pyproject.toml` for complete dependency list
 
 ### Support
-- Documentation: https://docs.plinto.dev
-- Issues: https://github.com/madfam-io/plinto/issues
-- Community: https://discord.gg/plinto
-- Security: security@plinto.dev
+- Documentation: https://docs.janua.dev
+- Issues: https://github.com/madfam-io/janua/issues
+- Community: https://discord.gg/janua
+- Security: security@janua.dev

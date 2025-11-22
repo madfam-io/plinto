@@ -39,7 +39,7 @@ export interface OrganizationProfileProps {
   }
   /** Current user's role in the organization */
   userRole: 'owner' | 'admin' | 'member'
-  /** Organization members (optional if plintoClient provided) */
+  /** Organization members (optional if januaClient provided) */
   members?: OrganizationMember[]
   /** Callback to update organization */
   onUpdateOrganization?: (data: {
@@ -61,8 +61,8 @@ export interface OrganizationProfileProps {
   onDeleteOrganization?: () => Promise<void>
   /** Callback on error */
   onError?: (error: Error) => void
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -80,7 +80,7 @@ export function OrganizationProfile({
   onRemoveMember,
   onDeleteOrganization,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: OrganizationProfileProps) {
   const [activeTab, setActiveTab] = React.useState<'general' | 'members' | 'danger'>('general')
@@ -113,9 +113,9 @@ export function OrganizationProfile({
       setIsLoading(true)
       const fetchMembers = async () => {
         try {
-          if (plintoClient) {
-            // Use Plinto SDK client for real API integration
-            const response = await plintoClient.organizations.listMembers(organization.id)
+          if (januaClient) {
+            // Use Janua SDK client for real API integration
+            const response = await januaClient.organizations.listMembers(organization.id)
             setMembers(response.data || response)
           } else if (onFetchMembers) {
             // Use custom callback
@@ -145,7 +145,7 @@ export function OrganizationProfile({
 
       fetchMembers()
     }
-  }, [members, onFetchMembers, onError, activeTab, plintoClient, apiUrl, organization.id])
+  }, [members, onFetchMembers, onError, activeTab, januaClient, apiUrl, organization.id])
 
   const handleSaveGeneral = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -154,9 +154,9 @@ export function OrganizationProfile({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        await plintoClient.organizations.updateOrganization(organization.id, {
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        await januaClient.organizations.updateOrganization(organization.id, {
           name: orgName,
           slug: orgSlug,
           description: orgDescription,
@@ -220,14 +220,14 @@ export function OrganizationProfile({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        await plintoClient.organizations.inviteMember(organization.id, {
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        await januaClient.organizations.inviteMember(organization.id, {
           email: inviteEmail,
           role: inviteRole,
         })
         // Refresh members list
-        const response = await plintoClient.organizations.listMembers(organization.id)
+        const response = await januaClient.organizations.listMembers(organization.id)
         setMembers(response.data || response)
       } else if (onInviteMember) {
         // Use custom callback
@@ -274,9 +274,9 @@ export function OrganizationProfile({
 
   const handleUpdateMemberRole = async (memberId: string, role: 'admin' | 'member') => {
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        await plintoClient.organizations.updateMemberRole(organization.id, memberId, role)
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        await januaClient.organizations.updateMemberRole(organization.id, memberId, role)
         // Update local state
         setMembers((prev) =>
           prev?.map((m) => (m.id === memberId ? { ...m, role } : m))
@@ -315,9 +315,9 @@ export function OrganizationProfile({
 
   const handleRemoveMember = async (memberId: string) => {
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        await plintoClient.organizations.removeMember(organization.id, memberId)
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        await januaClient.organizations.removeMember(organization.id, memberId)
         // Update local state
         setMembers((prev) => prev?.filter((m) => m.id !== memberId))
       } else if (onRemoveMember) {
@@ -353,9 +353,9 @@ export function OrganizationProfile({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        await plintoClient.organizations.deleteOrganization(organization.id)
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        await januaClient.organizations.deleteOrganization(organization.id)
       } else if (onDeleteOrganization) {
         // Use custom callback
         await onDeleteOrganization()
@@ -486,7 +486,7 @@ export function OrganizationProfile({
                 pattern="[a-z0-9-]+"
               />
               <p className="text-xs text-muted-foreground">
-                Used in URLs: plinto.com/{orgSlug}
+                Used in URLs: janua.com/{orgSlug}
               </p>
             </div>
 

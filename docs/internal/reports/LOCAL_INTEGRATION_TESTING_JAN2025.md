@@ -1,7 +1,7 @@
 # Local Integration Testing Report - January 2025
 
 ## Overview
-Completed comprehensive local browser integration testing for the Plinto platform, validating frontend and backend functionality through automated E2E and API tests.
+Completed comprehensive local browser integration testing for the Janua platform, validating frontend and backend functionality through automated E2E and API tests.
 
 ## Test Execution Summary
 

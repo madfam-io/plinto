@@ -1,5 +1,5 @@
 """
-Enterprise Scalability Features for Plinto Platform
+Enterprise Scalability Features for Janua Platform
 Phase 2: Final implementation of enterprise-grade scalability patterns
 
 Implements:
@@ -210,7 +210,7 @@ class HorizontalScalingManager:
     def _generate_instance_id(self) -> str:
         """Generate unique instance identifier"""
         import uuid
-        return f"plinto-api-{uuid.uuid4().hex[:8]}"
+        return f"janua-api-{uuid.uuid4().hex[:8]}"
     
     async def register_instance(self):
         """Register this instance with service discovery"""

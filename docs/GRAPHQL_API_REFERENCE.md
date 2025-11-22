@@ -1,7 +1,7 @@
 # GraphQL API Reference
 
-**Endpoint**: `https://api.plinto.dev/graphql`  
-**WebSocket**: `wss://api.plinto.dev/graphql` (for subscriptions)  
+**Endpoint**: `https://api.janua.dev/graphql`  
+**WebSocket**: `wss://api.janua.dev/graphql` (for subscriptions)  
 **Version**: 1.0.0-beta  
 **Last Updated**: November 16, 2025
 
@@ -22,7 +22,7 @@
 
 ## Overview
 
-The Plinto GraphQL API provides a flexible, efficient way to query and mutate data. It supports:
+The Janua GraphQL API provides a flexible, efficient way to query and mutate data. It supports:
 
 - **Queries**: Read operations with precise field selection
 - **Mutations**: Write operations (create, update, delete)
@@ -55,7 +55,7 @@ Content-Type: application/json
 ### Example with cURL
 
 ```bash
-curl -X POST https://api.plinto.dev/graphql \
+curl -X POST https://api.janua.dev/graphql \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -H "Content-Type: application/json" \
   -d '{"query": "{ currentUser { id email name } }"}'
@@ -67,7 +67,7 @@ For subscriptions, send authentication in connection params:
 
 ```javascript
 const wsClient = createClient({
-  url: 'wss://api.plinto.dev/graphql',
+  url: 'wss://api.janua.dev/graphql',
   connectionParams: {
     authorization: `Bearer ${accessToken}`,
   },
@@ -908,7 +908,7 @@ subscription OnUserUpdated($userId: ID!) {
 import { createClient } from 'graphql-ws';
 
 const client = createClient({
-  url: 'wss://api.plinto.dev/graphql',
+  url: 'wss://api.janua.dev/graphql',
   connectionParams: {
     authorization: `Bearer ${accessToken}`,
   },
@@ -1284,8 +1284,8 @@ Query complexity is calculated based on:
 Interactive GraphQL Playground available at:
 
 **Development**: http://localhost:8000/graphql  
-**Staging**: https://staging-api.plinto.dev/graphql  
-**Production**: https://api.plinto.dev/graphql
+**Staging**: https://staging-api.janua.dev/graphql  
+**Production**: https://api.janua.dev/graphql
 
 Features:
 - Schema exploration
@@ -1297,9 +1297,9 @@ Features:
 
 ## Support
 
-- **Documentation**: https://docs.plinto.dev/graphql
-- **Discord**: https://discord.gg/plinto
-- **Email**: api@plinto.dev
+- **Documentation**: https://docs.janua.dev/graphql
+- **Discord**: https://discord.gg/janua
+- **Email**: api@janua.dev
 
 ---
 

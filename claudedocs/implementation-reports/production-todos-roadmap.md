@@ -64,8 +64,8 @@ This document tracks all 30 production TODOs identified in the cleanup analysis,
           "user_name": user_name,
           "backup_codes": backup_codes,
           "base_url": settings.BASE_URL,
-          "company_name": "Plinto",
-          "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+          "company_name": "Janua",
+          "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
       }
       
       html_content = self._render_template("mfa_recovery.html", context)
@@ -73,7 +73,7 @@ This document tracks all 30 production TODOs identified in the cleanup analysis,
       
       return await self.send_email(
           to_email=to_email,
-          subject="MFA Recovery Codes - Plinto",
+          subject="MFA Recovery Codes - Janua",
           html_content=html_content,
           text_content=text_content,
           priority=EmailPriority.HIGH,

@@ -1,5 +1,5 @@
 /**
- * Structured logging utilities for Plinto
+ * Structured logging utilities for Janua
  * Replaces console.log with structured, level-based logging
  */
 

@@ -1,7 +1,7 @@
 # Codebase Cleanup - November 15, 2025
 
 ## Summary
-Performed systematic cleanup of the Plinto monorepo root directory, removing temporary test artifacts and improving .gitignore patterns.
+Performed systematic cleanup of the Janua monorepo root directory, removing temporary test artifacts and improving .gitignore patterns.
 
 ## Files Removed
 1. **`.coverage`** (68KB) - Python coverage database file from test runs

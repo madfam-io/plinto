@@ -1,6 +1,6 @@
-# Plinto — SOFTWARE\_SPEC.md
+# Janua — SOFTWARE\_SPEC.md
 
-**Company:** Plinto (plinto.dev) by **Aureo Labs** (aureolabs.dev), a **MADFAM** company (madfam.io)
+**Company:** Janua (janua.dev) by **Aureo Labs** (aureolabs.dev), a **MADFAM** company (madfam.io)
 **Doc status:** Draft v1.1 (Updated for single-domain + Vercel/Railway/Cloudflare)
 **Owners:** Platform Eng @ Aureo Labs
 **Audience:** Engineering, Security, Product, GTM
@@ -10,15 +10,15 @@
 
 ## 0) Executive Summary
 
-**Plinto** is the **secure substrate** for identity: a unifying layer that verifies users at the edge, centralizes policy, and remains under customer control. We will operate **entirely on the single domain `plinto.dev`** during this stage, and our infra stack is **Vercel + Railway + Cloudflare (R2 + CDN/WAF + Turnstile)**.
+**Janua** is the **secure substrate** for identity: a unifying layer that verifies users at the edge, centralizes policy, and remains under customer control. We will operate **entirely on the single domain `janua.dev`** during this stage, and our infra stack is **Vercel + Railway + Cloudflare (R2 + CDN/WAF + Turnstile)**.
 
 **What we are building:**
 
-* **Plinto Core** — identity, sessions, orgs/tenants, roles, policy evaluation, audit, webhooks.
-* **Plinto Edge** — low-latency verification at the edge (Vercel/Cloudflare), JWKS distribution.
-* **Plinto Admin** — dashboard for users/orgs/roles, audits, incidents, billing hooks.
-* **Plinto SDKs** — first-class developer kits (Next.js/React/Node, later Vue, Go, Python).
-* **Plinto Enterprise** — SSO (SAML/OIDC), SCIM, residency, advanced audit, SLAs.
+* **Janua Core** — identity, sessions, orgs/tenants, roles, policy evaluation, audit, webhooks.
+* **Janua Edge** — low-latency verification at the edge (Vercel/Cloudflare), JWKS distribution.
+* **Janua Admin** — dashboard for users/orgs/roles, audits, incidents, billing hooks.
+* **Janua SDKs** — first-class developer kits (Next.js/React/Node, later Vue, Go, Python).
+* **Janua Enterprise** — SSO (SAML/OIDC), SCIM, residency, advanced audit, SLAs.
 
 **North Star:**
 
@@ -30,7 +30,7 @@
 
 ### 1.1 Goals
 
-1. Unify MADFAM product auth behind one adapter and platform, **served from plinto.dev**.
+1. Unify MADFAM product auth behind one adapter and platform, **served from janua.dev**.
 2. Deliver **passkeys/WebAuthn**, email/password, social logins, sessions, org/team RBAC, webhooks.
 3. Provide **edge verification** (p95 < 50ms) with global JWKS cache and per-tenant keys.
 4. Ship **enterprise features**: SAML/OIDC SSO, SCIM, audit trails, data residency controls.
@@ -40,7 +40,7 @@
 
 * No passwordless SMS; email + WebAuthn suffice for v1.
 * No on-prem installer at GA; focus on managed multi-region SaaS first.
-* No separate marketing domain (e.g., .io/.one). **Everything lives on `plinto.dev`.**
+* No separate marketing domain (e.g., .io/.one). **Everything lives on `janua.dev`.**
 
 ### 1.3 Success metrics
 
@@ -55,19 +55,19 @@
 
 ### 2.1 Component map
 
-* **Auth API (Plinto Core)** — FastAPI service (Python) with optional **SuperTokens** core for sessions/email-password & **OPA** for policy; Redis for sessions/ratelimits; Postgres for identity data; Celery/RQ workers for webhooks/email.
-* **Edge adapters (Plinto Edge)** — Vercel Middleware + Cloudflare Workers libraries for token verification using cached JWKS.
-* **Admin UI (Plinto Admin)** — Next.js app (Vercel) with RBAC-gated ops and audit explorer.
-* **SDKs (Plinto SDKs)** — `@plinto/nextjs`, `@plinto/react-sdk`, `@plinto/edge`, `@plinto/node`, `@plinto/core`.
+* **Auth API (Janua Core)** — FastAPI service (Python) with optional **SuperTokens** core for sessions/email-password & **OPA** for policy; Redis for sessions/ratelimits; Postgres for identity data; Celery/RQ workers for webhooks/email.
+* **Edge adapters (Janua Edge)** — Vercel Middleware + Cloudflare Workers libraries for token verification using cached JWKS.
+* **Admin UI (Janua Admin)** — Next.js app (Vercel) with RBAC-gated ops and audit explorer.
+* **SDKs (Janua SDKs)** — `@janua/nextjs`, `@janua/react-sdk`, `@janua/edge`, `@janua/node`, `@janua/core`.
 * **Enterprise connectors** — SAML/OIDC providers, SCIM server.
 * **Observability** — OpenTelemetry traces, metrics, structured logs; dashboards & alerts.
 
 ### 2.2 Deployment topology (v1)
 
-* **Railway** — Plinto Core services (API at `/api`), **Postgres** (primary), **Redis** (caches/ratelimits), background workers.
-* **Vercel** — Hosts the **single Next.js site** on `https://plinto.dev` (marketing/docs/admin UI), plus **Edge Middleware** for our own properties and reference apps.
-* **Cloudflare** — Fronts `plinto.dev` for WAF/CDN; **R2** for audit/exports; **Turnstile** on risky flows; caches **JWKS** globally.
-* **Email** — SES or SendGrid with warmed IPs; domain: `mail.plinto.dev` (DNS managed via Cloudflare).
+* **Railway** — Janua Core services (API at `/api`), **Postgres** (primary), **Redis** (caches/ratelimits), background workers.
+* **Vercel** — Hosts the **single Next.js site** on `https://janua.dev` (marketing/docs/admin UI), plus **Edge Middleware** for our own properties and reference apps.
+* **Cloudflare** — Fronts `janua.dev` for WAF/CDN; **R2** for audit/exports; **Turnstile** on risky flows; caches **JWKS** globally.
+* **Email** — SES or SendGrid with warmed IPs; domain: `mail.janua.dev` (DNS managed via Cloudflare).
 
 ```
 Browser/Client → Cloudflare (WAF/CDN/Turnstile) → Vercel (Next.js: /, /docs, /admin) → Railway (Core API mounted at /api)
@@ -76,10 +76,10 @@ Browser/Client → Cloudflare (WAF/CDN/Turnstile) → Vercel (Next.js: /, /docs,
 
 ### 2.3 Single-domain routing plan
 
-* **Public site/docs**: `https://plinto.dev/` and `https://plinto.dev/docs` (Next.js on Vercel).
-* **Admin**: `https://plinto.dev/admin` (Next.js pages gated by RBAC).
-* **API**: `https://plinto.dev/api/v1/...` (proxied via Vercel to Railway Core).
-* **Discovery**: `https://plinto.dev/.well-known/jwks.json` and `/openid-configuration` (Cloudflare-cached).
+* **Public site/docs**: `https://janua.dev/` and `https://janua.dev/docs` (Next.js on Vercel).
+* **Admin**: `https://janua.dev/admin` (Next.js pages gated by RBAC).
+* **API**: `https://janua.dev/api/v1/...` (proxied via Vercel to Railway Core).
+* **Discovery**: `https://janua.dev/.well-known/jwks.json` and `/openid-configuration` (Cloudflare-cached).
 
 ### 2.4 Protocols & standards
 
@@ -148,7 +148,7 @@ Browser/Client → Cloudflare (WAF/CDN/Turnstile) → Vercel (Next.js: /, /docs,
 
 ## 5) API Surface (v1)
 
-**Base URL:** `https://plinto.dev/api`
+**Base URL:** `https://janua.dev/api`
 **Auth:** Bearer tokens (JWT) for app→API; HttpOnly cookies (SameSite=None; Secure) for browser sessions.
 **Versioning:** `/api/v1/...`
 **Idempotency:** `Idempotency-Key` header on mutating endpoints.
@@ -177,7 +177,7 @@ Browser/Client → Cloudflare (WAF/CDN/Turnstile) → Vercel (Next.js: /, /docs,
 ### 5.4 Webhooks & events
 
 * `POST /api/v1/webhooks` — register; events: `user.created`, `login.success`, `mfa.enabled`, `token.revoked`, `org.invited`, etc.
-* Delivery: HMAC `X-Plinto-Signature`, retries with backoff; **DLQ** exposed via Admin.
+* Delivery: HMAC `X-Janua-Signature`, retries with backoff; **DLQ** exposed via Admin.
 
 ### 5.5 Discovery & federation
 
@@ -200,13 +200,13 @@ Browser/Client → Cloudflare (WAF/CDN/Turnstile) → Vercel (Next.js: /, /docs,
 
 ---
 
-## 6) Edge Verification Contract (Plinto Edge)
+## 6) Edge Verification Contract (Janua Edge)
 
-* **Libraries:** `@plinto/edge` for Vercel/Cloudflare.
-* **Inputs:** `Authorization: Bearer <JWT>` or HttpOnly cookies `plinto_session`.
+* **Libraries:** `@janua/edge` for Vercel/Cloudflare.
+* **Inputs:** `Authorization: Bearer <JWT>` or HttpOnly cookies `janua_session`.
 * **Behavior:**
 
-  1. Load JWKS from `https://plinto.dev/.well-known/jwks.json` (CDN cached; ETag).
+  1. Load JWKS from `https://janua.dev/.well-known/jwks.json` (CDN cached; ETag).
   2. Verify signature + `iss/aud/exp/nbf`; check `jti` reuse.
   3. Hydrate `request.auth = { userId, orgId, tenantId, claims }`.
   4. Optional **OPA-check** for route-level policy.
@@ -218,16 +218,16 @@ Browser/Client → Cloudflare (WAF/CDN/Turnstile) → Vercel (Next.js: /, /docs,
 
 ### 7.1 Packages & APIs
 
-* `@plinto/nextjs` — AuthProvider, middleware, server helpers (Route Handlers).
-* `@plinto/react-sdk` — UI widgets: `<SignIn/>`, `<SignUp/>`, `<UserButton/>`, `<OrgSwitcher/>`, `<PasskeyPrompt/>`.
-* `@plinto/edge` — `verify(request, {audience}) -> Claims`.
-* `@plinto/node` — `createToken`, `verifyToken`, `rotateKeys` (admin).
-* `@plinto/core` — types, errors, codecs.
+* `@janua/nextjs` — AuthProvider, middleware, server helpers (Route Handlers).
+* `@janua/react-sdk` — UI widgets: `<SignIn/>`, `<SignUp/>`, `<UserButton/>`, `<OrgSwitcher/>`, `<PasskeyPrompt/>`.
+* `@janua/edge` — `verify(request, {audience}) -> Claims`.
+* `@janua/node` — `createToken`, `verifyToken`, `rotateKeys` (admin).
+* `@janua/core` — types, errors, codecs.
 
 ### 7.2 Copy‑paste starts
 
 * **Next.js (App Router)**: 3 files (middleware.ts, auth.ts, layout.tsx).
-* **CLI**: `npx create-plinto-app` scaffolds env, pages, API routes, and example policies.
+* **CLI**: `npx create-janua-app` scaffolds env, pages, API routes, and example policies.
 
 ---
 
@@ -260,15 +260,15 @@ Browser/Client → Cloudflare (WAF/CDN/Turnstile) → Vercel (Next.js: /, /docs,
 
 ## 11) Email & Deliverability
 
-* SPF/DKIM/DMARC aligned for `plinto.dev`; warmed IPs; dedicated bounce/complaint handling.
+* SPF/DKIM/DMARC aligned for `janua.dev`; warmed IPs; dedicated bounce/complaint handling.
 * Templates localized (EN/ES), with strict link expiry (≤15m), single-use nonces.
 
 ---
 
 ## 12) Migration Strategy (from Clerk/others)
 
-* **Parallel run** with feature flag (`PLINTO_ENABLED`).
-* **Dual sessions**: accept both cookies for 2 weeks; new logins mint Plinto tokens + legacy cookie for rollback.
+* **Parallel run** with feature flag (`JANUA_ENABLED`).
+* **Dual sessions**: accept both cookies for 2 weeks; new logins mint Janua tokens + legacy cookie for rollback.
 * **Passwords**: assume **forced reset**; friction-minimized UX.
 * **Socials**: re-consent flows; account linking by verified email + proof.
 * **Data**: import users/orgs via admin loader; preserve external IDs in `external_ref` fields.
@@ -356,20 +356,20 @@ export type Claims = {
 ## Appendix B — Required ENV (Core)
 
 ```
-PLINTO_ENV=prod
+JANUA_ENV=prod
 DATABASE_URL=postgres://...
 REDIS_URL=redis://...
 EMAIL_PROVIDER=ses|sendgrid
 TURNSTILE_SECRET=...
 KMS_KEY_ARN=...
-JWT_AUDIENCE=plinto.dev
-JWT_ISSUER=https://plinto.dev
-COOKIE_DOMAIN=plinto.dev
+JWT_AUDIENCE=janua.dev
+JWT_ISSUER=https://janua.dev
+COOKIE_DOMAIN=janua.dev
 ```
 
 ## Appendix C — Domain & Paths (single-domain)
 
-* **Host:** `plinto.dev` (only).
+* **Host:** `janua.dev` (only).
 * **Paths:** `/` (site), `/docs` (docs), `/admin` (admin UI), `/api/v1/...` (API), `/.well-known/*` (JWKS/OIDC), `/status` (status page optional).
 * **CDN:** Cloudflare in front of entire domain; JWKS heavily cached with purge on key rotation.
 * **Storage:** Cloudflare **R2** for audit logs & exports.

@@ -16,8 +16,8 @@ Your deploy hook is working (HTTP 201), but Vercel isn't deploying. You need to 
 
 ### 3. Environment Variables
 Add these if needed:
-- `NEXT_PUBLIC_APP_URL`: `https://plinto.dev`
-- `NEXT_PUBLIC_API_URL`: `https://api.plinto.dev`
+- `NEXT_PUBLIC_APP_URL`: `https://janua.dev`
+- `NEXT_PUBLIC_API_URL`: `https://api.janua.dev`
 
 ## Why Deploy Hook Works But No Deployment
 

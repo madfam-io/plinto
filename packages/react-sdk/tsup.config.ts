@@ -7,6 +7,6 @@ export default defineConfig({
   splitting: false,
   sourcemap: false,
   clean: true,
-  external: ['react', 'react-dom', '@plinto/typescript-sdk'],
+  external: ['react', 'react-dom', '@janua/typescript-sdk'],
   onSuccess: 'echo "Build completed successfully"'
 });

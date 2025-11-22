@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: 'standalone',
-  transpilePackages: ['@plinto/typescript-sdk'],
+  transpilePackages: ['@janua/typescript-sdk'],
   images: {
-    domains: ['plinto.dev'],
+    domains: ['janua.dev'],
   },
 }
 

@@ -63,26 +63,26 @@ export function HeroSection() {
           </div>
           <pre className="p-6 overflow-x-auto text-sm">
             <code className="text-gray-300">
-{`import { PlintoClient } from '@plinto/typescript-sdk';
+{`import { JanuaClient } from '@janua/typescript-sdk';
 
-const plinto = new PlintoClient({
-  baseURL: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  baseURL: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 
 // Sign up new user
-const user = await plinto.auth.signUp({
+const user = await janua.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePass123!',
   name: 'John Doe'
 });
 
 // Enable MFA
-const mfa = await plinto.auth.enableMFA('totp');
+const mfa = await janua.auth.enableMFA('totp');
 console.log('QR Code:', mfa.qr_code);
 
 // Register passkey
-const passkey = await plinto.auth.registerPasskey();`}
+const passkey = await janua.auth.registerPasskey();`}
             </code>
           </pre>
         </div>

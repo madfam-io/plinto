@@ -109,10 +109,10 @@ def main():
 
     # Define test files to fix
     test_files = [
-        Path("/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_auth_registration.py"),
-        Path("/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_auth_login_complete.py"),
-        Path("/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_tokens.py"),
-        Path("/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_mfa.py"),
+        Path("/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_auth_registration.py"),
+        Path("/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_auth_login_complete.py"),
+        Path("/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_tokens.py"),
+        Path("/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_mfa.py"),
     ]
 
     total_changes = 0

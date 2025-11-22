@@ -5,7 +5,7 @@
 
 ## Overview
 
-Successfully removed all Fungies MoR (Merchant of Record) code from the Plinto codebase, reducing complexity and focusing on Stripe and Conekta as the two primary payment providers.
+Successfully removed all Fungies MoR (Merchant of Record) code from the Janua codebase, reducing complexity and focusing on Stripe and Conekta as the two primary payment providers.
 
 ## Files Modified (8 files)
 

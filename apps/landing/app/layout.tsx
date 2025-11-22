@@ -7,12 +7,12 @@ import { Footer } from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Plinto - Enterprise-Grade Authentication Platform',
+  title: 'Janua - Enterprise-Grade Authentication Platform',
   description: 'Open-source authentication and user management platform with MFA, passkeys, SAML/OIDC SSO, and comprehensive security features.',
   keywords: ['authentication', 'auth', 'SSO', 'SAML', 'OIDC', 'MFA', 'passkeys', 'WebAuthn', 'user management'],
-  authors: [{ name: 'Plinto Team' }],
+  authors: [{ name: 'Janua Team' }],
   openGraph: {
-    title: 'Plinto - Enterprise-Grade Authentication Platform',
+    title: 'Janua - Enterprise-Grade Authentication Platform',
     description: 'Open-source authentication and user management with enterprise features',
     type: 'website',
   },

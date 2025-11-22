@@ -14,7 +14,7 @@ def test_config_imports():
         del sys.modules['app.config']
 
     with patch.dict(os.environ, {
-        'DATABASE_URL': 'postgresql://test:test@localhost:5432/plinto_test',
+        'DATABASE_URL': 'postgresql://test:test@localhost:5432/janua_test',
         'JWT_SECRET_KEY': 'test-secret-key',
         'REDIS_URL': 'redis://localhost:6379/0',
         'ENVIRONMENT': 'test'
@@ -23,7 +23,7 @@ def test_config_imports():
             from app.config import settings
             assert settings.ENVIRONMENT == 'test'
             assert settings.JWT_SECRET_KEY == 'test-secret-key'
-            assert 'plinto_test' in settings.DATABASE_URL
+            assert 'janua_test' in settings.DATABASE_URL
         except ImportError as e:
             pytest.skip(f"Config imports failed: {e}")
 

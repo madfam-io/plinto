@@ -74,7 +74,7 @@ class ClientConfig(BaseModel):
     This will be the primary configuration class for all platform SDKs.
     """
     # API Configuration
-    base_url: HttpUrl = Field(default="https://api.plinto.dev", description="API base URL")
+    base_url: HttpUrl = Field(default="https://api.janua.dev", description="API base URL")
     api_version: str = Field(default="v1", description="API version to use")
     environment: Environment = Field(default=Environment.PRODUCTION, description="API environment")
 

@@ -1,7 +1,7 @@
 {
-  "name": "plinto-react-native-example",
+  "name": "janua-react-native-example",
   "version": "1.0.0",
-  "description": "Example app demonstrating Plinto React Native SDK features",
+  "description": "Example app demonstrating Janua React Native SDK features",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
@@ -10,7 +10,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@plinto/react-native": "file:../",
+    "@janua/react-native": "file:../",
     "@react-native-async-storage/async-storage": "^1.19.0",
     "expo": "~49.0.0",
     "expo-status-bar": "~1.6.0",

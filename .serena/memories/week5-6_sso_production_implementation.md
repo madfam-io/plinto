@@ -30,7 +30,7 @@ Complete X.509 certificate management for SAML SSO:
 - `load_certificate(organization_id, cert_id)` → cert_pem
 - `convert_pem_to_der(pem)` / `convert_der_to_pem(der)` → bytes/str
 
-**Storage**: `/var/plinto/certs/{organization_id}/{cert_id}.pem`
+**Storage**: `/var/janua/certs/{organization_id}/{cert_id}.pem`
 
 ### 2. SAML Metadata Exchange
 

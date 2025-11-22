@@ -1,4 +1,4 @@
-# Plinto Maintenance Schedule
+# Janua Maintenance Schedule
 
 Comprehensive maintenance checklist for code quality, documentation, and system health.
 

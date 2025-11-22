@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Plinto Package Publishing Script
+# Janua Package Publishing Script
 # Usage: ./scripts/publish.sh [patch|minor|major] [--dry-run]
 
 set -e
@@ -13,7 +13,7 @@ if [[ "$VERSION_TYPE" != "patch" && "$VERSION_TYPE" != "minor" && "$VERSION_TYPE
     exit 1
 fi
 
-echo "🚀 Plinto Package Publishing"
+echo "🚀 Janua Package Publishing"
 echo "Version bump: $VERSION_TYPE"
 
 if [[ "$DRY_RUN" == "--dry-run" ]]; then
@@ -173,5 +173,5 @@ echo "   Version: v$VERSION"
 echo "   Packages published: ${#PACKAGES_TO_PUBLISH[@]}"
 echo ""
 echo "📊 Check packages:"
-echo "   npm: https://www.npmjs.com/org/plinto"
-echo "   PyPI: https://pypi.org/project/plinto-sdk/"
+echo "   npm: https://www.npmjs.com/org/janua"
+echo "   PyPI: https://pypi.org/project/janua-sdk/"

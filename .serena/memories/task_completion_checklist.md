@@ -1,4 +1,4 @@
-# Plinto - Task Completion Checklist
+# Janua - Task Completion Checklist
 
 ## When Completing Any Development Task
 

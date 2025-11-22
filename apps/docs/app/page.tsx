@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, Book, Code2, Zap, Shield, Globe, Layers } from 'lucide-react'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 
 export default function DocsHomePage() {
   return (
@@ -9,7 +9,7 @@ export default function DocsHomePage() {
       <div className="py-16 sm:py-24">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-            Plinto Documentation
+            Janua Documentation
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Everything you need to integrate secure identity management into your application.
@@ -39,7 +39,7 @@ export default function DocsHomePage() {
           <QuickLinkCard
             icon={<Zap className="h-6 w-6" />}
             title="Quick Start"
-            description="Get up and running with Plinto in under 5 minutes"
+            description="Get up and running with Janua in under 5 minutes"
             href="/getting-started/quick-start"
           />
           <QuickLinkCard
@@ -111,17 +111,17 @@ export default function DocsHomePage() {
         </h2>
         <div className="bg-gray-900 rounded-lg p-6 overflow-x-auto">
           <pre className="text-sm text-gray-300">
-            <code>{`import { Plinto } from '@plinto/nextjs'
+            <code>{`import { Janua } from '@janua/nextjs'
 
-// Initialize Plinto
-const plinto = new Plinto({
-  issuer: process.env.PLINTO_ISSUER,
-  audience: process.env.PLINTO_AUDIENCE,
+// Initialize Janua
+const janua = new Janua({
+  issuer: process.env.JANUA_ISSUER,
+  audience: process.env.JANUA_AUDIENCE,
 })
 
 // Protect a route
 export async function GET(request: Request) {
-  const session = await plinto.getSession(request)
+  const session = await janua.getSession(request)
   
   if (!session) {
     return new Response('Unauthorized', { status: 401 })

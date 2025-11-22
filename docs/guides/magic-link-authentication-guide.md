@@ -4,7 +4,7 @@
 
 ## Overview
 
-Plinto API provides passwordless authentication through magic links - secure, time-limited tokens sent via email that allow users to sign in without passwords. This modern authentication method improves user experience while maintaining security.
+Janua API provides passwordless authentication through magic links - secure, time-limited tokens sent via email that allow users to sign in without passwords. This modern authentication method improves user experience while maintaining security.
 
 ## 🔗 Magic Link Features
 
@@ -29,7 +29,7 @@ Plinto API provides passwordless authentication through magic links - secure, ti
 ### 1. Send Magic Link
 
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/auth/magic-link" \
+curl -X POST "https://api.janua.dev/api/v1/auth/magic-link" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -49,7 +49,7 @@ curl -X POST "https://api.plinto.dev/api/v1/auth/magic-link" \
 ### 2. Verify Magic Link
 
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/auth/magic-link/verify" \
+curl -X POST "https://api.janua.dev/api/v1/auth/magic-link/verify" \
   -H "Content-Type: application/json" \
   -d '{
     "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -347,7 +347,7 @@ class MagicLinkEmailService:
         template_data = {
             'user_name': user_name or email.split('@')[0],
             'magic_link_url': magic_link_url,
-            'app_name': settings.APP_NAME or 'Plinto',
+            'app_name': settings.APP_NAME or 'Janua',
             'expires_minutes': 15,
             'redirect_url': redirect_url
         }
@@ -439,7 +439,7 @@ class MagicLinkService:
         request: Request = None
     ) -> str:
         """Create complete magic link URL"""
-        base_url = settings.FRONTEND_URL or "https://app.plinto.dev"
+        base_url = settings.FRONTEND_URL or "https://app.janua.dev"
 
         # Validate redirect URL
         safe_redirect = self.validate_redirect_url(redirect_url, request)

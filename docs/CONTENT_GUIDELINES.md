@@ -2,13 +2,13 @@
 
 ## Purpose & Separation of Concerns
 
-This document establishes clear guidelines for maintaining Plinto's dual documentation structure to prevent redundancy and confusion.
+This document establishes clear guidelines for maintaining Janua's dual documentation structure to prevent redundancy and confusion.
 
 ## 📁 Documentation Structure
 
 ### `/docs` - Internal Development Documentation
-**Purpose**: Internal team documentation for developers working ON Plinto
-**Audience**: Plinto development team, contributors
+**Purpose**: Internal team documentation for developers working ON Janua
+**Audience**: Janua development team, contributors
 **Access**: Private repository access only
 
 **Content Types**:
@@ -28,8 +28,8 @@ This document establishes clear guidelines for maintaining Plinto's dual documen
 - Marketing content
 
 ### `/apps/docs` - Public Documentation Portal
-**Purpose**: User-facing documentation website at docs.plinto.dev
-**Audience**: External developers using Plinto
+**Purpose**: User-facing documentation website at docs.janua.dev
+**Audience**: External developers using Janua
 **Access**: Public website
 
 **Content Types**:

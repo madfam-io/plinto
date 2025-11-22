@@ -193,15 +193,15 @@ export * from './audit-log'
 **Consumer Usage:**
 ```typescript
 // ✅ OPTIMAL - Specific imports
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 // Bundle: ~350 LOC + SignIn dependencies only
 
 // ✅ GOOD - Multiple related imports
-import { SignIn, SignUp, UserButton } from '@plinto/ui'
+import { SignIn, SignUp, UserButton } from '@janua/ui'
 // Bundle: ~930 LOC + shared dependencies
 
 // ❌ AVOID - Wildcard imports
-import * as UI from '@plinto/ui'
+import * as UI from '@janua/ui'
 // Bundle: ALL 6,348 LOC + all dependencies
 ```
 
@@ -211,7 +211,7 @@ import * as UI from '@plinto/ui'
 
 ### Clerk Parity Achievement: 90%+ ✅
 
-| Category | Clerk | Plinto | Parity |
+| Category | Clerk | Janua | Parity |
 |----------|-------|--------|--------|
 | **Basic Auth** | SignIn, SignUp, UserButton | ✅ All 3 | 100% |
 | **MFA** | TOTP, Backup Codes | ✅ Setup, Challenge, Backup | 100% |
@@ -222,7 +222,7 @@ import * as UI from '@plinto/ui'
 
 **Key Differentiator:**
 - **Clerk**: Activity logs only in Enterprise plan ($99+/month)
-- **Plinto**: AuditLog component free and open-source
+- **Janua**: AuditLog component free and open-source
 
 ### Competitive Advantages
 
@@ -274,9 +274,9 @@ import * as UI from '@plinto/ui'
 ### Current State (Week 4)
 
 **Partial Dogfooding:**
-- ✅ `apps/demo`: 6 files importing @plinto/ui primitives (Button, Card, Input, etc.)
-- ✅ `apps/admin`: 1 file importing @plinto/ui primitives
-- ✅ `apps/dashboard`: 8 files importing @plinto/ui primitives
+- ✅ `apps/demo`: 6 files importing @janua/ui primitives (Button, Card, Input, etc.)
+- ✅ `apps/admin`: 1 file importing @janua/ui primitives
+- ✅ `apps/dashboard`: 8 files importing @janua/ui primitives
 
 **Critical Gap:**
 - ❌ NONE of the 15 authentication components used in our own apps
@@ -316,7 +316,7 @@ import * as UI from '@plinto/ui'
 ### Goals
 
 1. **Integration Testing**: Validate all 15 components in consuming applications
-2. **Dogfooding Start**: Begin replacing custom code with @plinto/ui in demo app
+2. **Dogfooding Start**: Begin replacing custom code with @janua/ui in demo app
 3. **Performance Validation**: Verify bundle size and runtime performance
 4. **Test Coverage**: Achieve 80%+ code coverage
 
@@ -350,7 +350,7 @@ import * as UI from '@plinto/ui'
 
 **Target State (Week 8):**
 - "We use our own authentication platform daily" ← **Proof**
-- Evidence: Live demo app, admin dashboard, user applications powered by @plinto/ui
+- Evidence: Live demo app, admin dashboard, user applications powered by @janua/ui
 
 ### Differentiation Timeline
 
@@ -376,7 +376,7 @@ The AuditLog component is the **strategic bridge** to Phase 3:
 **Competitive Advantage:**
 - Clerk: No compliance dashboard
 - Auth0: Basic activity logs only
-- Plinto: **Full compliance management** ← Market niche
+- Janua: **Full compliance management** ← Market niche
 
 ---
 

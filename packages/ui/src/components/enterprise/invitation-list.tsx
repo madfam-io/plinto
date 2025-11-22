@@ -41,7 +41,7 @@ export interface InvitationListProps {
   onResend?: (invitationId: string) => Promise<void>
   onRevoke?: (invitationId: string) => Promise<void>
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   showBulkActions?: boolean
   pageSize?: number
@@ -55,7 +55,7 @@ export function InvitationList({
   onResend,
   onRevoke,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   showBulkActions = false,
   pageSize = 20,
@@ -96,8 +96,8 @@ export function InvitationList({
 
       let response: InvitationListResponse
 
-      if (plintoClient) {
-        response = await plintoClient.invitations.listInvitations(params)
+      if (januaClient) {
+        response = await januaClient.invitations.listInvitations(params)
       } else if (onFetchInvitations) {
         response = await onFetchInvitations(params)
       } else {
@@ -132,7 +132,7 @@ export function InvitationList({
     } finally {
       setIsLoading(false)
     }
-  }, [organizationId, statusFilter, searchEmail, currentPage, pageSize, plintoClient, onFetchInvitations, apiUrl, onError])
+  }, [organizationId, statusFilter, searchEmail, currentPage, pageSize, januaClient, onFetchInvitations, apiUrl, onError])
 
   React.useEffect(() => {
     if (!initialInvitations) {
@@ -143,8 +143,8 @@ export function InvitationList({
   // Handle resend invitation
   const handleResend = async (invitationId: string) => {
     try {
-      if (plintoClient) {
-        await plintoClient.invitations.resendInvitation(invitationId)
+      if (januaClient) {
+        await januaClient.invitations.resendInvitation(invitationId)
       } else if (onResend) {
         await onResend(invitationId)
       } else {
@@ -173,8 +173,8 @@ export function InvitationList({
     }
 
     try {
-      if (plintoClient) {
-        await plintoClient.invitations.revokeInvitation(invitationId)
+      if (januaClient) {
+        await januaClient.invitations.revokeInvitation(invitationId)
       } else if (onRevoke) {
         await onRevoke(invitationId)
       } else {

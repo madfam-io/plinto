@@ -11,11 +11,11 @@
 ## 1. Purpose and Scope
 
 ### 1.1 Purpose
-This document establishes comprehensive incident response procedures for Plinto to ensure rapid detection, containment, and resolution of security incidents while maintaining business continuity and regulatory compliance.
+This document establishes comprehensive incident response procedures for Janua to ensure rapid detection, containment, and resolution of security incidents while maintaining business continuity and regulatory compliance.
 
 ### 1.2 Scope
 These procedures apply to:
-- All security incidents affecting Plinto systems, data, or operations
+- All security incidents affecting Janua systems, data, or operations
 - All employees, contractors, and third parties
 - All information systems and infrastructure
 - Customer data and service availability incidents
@@ -355,7 +355,7 @@ Incident Commander (IC)
 
 ## 6. Technical Response Procedures
 
-### 6.1 Plinto-Specific Response Actions
+### 6.1 Janua-Specific Response Actions
 
 #### 6.1.1 Authentication System Incidents
 **Immediate Actions**:
@@ -554,4 +554,4 @@ class EmergencyAuthControls:
 
 ---
 
-*These incident response procedures provide comprehensive guidance for handling security incidents at Plinto while maintaining SOC2 compliance and supporting business continuity objectives.*
+*These incident response procedures provide comprehensive guidance for handling security incidents at Janua while maintaining SOC2 compliance and supporting business continuity objectives.*

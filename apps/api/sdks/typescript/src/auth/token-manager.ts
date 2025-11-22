@@ -1,5 +1,5 @@
 /**
- * Token management system for Plinto TypeScript SDK.
+ * Token management system for Janua TypeScript SDK.
  *
  * Mirrors the authentication patterns from app.sdk.authentication
  * with platform-appropriate TypeScript implementation.
@@ -53,7 +53,7 @@ export class MemoryTokenStorage implements TokenStorage {
 export class LocalStorageTokenStorage implements TokenStorage {
   private prefix: string;
 
-  constructor(prefix: string = 'plinto_') {
+  constructor(prefix: string = 'janua_') {
     this.prefix = prefix;
   }
 

@@ -1,13 +1,13 @@
 /**
- * Plinto Enterprise Hooks & Events Implementation Examples
+ * Janua Enterprise Hooks & Events Implementation Examples
  * 
- * This file demonstrates real-world implementations of Plinto's
+ * This file demonstrates real-world implementations of Janua's
  * extensibility framework for enterprise use cases.
  */
 
-import { PlintoClient, PlintoHooks, PlintoEvents } from '@plinto/js';
-import { WebhookClient } from '@plinto/webhooks';
-import { ComplianceLogger } from '@plinto/compliance';
+import { JanuaClient, JanuaHooks, JanuaEvents } from '@janua/js';
+import { WebhookClient } from '@janua/webhooks';
+import { ComplianceLogger } from '@janua/compliance';
 
 // ============================================
 // 1. CUSTOM AUTHENTICATION FLOW WITH HOOKS
@@ -17,16 +17,16 @@ import { ComplianceLogger } from '@plinto/compliance';
  * Enterprise authentication with custom validation and claims
  */
 class EnterpriseAuthFlow {
-  private plinto: PlintoClient;
+  private janua: JanuaClient;
   
   constructor() {
-    this.plinto = new PlintoClient({
-      appId: process.env.PLINTO_APP_ID!,
+    this.janua = new JanuaClient({
+      appId: process.env.JANUA_APP_ID!,
       hooks: this.configureHooks(),
     });
   }
 
-  private configureHooks(): PlintoHooks {
+  private configureHooks(): JanuaHooks {
     return {
       // Pre-authentication hook for custom validation
       beforeAuthentication: async (context) => {
@@ -204,15 +204,15 @@ class EnterpriseAuthFlow {
 // ============================================
 
 /**
- * Automated workflows triggered by Plinto events
+ * Automated workflows triggered by Janua events
  */
 class WorkflowAutomation {
-  private events: PlintoEvents;
+  private events: JanuaEvents;
   private webhooks: WebhookClient;
 
   constructor() {
-    this.events = new PlintoEvents({
-      appId: process.env.PLINTO_APP_ID!
+    this.events = new JanuaEvents({
+      appId: process.env.JANUA_APP_ID!
     });
     
     this.webhooks = new WebhookClient({

@@ -1,6 +1,6 @@
-# Plinto Python SDK
+# Janua Python SDK
 
-Official Python SDK for the Plinto Authentication and User Management Platform.
+Official Python SDK for the Janua Authentication and User Management Platform.
 
 ## Features
 
@@ -17,21 +17,21 @@ Official Python SDK for the Plinto Authentication and User Management Platform.
 ## Installation
 
 ```bash
-pip install plinto
+pip install janua
 ```
 
 For async support:
 ```bash
-pip install plinto[async]
+pip install janua[async]
 ```
 
 ## Quick Start
 
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
 # Initialize the client
-client = PlintoClient(api_key="your_api_key")
+client = JanuaClient(api_key="your_api_key")
 
 # Sign up a new user
 user = client.auth.sign_up(
@@ -66,19 +66,19 @@ updated_user = client.users.update(
 ### Environment Variables
 
 ```bash
-export PLINTO_API_KEY="your_api_key"
-export PLINTO_BASE_URL="https://api.plinto.dev"  # Optional
-export PLINTO_ENVIRONMENT="production"  # Optional
+export JANUA_API_KEY="your_api_key"
+export JANUA_BASE_URL="https://api.janua.dev"  # Optional
+export JANUA_ENVIRONMENT="production"  # Optional
 ```
 
 ### Custom Configuration
 
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-client = PlintoClient(
+client = JanuaClient(
     api_key="your_api_key",
-    base_url="https://staging.api.plinto.dev",
+    base_url="https://staging.api.janua.dev",
     timeout=30.0,
     max_retries=3,
     environment="staging",
@@ -124,7 +124,7 @@ client.auth.change_password(
 ### OAuth Authentication
 
 ```python
-from plinto.types import OAuthProvider
+from janua.types import OAuthProvider
 
 # Get OAuth authorization URL
 auth_url = client.auth.get_oauth_url(
@@ -192,7 +192,7 @@ client.users.delete(user_id)
 ## Organizations
 
 ```python
-from plinto.types import OrganizationRole
+from janua.types import OrganizationRole
 
 # Create organization
 org = client.organizations.create(
@@ -233,7 +233,7 @@ client.organizations.accept_invite(invite_token)
 ## Multi-Factor Authentication
 
 ```python
-from plinto.types import MFAMethod
+from janua.types import MFAMethod
 
 # Enable TOTP (authenticator app)
 totp_setup = client.mfa.setup_totp()
@@ -331,7 +331,7 @@ client.sessions.update_device(
 ## Webhooks
 
 ```python
-from plinto.types import WebhookEventType
+from janua.types import WebhookEventType
 
 # Create webhook endpoint
 endpoint = client.webhooks.create_endpoint(
@@ -361,11 +361,11 @@ endpoint = client.webhooks.rotate_secret(endpoint.id)
 delivery = client.webhooks.test_endpoint(endpoint.id)
 
 # Validate webhook signature (in your webhook handler)
-from plinto.utils import validate_webhook_signature
+from janua.utils import validate_webhook_signature
 
 def webhook_handler(request):
     payload = request.body
-    signature = request.headers["X-Plinto-Signature"]
+    signature = request.headers["X-Janua-Signature"]
     secret = endpoint.signing_secret
     
     if validate_webhook_signature(payload, signature, secret):
@@ -379,7 +379,7 @@ def webhook_handler(request):
 ## Error Handling
 
 ```python
-from plinto.exceptions import (
+from janua.exceptions import (
     AuthenticationError,
     AuthorizationError,
     ValidationError,
@@ -409,10 +409,10 @@ except NotFoundError as e:
 
 ```python
 import asyncio
-from plinto import AsyncPlintoClient
+from janua import AsyncJanuaClient
 
 async def main():
-    async with AsyncPlintoClient(api_key="your_api_key") as client:
+    async with AsyncJanuaClient(api_key="your_api_key") as client:
         # All methods are async
         user = await client.auth.sign_up(
             email="user@example.com",
@@ -432,11 +432,11 @@ asyncio.run(main())
 ```python
 import pytest
 from unittest.mock import Mock
-from plinto import PlintoClient
+from janua import JanuaClient
 
 @pytest.fixture
 def mock_client():
-    client = PlintoClient(api_key="test_key")
+    client = JanuaClient(api_key="test_key")
     client.http = Mock()
     return client
 
@@ -466,7 +466,7 @@ def test_sign_up(mock_client):
 ### Custom Headers
 
 ```python
-client = PlintoClient(
+client = JanuaClient(
     api_key="your_api_key",
     custom_headers={
         "X-Custom-Header": "value",
@@ -478,7 +478,7 @@ client = PlintoClient(
 ### Retry Configuration
 
 ```python
-client = PlintoClient(
+client = JanuaClient(
     api_key="your_api_key",
     max_retries=5,  # Maximum retry attempts
     timeout=60.0     # Request timeout in seconds
@@ -488,7 +488,7 @@ client = PlintoClient(
 ### Debug Mode
 
 ```python
-client = PlintoClient(api_key="your_api_key", debug=True)
+client = JanuaClient(api_key="your_api_key", debug=True)
 # Or enable/disable dynamically
 client.enable_debug()
 client.disable_debug()
@@ -512,9 +512,9 @@ MIT
 
 ## Support
 
-- Documentation: https://docs.plinto.dev/sdks/python
-- GitHub Issues: https://github.com/plinto/python-sdk/issues
-- Email: support@plinto.dev
+- Documentation: https://docs.janua.dev/sdks/python
+- GitHub Issues: https://github.com/janua/python-sdk/issues
+- Email: support@janua.dev
 
 ## Contributing
 
@@ -522,4 +522,4 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## Security
 
-For security issues, please email security@plinto.dev instead of using the issue tracker.
+For security issues, please email security@janua.dev instead of using the issue tracker.

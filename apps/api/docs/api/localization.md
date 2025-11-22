@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto API provides comprehensive internationalization (i18n) and localization (l10n) support, enabling applications to deliver content in multiple languages with proper formatting and cultural adaptations.
+Janua API provides comprehensive internationalization (i18n) and localization (l10n) support, enabling applications to deliver content in multiple languages with proper formatting and cultural adaptations.
 
 ## Features
 
@@ -148,20 +148,20 @@ GET /api/v1/localization/translations/es-ES
 
 ```typescript
 import { useEffect, useState } from 'react';
-import { PlintoClient } from '@plinto/react-sdk';
+import { JanuaClient } from '@janua/react-sdk';
 
 function App() {
   const [translations, setTranslations] = useState({});
   const [locale, setLocale] = useState('en-US');
 
-  const plinto = new PlintoClient({
-    baseURL: 'https://api.plinto.dev',
-    apiKey: process.env.PLINTO_API_KEY
+  const janua = new JanuaClient({
+    baseURL: 'https://api.janua.dev',
+    apiKey: process.env.JANUA_API_KEY
   });
 
   useEffect(() => {
     // Load translations for current locale
-    plinto.localization.getTranslations(locale)
+    janua.localization.getTranslations(locale)
       .then(data => setTranslations(data));
   }, [locale]);
 
@@ -187,7 +187,7 @@ function App() {
 </template>
 
 <script>
-import { PlintoClient } from '@plinto/vue-sdk';
+import { JanuaClient } from '@janua/vue-sdk';
 
 export default {
   data() {
@@ -197,12 +197,12 @@ export default {
     };
   },
   mounted() {
-    const plinto = new PlintoClient({
-      baseURL: 'https://api.plinto.dev',
-      apiKey: process.env.VUE_APP_PLINTO_API_KEY
+    const janua = new JanuaClient({
+      baseURL: 'https://api.janua.dev',
+      apiKey: process.env.VUE_APP_JANUA_API_KEY
     });
 
-    plinto.localization.getTranslations(this.locale)
+    janua.localization.getTranslations(this.locale)
       .then(data => this.translations = data);
   },
   methods: {
@@ -219,10 +219,10 @@ export default {
 #### Python Example
 
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-client = PlintoClient(
-    base_url="https://api.plinto.dev",
+client = JanuaClient(
+    base_url="https://api.janua.dev",
     api_key="your_api_key"
 )
 
@@ -271,7 +271,7 @@ For right-to-left languages (Arabic, Hebrew, etc.), the `is_rtl` flag is automat
 Frontend applications can use this flag to adjust layout:
 
 ```typescript
-const locale = await plinto.localization.getLocale('ar-SA');
+const locale = await janua.localization.getLocale('ar-SA');
 document.dir = locale.is_rtl ? 'rtl' : 'ltr';
 ```
 
@@ -342,7 +342,7 @@ grep -r "\".*\"" src/components --include="*.jsx"
 3. **Load Initial Translations**
 ```typescript
 useEffect(() => {
-  plinto.localization.getTranslations(locale)
+  janua.localization.getTranslations(locale)
     .then(setTranslations);
 }, [locale]);
 ```

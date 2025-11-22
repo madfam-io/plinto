@@ -26,7 +26,7 @@ passkeysRouter.post('/register/start', (req: Request, res: Response) => {
   res.json({
     challenge: Buffer.from(Math.random().toString()).toString('base64'),
     rp: {
-      name: 'Plinto',
+      name: 'Janua',
       id: 'localhost'
     },
     user: {

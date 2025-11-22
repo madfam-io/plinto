@@ -132,7 +132,7 @@ ALTER TABLE webhook_endpoints ENABLE ROW LEVEL SECURITY;
 CREATE ROLE app_role;
 
 -- Grant necessary permissions to application role
-GRANT CONNECT ON DATABASE ${process.env.DB_NAME || 'plinto_db'} TO app_role;
+GRANT CONNECT ON DATABASE ${process.env.DB_NAME || 'janua_db'} TO app_role;
 GRANT USAGE ON SCHEMA public TO app_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO app_role;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_role;
@@ -266,7 +266,7 @@ ON CONFLICT (slug) DO NOTHING;
 -- Insert default billing plans
 INSERT INTO billing_plans (id, name, display_name, description, price_amount, price_currency, price_interval, features, is_active, is_default, created_at, updated_at)
 VALUES
-  ('free', 'free', 'Free', 'Perfect for trying out Plinto', 0, 'USD', 'monthly',
+  ('free', 'free', 'Free', 'Perfect for trying out Janua', 0, 'USD', 'monthly',
    '{"users":5,"teams":1,"storage":1073741824,"api_calls":1000,"custom_roles":0,"audit_retention_days":7,"support_level":"community","sla":false,"custom_domain":false,"sso":false,"advanced_security":false}',
    true, true, NOW(), NOW()),
   ('startup', 'startup', 'Startup', 'For growing teams', 4900, 'USD', 'monthly',
@@ -300,7 +300,7 @@ ON CONFLICT (key) DO NOTHING;
     console.log(`🏢 Provisioning database for tenant: ${tenantId}...`)
 
     // This would create a new database for fully-isolated tenants
-    const dbName = `plinto_tenant_${tenantId.replace(/[^a-zA-Z0-9]/g, '_')}`
+    const dbName = `janua_tenant_${tenantId.replace(/[^a-zA-Z0-9]/g, '_')}`
 
     try {
       // Create database

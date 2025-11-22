@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Star, Quote, ArrowRight } from 'lucide-react'
-import { Badge } from '@plinto/ui'
-import { Button } from '@plinto/ui'
+import { Badge } from '@janua/ui'
+import { Button } from '@janua/ui'
 
 const testimonials = [
   {
-    content: "Plinto cut our authentication implementation from weeks to hours. The passkeys integration is seamless, and our users love the passwordless experience. Best decision we made for our platform.",
+    content: "Janua cut our authentication implementation from weeks to hours. The passkeys integration is seamless, and our users love the passwordless experience. Best decision we made for our platform.",
     author: "Sarah Chen",
     role: "CTO",
     company: "TechFlow",
@@ -36,7 +36,7 @@ const testimonials = [
     }
   },
   {
-    content: "Plinto's enterprise features are exactly what we needed. SCIM provisioning, custom domains, and dedicated support. Finally, an auth provider that understands enterprise requirements.",
+    content: "Janua's enterprise features are exactly what we needed. SCIM provisioning, custom domains, and dedicated support. Finally, an auth provider that understands enterprise requirements.",
     author: "Jennifer Kim",
     role: "Head of Security",
     company: "FinanceCore",
@@ -64,7 +64,7 @@ const testimonials = [
     }
   },
   {
-    content: "Security and compliance are critical for us. Plinto's per-tenant encryption, audit trails, and GDPR compliance give us complete confidence in our authentication layer.",
+    content: "Security and compliance are critical for us. Janua's per-tenant encryption, audit trails, and GDPR compliance give us complete confidence in our authentication layer.",
     author: "Lisa Thompson",
     role: "Compliance Officer",
     company: "HealthTech Solutions",
@@ -128,7 +128,7 @@ export function Testimonials() {
             </span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            See how teams across industries are building better authentication experiences with Plinto.
+            See how teams across industries are building better authentication experiences with Janua.
           </p>
         </motion.div>
 
@@ -279,10 +279,10 @@ export function Testimonials() {
           className="text-center bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-2xl p-12"
         >
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Join hundreds of teams building with Plinto
+            Join hundreds of teams building with Janua
           </h3>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Start your free trial today and see why developers and enterprises choose Plinto 
+            Start your free trial today and see why developers and enterprises choose Janua 
             for their authentication infrastructure.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

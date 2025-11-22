@@ -193,7 +193,7 @@ class TestOpenIDEndpoints:
             assert field in data, f"Missing required field: {field}"
         
         # Check specific values
-        assert data["issuer"] == "https://plinto.dev"
+        assert data["issuer"] == "https://janua.dev"
         assert "code" in data["response_types_supported"]
         assert "public" in data["subject_types_supported"]
         assert "RS256" in data["id_token_signing_alg_values_supported"]
@@ -202,7 +202,7 @@ class TestOpenIDEndpoints:
         assert "email" in data["scopes_supported"]
         
         # Check endpoint URLs are properly formatted
-        base_url = "https://plinto.dev"  # Should match settings.BASE_URL
+        base_url = "https://janua.dev"  # Should match settings.BASE_URL
         assert data["authorization_endpoint"] == f"{base_url}/auth/authorize"
         assert data["token_endpoint"] == f"{base_url}/auth/token"
         assert data["userinfo_endpoint"] == f"{base_url}/auth/userinfo"
@@ -247,7 +247,7 @@ class TestOpenIDEndpoints:
         """Test OpenID configuration with empty BASE_URL fallback."""
         with patch('app.main.settings') as mock_settings:
             mock_settings.BASE_URL = ""
-            mock_settings.JWT_ISSUER = "https://plinto.dev"
+            mock_settings.JWT_ISSUER = "https://janua.dev"
             
             response = await test_client.get("/.well-known/openid-configuration")
             
@@ -255,7 +255,7 @@ class TestOpenIDEndpoints:
             data = response.json()
             
             # Should fallback to default
-            fallback_url = "https://api.plinto.dev"
+            fallback_url = "https://api.janua.dev"
             assert data["authorization_endpoint"] == f"{fallback_url}/auth/authorize"
 
 

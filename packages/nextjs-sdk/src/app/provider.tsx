@@ -1,11 +1,11 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { PlintoClient } from '@plinto/typescript-sdk';
-import type { User, Session, PlintoConfig } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
+import type { User, Session, JanuaConfig } from '@janua/typescript-sdk';
 
-interface PlintoContextValue {
-  client: PlintoClient;
+interface JanuaContextValue {
+  client: JanuaClient;
   user: User | null;
   session: Session | null;
   isLoading: boolean;
@@ -14,20 +14,20 @@ interface PlintoContextValue {
   updateUser: () => Promise<void>;
 }
 
-const PlintoContext = createContext<PlintoContextValue | undefined>(undefined);
+const JanuaContext = createContext<JanuaContextValue | undefined>(undefined);
 
-export interface PlintoProviderProps {
+export interface JanuaProviderProps {
   children: React.ReactNode;
-  config: PlintoConfig;
+  config: JanuaConfig;
   onAuthChange?: (user: User | null) => void;
 }
 
-export function PlintoProvider({ 
+export function JanuaProvider({ 
   children, 
   config,
   onAuthChange 
-}: PlintoProviderProps) {
-  const [client] = useState(() => new PlintoClient(config));
+}: JanuaProviderProps) {
+  const [client] = useState(() => new JanuaClient(config));
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -101,7 +101,7 @@ export function PlintoProvider({
     };
   }, [client, updateAuthState, user]);
 
-  const value: PlintoContextValue = {
+  const value: JanuaContextValue = {
     client,
     user,
     session,
@@ -112,22 +112,22 @@ export function PlintoProvider({
   };
 
   return (
-    <PlintoContext.Provider value={value}>
+    <JanuaContext.Provider value={value}>
       {children}
-    </PlintoContext.Provider>
+    </JanuaContext.Provider>
   );
 }
 
-export function usePlinto(): PlintoContextValue {
-  const context = useContext(PlintoContext);
+export function useJanua(): JanuaContextValue {
+  const context = useContext(JanuaContext);
   if (!context) {
-    throw new Error('usePlinto must be used within a PlintoProvider');
+    throw new Error('useJanua must be used within a JanuaProvider');
   }
   return context;
 }
 
 export function useAuth() {
-  const { client, user, session, isAuthenticated, isLoading, signOut } = usePlinto();
+  const { client, user, session, isAuthenticated, isLoading, signOut } = useJanua();
   return {
     auth: client.auth,
     user,
@@ -139,7 +139,7 @@ export function useAuth() {
 }
 
 export function useUser() {
-  const { user, isLoading, updateUser } = usePlinto();
+  const { user, isLoading, updateUser } = useJanua();
   return {
     user,
     isLoading,
@@ -148,6 +148,6 @@ export function useUser() {
 }
 
 export function useOrganizations() {
-  const { client } = usePlinto();
+  const { client } = useJanua();
   return client.organizations;
 }

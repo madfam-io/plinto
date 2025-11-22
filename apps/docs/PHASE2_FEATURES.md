@@ -1,6 +1,6 @@
 # Phase 2 Documentation Features
 
-This document describes the Phase 2 improvements implemented for docs.plinto.dev, addressing critical gaps identified in the gap analysis with docs.dodopayments.com.
+This document describes the Phase 2 improvements implemented for docs.janua.dev, addressing critical gaps identified in the gap analysis with docs.dodopayments.com.
 
 ## ✅ Implemented Features
 
@@ -203,12 +203,12 @@ NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=your_algolia_search_key
 NEXT_PUBLIC_ALGOLIA_INDEX_NAME=docs
 
 # GitHub Integration
-NEXT_PUBLIC_GITHUB_REPO=plinto/plinto
+NEXT_PUBLIC_GITHUB_REPO=janua/janua
 NEXT_PUBLIC_GITHUB_BRANCH=main
 
 # API Configuration
-NEXT_PUBLIC_API_BASE_URL=https://api.plinto.dev
-NEXT_PUBLIC_API_TEST_URL=https://api-test.plinto.dev
+NEXT_PUBLIC_API_BASE_URL=https://api.janua.dev
+NEXT_PUBLIC_API_TEST_URL=https://api-test.janua.dev
 
 # Feature Flags
 NEXT_PUBLIC_ENABLE_FEEDBACK=true
@@ -241,4 +241,4 @@ The Phase 2 implementation addresses the following gaps:
 - ✅ **GitHub Integration**: Direct edit links and contributor info
 - ✅ **Environment Switching**: Test/Live API environment toggle
 
-These improvements bring docs.plinto.dev to feature parity with modern documentation platforms and significantly enhance the developer experience.
+These improvements bring docs.janua.dev to feature parity with modern documentation platforms and significantly enhance the developer experience.

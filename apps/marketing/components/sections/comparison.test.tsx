@@ -14,7 +14,7 @@ describe('ComparisonSection', () => {
     render(<ComparisonSection />)
     // Test that the component renders basic comparison elements
     expect(screen.getByText('Built different. Performs better.')).toBeInTheDocument()
-    expect(screen.getByText('Plinto')).toBeInTheDocument()
+    expect(screen.getByText('Janua')).toBeInTheDocument()
     expect(screen.getByText('Performance')).toBeInTheDocument()
   })
 })

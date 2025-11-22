@@ -5,8 +5,8 @@ from unittest.mock import Mock, MagicMock
 from datetime import datetime
 from uuid import uuid4
 
-from plinto.auth import AuthClient
-from plinto.types import (
+from janua.auth import AuthClient
+from janua.types import (
     User,
     Session,
     AuthTokens,
@@ -14,7 +14,7 @@ from plinto.types import (
     UserStatus,
     OAuthProvider,
 )
-from plinto.exceptions import (
+from janua.exceptions import (
     AuthenticationError,
     ValidationError,
 )
@@ -33,7 +33,7 @@ class TestAuthClient:
         """Create a mock configuration."""
         config = Mock()
         config.api_key = "test_api_key"
-        config.base_url = "https://api.plinto.dev"
+        config.base_url = "https://api.janua.dev"
         return config
     
     @pytest.fixture

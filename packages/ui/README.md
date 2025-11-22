@@ -1,12 +1,12 @@
-# @plinto/ui
+# @janua/ui
 
-> **Shared design system and component library** for the Plinto platform
+> **Shared design system and component library** for the Janua platform
 
 **Version:** 0.1.0 · **Stack:** React + Radix UI + Tailwind CSS · **Status:** Production Ready
 
 ## 📋 Overview
 
-@plinto/ui is the unified design system powering all Plinto applications. Built on Radix UI primitives with Tailwind CSS styling, it provides accessible, customizable, and consistent components across the platform.
+@janua/ui is the unified design system powering all Janua applications. Built on Radix UI primitives with Tailwind CSS styling, it provides accessible, customizable, and consistent components across the platform.
 
 ## 🚀 Quick Start
 
@@ -14,7 +14,7 @@
 
 ```bash
 # Install in your app
-yarn add @plinto/ui
+yarn add @janua/ui
 
 # Peer dependencies
 yarn add react react-dom tailwindcss
@@ -26,7 +26,7 @@ yarn add react react-dom tailwindcss
 
 ```tsx
 // app/layout.tsx or _app.tsx
-import '@plinto/ui/styles.css';
+import '@janua/ui/styles.css';
 ```
 
 2. **Configure Tailwind to include UI package:**
@@ -36,16 +36,16 @@ import '@plinto/ui/styles.css';
 module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@plinto/ui/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@janua/ui/**/*.{js,ts,jsx,tsx}',
   ],
-  presets: [require('@plinto/ui/tailwind.preset')],
+  presets: [require('@janua/ui/tailwind.preset')],
 };
 ```
 
 3. **Use components:**
 
 ```tsx
-import { Button, Card, Input } from '@plinto/ui';
+import { Button, Card, Input } from '@janua/ui';
 
 export function MyComponent() {
   return (
@@ -99,7 +99,7 @@ packages/ui/
 
 #### Button
 ```tsx
-import { Button } from '@plinto/ui';
+import { Button } from '@janua/ui';
 
 // Variants
 <Button variant="primary">Primary</Button>
@@ -120,7 +120,7 @@ import { Button } from '@plinto/ui';
 
 #### Input
 ```tsx
-import { Input } from '@plinto/ui';
+import { Input } from '@janua/ui';
 
 <Input 
   type="email"
@@ -132,7 +132,7 @@ import { Input } from '@plinto/ui';
 
 #### Card
 ```tsx
-import { Card } from '@plinto/ui';
+import { Card } from '@janua/ui';
 
 <Card>
   <Card.Header>
@@ -150,7 +150,7 @@ import { Card } from '@plinto/ui';
 
 #### Dialog
 ```tsx
-import { Dialog } from '@plinto/ui';
+import { Dialog } from '@janua/ui';
 
 <Dialog>
   <Dialog.Trigger>
@@ -178,7 +178,7 @@ import { Dialog } from '@plinto/ui';
 
 #### Form
 ```tsx
-import { Form, FormField, FormLabel, FormError } from '@plinto/ui';
+import { Form, FormField, FormLabel, FormError } from '@janua/ui';
 
 <Form onSubmit={handleSubmit}>
   <FormField name="email">
@@ -199,7 +199,7 @@ import { Form, FormField, FormLabel, FormError } from '@plinto/ui';
 
 #### Select
 ```tsx
-import { Select } from '@plinto/ui';
+import { Select } from '@janua/ui';
 
 <Select>
   <Select.Trigger>
@@ -217,7 +217,7 @@ import { Select } from '@plinto/ui';
 
 #### Table
 ```tsx
-import { Table } from '@plinto/ui';
+import { Table } from '@janua/ui';
 
 <Table>
   <Table.Header>
@@ -239,7 +239,7 @@ import { Table } from '@plinto/ui';
 
 #### Badge
 ```tsx
-import { Badge } from '@plinto/ui';
+import { Badge } from '@janua/ui';
 
 <Badge variant="success">Active</Badge>
 <Badge variant="warning">Pending</Badge>
@@ -251,7 +251,7 @@ import { Badge } from '@plinto/ui';
 
 #### Tabs
 ```tsx
-import { Tabs } from '@plinto/ui';
+import { Tabs } from '@janua/ui';
 
 <Tabs defaultValue="tab1">
   <Tabs.List>
@@ -267,7 +267,7 @@ import { Tabs } from '@plinto/ui';
 
 #### Dropdown Menu
 ```tsx
-import { DropdownMenu } from '@plinto/ui';
+import { DropdownMenu } from '@janua/ui';
 
 <DropdownMenu>
   <DropdownMenu.Trigger>
@@ -286,7 +286,7 @@ import { DropdownMenu } from '@plinto/ui';
 
 #### Toast
 ```tsx
-import { toast } from '@plinto/ui';
+import { toast } from '@janua/ui';
 
 // Success toast
 toast.success('Operation completed successfully');
@@ -303,7 +303,7 @@ toast.custom(<CustomToastContent />);
 
 #### Alert
 ```tsx
-import { Alert } from '@plinto/ui';
+import { Alert } from '@janua/ui';
 
 <Alert variant="info">
   <Alert.Icon />
@@ -322,27 +322,27 @@ import { Alert } from '@plinto/ui';
 /* Default theme tokens */
 :root {
   /* Colors */
-  --plinto-primary: 243 100% 70%;
-  --plinto-secondary: 270 50% 65%;
-  --plinto-accent: 330 81% 60%;
+  --janua-primary: 243 100% 70%;
+  --janua-secondary: 270 50% 65%;
+  --janua-accent: 330 81% 60%;
   
   /* Semantic colors */
-  --plinto-success: 142 71% 45%;
-  --plinto-warning: 38 92% 50%;
-  --plinto-error: 0 84% 60%;
-  --plinto-info: 199 89% 48%;
+  --janua-success: 142 71% 45%;
+  --janua-warning: 38 92% 50%;
+  --janua-error: 0 84% 60%;
+  --janua-info: 199 89% 48%;
   
   /* Neutrals */
-  --plinto-background: 0 0% 100%;
-  --plinto-foreground: 222 47% 11%;
-  --plinto-muted: 210 40% 96%;
-  --plinto-border: 214 32% 91%;
+  --janua-background: 0 0% 100%;
+  --janua-foreground: 222 47% 11%;
+  --janua-muted: 210 40% 96%;
+  --janua-border: 214 32% 91%;
   
   /* Spacing */
-  --plinto-spacing-unit: 0.25rem;
+  --janua-spacing-unit: 0.25rem;
   
   /* Radius */
-  --plinto-radius: 0.5rem;
+  --janua-radius: 0.5rem;
 }
 ```
 
@@ -350,7 +350,7 @@ import { Alert } from '@plinto/ui';
 
 ```tsx
 // Creating a custom theme
-import { ThemeProvider } from '@plinto/ui';
+import { ThemeProvider } from '@janua/ui';
 
 const customTheme = {
   colors: {
@@ -373,7 +373,7 @@ const customTheme = {
 
 ```tsx
 // Automatic dark mode support
-import { ThemeProvider } from '@plinto/ui';
+import { ThemeProvider } from '@janua/ui';
 
 <ThemeProvider defaultTheme="system" enableSystem>
   <App />
@@ -414,7 +414,7 @@ const buttonVariants = cva(
 
 ```tsx
 // Extending existing components
-import { Button as BaseButton } from '@plinto/ui';
+import { Button as BaseButton } from '@janua/ui';
 
 export const Button = ({ gradient, ...props }) => {
   return (
@@ -472,11 +472,11 @@ export const Button = ({ gradient, ...props }) => {
 
 ```javascript
 // Only import what you need
-import { Button } from '@plinto/ui/button';
-import { Card } from '@plinto/ui/card';
+import { Button } from '@janua/ui/button';
+import { Card } from '@janua/ui/card';
 
 // Instead of
-import * from '@plinto/ui'; // Imports everything
+import * from '@janua/ui'; // Imports everything
 ```
 
 ## 🧪 Testing
@@ -486,7 +486,7 @@ import * from '@plinto/ui'; // Imports everything
 ```tsx
 // Testing with React Testing Library
 import { render, screen } from '@testing-library/react';
-import { Button } from '@plinto/ui';
+import { Button } from '@janua/ui';
 
 test('renders button with text', () => {
   render(<Button>Click me</Button>);
@@ -541,7 +541,7 @@ interface ButtonProps {
 
 ```bash
 # Clone the repo
-git clone https://github.com/plinto/plinto.git
+git clone https://github.com/janua/janua.git
 
 # Navigate to UI package
 cd packages/ui
@@ -589,4 +589,4 @@ See [UI Contributing Guide](../../docs/contributing/ui.md) for component develop
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

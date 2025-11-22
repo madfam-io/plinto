@@ -1,5 +1,5 @@
 /**
- * Plinto React Native SDK
+ * Janua React Native SDK
  * Complete authentication solution for React Native apps
  */
 
@@ -8,9 +8,9 @@ import * as Keychain from 'react-native-keychain';
 import { Platform } from 'react-native';
 import 'react-native-url-polyfill/auto';
 
-const DEFAULT_BASE_URL = 'https://plinto.dev';
+const DEFAULT_BASE_URL = 'https://janua.dev';
 
-class PlintoClient {
+class JanuaClient {
   constructor(config) {
     this.baseURL = config.baseURL || DEFAULT_BASE_URL;
     this.tenantId = config.tenantId;
@@ -61,28 +61,28 @@ class PlintoClient {
       
       if (!response.ok) {
         const error = await response.json();
-        throw new PlintoError(error.message, error.code, error.details);
+        throw new JanuaError(error.message, error.code, error.details);
       }
 
       return await response.json();
     } catch (error) {
-      if (error instanceof PlintoError) {
+      if (error instanceof JanuaError) {
         throw error;
       }
-      throw new PlintoError('Network error', 'NETWORK_ERROR', { original: error.message });
+      throw new JanuaError('Network error', 'NETWORK_ERROR', { original: error.message });
     }
   }
 
   async getAccessToken() {
     try {
-      const tokens = await this.secureStorage.getInternetCredentials('plinto');
+      const tokens = await this.secureStorage.getInternetCredentials('janua');
       if (tokens) {
         const parsed = JSON.parse(tokens.password);
         return parsed.access_token;
       }
     } catch (error) {
       // Try AsyncStorage as fallback
-      return await this.storage.getItem('plinto_access_token');
+      return await this.storage.getItem('janua_access_token');
     }
     return null;
   }
@@ -91,24 +91,24 @@ class PlintoClient {
     try {
       // Store in secure storage
       await this.secureStorage.setInternetCredentials(
-        'plinto',
+        'janua',
         'tokens',
         JSON.stringify(tokens)
       );
     } catch (error) {
       // Fallback to AsyncStorage
-      await this.storage.setItem('plinto_access_token', tokens.access_token);
-      await this.storage.setItem('plinto_refresh_token', tokens.refresh_token);
+      await this.storage.setItem('janua_access_token', tokens.access_token);
+      await this.storage.setItem('janua_refresh_token', tokens.refresh_token);
     }
   }
 
   async clearTokens() {
     try {
-      await this.secureStorage.resetInternetCredentials('plinto');
+      await this.secureStorage.resetInternetCredentials('janua');
     } catch (error) {
       // Clear from AsyncStorage
-      await this.storage.removeItem('plinto_access_token');
-      await this.storage.removeItem('plinto_refresh_token');
+      await this.storage.removeItem('janua_access_token');
+      await this.storage.removeItem('janua_refresh_token');
     }
   }
 
@@ -167,9 +167,9 @@ class AuthService {
   }
 
   async refreshToken() {
-    const refreshToken = await this.client.storage.getItem('plinto_refresh_token');
+    const refreshToken = await this.client.storage.getItem('janua_refresh_token');
     if (!refreshToken) {
-      throw new PlintoError('No refresh token available', 'NO_REFRESH_TOKEN');
+      throw new JanuaError('No refresh token available', 'NO_REFRESH_TOKEN');
     }
 
     const response = await this.client.request('POST', '/api/v1/auth/refresh', {
@@ -275,13 +275,13 @@ class AuthService {
   async enableBiometric() {
     const isSupported = await Keychain.getSupportedBiometryType();
     if (!isSupported) {
-      throw new PlintoError('Biometric authentication not supported', 'BIOMETRIC_NOT_SUPPORTED');
+      throw new JanuaError('Biometric authentication not supported', 'BIOMETRIC_NOT_SUPPORTED');
     }
 
     // Store current tokens with biometric protection
     const tokens = await this.client.getTokens();
     await Keychain.setInternetCredentials(
-      'plinto-biometric',
+      'janua-biometric',
       'tokens',
       JSON.stringify(tokens),
       {
@@ -294,7 +294,7 @@ class AuthService {
   }
 
   async signInWithBiometric() {
-    const result = await Keychain.getInternetCredentials('plinto-biometric', {
+    const result = await Keychain.getInternetCredentials('janua-biometric', {
       authenticatePrompt: 'Authenticate to sign in'
     });
 
@@ -304,7 +304,7 @@ class AuthService {
       return { success: true, tokens };
     }
 
-    throw new PlintoError('Biometric authentication failed', 'BIOMETRIC_FAILED');
+    throw new JanuaError('Biometric authentication failed', 'BIOMETRIC_FAILED');
   }
 }
 
@@ -417,10 +417,10 @@ class OrganizationsService {
   }
 }
 
-class PlintoError extends Error {
+class JanuaError extends Error {
   constructor(message, code, details = {}) {
     super(message);
-    this.name = 'PlintoError';
+    this.name = 'JanuaError';
     this.code = code;
     this.details = details;
   }
@@ -463,5 +463,5 @@ function arrayBufferToBase64(buffer) {
 }
 
 // Export
-export default PlintoClient;
-export { PlintoError, AuthService, UsersService, SessionsService, OrganizationsService };
+export default JanuaClient;
+export { JanuaError, AuthService, UsersService, SessionsService, OrganizationsService };

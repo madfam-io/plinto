@@ -41,7 +41,7 @@ class MigratedUser(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     migration_job_id = Column(UUID(as_uuid=True), ForeignKey("migration_jobs.id"))
     external_id = Column(String(255))
-    plinto_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    janua_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     status = Column(SQLEnum(MigrationStatus))
     migration_metadata = Column(JSONB, default={})
     created_at = Column(DateTime, default=datetime.utcnow)

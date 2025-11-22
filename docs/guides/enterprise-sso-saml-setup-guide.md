@@ -4,7 +4,7 @@
 
 ## Overview
 
-Plinto API provides enterprise-grade SSO/SAML 2.0 integration that works with all major identity providers including Okta, Azure AD, Google Workspace, AWS SSO, PingIdentity, and OneLogin. This guide covers complete setup and configuration.
+Janua API provides enterprise-grade SSO/SAML 2.0 integration that works with all major identity providers including Okta, Azure AD, Google Workspace, AWS SSO, PingIdentity, and OneLogin. This guide covers complete setup and configuration.
 
 ## 🏢 SSO Features
 
@@ -36,7 +36,7 @@ Plinto API provides enterprise-grade SSO/SAML 2.0 integration that works with al
 ### 1. Create SSO Configuration
 
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/sso/configurations" \
+curl -X POST "https://api.janua.dev/api/v1/sso/configurations" \
   -H "Authorization: Bearer <admin_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -54,16 +54,16 @@ curl -X POST "https://api.plinto.dev/api/v1/sso/configurations" \
   }'
 ```
 
-### 2. Get Plinto SAML Metadata
+### 2. Get Janua SAML Metadata
 
 ```bash
-curl "https://api.plinto.dev/api/v1/sso/metadata/org_123"
+curl "https://api.janua.dev/api/v1/sso/metadata/org_123"
 ```
 
 ### 3. Test SSO Configuration
 
 ```bash
-curl -X POST "https://api.plinto.dev/api/v1/sso/test" \
+curl -X POST "https://api.janua.dev/api/v1/sso/test" \
   -H "Authorization: Bearer <admin_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -79,12 +79,12 @@ curl -X POST "https://api.plinto.dev/api/v1/sso/test" \
 #### 1. Create SAML Application in Okta
 1. Go to **Admin Console** → **Applications** → **Create App Integration**
 2. Select **SAML 2.0**
-3. Application name: "Plinto Authentication"
+3. Application name: "Janua Authentication"
 
 #### 2. Configure SAML Settings
 ```yaml
-Single Sign-On URL: https://api.plinto.dev/api/v1/sso/saml/acs
-Audience URI (SP Entity ID): https://api.plinto.dev/sp/metadata/org_123
+Single Sign-On URL: https://api.janua.dev/api/v1/sso/saml/acs
+Audience URI (SP Entity ID): https://api.janua.dev/sp/metadata/org_123
 Default RelayState: (leave blank)
 Name ID format: EmailAddress
 Application username: Email
@@ -108,15 +108,15 @@ https://dev-12345.okta.com/app/abc123def456/sso/saml/metadata
 #### 1. Create Enterprise Application
 1. Go to **Azure AD** → **Enterprise Applications** → **New application**
 2. Select **Create your own application**
-3. Name: "Plinto Authentication"
+3. Name: "Janua Authentication"
 4. Choose **Integrate any other application**
 
 #### 2. Configure Single Sign-On
 ```yaml
-Identifier (Entity ID): https://api.plinto.dev/sp/metadata/org_123
-Reply URL (Assertion Consumer Service URL): https://api.plinto.dev/api/v1/sso/saml/acs
-Sign on URL: https://yourapp.plinto.dev/auth/sso
-Logout URL: https://api.plinto.dev/api/v1/sso/saml/slo
+Identifier (Entity ID): https://api.janua.dev/sp/metadata/org_123
+Reply URL (Assertion Consumer Service URL): https://api.janua.dev/api/v1/sso/saml/acs
+Sign on URL: https://yourapp.janua.dev/auth/sso
+Logout URL: https://api.janua.dev/api/v1/sso/saml/slo
 ```
 
 #### 3. User Attributes & Claims
@@ -135,13 +135,13 @@ Go to **Single sign-on** → **SAML Signing Certificate** → Download **Federat
 #### 1. Create SAML App
 1. Go to **Google Admin Console** → **Apps** → **Web and mobile apps**
 2. Click **Add App** → **Add custom SAML app**
-3. App name: "Plinto Authentication"
+3. App name: "Janua Authentication"
 
 #### 2. Configure SAML Details
 ```yaml
-ACS URL: https://api.plinto.dev/api/v1/sso/saml/acs
-Entity ID: https://api.plinto.dev/sp/metadata/org_123
-Start URL: https://yourapp.plinto.dev/auth/sso
+ACS URL: https://api.janua.dev/api/v1/sso/saml/acs
+Entity ID: https://api.janua.dev/sp/metadata/org_123
+Start URL: https://yourapp.janua.dev/auth/sso
 Name ID: Basic Information > Primary email
 Name ID format: EMAIL
 ```
@@ -521,7 +521,7 @@ class SSOUserProvisioner:
 
         # Group to role mapping
         group_role_mapping = {
-            "Plinto-Admins": "owner",
+            "Janua-Admins": "owner",
             "IT-Admins": "admin",
             "Managers": "admin",
             "Employees": "member",

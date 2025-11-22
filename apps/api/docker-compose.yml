@@ -4,15 +4,15 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: plinto
-      POSTGRES_PASSWORD: plinto_dev
-      POSTGRES_DB: plinto_db
+      POSTGRES_USER: janua
+      POSTGRES_PASSWORD: janua_dev
+      POSTGRES_DB: janua_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U plinto"]
+      test: ["CMD-SHELL", "pg_isready -U janua"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://plinto:plinto_dev@postgres:5432/plinto_db
+      DATABASE_URL: postgresql://janua:janua_dev@postgres:5432/janua_db
       REDIS_URL: redis://redis:6379/0
       SECRET_KEY: dev-secret-key-change-in-production
       DEBUG: "true"

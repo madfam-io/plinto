@@ -1,4 +1,4 @@
-// Jest setup file for Plinto marketing app
+// Jest setup file for Janua marketing app
 import '@testing-library/jest-dom';
 
 // Mock Next.js router
@@ -42,8 +42,8 @@ jest.mock('next/image', () => ({
 // Mock environment variables
 process.env = {
   ...process.env,
-  NEXT_PUBLIC_API_URL: 'https://api.plinto.dev',
-  NEXT_PUBLIC_APP_URL: 'https://app.plinto.dev',
+  NEXT_PUBLIC_API_URL: 'https://api.janua.dev',
+  NEXT_PUBLIC_APP_URL: 'https://app.janua.dev',
 };
 
 // Mock window.matchMedia

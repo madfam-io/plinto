@@ -21,13 +21,13 @@
 
 ## Overview
 
-Plinto provides comprehensive compliance features to help your organization meet GDPR, CCPA, and other privacy regulations.
+Janua provides comprehensive compliance features to help your organization meet GDPR, CCPA, and other privacy regulations.
 
 ### Compliance Framework
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│           Plinto Compliance Features                │
+│           Janua Compliance Features                │
 ├─────────────────────────────────────────────────────┤
 │                                                     │
 │  ┌─────────────┐  ┌──────────────┐  ┌───────────┐ │
@@ -75,7 +75,7 @@ Plinto provides comprehensive compliance features to help your organization meet
 
 ### Legal Bases
 
-Plinto supports all six GDPR legal bases:
+Janua supports all six GDPR legal bases:
 
 1. **Consent** - Explicit user agreement
 2. **Contract** - Necessary for service delivery
@@ -219,7 +219,7 @@ GET /api/compliance/consent
 ### UI Component
 
 ```tsx
-import { ConsentManager } from '@plinto/ui/compliance';
+import { ConsentManager } from '@janua/ui/compliance';
 
 function App() {
   return (
@@ -268,7 +268,7 @@ POST /api/compliance/data-subject-request
 
 **UI Component:**
 ```tsx
-import { DataRightsRequest } from '@plinto/ui/compliance';
+import { DataRightsRequest } from '@janua/ui/compliance';
 
 function PrivacyPage() {
   return (
@@ -438,7 +438,7 @@ GET /api/compliance/data-subject-requests
 ### User-Facing Privacy Controls
 
 ```tsx
-import { PrivacySettings } from '@plinto/ui/compliance';
+import { PrivacySettings } from '@janua/ui/compliance';
 
 function PrivacyPage() {
   return (
@@ -706,7 +706,7 @@ Display on website:
 ### Step 1: Enable Compliance Features
 
 ```javascript
-// In your Plinto organization settings
+// In your Janua organization settings
 {
   "compliance": {
     "enabled": true,
@@ -722,7 +722,7 @@ Display on website:
 
 ```tsx
 // app/layout.tsx
-import { ConsentManager } from '@plinto/ui/compliance';
+import { ConsentManager } from '@janua/ui/compliance';
 
 export default function RootLayout({ children }) {
   return (
@@ -763,7 +763,7 @@ export default function RootLayout({ children }) {
 
 ```tsx
 // app/privacy/page.tsx
-import { PrivacySettings, DataRightsRequest } from '@plinto/ui/compliance';
+import { PrivacySettings, DataRightsRequest } from '@janua/ui/compliance';
 
 export default function PrivacyPage() {
   return (
@@ -788,16 +788,16 @@ export default function PrivacyPage() {
 
 ```typescript
 // Server-side handler
-import { PlintoClient } from '@plinto/sdk';
+import { JanuaClient } from '@janua/sdk';
 
 async function handleDataSubjectRequest(
   userId: string,
   requestType: 'access' | 'erasure' | 'portability'
 ) {
-  const plinto = new PlintoClient({ apiKey: process.env.PLINTO_API_KEY });
+  const janua = new JanuaClient({ apiKey: process.env.JANUA_API_KEY });
   
   // Submit request
-  const request = await plinto.compliance.submitDataSubjectRequest({
+  const request = await janua.compliance.submitDataSubjectRequest({
     userId,
     requestType,
     description: `User requested ${requestType}`
@@ -807,15 +807,15 @@ async function handleDataSubjectRequest(
   switch (requestType) {
     case 'access':
       // Generate data export
-      return await plinto.compliance.exportUserData(userId);
+      return await janua.compliance.exportUserData(userId);
       
     case 'erasure':
       // Schedule account deletion
-      return await plinto.users.delete(userId);
+      return await janua.users.delete(userId);
       
     case 'portability':
       // Export in portable format
-      return await plinto.compliance.exportUserData(userId, { format: 'json' });
+      return await janua.compliance.exportUserData(userId, { format: 'json' });
   }
 }
 ```
@@ -938,14 +938,14 @@ async function handleDataSubjectRequest(
 
 ## Support & Resources
 
-- **Documentation**: https://docs.plinto.dev/compliance
-- **Privacy Policy**: https://plinto.dev/privacy
-- **GDPR Guide**: https://docs.plinto.dev/gdpr
-- **CCPA Guide**: https://docs.plinto.dev/ccpa
-- **Email Support**: compliance@plinto.dev
+- **Documentation**: https://docs.janua.dev/compliance
+- **Privacy Policy**: https://janua.dev/privacy
+- **GDPR Guide**: https://docs.janua.dev/gdpr
+- **CCPA Guide**: https://docs.janua.dev/ccpa
+- **Email Support**: compliance@janua.dev
 
 ---
 
 **Last Updated**: November 16, 2025  
 **Version**: 1.0.0-beta  
-**Support**: compliance@plinto.dev
+**Support**: compliance@janua.dev

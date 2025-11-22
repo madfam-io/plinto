@@ -1,4 +1,4 @@
-# Testing Patterns for Plinto Auth Service
+# Testing Patterns for Janua Auth Service
 
 ## Critical Async Mock Patterns
 

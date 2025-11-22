@@ -57,14 +57,14 @@ See detailed fix report: [CRITICAL_FIXES_COMPLETE.md](./CRITICAL_FIXES_COMPLETE.
 **Priority**: 🔴 **CRITICAL** - Must fix before publication
 
 #### 1. MFA Documentation Complete Mismatch
-- **Issue**: 2,750-line MFA guide uses `plinto.auth.mfa.*` API that does NOT exist
+- **Issue**: 2,750-line MFA guide uses `janua.auth.mfa.*` API that does NOT exist
 - **File**: apps/docs/content/guides/authentication/mfa.md
 - **Impact**: 100% of MFA examples will fail for users
 - **Estimated Fix**: 2-3 days (complete rewrite required)
 - **Severity**: CRITICAL - Complete guide invalidation
 
 #### 2. Missing verifyToken() Method
-- **Issue**: Quickstart documents `plinto.auth.verifyToken()` which doesn't exist
+- **Issue**: Quickstart documents `janua.auth.verifyToken()` which doesn't exist
 - **File**: apps/landing/app/docs/quickstart/page.tsx (lines 220-235)
 - **Impact**: Auth middleware example fails
 - **Estimated Fix**: 30 minutes (use `getCurrentUser()` instead)
@@ -133,7 +133,7 @@ See detailed fix report: [CRITICAL_FIXES_COMPLETE.md](./CRITICAL_FIXES_COMPLETE.
 ### SDK Implementation
 
 **Package Configuration**:
-- ✅ Package name: @plinto/typescript-sdk (matches docs)
+- ✅ Package name: @janua/typescript-sdk (matches docs)
 - ✅ Version: 1.0.0
 - ✅ Exports configured: ESM + CJS
 - ✅ TypeScript types included
@@ -327,7 +327,7 @@ See detailed fix report: [CRITICAL_FIXES_COMPLETE.md](./CRITICAL_FIXES_COMPLETE.
 
 **Days 2-3**:
 - Full days (16h total): Rewrite MFA guide
-  - Update API structure to `plinto.auth.*` (4 hours)
+  - Update API structure to `janua.auth.*` (4 hours)
   - Rewrite Express.js examples (4 hours)
   - Rewrite FastAPI examples (4 hours)
   - Rewrite React components (4 hours)
@@ -387,7 +387,7 @@ See detailed fix report: [CRITICAL_FIXES_COMPLETE.md](./CRITICAL_FIXES_COMPLETE.
 
 ### Package Publication
 
-- [ ] **npm package published** (@plinto/typescript-sdk)
+- [ ] **npm package published** (@janua/typescript-sdk)
 - [ ] **Package README updated** with installation
 - [ ] **CHANGELOG created** for v1.0.0
 - [ ] **GitHub releases** configured
@@ -460,7 +460,7 @@ Documentation is publication-ready when:
 **Competitive Impact**:
 - 🎯 Competitors gain advantage
 - 🎯 Users try Auth0, Clerk, Supabase instead
-- 🎯 "Plinto docs don't work" perception spreads
+- 🎯 "Janua docs don't work" perception spreads
 
 ### If Published After Fixes
 
@@ -480,8 +480,8 @@ Documentation is publication-ready when:
 
 **Competitive Impact**:
 - 🚀 Differentiation through quality
-- 🚀 Users choose Plinto over incumbents
-- 🚀 "Plinto just works" reputation
+- 🚀 Users choose Janua over incumbents
+- 🚀 "Janua just works" reputation
 
 ---
 

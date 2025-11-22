@@ -14,8 +14,8 @@ import {
   Clock,
   Shield
 } from 'lucide-react'
-import { Badge } from '@plinto/ui'
-import { Button } from '@plinto/ui'
+import { Badge } from '@janua/ui'
+import { Button } from '@janua/ui'
 
 const useCases = [
   {
@@ -154,7 +154,7 @@ export function UseCases() {
             </span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            From e-commerce to healthcare, Plinto provides specialized authentication 
+            From e-commerce to healthcare, Janua provides specialized authentication 
             solutions that meet the unique requirements of your industry.
           </p>
         </motion.div>
@@ -259,7 +259,7 @@ export function UseCases() {
             Don't see your industry?
           </h3>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Plinto's flexible architecture adapts to any use case. Our team works with you 
+            Janua's flexible architecture adapts to any use case. Our team works with you 
             to design the perfect authentication solution for your specific requirements.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

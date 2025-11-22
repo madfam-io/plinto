@@ -3,22 +3,22 @@
  * This prevents regression of the circular dependency and module export issues
  */
 
-import { PlintoClient, createClient } from '../../index';
+import { JanuaClient, createClient } from '../../index';
 
 describe('SDK Import and Instantiation', () => {
   test('SDK exports are available', () => {
-    expect(PlintoClient).toBeDefined();
+    expect(JanuaClient).toBeDefined();
     expect(createClient).toBeDefined();
-    expect(typeof PlintoClient).toBe('function');
+    expect(typeof JanuaClient).toBe('function');
     expect(typeof createClient).toBe('function');
   });
 
-  test('Can instantiate PlintoClient directly', () => {
-    const client = new PlintoClient({
-      baseURL: 'https://api.plinto.dev'
+  test('Can instantiate JanuaClient directly', () => {
+    const client = new JanuaClient({
+      baseURL: 'https://api.janua.dev'
     });
 
-    expect(client).toBeInstanceOf(PlintoClient);
+    expect(client).toBeInstanceOf(JanuaClient);
     expect(client.auth).toBeDefined();
     expect(client.users).toBeDefined();
     expect(client.sessions).toBeDefined();
@@ -29,15 +29,15 @@ describe('SDK Import and Instantiation', () => {
 
   test('Can create client using factory function', () => {
     const client = createClient({
-      baseURL: 'https://api.plinto.dev'
+      baseURL: 'https://api.janua.dev'
     });
 
-    expect(client).toBeInstanceOf(PlintoClient);
+    expect(client).toBeInstanceOf(JanuaClient);
   });
 
   test('All convenience methods are present', () => {
-    const client = new PlintoClient({
-      baseURL: 'https://api.plinto.dev'
+    const client = new JanuaClient({
+      baseURL: 'https://api.janua.dev'
     });
 
     expect(typeof client.signIn).toBe('function');
@@ -50,8 +50,8 @@ describe('SDK Import and Instantiation', () => {
   });
 
   test('Enterprise features are accessible', () => {
-    const client = new PlintoClient({
-      baseURL: 'https://api.plinto.dev'
+    const client = new JanuaClient({
+      baseURL: 'https://api.janua.dev'
     });
 
     expect(typeof client.validateLicense).toBe('function');

@@ -1,5 +1,5 @@
 """
-Comprehensive Test Configuration for Plinto API
+Comprehensive Test Configuration for Janua API
 Production-ready test infrastructure with 85%+ coverage targets
 """
 

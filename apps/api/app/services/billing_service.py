@@ -205,7 +205,7 @@ class BillingService:
                         "customer_email": customer_email,
                         "line_items": [
                             {
-                                "name": f"Plinto {tier.capitalize()} Plan",
+                                "name": f"Janua {tier.capitalize()} Plan",
                                 "unit_price": price_mxn * 100,  # Conekta uses cents
                                 "quantity": 1,
                             }
@@ -273,7 +273,7 @@ class BillingService:
                     json={
                         "customer_id": customer_id,
                         "plan": {
-                            "name": f"Plinto {tier.capitalize()}",
+                            "name": f"Janua {tier.capitalize()}",
                             "amount": price_usd * 100,  # In cents
                             "currency": "USD",
                             "interval": "month",
@@ -326,7 +326,7 @@ class BillingService:
                                 "price_data": {
                                     "currency": "USD",
                                     "product_data": {
-                                        "name": f"Plinto {tier.capitalize()} Plan",
+                                        "name": f"Janua {tier.capitalize()} Plan",
                                         "description": f"Up to {PRICING_TIERS[tier]['mau_limit']:,} MAU",
                                     },
                                     "unit_amount": price_usd * 100,
@@ -449,7 +449,7 @@ class BillingService:
                         "customer_email": customer_email,
                         "mode": "subscription",
                         "line_items[0][price_data][currency]": currency,
-                        "line_items[0][price_data][product_data][name]": f"Plinto {tier.capitalize()} Plan",
+                        "line_items[0][price_data][product_data][name]": f"Janua {tier.capitalize()} Plan",
                         "line_items[0][price_data][unit_amount]": str(price * 100),
                         "line_items[0][price_data][recurring][interval]": "month",
                         "line_items[0][quantity]": "1",

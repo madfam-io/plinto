@@ -21,7 +21,7 @@ import { SubscriptionPlans } from './subscription-plans';
 
 export interface BillingPortalProps {
   /**
-   * Plinto client instance
+   * Janua client instance
    */
   client: any;
 

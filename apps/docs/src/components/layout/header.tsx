@@ -31,7 +31,7 @@ export function Header() {
               <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
                 <span className="text-white font-bold text-sm">P</span>
               </div>
-              <span className="font-semibold text-gray-900 dark:text-white">Plinto Docs</span>
+              <span className="font-semibold text-gray-900 dark:text-white">Janua Docs</span>
             </Link>
             <div className="hidden lg:flex lg:gap-x-8">
               {navigation.map((item) => (
@@ -77,7 +77,7 @@ export function Header() {
 
             {/* GitHub */}
             <Link
-              href="https://github.com/madfam-io/plinto"
+              href="https://github.com/madfam-io/janua"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"

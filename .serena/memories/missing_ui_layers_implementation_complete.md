@@ -4,7 +4,7 @@
 
 ## Overview
 
-Implemented all missing enterprise UI components for Plinto's compliance, SCIM, and RBAC features. This completes the frontend integration layer for existing backend APIs.
+Implemented all missing enterprise UI components for Janua's compliance, SCIM, and RBAC features. This completes the frontend integration layer for existing backend APIs.
 
 ## Implemented Components
 
@@ -128,7 +128,7 @@ export * from './components/rbac'
 **Component Patterns**:
 - Follows existing SSO and Invitations component architecture
 - Uses shadcn/ui primitives (Card, Button, Input, Label)
-- Consistent prop interfaces with `plintoClient` and `apiUrl` options
+- Consistent prop interfaces with `januaClient` and `apiUrl` options
 - Error handling with user-friendly messages
 - Success states with visual feedback
 - Accessibility-focused (ARIA labels, keyboard navigation)
@@ -337,4 +337,4 @@ Total: ~2,450 lines of production-ready UI code
 6. **Accessibility**: WCAG-compliant with keyboard navigation
 7. **Developer Experience**: Clean APIs, TypeScript types, comprehensive props
 
-The missing UI layers are now complete, unlocking the full functionality of Plinto's enterprise backend features.
+The missing UI layers are now complete, unlocking the full functionality of Janua's enterprise backend features.

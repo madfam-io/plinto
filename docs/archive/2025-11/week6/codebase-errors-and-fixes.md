@@ -51,13 +51,13 @@ error TS1135: Argument expression expected.
 
 ---
 
-### 2. Missing @plinto/feature-flags Package
+### 2. Missing @janua/feature-flags Package
 
 **Affected Apps**: Demo, Dashboard, Admin
 
 **Error**:
 ```typescript
-error TS2307: Cannot find module '@plinto/feature-flags' or its corresponding type declarations.
+error TS2307: Cannot find module '@janua/feature-flags' or its corresponding type declarations.
 ```
 
 **Files Affected**:
@@ -90,16 +90,16 @@ npm run build
 2. **Option B** (Quick fix): Temporarily remove feature flag imports and wrap with conditional checks:
    ```typescript
    // apps/demo/components/providers.tsx
-   import { PlintoProvider } from './providers/plinto-provider'
+   import { JanuaProvider } from './providers/janua-provider'
    
-   // TODO: Re-enable after building @plinto/feature-flags
-   // import { FeatureFlagProvider } from '@plinto/feature-flags'
+   // TODO: Re-enable after building @janua/feature-flags
+   // import { FeatureFlagProvider } from '@janua/feature-flags'
    
    export function Providers({ children }: { children: React.ReactNode }) {
      return (
-       <PlintoProvider>
+       <JanuaProvider>
          {children}
-       </PlintoProvider>
+       </JanuaProvider>
      )
    }
    ```
@@ -114,7 +114,7 @@ npm run build
 **Severity**: High
 
 **Files Affected**:
-- `apps/demo/components/providers/plinto-provider.tsx`
+- `apps/demo/components/providers/janua-provider.tsx`
 - `apps/dashboard/lib/auth.tsx`
 - `apps/admin/lib/auth.tsx` (will have same issue)
 
@@ -127,9 +127,9 @@ error TS2345: Argument of type '"tokenRefreshed"' is not assignable to parameter
 
 **Code**:
 ```typescript
-plintoClient.on('signIn', handleSignIn)
-plintoClient.on('signOut', handleSignOut)
-plintoClient.on('tokenRefreshed', handleTokenRefresh)
+januaClient.on('signIn', handleSignIn)
+januaClient.on('signOut', handleSignOut)
+januaClient.on('tokenRefreshed', handleTokenRefresh)
 ```
 
 **Error 2**: Event listener argument count
@@ -139,12 +139,12 @@ error TS2554: Expected 0-1 arguments, but got 2.
 
 **Code**:
 ```typescript
-plintoClient.off('signIn', handleSignIn)
-plintoClient.off('signOut', handleSignOut)
-plintoClient.off('tokenRefreshed', handleTokenRefresh)
+januaClient.off('signIn', handleSignIn)
+januaClient.off('signOut', handleSignOut)
+januaClient.off('tokenRefreshed', handleTokenRefresh)
 ```
 
-**Root Cause**: `@plinto/typescript-sdk` type definitions don't match implemented API
+**Root Cause**: `@janua/typescript-sdk` type definitions don't match implemented API
 
 **Fix Options**:
 
@@ -157,7 +157,7 @@ export interface SdkEventMap {
   tokenRefreshed: () => void
 }
 
-export class PlintoClient extends EventEmitter<SdkEventMap> {
+export class JanuaClient extends EventEmitter<SdkEventMap> {
   // ...
 }
 ```
@@ -165,9 +165,9 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
 **Option B** (Cast types in apps):
 ```typescript
 // Temporary workaround
-plintoClient.on('signIn' as any, handleSignIn)
-plintoClient.on('signOut' as any, handleSignOut)
-plintoClient.on('tokenRefreshed' as any, handleTokenRefresh)
+januaClient.on('signIn' as any, handleSignIn)
+januaClient.on('signOut' as any, handleSignOut)
+januaClient.on('tokenRefreshed' as any, handleTokenRefresh)
 ```
 
 **Recommended**: Option A - Fix SDK types to match implementation
@@ -185,7 +185,7 @@ error TS2339: Property 'getAccessToken' does not exist on type 'Auth'.
 
 **Code**:
 ```typescript
-const token = await plintoClient.auth.getAccessToken()
+const token = await januaClient.auth.getAccessToken()
 ```
 
 **Root Cause**: Method name mismatch in SDK
@@ -193,16 +193,16 @@ const token = await plintoClient.auth.getAccessToken()
 **Fix**: Check actual SDK method name:
 ```typescript
 // Likely should be:
-const token = await plintoClient.auth.getToken()
+const token = await januaClient.auth.getToken()
 // or
-const token = plintoClient.getAccessToken()
+const token = januaClient.getAccessToken()
 ```
 
 ---
 
 ### 5. Dashboard Token Storage Type Error
 
-**File**: `apps/dashboard/lib/plinto-client.ts:16`
+**File**: `apps/dashboard/lib/janua-client.ts:16`
 
 **Error**:
 ```typescript
@@ -213,7 +213,7 @@ error TS2322: Type '{ type: string; key: string; }' is not assignable to type '"
 ```typescript
 tokenStorage: {
   type: 'localStorage',
-  key: 'plinto_auth_token',
+  key: 'janua_auth_token',
 },
 ```
 
@@ -221,7 +221,7 @@ tokenStorage: {
 ```typescript
 tokenStorage: {
   type: 'localStorage' as const, // Add 'as const' assertion
-  key: 'plinto_auth_token',
+  key: 'janua_auth_token',
 },
 ```
 
@@ -337,9 +337,9 @@ export type {
 
 **8a. Missing/Incorrect Imports**:
 ```typescript
-error TS2724: '"@plinto/ui/components/auth"' has no exported member named 'InvitationResponse'. Did you mean 'InvitationListResponse'?
-error TS2724: '"@/lib/plinto-client"' has no exported member named 'PlintoClient'. Did you mean 'plintoClient'?
-error TS2305: Module '"@plinto/ui/components/auth"' has no exported member 'SSOProviderCreate'.
+error TS2724: '"@janua/ui/components/auth"' has no exported member named 'InvitationResponse'. Did you mean 'InvitationListResponse'?
+error TS2724: '"@/lib/janua-client"' has no exported member named 'JanuaClient'. Did you mean 'januaClient'?
+error TS2305: Module '"@janua/ui/components/auth"' has no exported member 'SSOProviderCreate'.
 ```
 
 **Fix**:
@@ -347,8 +347,8 @@ error TS2305: Module '"@plinto/ui/components/auth"' has no exported member 'SSOP
 // apps/demo/app/auth/invitations-showcase/page.tsx
 import { 
   InvitationListResponse, // Changed from InvitationResponse
-} from '@plinto/ui/components/auth'
-import { plintoClient } from '@/lib/plinto-client' // Changed from PlintoClient
+} from '@janua/ui/components/auth'
+import { januaClient } from '@/lib/janua-client' // Changed from JanuaClient
 
 // apps/demo/app/auth/sso-showcase/page.tsx
 // Remove missing imports or create placeholder types
@@ -394,7 +394,7 @@ const handleAccept = async (invitationId: string) => {
 error TS7006: Parameter 'props' implicitly has an 'any' type.
 
 // Fix:
-jest.mock('@plinto/ui', () => ({
+jest.mock('@janua/ui', () => ({
   Button: (props: any) => <button {...props} />,
 }))
 ```
@@ -546,11 +546,11 @@ error TS2339: Property 'match' does not exist on type 'void'.
 ### Phase 1: Critical (Today)
 1. ✅ Fix admin syntax error
 2. ⏳ Build feature-flags package OR temporarily remove imports
-3. ⏳ Fix TypeScript SDK event types in @plinto/typescript-sdk
+3. ⏳ Fix TypeScript SDK event types in @janua/typescript-sdk
 
 ### Phase 2: High Priority (This Week)
 4. Fix UI package readonly array type definitions
-5. Fix missing type exports in @plinto/ui
+5. Fix missing type exports in @janua/ui
 6. Fix demo app showcase import errors
 7. Fix dashboard SDK method calls
 

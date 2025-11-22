@@ -1,8 +1,8 @@
-# 📚 Plinto Documentation Audit & Implementation Plan
+# 📚 Janua Documentation Audit & Implementation Plan
 
 ## Executive Summary
 
-This comprehensive audit ensures **100% documentation coverage** for all implemented features in the Plinto platform, optimized for:
+This comprehensive audit ensures **100% documentation coverage** for all implemented features in the Janua platform, optimized for:
 - 🎨 **UI/UX**: Modern, intuitive documentation interface
 - 👩‍💻 **DevX**: Developer-friendly with code examples and quick starts
 - 🤖 **LLM Compatibility**: Plain text versions for AI consumption
@@ -116,7 +116,7 @@ This comprehensive audit ensures **100% documentation coverage** for all impleme
 ## 🎨 Documentation Site Structure
 
 ```
-docs.plinto.dev/
+docs.janua.dev/
 ├── getting-started/
 │   ├── quick-start/          # 5-minute guide
 │   ├── installation/         # SDK installation
@@ -348,7 +348,7 @@ Content-Type: application/json
 
 ### Structure for AI Consumption
 ```markdown
-# PLINTO_API_DOCS_LLM_VERSION
+# JANUA_API_DOCS_LLM_VERSION
 
 ## AUTHENTICATION_ENDPOINTS
 
@@ -385,11 +385,11 @@ EXAMPLE_RESPONSE: {"user":{"id":"123","email":"user@example.com"},"session":{"to
 
 ## 📞 Documentation Support
 
-- **Documentation Issues**: docs@plinto.dev
-- **API Questions**: api-support@plinto.dev
-- **Enterprise Support**: enterprise@plinto.dev
-- **Community**: discord.gg/plinto
+- **Documentation Issues**: docs@janua.dev
+- **API Questions**: api-support@janua.dev
+- **Enterprise Support**: enterprise@janua.dev
+- **Community**: discord.gg/janua
 
 ---
 
-*This documentation audit ensures comprehensive coverage of all Plinto features with optimal UI/UX, DevX, and LLM compatibility.*
+*This documentation audit ensures comprehensive coverage of all Janua features with optimal UI/UX, DevX, and LLM compatibility.*

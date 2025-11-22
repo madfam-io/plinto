@@ -1,15 +1,15 @@
 'use client'
 
 /**
- * Plinto SDK Authentication Provider for Dashboard
+ * Janua SDK Authentication Provider for Dashboard
  *
- * This replaces the custom auth implementation with @plinto/react-sdk
+ * This replaces the custom auth implementation with @janua/react-sdk
  * to dogfood our own authentication platform.
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react'
-import { plintoClient } from './plinto-client'
-import type { User } from '@plinto/typescript-sdk'
+import { januaClient } from './janua-client'
+import type { User } from '@janua/typescript-sdk'
 
 interface AuthContextType {
   user: User | null
@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const currentUser = await plintoClient.auth.getCurrentUser()
+      const currentUser = await januaClient.auth.getCurrentUser()
       setUser(currentUser)
     } catch (error) {
       console.error('Failed to fetch user:', error)
@@ -58,20 +58,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       refreshUser()
     }
 
-    plintoClient.on('signIn', handleSignIn)
-    plintoClient.on('signOut', handleSignOut)
-    plintoClient.on('tokenRefreshed', handleTokenRefresh)
+    januaClient.on('signIn', handleSignIn)
+    januaClient.on('signOut', handleSignOut)
+    januaClient.on('tokenRefreshed', handleTokenRefresh)
 
     return () => {
-      plintoClient.off('signIn', handleSignIn)
-      plintoClient.off('signOut', handleSignOut)
-      plintoClient.off('tokenRefreshed', handleTokenRefresh)
+      januaClient.off('signIn', handleSignIn)
+      januaClient.off('signOut', handleSignOut)
+      januaClient.off('tokenRefreshed', handleTokenRefresh)
     }
   }, [refreshUser])
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await plintoClient.auth.signIn({ email, password })
+      const response = await januaClient.auth.signIn({ email, password })
       setUser(response.user)
     } catch (error) {
       console.error('Login failed:', error)
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      await plintoClient.auth.signOut()
+      await januaClient.auth.signOut()
       setUser(null)
       window.location.href = '/login'
     } catch (error) {
@@ -116,9 +116,9 @@ export function useAuth() {
   return context
 }
 
-// API helper using Plinto SDK
+// API helper using Janua SDK
 export async function apiCall(endpoint: string, options: RequestInit = {}) {
-  const token = await plintoClient.auth.getAccessToken()
+  const token = await januaClient.auth.getAccessToken()
 
   const config: RequestInit = {
     ...options,
@@ -132,10 +132,10 @@ export async function apiCall(endpoint: string, options: RequestInit = {}) {
   const response = await fetch(endpoint, config)
 
   if (response.status === 401) {
-    // Token expired - Plinto SDK will handle refresh
-    await plintoClient.auth.refreshToken()
+    // Token expired - Janua SDK will handle refresh
+    await januaClient.auth.refreshToken()
     // Retry request with new token
-    const newToken = await plintoClient.auth.getAccessToken()
+    const newToken = await januaClient.auth.getAccessToken()
     config.headers = {
       ...config.headers,
       'Authorization': `Bearer ${newToken}`,

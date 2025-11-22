@@ -1,4 +1,4 @@
-# Incident Response Playbook - Plinto Platform
+# Incident Response Playbook - Janua Platform
 
 **Last Updated:** 2025-09-10  
 **Version:** 1.0  
@@ -20,10 +20,10 @@
 ```yaml
 on_call_primary: "+1-XXX-XXX-XXXX"
 on_call_secondary: "+1-XXX-XXX-XXXX"
-security_team: "security@plinto.dev"
+security_team: "security@janua.dev"
 cto_emergency: "+1-XXX-XXX-XXXX"
-status_page: "https://status.plinto.dev"
-war_room_link: "https://meet.google.com/plinto-incident"
+status_page: "https://status.janua.dev"
+war_room_link: "https://meet.google.com/janua-incident"
 ```
 
 ## Phase 1: Detection & Triage (0-15 minutes)
@@ -38,8 +38,8 @@ war_room_link: "https://meet.google.com/plinto-incident"
 ### 1.2 Initial Assessment Checklist
 ```bash
 # Quick status check
-curl -I https://api.plinto.dev/health
-curl -I https://app.plinto.dev
+curl -I https://api.janua.dev/health
+curl -I https://app.janua.dev
 
 # Check recent deployments
 gh run list --limit 5
@@ -167,10 +167,10 @@ export EMERGENCY_MODE=true
 
 ```bash
 # View recent logs
-heroku logs --tail -a plinto-api  # or platform equivalent
+heroku logs --tail -a janua-api  # or platform equivalent
 
 # Check for errors
-grep -i error /var/log/plinto/*.log | tail -100
+grep -i error /var/log/janua/*.log | tail -100
 
 # Recent deployments
 git log --since="2 hours ago" --oneline
@@ -249,7 +249,7 @@ redis-cli SLOWLOG GET 10
 bash scripts/production-readiness-check.sh
 
 # API functionality test
-curl -X POST https://api.plinto.dev/auth/login \
+curl -X POST https://api.janua.dev/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test@test.com","password":"test"}'
 
@@ -331,7 +331,7 @@ curl -X POST https://api.plinto.dev/auth/login \
 echo "🚨 Starting emergency API recovery..."
 
 # 1. Check if API is responding
-if ! curl -f https://api.plinto.dev/health; then
+if ! curl -f https://api.janua.dev/health; then
     echo "API is down, proceeding with recovery..."
     
     # 2. Check recent deployments
@@ -347,7 +347,7 @@ if ! curl -f https://api.plinto.dev/health; then
     
     # 5. Verify recovery
     sleep 30
-    curl -I https://api.plinto.dev/health
+    curl -I https://api.janua.dev/health
 fi
 ```
 
@@ -445,20 +445,20 @@ curl -X POST $SECURITY_WEBHOOK \
 ## Tools & Resources
 
 ### Monitoring Dashboards
-- **Application Metrics:** https://app.datadog.com/dashboard/plinto
-- **Error Tracking:** https://sentry.io/organizations/plinto
+- **Application Metrics:** https://app.datadog.com/dashboard/janua
+- **Error Tracking:** https://sentry.io/organizations/janua
 - **Infrastructure:** https://dashboard.railway.app
 - **CDN/WAF:** https://dash.cloudflare.com
-- **Status Page:** https://status.plinto.dev
+- **Status Page:** https://status.janua.dev
 
 ### Useful Commands
 
 ```bash
 # Quick health check
-curl -s https://api.plinto.dev/health | jq .
+curl -s https://api.janua.dev/health | jq .
 
 # Check recent errors
-heroku logs --app plinto-api --tail | grep ERROR
+heroku logs --app janua-api --tail | grep ERROR
 
 # Database connection check
 psql $DATABASE_URL -c "SELECT 1"
@@ -476,15 +476,15 @@ git revert HEAD --no-edit && git push
 redis-cli FLUSHALL
 
 # Restart all services (platform specific)
-heroku restart --app plinto-api
+heroku restart --app janua-api
 ```
 
 ### Communication Channels
 - **Incidents:** #incidents (Slack)
-- **War Room:** https://meet.google.com/plinto-incident
-- **Status Updates:** https://status.plinto.dev
-- **Customer Support:** support@plinto.dev
-- **Security Issues:** security@plinto.dev
+- **War Room:** https://meet.google.com/janua-incident
+- **Status Updates:** https://status.janua.dev
+- **Customer Support:** support@janua.dev
+- **Security Issues:** security@janua.dev
 
 ## Training & Drills
 

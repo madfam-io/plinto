@@ -4,7 +4,7 @@ Build scalable SaaS applications with complete tenant isolation, automatic conte
 
 ## Overview
 
-Plinto's multi-tenant architecture provides complete isolation between organizations while maintaining optimal performance and security. Every query, session, and operation is automatically scoped to the appropriate tenant context, preventing data leakage and ensuring compliance.
+Janua's multi-tenant architecture provides complete isolation between organizations while maintaining optimal performance and security. Every query, session, and operation is automatically scoped to the appropriate tenant context, preventing data leakage and ensuring compliance.
 
 ## Key Features
 
@@ -19,10 +19,10 @@ Plinto's multi-tenant architecture provides complete isolation between organizat
 ### 1. Enable Multi-Tenancy
 
 ```typescript
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 // Configure multi-tenancy
-plinto.configure({
+janua.configure({
   multiTenant: {
     enabled: true,
     isolationMode: 'strict', // strict, relaxed, or shared
@@ -36,7 +36,7 @@ plinto.configure({
 
 ```typescript
 // Create new organization (tenant)
-const organization = await plinto.organizations.create({
+const organization = await janua.organizations.create({
   name: 'Acme Corporation',
   slug: 'acme', // Used for subdomain: acme.yourapp.com
   plan: 'business',
@@ -57,13 +57,13 @@ console.log('Tenant ID:', organization.tenantId)
 app.use(async (req, res, next) => {
   try {
     // Multiple ways to resolve tenant context
-    const context = await plinto.tenancy.resolveContext(req, {
+    const context = await janua.tenancy.resolveContext(req, {
       sources: ['subdomain', 'jwt', 'header'],
       required: true
     })
 
     // Set context for this request
-    plinto.tenancy.setContext({
+    janua.tenancy.setContext({
       tenantId: context.tenantId,
       organizationId: context.organizationId,
       userId: context.userId
@@ -81,18 +81,18 @@ app.use(async (req, res, next) => {
 
 ```typescript
 // All operations are automatically tenant-scoped
-const users = await plinto.users.list({
+const users = await janua.users.list({
   // Automatically filtered by current tenant context
   limit: 20
 })
 
-const projects = await plinto.projects.create({
+const projects = await janua.projects.create({
   name: 'New Project',
   // Automatically assigned to current tenant
 })
 
 // Current tenant context
-const currentContext = plinto.tenancy.getContext()
+const currentContext = janua.tenancy.getContext()
 console.log('Operating in tenant:', currentContext.tenantId)
 ```
 
@@ -104,11 +104,11 @@ console.log('Operating in tenant:', currentContext.tenantId)
 
 ```javascript
 const express = require('express')
-const { Plinto } = require('@plinto/typescript-sdk')
+const { Janua } = require('@janua/typescript-sdk')
 
 const app = express()
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY,
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY,
   multiTenant: {
     enabled: true,
     isolationMode: 'strict',
@@ -130,7 +130,7 @@ const resolveTenantContext = async (req, res, next) => {
     if (req.hostname !== 'localhost') {
       const subdomain = req.hostname.split('.')[0]
       if (subdomain && subdomain !== 'www') {
-        const org = await plinto.organizations.getBySlug(subdomain)
+        const org = await janua.organizations.getBySlug(subdomain)
         if (org) {
           tenantId = org.tenantId
           organizationId = org.id
@@ -142,7 +142,7 @@ const resolveTenantContext = async (req, res, next) => {
     if (!tenantId && req.headers.authorization) {
       const token = req.headers.authorization.split(' ')[1]
       try {
-        const decoded = await plinto.auth.verifyToken(token)
+        const decoded = await janua.auth.verifyToken(token)
         tenantId = decoded.tenantId || decoded.tid
         organizationId = decoded.organizationId || decoded.oid
       } catch (e) {
@@ -170,7 +170,7 @@ const resolveTenantContext = async (req, res, next) => {
     }
 
     // Validate tenant exists and is active
-    const tenant = await plinto.tenancy.validateTenant(tenantId)
+    const tenant = await janua.tenancy.validateTenant(tenantId)
     if (!tenant.active) {
       return res.status(403).json({
         error: 'Tenant suspended or inactive'
@@ -178,7 +178,7 @@ const resolveTenantContext = async (req, res, next) => {
     }
 
     // Set tenant context for this request
-    plinto.tenancy.setContext({
+    janua.tenancy.setContext({
       tenantId,
       organizationId,
       userId: req.user?.id,
@@ -208,13 +208,13 @@ app.post('/api/organizations', async (req, res) => {
 
   try {
     // Validate slug availability
-    const existing = await plinto.organizations.getBySlug(slug)
+    const existing = await janua.organizations.getBySlug(slug)
     if (existing) {
       return res.status(409).json({ error: 'Organization slug already exists' })
     }
 
     // Create organization with tenant
-    const organization = await plinto.organizations.create({
+    const organization = await janua.organizations.create({
       name,
       slug,
       plan,
@@ -227,10 +227,10 @@ app.post('/api/organizations', async (req, res) => {
     })
 
     // Create default roles for the organization
-    await plinto.rbac.initializeDefaultRoles(organization.id)
+    await janua.rbac.initializeDefaultRoles(organization.id)
 
     // Add creator as owner
-    await plinto.organizations.addMember({
+    await janua.organizations.addMember({
       organizationId: organization.id,
       userId: req.user.id,
       role: 'owner'
@@ -250,7 +250,7 @@ app.get('/api/organizations/:orgId', async (req, res) => {
     const { orgId } = req.params
 
     // Verify user has access to this organization
-    const membership = await plinto.organizations.getMembership({
+    const membership = await janua.organizations.getMembership({
       organizationId: orgId,
       userId: req.user.id
     })
@@ -259,8 +259,8 @@ app.get('/api/organizations/:orgId', async (req, res) => {
       return res.status(403).json({ error: 'Access denied' })
     }
 
-    const organization = await plinto.organizations.get(orgId)
-    const stats = await plinto.organizations.getStats(orgId)
+    const organization = await janua.organizations.get(orgId)
+    const stats = await janua.organizations.getStats(orgId)
 
     res.json({
       organization,
@@ -277,7 +277,7 @@ app.get('/api/organizations/:orgId', async (req, res) => {
 app.get('/api/users', async (req, res) => {
   try {
     // Users are automatically filtered by tenant context
-    const users = await plinto.users.list({
+    const users = await janua.users.list({
       page: parseInt(req.query.page) || 1,
       limit: parseInt(req.query.limit) || 20,
       search: req.query.search,
@@ -314,8 +314,8 @@ app.get('/api/admin/tenants', async (req, res) => {
     }
 
     // Temporarily bypass tenant isolation
-    const tenants = await plinto.tenancy.withSystemContext(async () => {
-      return await plinto.organizations.list({
+    const tenants = await janua.tenancy.withSystemContext(async () => {
+      return await janua.organizations.list({
         includeStats: true,
         page: parseInt(req.query.page) || 1,
         limit: parseInt(req.query.limit) || 50
@@ -335,7 +335,7 @@ app.post('/api/organizations/:orgId/migrate', async (req, res) => {
 
   try {
     // Verify permissions
-    const canMigrate = await plinto.organizations.canMigrate({
+    const canMigrate = await janua.organizations.canMigrate({
       organizationId: orgId,
       userId: req.user.id,
       targetTenant
@@ -346,7 +346,7 @@ app.post('/api/organizations/:orgId/migrate', async (req, res) => {
     }
 
     // Start migration job
-    const migrationJob = await plinto.tenancy.startMigration({
+    const migrationJob = await janua.tenancy.startMigration({
       sourceOrganization: orgId,
       targetTenant,
       includeData: req.body.includeData !== false,
@@ -365,7 +365,7 @@ app.post('/api/organizations/:orgId/migrate', async (req, res) => {
 
 // Health check with tenant info
 app.get('/api/health', async (req, res) => {
-  const tenantContext = plinto.tenancy.getContext()
+  const tenantContext = janua.tenancy.getContext()
 
   res.json({
     status: 'healthy',
@@ -383,13 +383,13 @@ app.get('/api/health', async (req, res) => {
 ```python
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer
-from plinto import Plinto
+from janua import Janua
 import os
 from typing import Optional
 
 app = FastAPI()
-plinto = Plinto(
-    api_key=os.getenv("PLINTO_API_KEY"),
+janua = Janua(
+    api_key=os.getenv("JANUA_API_KEY"),
     multi_tenant={
         "enabled": True,
         "isolation_mode": "strict",
@@ -407,7 +407,7 @@ async def resolve_tenant_context(request: Request):
     if request.url.hostname != "localhost":
         subdomain = request.url.hostname.split(".")[0]
         if subdomain and subdomain != "www":
-            org = await plinto.organizations.get_by_slug(subdomain)
+            org = await janua.organizations.get_by_slug(subdomain)
             if org:
                 tenant_id = org.tenant_id
                 organization_id = org.id
@@ -418,7 +418,7 @@ async def resolve_tenant_context(request: Request):
         if auth_header:
             try:
                 token = auth_header.split(" ")[1]
-                decoded = await plinto.auth.verify_token(token)
+                decoded = await janua.auth.verify_token(token)
                 tenant_id = decoded.get("tenant_id") or decoded.get("tid")
                 organization_id = decoded.get("organization_id") or decoded.get("oid")
             except:
@@ -433,11 +433,11 @@ async def resolve_tenant_context(request: Request):
         raise HTTPException(400, "Tenant context required")
 
     # Validate and set context
-    tenant = await plinto.tenancy.validate_tenant(tenant_id)
+    tenant = await janua.tenancy.validate_tenant(tenant_id)
     if not tenant.active:
         raise HTTPException(403, "Tenant suspended")
 
-    plinto.tenancy.set_context(
+    janua.tenancy.set_context(
         tenant_id=tenant_id,
         organization_id=organization_id,
         ip_address=request.client.host,
@@ -478,12 +478,12 @@ async def create_organization(
 ):
     try:
         # Check slug availability
-        existing = await plinto.organizations.get_by_slug(slug)
+        existing = await janua.organizations.get_by_slug(slug)
         if existing:
             raise HTTPException(409, "Organization slug already exists")
 
         # Create organization
-        organization = await plinto.organizations.create(
+        organization = await janua.organizations.create(
             name=name,
             slug=slug,
             plan=plan,
@@ -492,7 +492,7 @@ async def create_organization(
         )
 
         # Initialize default roles
-        await plinto.rbac.initialize_default_roles(organization.id)
+        await janua.rbac.initialize_default_roles(organization.id)
 
         return {
             "organization": organization,
@@ -508,7 +508,7 @@ async def get_organization(
 ):
     try:
         # Verify access
-        membership = await plinto.organizations.get_membership(
+        membership = await janua.organizations.get_membership(
             organization_id=org_id,
             user_id=request.state.user.id
         )
@@ -516,8 +516,8 @@ async def get_organization(
         if not membership:
             raise HTTPException(403, "Access denied")
 
-        organization = await plinto.organizations.get(org_id)
-        stats = await plinto.organizations.get_stats(org_id)
+        organization = await janua.organizations.get(org_id)
+        stats = await janua.organizations.get_stats(org_id)
 
         return {
             "organization": organization,
@@ -538,7 +538,7 @@ async def list_users(
 ):
     try:
         # Users automatically filtered by tenant context
-        users = await plinto.users.list(
+        users = await janua.users.list(
             page=page,
             limit=limit,
             search=search,
@@ -574,12 +574,12 @@ async def list_users(
 
 ```jsx
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { usePlinto } from '@plinto/react-sdk'
+import { useJanua } from '@janua/react-sdk'
 
 const TenantContext = createContext()
 
 export function TenantProvider({ children }) {
-  const { organizations } = usePlinto()
+  const { organizations } = useJanua()
   const [currentTenant, setCurrentTenant] = useState(null)
   const [tenants, setTenants] = useState([])
   const [loading, setLoading] = useState(true)
@@ -887,7 +887,7 @@ Implement custom tenant resolution logic:
 
 ```typescript
 // Custom tenant resolver
-plinto.tenancy.addResolver('custom', async (request) => {
+janua.tenancy.addResolver('custom', async (request) => {
   // Custom logic for tenant resolution
   const apiKey = request.headers['x-api-key']
 
@@ -904,7 +904,7 @@ plinto.tenancy.addResolver('custom', async (request) => {
 })
 
 // Priority order for resolvers
-plinto.tenancy.setResolverPriority([
+janua.tenancy.setResolverPriority([
   'subdomain',
   'jwt',
   'custom',
@@ -919,14 +919,14 @@ Control data sharing between tenants:
 
 ```typescript
 // Allow specific cross-tenant operations
-await plinto.tenancy.withCrossTenantAccess({
+await janua.tenancy.withCrossTenantAccess({
   sourceTenant: 'tenant-1',
   targetTenant: 'tenant-2',
   operation: 'read',
   resource: 'templates'
 }, async () => {
   // Share templates between tenants
-  const sharedTemplates = await plinto.templates.share({
+  const sharedTemplates = await janua.templates.share({
     templateIds: ['tpl-1', 'tpl-2'],
     targetTenant: 'tenant-2',
     permissions: ['read', 'copy']
@@ -936,9 +936,9 @@ await plinto.tenancy.withCrossTenantAccess({
 })
 
 // Global data accessible to all tenants
-await plinto.tenancy.withGlobalContext(async () => {
+await janua.tenancy.withGlobalContext(async () => {
   // Access global settings, announcements, etc.
-  const globalSettings = await plinto.settings.getGlobal()
+  const globalSettings = await janua.settings.getGlobal()
   return globalSettings
 })
 ```
@@ -949,7 +949,7 @@ Customize behavior per tenant:
 
 ```typescript
 // Per-tenant configuration
-await plinto.tenancy.configure(tenantId, {
+await janua.tenancy.configure(tenantId, {
   features: {
     sso: true,
     auditLogs: true,
@@ -976,7 +976,7 @@ await plinto.tenancy.configure(tenantId, {
 })
 
 // Get tenant configuration
-const config = await plinto.tenancy.getConfiguration(tenantId)
+const config = await janua.tenancy.getConfiguration(tenantId)
 console.log('Max users:', config.limits.maxUsers)
 ```
 
@@ -1019,14 +1019,14 @@ const enforceDataIsolation = async (query, tenantId) => {
 // Validate tenant context integrity
 const validateContext = async (context) => {
   // Verify tenant is active
-  const tenant = await plinto.tenancy.getTenant(context.tenantId)
+  const tenant = await janua.tenancy.getTenant(context.tenantId)
   if (!tenant || !tenant.active) {
     throw new Error('Invalid or inactive tenant')
   }
 
   // Verify user belongs to tenant
   if (context.userId) {
-    const membership = await plinto.organizations.getMembership({
+    const membership = await janua.organizations.getMembership({
       userId: context.userId,
       organizationId: context.organizationId
     })
@@ -1055,8 +1055,8 @@ const validateContext = async (context) => {
 
 ```typescript
 // Log all tenant context changes
-plinto.tenancy.on('contextSet', async (context, previousContext) => {
-  await plinto.audit.log({
+janua.tenancy.on('contextSet', async (context, previousContext) => {
+  await janua.audit.log({
     event: 'tenant.context_set',
     tenantId: context.tenantId,
     userId: context.userId,
@@ -1067,8 +1067,8 @@ plinto.tenancy.on('contextSet', async (context, previousContext) => {
 })
 
 // Log cross-tenant access
-plinto.tenancy.on('crossTenantAccess', async (operation) => {
-  await plinto.audit.log({
+janua.tenancy.on('crossTenantAccess', async (operation) => {
+  await janua.audit.log({
     event: 'tenant.cross_tenant_access',
     sourceTenant: operation.sourceTenant,
     targetTenant: operation.targetTenant,
@@ -1087,7 +1087,7 @@ plinto.tenancy.on('crossTenantAccess', async (operation) => {
 describe('Multi-Tenant Operations', () => {
   beforeEach(async () => {
     // Set up test tenants
-    await plinto.tenancy.setContext({
+    await janua.tenancy.setContext({
       tenantId: 'tenant-test-1',
       organizationId: 'org-1'
     })
@@ -1095,19 +1095,19 @@ describe('Multi-Tenant Operations', () => {
 
   it('should isolate data by tenant', async () => {
     // Create data in tenant 1
-    const user1 = await plinto.users.create({
+    const user1 = await janua.users.create({
       email: 'user@tenant1.com',
       tenantId: 'tenant-test-1'
     })
 
     // Switch to tenant 2
-    await plinto.tenancy.setContext({
+    await janua.tenancy.setContext({
       tenantId: 'tenant-test-2',
       organizationId: 'org-2'
     })
 
     // Should not see tenant 1 data
-    const users = await plinto.users.list()
+    const users = await janua.users.list()
     expect(users.data).not.toContainEqual(
       expect.objectContaining({ id: user1.id })
     )
@@ -1119,7 +1119,7 @@ describe('Multi-Tenant Operations', () => {
       headers: {}
     }
 
-    const context = await plinto.tenancy.resolveContext(mockRequest)
+    const context = await janua.tenancy.resolveContext(mockRequest)
 
     expect(context.tenantId).toBeDefined()
     expect(context.organizationId).toBeDefined()
@@ -1128,17 +1128,17 @@ describe('Multi-Tenant Operations', () => {
 
   it('should enforce tenant limits', async () => {
     // Set tenant limit
-    await plinto.tenancy.configure('tenant-test-1', {
+    await janua.tenancy.configure('tenant-test-1', {
       limits: { maxUsers: 2 }
     })
 
     // Create up to limit
-    await plinto.users.create({ email: 'user1@test.com' })
-    await plinto.users.create({ email: 'user2@test.com' })
+    await janua.users.create({ email: 'user1@test.com' })
+    await janua.users.create({ email: 'user2@test.com' })
 
     // Should fail on limit exceeded
     await expect(
-      plinto.users.create({ email: 'user3@test.com' })
+      janua.users.create({ email: 'user3@test.com' })
     ).rejects.toThrow('Tenant user limit exceeded')
   })
 })
@@ -1150,7 +1150,7 @@ describe('Multi-Tenant Operations', () => {
 describe('Multi-Tenant Integration', () => {
   it('should handle complete organization lifecycle', async () => {
     // 1. Create organization
-    const org = await plinto.organizations.create({
+    const org = await janua.organizations.create({
       name: 'Test Organization',
       slug: 'test-org',
       plan: 'business'
@@ -1160,30 +1160,30 @@ describe('Multi-Tenant Integration', () => {
     expect(org.slug).toBe('test-org')
 
     // 2. Set tenant context
-    await plinto.tenancy.setContext({
+    await janua.tenancy.setContext({
       tenantId: org.tenantId,
       organizationId: org.id
     })
 
     // 3. Create tenant-scoped data
-    const project = await plinto.projects.create({
+    const project = await janua.projects.create({
       name: 'Test Project'
     })
 
     expect(project.tenantId).toBe(org.tenantId)
 
     // 4. Verify isolation
-    await plinto.tenancy.setContext({
+    await janua.tenancy.setContext({
       tenantId: 'different-tenant',
       organizationId: 'different-org'
     })
 
-    const projects = await plinto.projects.list()
+    const projects = await janua.projects.list()
     expect(projects.data).toHaveLength(0)
 
     // 5. Clean up
-    await plinto.tenancy.withSystemContext(async () => {
-      await plinto.organizations.delete(org.id)
+    await janua.tenancy.withSystemContext(async () => {
+      await janua.organizations.delete(org.id)
     })
   })
 })
@@ -1199,7 +1199,7 @@ const migrateToMultiTenant = async () => {
   console.log('Starting multi-tenant migration...')
 
   // 1. Create default organization for existing data
-  const defaultOrg = await plinto.organizations.create({
+  const defaultOrg = await janua.organizations.create({
     name: 'Default Organization',
     slug: 'default',
     plan: 'enterprise',
@@ -1207,12 +1207,12 @@ const migrateToMultiTenant = async () => {
   })
 
   // 2. Assign all existing users to default organization
-  const existingUsers = await plinto.tenancy.withSystemContext(() =>
-    plinto.users.list({ includeAll: true })
+  const existingUsers = await janua.tenancy.withSystemContext(() =>
+    janua.users.list({ includeAll: true })
   )
 
   for (const user of existingUsers.data) {
-    await plinto.organizations.addMember({
+    await janua.organizations.addMember({
       organizationId: defaultOrg.id,
       userId: user.id,
       role: 'member',
@@ -1220,7 +1220,7 @@ const migrateToMultiTenant = async () => {
     })
 
     // Update user record with tenant ID
-    await plinto.users.update(user.id, {
+    await janua.users.update(user.id, {
       tenantId: defaultOrg.tenantId
     })
   }
@@ -1229,7 +1229,7 @@ const migrateToMultiTenant = async () => {
   await migrateDataToTenant(defaultOrg.tenantId)
 
   // 4. Enable multi-tenant mode
-  await plinto.configure({
+  await janua.configure({
     multiTenant: {
       enabled: true,
       isolationMode: 'strict'
@@ -1243,7 +1243,7 @@ const migrateDataToTenant = async (tenantId) => {
   const tables = ['projects', 'documents', 'teams', 'integrations']
 
   for (const table of tables) {
-    const count = await plinto.database.raw(`
+    const count = await janua.database.raw(`
       UPDATE ${table}
       SET tenant_id = ?
       WHERE tenant_id IS NULL
@@ -1260,8 +1260,8 @@ const migrateDataToTenant = async (tenantId) => {
 // Migrate from single-tenant platforms
 const migratePlatformData = async (platformData) => {
   for (const orgData of platformData.organizations) {
-    // Create organization in Plinto
-    const org = await plinto.organizations.create({
+    // Create organization in Janua
+    const org = await janua.organizations.create({
       name: orgData.name,
       slug: orgData.slug,
       plan: orgData.subscription?.plan || 'free',
@@ -1269,20 +1269,20 @@ const migratePlatformData = async (platformData) => {
     })
 
     // Set tenant context for migration
-    await plinto.tenancy.setContext({
+    await janua.tenancy.setContext({
       tenantId: org.tenantId,
       organizationId: org.id
     })
 
     // Migrate users
     for (const userData of orgData.users) {
-      const user = await plinto.users.create({
+      const user = await janua.users.create({
         email: userData.email,
         name: userData.name,
         externalId: userData.platformId
       })
 
-      await plinto.organizations.addMember({
+      await janua.organizations.addMember({
         organizationId: org.id,
         userId: user.id,
         role: userData.role
@@ -1291,7 +1291,7 @@ const migratePlatformData = async (platformData) => {
 
     // Migrate data
     for (const projectData of orgData.projects) {
-      await plinto.projects.create({
+      await janua.projects.create({
         name: projectData.name,
         description: projectData.description,
         externalId: projectData.platformId

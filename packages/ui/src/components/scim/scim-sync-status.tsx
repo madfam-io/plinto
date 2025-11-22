@@ -14,7 +14,7 @@ export interface SCIMSyncStatusProps {
   className?: string
   organizationId: string
   syncStatus?: SyncStatus
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
 }
 

@@ -1,11 +1,11 @@
-# @plinto/feature-flags
+# @janua/feature-flags
 
-Feature flag system for gradual rollout and A/B testing in the Plinto platform.
+Feature flag system for gradual rollout and A/B testing in the Janua platform.
 
 ## Installation
 
 ```bash
-npm install @plinto/feature-flags
+npm install @janua/feature-flags
 ```
 
 ## Features
@@ -23,7 +23,7 @@ npm install @plinto/feature-flags
 ### Basic Usage
 
 ```typescript
-import { featureFlagService } from '@plinto/feature-flags';
+import { featureFlagService } from '@janua/feature-flags';
 
 // Check if a feature is enabled
 const isEnabled = await featureFlagService.isEnabled('passkeys', {
@@ -39,7 +39,7 @@ if (isEnabled) {
 ### React Integration
 
 ```tsx
-import { FeatureFlagProvider, Feature, useFeatureFlag } from '@plinto/feature-flags';
+import { FeatureFlagProvider, Feature, useFeatureFlag } from '@janua/feature-flags';
 
 // Wrap your app with the provider
 function App() {
@@ -186,7 +186,7 @@ Use custom logic for feature evaluation:
   enabled: true,
   customEvaluator: (context) => {
     // Custom logic
-    return context.email?.endsWith('@plinto.dev') || false;
+    return context.email?.endsWith('@janua.dev') || false;
   },
 }
 ```

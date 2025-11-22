@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Plinto Phase 1 Implementation Validation Script
+# Janua Phase 1 Implementation Validation Script
 # Validates critical security fixes and production readiness
 
 set -euo pipefail
 
-echo "🔍 Phase 1 Implementation Validation - Plinto Platform"
+echo "🔍 Phase 1 Implementation Validation - Janua Platform"
 echo "=================================================="
 echo
 

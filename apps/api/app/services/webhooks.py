@@ -197,7 +197,7 @@ class WebhookService:
                 # Prepare request
                 headers = {
                     "Content-Type": "application/json",
-                    "User-Agent": f"Plinto-Webhook/{settings.API_VERSION or 'v1'}",
+                    "User-Agent": f"Janua-Webhook/{settings.API_VERSION or 'v1'}",
                     "X-Webhook-ID": str(event.id),
                     "X-Webhook-Timestamp": str(int(time.time())),
                     "X-Webhook-Signature": self._generate_signature(
@@ -410,7 +410,7 @@ class WebhookService:
         # Create test payload
         test_data = {
             "test": True,
-            "message": "This is a test webhook from Plinto",
+            "message": "This is a test webhook from Janua",
             "timestamp": datetime.utcnow().isoformat()
         }
         

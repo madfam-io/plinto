@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { X, Info, ExternalLink } from 'lucide-react'
 import { useEnvironment } from '@/hooks/useEnvironment'
 
@@ -29,7 +29,7 @@ export function DemoBanner() {
               <div className="text-sm">
                 <span className="font-medium">Demo Environment</span>
                 <span className="ml-2">
-                  Experience Plinto's authentication platform with simulated data and performance.
+                  Experience Janua's authentication platform with simulated data and performance.
                 </span>
               </div>
             </div>
@@ -37,7 +37,7 @@ export function DemoBanner() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => window.open('https://plinto.dev/contact', '_blank')}
+                onClick={() => window.open('https://janua.dev/contact', '_blank')}
                 className="text-white hover:bg-white/20 text-xs"
               >
                 Try Production

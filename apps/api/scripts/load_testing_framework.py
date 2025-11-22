@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Load Testing Framework for Plinto Platform
+Load Testing Framework for Janua Platform
 Phase 2: Performance Validation & Stress Testing
 
 Comprehensive load testing suite to validate sub-100ms response times
@@ -87,7 +87,7 @@ class LoadTestRunner:
             connector=connector,
             timeout=timeout,
             headers={
-                'User-Agent': 'Plinto-LoadTest/1.0',
+                'User-Agent': 'Janua-LoadTest/1.0',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -104,7 +104,7 @@ class LoadTestRunner:
         """Generate test user credentials"""
         user_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
         return {
-            'email': f'loadtest.{user_id}@plinto.test',
+            'email': f'loadtest.{user_id}@janua.test',
             'password': f'LoadTest123!{user_id}',
             'name': f'Load Test User {user_id}'
         }
@@ -511,7 +511,7 @@ class LoadTestRunner:
     
     async def run_load_test(self) -> Dict[str, Any]:
         """Execute complete load test suite"""
-        logger.info("🚀 Starting Plinto Load Test Suite")
+        logger.info("🚀 Starting Janua Load Test Suite")
         logger.info(f"Configuration: {self.config.concurrent_users} users, {self.config.test_duration_seconds}s duration")
         
         try:
@@ -576,7 +576,7 @@ class LoadTestRunner:
 
 async def main():
     """Main load testing execution"""
-    parser = argparse.ArgumentParser(description="Plinto Load Testing Framework")
+    parser = argparse.ArgumentParser(description="Janua Load Testing Framework")
     parser.add_argument("--url", default="http://localhost:8000", help="Base URL for testing")
     parser.add_argument("--users", type=int, default=100, help="Concurrent users")
     parser.add_argument("--duration", type=int, default=300, help="Test duration in seconds")

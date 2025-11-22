@@ -1,13 +1,13 @@
 # API Reference Documentation
 
-> **Complete reference for all Plinto API endpoints**
+> **Complete reference for all Janua API endpoints**
 
-This section provides comprehensive documentation for all Plinto API endpoints, including request/response schemas, authentication requirements, and practical examples.
+This section provides comprehensive documentation for all Janua API endpoints, including request/response schemas, authentication requirements, and practical examples.
 
 ## 📋 API Overview
 
 ### Base Information
-- **Base URL**: `https://api.plinto.dev` (production) / `http://localhost:8000` (development)
+- **Base URL**: `https://api.janua.dev` (production) / `http://localhost:8000` (development)
 - **API Version**: v1
 - **Authentication**: Bearer Token (JWT)
 - **Content Type**: `application/json`
@@ -144,7 +144,7 @@ Most endpoints require authentication using a Bearer token:
 ```bash
 curl -H "Authorization: Bearer <your_jwt_token>" \
      -H "Content-Type: application/json" \
-     https://api.plinto.dev/api/v1/auth/me
+     https://api.janua.dev/api/v1/auth/me
 ```
 
 ### API Key Authentication (Enterprise)
@@ -153,7 +153,7 @@ Enterprise endpoints may use API key authentication:
 ```bash
 curl -H "X-API-Key: <your_api_key>" \
      -H "Content-Type: application/json" \
-     https://api.plinto.dev/api/v1/admin/analytics
+     https://api.janua.dev/api/v1/admin/analytics
 ```
 
 ## 📊 Response Codes
@@ -184,7 +184,7 @@ curl -H "X-API-Key: <your_api_key>" \
 ### Basic Authentication Flow
 ```bash
 # 1. Register user
-curl -X POST https://api.plinto.dev/api/v1/auth/signup \
+curl -X POST https://api.janua.dev/api/v1/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -193,7 +193,7 @@ curl -X POST https://api.plinto.dev/api/v1/auth/signup \
   }'
 
 # 2. Sign in
-curl -X POST https://api.plinto.dev/api/v1/auth/signin \
+curl -X POST https://api.janua.dev/api/v1/auth/signin \
   -H "Content-Type: application/json" \
   -d '{
     "email": "user@example.com",
@@ -202,13 +202,13 @@ curl -X POST https://api.plinto.dev/api/v1/auth/signin \
 
 # 3. Use access token
 curl -H "Authorization: Bearer <access_token>" \
-     https://api.plinto.dev/api/v1/auth/me
+     https://api.janua.dev/api/v1/auth/me
 ```
 
 ### Organization Management
 ```bash
 # Create organization
-curl -X POST https://api.plinto.dev/api/v1/organizations \
+curl -X POST https://api.janua.dev/api/v1/organizations \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -218,7 +218,7 @@ curl -X POST https://api.plinto.dev/api/v1/organizations \
 
 # List organizations
 curl -H "Authorization: Bearer <access_token>" \
-     https://api.plinto.dev/api/v1/organizations
+     https://api.janua.dev/api/v1/organizations
 ```
 
 ## 📝 Request/Response Examples
@@ -257,7 +257,7 @@ Many endpoints support filtering and sorting:
 
 ```bash
 # Filter and sort users
-curl "https://api.plinto.dev/api/v1/users?status=active&sort=created_at:desc&limit=20" \
+curl "https://api.janua.dev/api/v1/users?status=active&sort=created_at:desc&limit=20" \
   -H "Authorization: Bearer <access_token>"
 ```
 
@@ -273,7 +273,7 @@ The API supports multiple languages for error messages and responses:
 ```bash
 curl -H "Accept-Language: es-ES" \
      -H "Authorization: Bearer <access_token>" \
-     https://api.plinto.dev/api/v1/auth/me
+     https://api.janua.dev/api/v1/auth/me
 ```
 
 Supported languages: English (en), Spanish (es), French (fr), German (de)

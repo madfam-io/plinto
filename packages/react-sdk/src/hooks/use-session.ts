@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { usePlinto } from '../provider'
-import type { TokenResponse, Session } from '@plinto/typescript-sdk'
+import { useJanua } from '../provider'
+import type { TokenResponse, Session } from '@janua/typescript-sdk'
 
 export function useSession() {
-  const { client, session } = usePlinto()
+  const { client, session } = useJanua()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const refreshTokens = async (): Promise<TokenResponse | null> => {
-    const refreshToken = localStorage.getItem('plinto_refresh_token')
+    const refreshToken = localStorage.getItem('janua_refresh_token')
     if (!refreshToken) {
       return null
     }
@@ -16,16 +16,16 @@ export function useSession() {
     try {
       const tokens = await client.auth.refreshToken({ refresh_token: refreshToken })
 
-      localStorage.setItem('plinto_access_token', tokens.access_token)
+      localStorage.setItem('janua_access_token', tokens.access_token)
       if (tokens.refresh_token) {
-        localStorage.setItem('plinto_refresh_token', tokens.refresh_token)
+        localStorage.setItem('janua_refresh_token', tokens.refresh_token)
       }
 
       return tokens
     } catch (error) {
       // Token refresh failed, removing invalid tokens
-      localStorage.removeItem('plinto_access_token')
-      localStorage.removeItem('plinto_refresh_token')
+      localStorage.removeItem('janua_access_token')
+      localStorage.removeItem('janua_refresh_token')
       return null
     } finally {
       setIsRefreshing(false)

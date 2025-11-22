@@ -7,7 +7,7 @@ The project had a **serious structural disaster** with multiple conflicting `app
 
 ### **Before Fix:**
 ```
-plinto/
+janua/
 ├── app/                    # ❌ MISPLACED at root level
 │   ├── alerting/          # ❌ Refactored code in wrong location
 │   └── compliance/        # ❌ Partial refactored modules
@@ -23,7 +23,7 @@ plinto/
 ```
 
 ## ⚡ Root Cause
-**Refactoring was performed in the wrong location** - modular code was created in `/plinto/app/` instead of `/plinto/apps/api/app/`, creating:
+**Refactoring was performed in the wrong location** - modular code was created in `/janua/app/` instead of `/janua/apps/api/app/`, creating:
 - **Duplicate functionality** in different states
 - **Broken imports** - refactored code not used by application
 - **Confused structure** - violates monorepo conventions
@@ -33,7 +33,7 @@ plinto/
 
 ### **After Fix:**
 ```
-plinto/
+janua/
 ├── apps/                   # ✅ Clean monorepo structure
 │   ├── api/               # ✅ API application
 │   │   └── app/           # ✅ ONLY location for Python code
@@ -49,15 +49,15 @@ plinto/
 ## 🛠️ Actions Taken
 
 1. **✅ Moved Refactored Privacy System**
-   - Copied `/plinto/app/compliance/privacy/` → `/plinto/apps/api/app/compliance/privacy/`
+   - Copied `/janua/app/compliance/privacy/` → `/janua/apps/api/app/compliance/privacy/`
    - Preserved all refactored modules: `privacy_types.py`, `privacy_models.py`, `data_subject_handler.py`
 
 2. **✅ Moved Refactored Alerting System**
-   - Updated `/plinto/apps/api/app/alerting/__init__.py` with modular structure
+   - Updated `/janua/apps/api/app/alerting/__init__.py` with modular structure
    - Integrated with existing alerting core modules
 
 3. **✅ Removed Misplaced Directory**
-   - Completely deleted `/plinto/app/` directory
+   - Completely deleted `/janua/app/` directory
    - Eliminated structural confusion
 
 4. **✅ Validated Structure**

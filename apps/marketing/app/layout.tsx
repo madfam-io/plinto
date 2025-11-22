@@ -5,22 +5,22 @@ import '../styles/globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://plinto.dev'),
-  title: 'Plinto - Edge-Fast Identity Platform',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://janua.dev'),
+  title: 'Janua - Edge-Fast Identity Platform',
   description: 'Secure substrate for identity. Edge-fast verification with full control. The modern alternative to Auth0 and Clerk.',
   keywords: ['identity', 'authentication', 'auth', 'JWT', 'passkeys', 'WebAuthn', 'edge computing'],
   authors: [{ name: 'Aureo Labs' }],
   openGraph: {
-    title: 'Plinto - Edge-Fast Identity Platform',
+    title: 'Janua - Edge-Fast Identity Platform',
     description: 'Secure substrate for identity. Edge-fast verification with full control.',
-    url: 'https://plinto.dev',
-    siteName: 'Plinto',
+    url: 'https://janua.dev',
+    siteName: 'Janua',
     images: [
       {
-        url: 'https://plinto.dev/og-image.png',
+        url: 'https://janua.dev/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Plinto - Edge-Fast Identity Platform'
+        alt: 'Janua - Edge-Fast Identity Platform'
       }
     ],
     locale: 'en_US',
@@ -28,9 +28,9 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Plinto - Edge-Fast Identity Platform',
+    title: 'Janua - Edge-Fast Identity Platform',
     description: 'Secure substrate for identity. Edge-fast verification with full control.',
-    images: ['https://plinto.dev/og-image.png']
+    images: ['https://janua.dev/og-image.png']
   },
   robots: {
     index: true,

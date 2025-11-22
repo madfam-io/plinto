@@ -1,10 +1,10 @@
 # Security Implementation Guide
 
-Comprehensive guide for implementing enterprise-grade security features in Plinto Identity Platform.
+Comprehensive guide for implementing enterprise-grade security features in Janua Identity Platform.
 
 ## 🎯 Overview
 
-This guide provides detailed implementation instructions for Plinto's advanced security features including WAF configuration, penetration testing, rate limiting, and security monitoring.
+This guide provides detailed implementation instructions for Janua's advanced security features including WAF configuration, penetration testing, rate limiting, and security monitoring.
 
 ## 🛡️ Web Application Firewall (WAF)
 
@@ -499,7 +499,7 @@ class InfrastructureSecurityTests:
         import ssl
         import socket
 
-        hostname = "api.plinto.dev"
+        hostname = "api.janua.dev"
         port = 443
 
         context = ssl.create_default_context()
@@ -939,15 +939,15 @@ class SecurityMetrics:
 - [CIS Controls](https://www.cisecurity.org/controls/)
 
 ### Compliance Resources
-- [SOC 2 Type II Audit Guide](https://docs.plinto.dev/compliance/soc2)
-- [GDPR Compliance Checklist](https://docs.plinto.dev/compliance/gdpr)
-- [HIPAA Security Requirements](https://docs.plinto.dev/compliance/hipaa)
+- [SOC 2 Type II Audit Guide](https://docs.janua.dev/compliance/soc2)
+- [GDPR Compliance Checklist](https://docs.janua.dev/compliance/gdpr)
+- [HIPAA Security Requirements](https://docs.janua.dev/compliance/hipaa)
 
 ### Emergency Contacts
-- **Security Team**: [security@plinto.dev](mailto:security@plinto.dev)
-- **Incident Response**: [incident@plinto.dev](mailto:incident@plinto.dev)
-- **Compliance Team**: [compliance@plinto.dev](mailto:compliance@plinto.dev)
+- **Security Team**: [security@janua.dev](mailto:security@janua.dev)
+- **Incident Response**: [incident@janua.dev](mailto:incident@janua.dev)
+- **Compliance Team**: [compliance@janua.dev](mailto:compliance@janua.dev)
 
 ---
 
-*For additional security implementation support, contact our security team at [security@plinto.dev](mailto:security@plinto.dev)*
+*For additional security implementation support, contact our security team at [security@janua.dev](mailto:security@janua.dev)*

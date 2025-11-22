@@ -1,6 +1,6 @@
-# Plinto Documentation
+# Janua Documentation
 
-Comprehensive documentation for the Plinto Identity Platform - the enterprise-grade identity infrastructure for modern applications.
+Comprehensive documentation for the Janua Identity Platform - the enterprise-grade identity infrastructure for modern applications.
 
 ## 🎯 Quick Navigation
 
@@ -25,7 +25,7 @@ Comprehensive documentation for the Plinto Identity Platform - the enterprise-gr
 
 ### For Developers
 
-#### 🌟 New to Plinto?
+#### 🌟 New to Janua?
 ```
 📁 developers/getting-started/
 ├── 🚀 Quick Start Guide
@@ -136,13 +136,13 @@ Comprehensive documentation for the Plinto Identity Platform - the enterprise-gr
 ### 🏃‍♂️ 5-Minute Setup
 Perfect for prototyping and proof of concepts:
 
-1. **[Create Account](https://dashboard.plinto.dev/signup)** - Get API keys instantly
+1. **[Create Account](https://dashboard.janua.dev/signup)** - Get API keys instantly
 2. **[Install SDK](./developers/getting-started/#installation)** - Choose your language
 3. **[Add Authentication](./developers/getting-started/#authentication-flow)** - Copy-paste code examples
 4. **[Test Integration](./developers/getting-started/#testing)** - Verify everything works
 
 ### 🏢 Enterprise Evaluation (1-2 Days)
-For enterprise teams evaluating Plinto:
+For enterprise teams evaluating Janua:
 
 1. **[Architecture Review](./enterprise/architecture/)** - Understand enterprise capabilities
 2. **[Security Assessment](./security/implementation-guide/)** - Review security features
@@ -166,40 +166,40 @@ For teams ready to go live:
 
 #### React Application
 ```tsx
-import { PlintoProvider, usePlinto } from '@plinto/react-sdk';
+import { JanuaProvider, useJanua } from '@janua/react-sdk';
 
 function App() {
   return (
-    <PlintoProvider baseURL="https://api.plinto.dev" apiKey="your-key">
+    <JanuaProvider baseURL="https://api.janua.dev" apiKey="your-key">
       <Dashboard />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
 function Dashboard() {
-  const { user, signOut } = usePlinto();
+  const { user, signOut } = useJanua();
   return <div>Welcome {user?.firstName}!</div>;
 }
 ```
 
 #### Next.js Application
 ```typescript
-// pages/api/auth/[...plinto].ts
-import { PlintoNextAuth } from '@plinto/nextjs-sdk';
+// pages/api/auth/[...janua].ts
+import { JanuaNextAuth } from '@janua/nextjs-sdk';
 
-export default PlintoNextAuth({
-  apiKey: process.env.PLINTO_API_KEY!,
-  baseURL: process.env.PLINTO_BASE_URL!
+export default JanuaNextAuth({
+  apiKey: process.env.JANUA_API_KEY!,
+  baseURL: process.env.JANUA_BASE_URL!
 });
 ```
 
 #### Python/FastAPI Backend
 ```python
 from fastapi import FastAPI, Depends
-from plinto import PlintoClient, verify_token
+from janua import JanuaClient, verify_token
 
 app = FastAPI()
-plinto = PlintoClient(api_key="your-api-key")
+janua = JanuaClient(api_key="your-api-key")
 
 @app.get("/profile")
 async def get_profile(user=Depends(verify_token)):
@@ -210,7 +210,7 @@ async def get_profile(user=Depends(verify_token)):
 
 #### Azure AD SSO
 ```typescript
-await plinto.admin.sso.create({
+await janua.admin.sso.create({
   provider: 'azure_ad',
   oidc_issuer: 'https://login.microsoftonline.com/{tenant}/v2.0',
   oidc_client_id: 'your-client-id',
@@ -243,29 +243,29 @@ Content-Type: application/scim+json
 ### 🆘 Getting Help
 
 #### Documentation Support
-- **[Search Documentation](https://docs.plinto.dev/search)** - Find answers quickly
+- **[Search Documentation](https://docs.janua.dev/search)** - Find answers quickly
 - **[FAQ](./faq/)** - Common questions and solutions
 - **[Troubleshooting](./troubleshooting/)** - Step-by-step problem resolution
 
 #### Community Support
-- **[Discord Community](https://discord.gg/plinto)** - Real-time chat with developers
-- **[GitHub Discussions](https://github.com/plinto/community/discussions)** - Q&A and feature requests
-- **[Stack Overflow](https://stackoverflow.com/questions/tagged/plinto)** - Technical questions
+- **[Discord Community](https://discord.gg/janua)** - Real-time chat with developers
+- **[GitHub Discussions](https://github.com/janua/community/discussions)** - Q&A and feature requests
+- **[Stack Overflow](https://stackoverflow.com/questions/tagged/janua)** - Technical questions
 
 #### Enterprise Support
-- **[Enterprise Support Portal](https://support.plinto.dev)** - 24/7 dedicated support
-- **[Solution Architects](mailto:solutions@plinto.dev)** - Architecture consultation
-- **[Professional Services](mailto:services@plinto.dev)** - Implementation assistance
+- **[Enterprise Support Portal](https://support.janua.dev)** - 24/7 dedicated support
+- **[Solution Architects](mailto:solutions@janua.dev)** - Architecture consultation
+- **[Professional Services](mailto:services@janua.dev)** - Implementation assistance
 
 ### 📧 Contact Information
 
 | Team | Email | When to Contact |
 |------|-------|-----------------|
-| **Developer Support** | [developers@plinto.dev](mailto:developers@plinto.dev) | SDK questions, integration help |
-| **Security Team** | [security@plinto.dev](mailto:security@plinto.dev) | Security questions, vulnerability reports |
-| **Enterprise Sales** | [enterprise@plinto.dev](mailto:enterprise@plinto.dev) | Enterprise features, pricing |
-| **Partner Program** | [partners@plinto.dev](mailto:partners@plinto.dev) | Integration partnerships |
-| **Compliance Team** | [compliance@plinto.dev](mailto:compliance@plinto.dev) | SOC 2, GDPR, audit questions |
+| **Developer Support** | [developers@janua.dev](mailto:developers@janua.dev) | SDK questions, integration help |
+| **Security Team** | [security@janua.dev](mailto:security@janua.dev) | Security questions, vulnerability reports |
+| **Enterprise Sales** | [enterprise@janua.dev](mailto:enterprise@janua.dev) | Enterprise features, pricing |
+| **Partner Program** | [partners@janua.dev](mailto:partners@janua.dev) | Integration partnerships |
+| **Compliance Team** | [compliance@janua.dev](mailto:compliance@janua.dev) | SOC 2, GDPR, audit questions |
 
 ---
 
@@ -283,14 +283,14 @@ This documentation is continuously updated to reflect the latest features and be
 - **[Release Notes](./releases/)** - Feature updates and changes
 - **[Migration Guides](./migrations/)** - Upgrading between versions
 - **[Deprecation Notices](./deprecations/)** - Upcoming API changes
-- **[Newsletter](https://plinto.dev/newsletter)** - Monthly documentation updates
+- **[Newsletter](https://janua.dev/newsletter)** - Monthly documentation updates
 
 ---
 
 ## 🏆 Success Stories
 
 ### Case Studies
-- **[FinTech Startup](./case-studies/fintech/)** - 10x faster user onboarding with Plinto
+- **[FinTech Startup](./case-studies/fintech/)** - 10x faster user onboarding with Janua
 - **[Healthcare Platform](./case-studies/healthcare/)** - HIPAA compliance in 2 weeks
 - **[SaaS Company](./case-studies/saas/)** - 99.9% authentication uptime
 - **[E-commerce Giant](./case-studies/ecommerce/)** - Reduced fraud by 85%
@@ -305,13 +305,13 @@ This documentation is continuously updated to reflect the latest features and be
 
 ## 🎯 Next Steps
 
-Ready to get started with Plinto? Choose your path:
+Ready to get started with Janua? Choose your path:
 
 1. **🚀 [Start Building](./developers/getting-started/)** - Jump into code examples
 2. **🏢 [Enterprise Evaluation](./enterprise/)** - Explore enterprise features
-3. **📞 [Talk to Sales](mailto:enterprise@plinto.dev)** - Get personalized consultation
-4. **🎮 [Try Demo](https://demo.plinto.dev)** - Interactive platform demo
+3. **📞 [Talk to Sales](mailto:enterprise@janua.dev)** - Get personalized consultation
+4. **🎮 [Try Demo](https://demo.janua.dev)** - Interactive platform demo
 
 ---
 
-*Plinto Identity Platform - Secure, scalable, and developer-friendly identity infrastructure for modern applications.*
+*Janua Identity Platform - Secure, scalable, and developer-friendly identity infrastructure for modern applications.*

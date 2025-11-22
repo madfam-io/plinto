@@ -1,14 +1,14 @@
-# Plinto Project Overview
+# Janua Project Overview
 
 ## Purpose
-Plinto is a secure identity platform that provides:
+Janua is a secure identity platform that provides:
 - **Core**: Identity management, sessions, organizations/tenants, roles, policies, audits, webhooks
 - **Edge**: Ultra-fast verification via Vercel Middleware & Cloudflare Workers with global JWKS caching
 - **Admin**: Dashboard for managing users, orgs, keys, webhooks, and compliance
 - **SDKs**: Developer-first libraries for Next.js/React/Node (alpha), with Vue/Go/Python planned
 
 **Status**: Private alpha
-**Domain**: https://plinto.dev
+**Domain**: https://janua.dev
 **Stack**: Vercel + Railway + Cloudflare (R2 + CDN + Turnstile)
 
 ## Tech Stack

@@ -111,7 +111,7 @@ docker-compose -f docker-compose.test.yml up -d postgres redis
 
 # Terminal 2: Start API
 ENVIRONMENT=test \
-DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/plinto_test" \
+DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/janua_test" \
 REDIS_URL="redis://localhost:6379/0" \
 JWT_SECRET_KEY="test_jwt_secret" \
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
@@ -268,7 +268,7 @@ docker-compose -f docker-compose.test.yml up -d postgres redis
 
 # API server
 ENVIRONMENT=test \
-DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/plinto_test" \
+DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/janua_test" \
 REDIS_URL="redis://localhost:6379/0" \
 JWT_SECRET_KEY="test_jwt_secret" \
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000

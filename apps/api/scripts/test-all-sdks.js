@@ -9,37 +9,37 @@ console.log('🧪 Testing ALL SDK Builds...\n');
 
 const tests = [];
 
-// Test @plinto/js (Core SDK)
+// Test @janua/js (Core SDK)
 tests.push({
-  name: '@plinto/js',
+  name: '@janua/js',
   path: '../packages/js-sdk',
   test: () => {
     const sdk = require('../packages/js-sdk/dist/index.js');
-    if (!sdk.PlintoClient) throw new Error('PlintoClient not exported');
+    if (!sdk.JanuaClient) throw new Error('JanuaClient not exported');
     if (!sdk.VERSION) throw new Error('VERSION not exported');
-    console.log(`  ✅ Core SDK v${sdk.VERSION} - PlintoClient, auth, users, organizations`);
+    console.log(`  ✅ Core SDK v${sdk.VERSION} - JanuaClient, auth, users, organizations`);
   }
 });
 
-// Test @plinto/nextjs
+// Test @janua/nextjs
 tests.push({
-  name: '@plinto/nextjs',
+  name: '@janua/nextjs',
   path: '../packages/nextjs-sdk',
   test: () => {
     const nextjs = require('../packages/nextjs-sdk/dist/index.js');
     const app = require('../packages/nextjs-sdk/dist/app/index.js');
     const middleware = require('../packages/nextjs-sdk/dist/middleware.js');
     
-    if (!app.PlintoProvider) throw new Error('PlintoProvider not exported');
+    if (!app.JanuaProvider) throw new Error('JanuaProvider not exported');
     if (!app.useAuth) throw new Error('useAuth not exported');
-    if (!middleware.createPlintoMiddleware) throw new Error('createPlintoMiddleware not exported');
+    if (!middleware.createJanuaMiddleware) throw new Error('createJanuaMiddleware not exported');
     console.log('  ✅ Next.js SDK - Provider, hooks, middleware, server utilities');
   }
 });
 
-// Test @plinto/react-sdk
+// Test @janua/react-sdk
 tests.push({
-  name: '@plinto/react-sdk',
+  name: '@janua/react-sdk',
   path: '../packages/react',
   test: () => {
     const react = require('../packages/react/dist/index.js');
@@ -50,9 +50,9 @@ tests.push({
   }
 });
 
-// Test @plinto/vue
+// Test @janua/vue
 tests.push({
-  name: '@plinto/vue',
+  name: '@janua/vue',
   path: '../packages/vue-sdk',
   test: () => {
     const vue = require('../packages/vue-sdk/dist/index.js');
@@ -62,9 +62,9 @@ tests.push({
   }
 });
 
-// Test @plinto/edge (NEW!)
+// Test @janua/edge (NEW!)
 tests.push({
-  name: '@plinto/edge',
+  name: '@janua/edge',
   path: '../packages/edge',
   test: () => {
     const edge = require('../packages/edge/dist/index.js');
@@ -78,7 +78,7 @@ tests.push({
 
 // Test Python SDK (NEW!)
 tests.push({
-  name: 'plinto (Python)',
+  name: 'janua (Python)',
   path: '../packages/python-sdk',
   test: () => {
     const fs = require('fs');
@@ -126,36 +126,36 @@ if (failed > 0) {
 console.log('\n📚 Import Examples:');
 console.log('```javascript');
 console.log("// Core SDK");
-console.log("import { PlintoClient } from '@plinto/js';");
-console.log("const client = new PlintoClient({ appId: 'your-app-id' });");
+console.log("import { JanuaClient } from '@janua/js';");
+console.log("const client = new JanuaClient({ appId: 'your-app-id' });");
 console.log("");
 console.log("// Next.js");
-console.log("import { PlintoProvider, useAuth } from '@plinto/nextjs/app';");
+console.log("import { JanuaProvider, useAuth } from '@janua/nextjs/app';");
 console.log("");
 console.log("// React");
-console.log("import { SignIn, useAuth } from '@plinto/react-sdk';");
+console.log("import { SignIn, useAuth } from '@janua/react-sdk';");
 console.log("");
 console.log("// Vue");
-console.log("import { useAuth, useUser } from '@plinto/vue';");
+console.log("import { useAuth, useUser } from '@janua/vue';");
 console.log("");
 console.log("// Edge (Cloudflare Workers)");
-console.log("import { verify, createWorkerHandler } from '@plinto/edge';");
+console.log("import { verify, createWorkerHandler } from '@janua/edge';");
 console.log("");
 console.log("// Python");
-console.log("from plinto import PlintoClient");
-console.log("client = PlintoClient(app_id='your-app-id')");
+console.log("from janua import JanuaClient");
+console.log("client = JanuaClient(app_id='your-app-id')");
 console.log('```');
 
 // SDK Status Table
 console.log('\n📈 SDK Readiness:');
 console.log('| SDK | Package | Built | Status |');
 console.log('|-----|---------|-------|--------|');
-console.log('| JavaScript/TypeScript | @plinto/js | ✅ | 100% Ready |');
-console.log('| Next.js | @plinto/nextjs | ✅ | 100% Ready |');
-console.log('| React | @plinto/react-sdk | ✅ | 100% Ready |');
-console.log('| Vue | @plinto/vue | ✅ | 100% Ready |');
-console.log('| Edge/Cloudflare | @plinto/edge | ✅ | 100% Ready |');
-console.log('| Python | plinto | ✅ | 100% Ready |');
+console.log('| JavaScript/TypeScript | @janua/js | ✅ | 100% Ready |');
+console.log('| Next.js | @janua/nextjs | ✅ | 100% Ready |');
+console.log('| React | @janua/react-sdk | ✅ | 100% Ready |');
+console.log('| Vue | @janua/vue | ✅ | 100% Ready |');
+console.log('| Edge/Cloudflare | @janua/edge | ✅ | 100% Ready |');
+console.log('| Python | janua | ✅ | 100% Ready |');
 
 if (failed === 0) {
   console.log('\n✨ ALL 6 SDKs are successfully built and ready for use!');

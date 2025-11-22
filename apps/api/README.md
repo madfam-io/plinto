@@ -1,4 +1,4 @@
-# Plinto API
+# Janua API
 
 > **Enterprise-grade authentication and identity platform** powering secure digital experiences
 
@@ -13,7 +13,7 @@
 
 ## 🎯 Overview
 
-Plinto API is a modern, enterprise-grade authentication and identity management platform designed for scale, security, and developer experience. Built with FastAPI and async Python, it provides comprehensive authentication services including JWT tokens, WebAuthn/Passkeys, multi-factor authentication, and enterprise SSO.
+Janua API is a modern, enterprise-grade authentication and identity management platform designed for scale, security, and developer experience. Built with FastAPI and async Python, it provides comprehensive authentication services including JWT tokens, WebAuthn/Passkeys, multi-factor authentication, and enterprise SSO.
 
 ### Key Features
 
@@ -77,7 +77,7 @@ BASE_URL=http://localhost:8000
 FRONTEND_URL=http://localhost:3000
 
 # Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/plinto
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/janua
 
 # Redis
 REDIS_URL=redis://localhost:6379/0
@@ -288,7 +288,7 @@ open htmlcov/index.html
                        │    │   Database      │    │   Metrics       │    │   Services      │    │
                        │    │   Multi-tenant  │    │   Health Checks │    │   Email, SSO    │    │
                        │    └─────────────────┘    └─────────────────┘    └─────────────────┘    │
-                       │                              Plinto API Infrastructure                  │
+                       │                              Janua API Infrastructure                  │
                        └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -375,13 +375,13 @@ railway up
 
 ```bash
 # Build image
-docker build -t plinto-api .
+docker build -t janua-api .
 
 # Run container
 docker run -p 8000:8000 \
   -e DATABASE_URL="postgresql://..." \
   -e REDIS_URL="redis://..." \
-  plinto-api
+  janua-api
 ```
 
 ### Environment Variables
@@ -524,8 +524,8 @@ We welcome contributions! Please see our [Contributing Guide](docs/CONTRIBUTING.
 
 ```bash
 # Fork and clone
-git clone https://github.com/yourusername/plinto.git
-cd plinto/apps/api
+git clone https://github.com/yourusername/janua.git
+cd janua/apps/api
 
 # Install development dependencies
 pip install -r requirements-test.txt
@@ -551,9 +551,9 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 ## 🆘 Support
 
 - **Documentation**: [docs/](docs/)
-- **Issues**: [GitHub Issues](https://github.com/your-org/plinto/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/plinto/discussions)
-- **Email**: [support@plinto.dev](mailto:support@plinto.dev)
+- **Issues**: [GitHub Issues](https://github.com/your-org/janua/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-org/janua/discussions)
+- **Email**: [support@janua.dev](mailto:support@janua.dev)
 
 ---
 

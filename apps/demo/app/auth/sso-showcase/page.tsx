@@ -1,15 +1,15 @@
 'use client'
 
 import * as React from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui/components/tabs'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui/components/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui/components/tabs'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui/components/card'
 import {
   SSOProviderList,
   SSOProviderForm,
   SAMLConfigForm,
   SSOTestConnection,
-} from '@plinto/ui/components/auth'
-import { plintoClient } from '@/lib/plinto-client'
+} from '@janua/ui/components/auth'
+import { januaClient } from '@/lib/janua-client'
 
 export default function SSOShowcasePage() {
   const [activeTab, setActiveTab] = React.useState('providers')
@@ -55,7 +55,7 @@ export default function SSOShowcasePage() {
 
   // Handler for testing connection
   const handleTestConnection = async (configId: string) => {
-    const config = await plintoClient.sso.getConfiguration(configId)
+    const config = await januaClient.sso.getConfiguration(configId)
     setSelectedProvider(config)
     setShowTestConnection(true)
     setActiveTab('test')
@@ -149,14 +149,14 @@ export default function SSOShowcasePage() {
               <CardContent>
                 <SSOProviderList
                   organizationId={organizationId}
-                  plintoClient={plintoClient}
+                  januaClient={januaClient}
                   onEdit={handleEditProvider}
                   onTest={handleTestConnection}
                   onDelete={async (configId) => {
-                    const config = await plintoClient.sso.getConfiguration(configId)
+                    const config = await januaClient.sso.getConfiguration(configId)
                     if (confirm(`Delete ${config.provider}?`)) {
                       // removed console.log
-                      await plintoClient.sso.deleteConfiguration(configId)
+                      await januaClient.sso.deleteConfiguration(configId)
                     }
                   }}
                 />
@@ -181,7 +181,7 @@ export default function SSOShowcasePage() {
                 <SSOProviderForm
                   organizationId={organizationId}
                   configuration={selectedProvider || undefined}
-                  plintoClient={plintoClient}
+                  januaClient={januaClient}
                   onSubmit={handleProviderCreated}
                   onCancel={() => {
                     setShowProviderForm(false)
@@ -268,7 +268,7 @@ export default function SSOShowcasePage() {
                 {selectedProvider && selectedProvider.provider_type === 'saml' ? (
                   <SAMLConfigForm
                     organizationId={organizationId}
-                    plintoClient={plintoClient}
+                    januaClient={januaClient}
                     onSubmit={handleSAMLConfigSaved}
                   />
                 ) : (
@@ -285,7 +285,7 @@ export default function SSOShowcasePage() {
                 <CardTitle className="text-amber-900 dark:text-amber-100">🔐 SAML Key Concepts</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-amber-800 dark:text-amber-200 space-y-2">
-                <p><strong>Service Provider (SP):</strong> Your application (Plinto)</p>
+                <p><strong>Service Provider (SP):</strong> Your application (Janua)</p>
                 <p><strong>Identity Provider (IdP):</strong> Your organization's authentication system (Google, Azure, Okta)</p>
                 <p><strong>Entity ID:</strong> Unique identifier for your application</p>
                 <p><strong>ACS URL:</strong> Assertion Consumer Service - where SAML responses are sent</p>
@@ -310,7 +310,7 @@ export default function SSOShowcasePage() {
                   <SSOTestConnection
                     configurationId={selectedProvider.id}
                     organizationId={organizationId}
-                    plintoClient={plintoClient}
+                    januaClient={januaClient}
                     onClose={handleTestCompleted}
                   />
                 ) : (

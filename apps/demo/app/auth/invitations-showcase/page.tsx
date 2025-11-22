@@ -1,8 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui/components/tabs'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui/components/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui/components/tabs'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui/components/card'
 import {
   InvitationList,
   InviteUserForm,
@@ -12,8 +12,8 @@ import {
   type InvitationCreate,
   type BulkInvitationResponse,
   type InvitationAcceptResponse,
-} from '@plinto/ui/components/auth'
-import { plintoClient } from '@/lib/plinto-client'
+} from '@janua/ui/components/auth'
+import { januaClient } from '@/lib/janua-client'
 
 export default function InvitationsShowcasePage() {
   const [activeTab, setActiveTab] = React.useState('manage')
@@ -153,7 +153,7 @@ export default function InvitationsShowcasePage() {
               <CardContent>
                 <InvitationList
                   organizationId={organizationId}
-                  plintoClient={plintoClient}
+                  januaClient={januaClient}
                   onResend={async (invitationId) => {
                     // removed console.log
                     alert(`Invitation resent!`)
@@ -180,7 +180,7 @@ export default function InvitationsShowcasePage() {
               <CardContent>
                 <InviteUserForm
                   organizationId={organizationId}
-                  plintoClient={plintoClient}
+                  januaClient={januaClient}
                   onSuccess={handleInvitationCreated}
                   onCancel={() => setActiveTab('manage')}
                 />
@@ -262,7 +262,7 @@ export default function InvitationsShowcasePage() {
               <CardContent>
                 <BulkInviteUpload
                   organizationId={organizationId}
-                  plintoClient={plintoClient}
+                  januaClient={januaClient}
                   onSuccess={handleBulkInvitationsCreated}
                   maxInvitations={100}
                 />
@@ -339,7 +339,7 @@ export default function InvitationsShowcasePage() {
                 {showAcceptDemo && invitationToken ? (
                   <InvitationAccept
                     token={invitationToken}
-                    plintoClient={plintoClient}
+                    januaClient={januaClient}
                     onSuccess={handleInvitationAccepted}
                     onError={(error) => {
                       console.error('Invitation accept error:', error)

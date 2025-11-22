@@ -27,7 +27,7 @@ export interface SCIMConfigWizardProps {
   onCancel?: () => void
   onSuccess?: (config: SCIMConfiguration) => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
 }
 
@@ -39,7 +39,7 @@ export function SCIMConfigWizard({
   onCancel,
   onSuccess,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: SCIMConfigWizardProps) {
   const [step, setStep] = React.useState(1)
@@ -146,10 +146,10 @@ export function SCIMConfigWizard({
 
       let config: SCIMConfiguration
 
-      if (plintoClient) {
+      if (januaClient) {
         config = existingConfig
-          ? await plintoClient.scim.updateConfiguration(existingConfig.id, configData)
-          : await plintoClient.scim.createConfiguration(configData)
+          ? await januaClient.scim.updateConfiguration(existingConfig.id, configData)
+          : await januaClient.scim.createConfiguration(configData)
       } else if (onSubmit) {
         config = await onSubmit(configData)
       } else {

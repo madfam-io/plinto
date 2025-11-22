@@ -37,7 +37,7 @@ export default function AdminPage() {
                 <Shield className="h-6 w-6 text-red-600" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Plinto Superadmin</h1>
+                <h1 className="text-xl font-bold text-gray-900">Janua Superadmin</h1>
                 <p className="text-sm text-gray-500">Internal Platform Management</p>
               </div>
             </div>
@@ -46,7 +46,7 @@ export default function AdminPage() {
                 INTERNAL ONLY
               </span>
               <div className="text-sm text-gray-600">
-                admin@plinto.dev
+                admin@janua.dev
               </div>
             </div>
           </div>

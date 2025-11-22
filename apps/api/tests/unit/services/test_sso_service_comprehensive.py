@@ -70,7 +70,7 @@ class TestSAMLIntegration:
         provider_config = {
             "name": "okta",
             "protocol": "saml2",
-            "sso_url": "https://dev-123.okta.com/app/plinto/sso/saml",
+            "sso_url": "https://dev-123.okta.com/app/janua/sso/saml",
             "entity_id": "http://www.okta.com/123",
             "x509_cert": "-----BEGIN CERTIFICATE-----\nMIIC...CERTIFICATE...\n-----END CERTIFICATE-----"
         }
@@ -149,8 +149,8 @@ class TestSAMLIntegration:
     @pytest.mark.asyncio
     async def test_generate_saml_metadata(self):
         """Test SAML metadata generation for service provider."""
-        entity_id = "https://plinto.dev/saml/metadata"
-        acs_url = "https://plinto.dev/saml/acs"
+        entity_id = "https://janua.dev/saml/metadata"
+        acs_url = "https://janua.dev/saml/acs"
 
         result = await self.service.generate_saml_metadata(entity_id, acs_url)
 

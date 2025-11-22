@@ -215,10 +215,10 @@ $ npm run build
 ```
 
 **Package Exports**:
-- ✅ `import from '@plinto/nextjs'` (main)
-- ✅ `import from '@plinto/nextjs/app'` (App Router)
-- ✅ `import from '@plinto/nextjs/pages'` (Pages Router)
-- ✅ `import from '@plinto/nextjs/middleware'`
+- ✅ `import from '@janua/nextjs'` (main)
+- ✅ `import from '@janua/nextjs/app'` (App Router)
+- ✅ `import from '@janua/nextjs/pages'` (Pages Router)
+- ✅ `import from '@janua/nextjs/middleware'`
 
 ### Impact
 - ✅ **Publishable**: SDK ready for npm/yarn/pnpm

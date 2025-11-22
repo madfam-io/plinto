@@ -11,11 +11,11 @@
 ## 1. Purpose and Scope
 
 ### 1.1 Purpose
-This Risk Assessment Framework establishes a systematic approach for identifying, analyzing, evaluating, and treating information security risks within Plinto's authentication platform and supporting infrastructure.
+This Risk Assessment Framework establishes a systematic approach for identifying, analyzing, evaluating, and treating information security risks within Janua's authentication platform and supporting infrastructure.
 
 ### 1.2 Scope
 This framework applies to:
-- All Plinto information systems and infrastructure
+- All Janua information systems and infrastructure
 - Customer data and authentication services
 - Third-party services and vendor relationships
 - Business operations and processes
@@ -334,7 +334,7 @@ Impact Scale (1-5):
 - Media handling and disposal
 - Physical monitoring and surveillance
 
-## 4. Plinto-Specific Risk Assessment
+## 4. Janua-Specific Risk Assessment
 
 ### 4.1 Authentication Platform Risks
 
@@ -413,7 +413,7 @@ Impact Scale (1-5):
 
 #### 5.1.2 Automated Risk Monitoring
 ```python
-# Risk monitoring integration with Plinto systems
+# Risk monitoring integration with Janua systems
 # Location: /apps/api/app/core/risk_monitoring.py
 
 class RiskMonitor:
@@ -518,4 +518,4 @@ class RiskMonitor:
 
 ---
 
-*This Risk Assessment Framework provides comprehensive guidance for identifying, assessing, and managing information security risks at Plinto while supporting SOC2 compliance and business objectives.*
+*This Risk Assessment Framework provides comprehensive guidance for identifying, assessing, and managing information security risks at Janua while supporting SOC2 compliance and business objectives.*

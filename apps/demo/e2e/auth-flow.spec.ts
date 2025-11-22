@@ -81,7 +81,7 @@ test.describe('Authentication Flow', () => {
     await expect(page.getByRole('heading', { name: /sign in/i })).toBeVisible()
     
     // Fill sign-in form with test credentials
-    await fillByLabel(page, /email/i, 'valid.user@plinto.dev')
+    await fillByLabel(page, /email/i, 'valid.user@janua.dev')
     await fillByLabel(page, /password/i, 'ValidPass123!')
     
     // Submit form
@@ -136,7 +136,7 @@ test.describe('Authentication Flow', () => {
     await page.goto('/auth/signup-showcase')
     
     // Fill sign-up form with existing email
-    await fillByLabel(page, /email/i, 'existing@plinto.dev')
+    await fillByLabel(page, /email/i, 'existing@janua.dev')
     await fillByLabel(page, /password/i, testPassword)
     
     // Submit form
@@ -154,7 +154,7 @@ test.describe('Authentication Flow', () => {
     await page.goto('/auth/signin-showcase')
     
     // Fill credentials
-    await fillByLabel(page, /email/i, 'valid.user@plinto.dev')
+    await fillByLabel(page, /email/i, 'valid.user@janua.dev')
     await fillByLabel(page, /password/i, 'ValidPass123!')
     
     // Check remember me

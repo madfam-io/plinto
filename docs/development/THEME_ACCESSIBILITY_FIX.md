@@ -308,6 +308,6 @@ This question led to discovering **two separate bugs**:
 1. Component-level bug (wrong CSS classes)
 2. App-level bug (missing theme variables)
 
-Your attention to accessibility caught a issue that automated tests missed and that "worked by accident" in light mode. This is exactly the kind of quality standard that makes Plinto production-ready.
+Your attention to accessibility caught a issue that automated tests missed and that "worked by accident" in light mode. This is exactly the kind of quality standard that makes Janua production-ready.
 
 **Thank you for catching this!** 🎯

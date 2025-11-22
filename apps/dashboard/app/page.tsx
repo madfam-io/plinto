@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui'
-import { Button } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui'
+import { Button } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 import { 
   Users, 
   Shield, 
@@ -29,13 +29,13 @@ export default function DashboardPage() {
     // Check authentication and load user data
     const initializeDashboard = async () => {
       try {
-        const token = getCookie('plinto_token')
+        const token = getCookie('janua_token')
         if (!token) {
           window.location.href = '/login'
           return
         }
 
-        const storedUser = localStorage.getItem('plinto_user')
+        const storedUser = localStorage.getItem('janua_user')
         if (storedUser) {
           setUser(JSON.parse(storedUser))
         }
@@ -52,8 +52,8 @@ export default function DashboardPage() {
 
   const handleLogout = () => {
     // Clear authentication
-    document.cookie = 'plinto_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT'
-    localStorage.removeItem('plinto_user')
+    document.cookie = 'janua_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT'
+    localStorage.removeItem('janua_user')
     window.location.href = '/login'
   }
 
@@ -89,7 +89,7 @@ export default function DashboardPage() {
             <div className="flex items-center space-x-4">
               <Shield className="h-8 w-8 text-primary" />
               <div>
-                <h1 className="text-2xl font-bold">Plinto Dashboard</h1>
+                <h1 className="text-2xl font-bold">Janua Dashboard</h1>
                 <p className="text-sm text-muted-foreground">
                   Welcome back, {user?.name || user?.email || 'User'}
                 </p>

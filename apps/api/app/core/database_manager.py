@@ -1,5 +1,5 @@
 """
-Unified Database Manager for Plinto API
+Unified Database Manager for Janua API
 Standardizes on async SQLAlchemy with comprehensive health monitoring
 """
 

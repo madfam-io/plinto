@@ -8,9 +8,9 @@ echo "🧹 Cleaning up duplicate SDK packages..."
 
 # Directories to remove (these are duplicates or empty shells)
 DIRS_TO_REMOVE=(
-  "packages/react-sdk"      # Duplicate of packages/react (renamed to @plinto/react-sdk-deprecated)
+  "packages/react-sdk"      # Duplicate of packages/react (renamed to @janua/react-sdk-deprecated)
   "packages/sdk"            # Incomplete package without package.json
-  "packages/sdk-js"         # Duplicate of packages/js-sdk (different name @plinto/sdk vs @plinto/js)
+  "packages/sdk-js"         # Duplicate of packages/js-sdk (different name @janua/sdk vs @janua/js)
   "packages/typescript-sdk" # Appears to be redundant with js-sdk
 )
 

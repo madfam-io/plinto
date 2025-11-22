@@ -1,4 +1,4 @@
-# Plinto Production Readiness & Package Publication Roadmap
+# Janua Production Readiness & Package Publication Roadmap
 **Status: Week 7-8 Complete → Ready for Package Publication**
 
 *Last Updated: November 14, 2025*
@@ -8,7 +8,7 @@
 
 ## ✅ Current Status: **READY FOR PUBLICATION**
 
-Transform Plinto from **75% complete** to **production-ready enterprise authentication platform**:
+Transform Janua from **75% complete** to **production-ready enterprise authentication platform**:
 
 ### Completed Phases ✅
 - **Week 1-2**: SDK Build & Publishing Automation → ✅ COMPLETE
@@ -584,7 +584,7 @@ Week 5-6: Production Launch Sprint
    - [ ] Engage with auth-frustrated developers
 
 3. **Content Marketing**
-   - [ ] Publish "Building Plinto" blog post
+   - [ ] Publish "Building Janua" blog post
    - [ ] Create demo video
    - [ ] Share technical deep-dives
 
@@ -650,7 +650,7 @@ Week 5-6: Production Launch Sprint
    - [ ] Contributing guide
 
 4. **Publishing Infrastructure**
-   - [ ] npm organization (@plinto)
+   - [ ] npm organization (@janua)
    - [ ] CI/CD publish workflow
    - [ ] Version automation
    - [ ] Release notes generation
@@ -887,7 +887,7 @@ twine upload dist/*
 - [ ] No credentials in code
 - [ ] Vulnerability scanning passed
 - [ ] Security disclosure policy published
-- [ ] Security contact established (security@plinto.dev)
+- [ ] Security contact established (security@janua.dev)
 
 **Quality Gates**:
 - [ ] All tests passing
@@ -897,7 +897,7 @@ twine upload dist/*
 - [ ] Examples working
 - [ ] Type definitions accurate
 
-**npm Organization Setup** (@plinto):
+**npm Organization Setup** (@janua):
 - [ ] npm organization created
 - [ ] Team members added
 - [ ] Publishing permissions configured
@@ -914,7 +914,7 @@ twine upload dist/*
 
 ### Package-Specific Checklists
 
-#### @plinto/typescript-sdk
+#### @janua/typescript-sdk
 
 **Pre-publish**:
 - [ ] Version 1.0.0 set
@@ -934,14 +934,14 @@ npm publish --access public --provenance
 ```
 
 **Post-publish**:
-- [ ] Installation test: `npm install @plinto/typescript-sdk`
-- [ ] Import test: `import { PlintoClient } from '@plinto/typescript-sdk'`
+- [ ] Installation test: `npm install @janua/typescript-sdk`
+- [ ] Import test: `import { JanuaClient } from '@janua/typescript-sdk'`
 - [ ] Documentation links working
 - [ ] NPM page looks correct
 
 ---
 
-#### @plinto/react-sdk
+#### @janua/react-sdk
 
 **Pre-publish**:
 - [ ] Version 1.0.0 set
@@ -960,7 +960,7 @@ npm publish --access public --provenance
 
 ---
 
-#### plinto-sdk (Python)
+#### janua-sdk (Python)
 
 **Pre-publish**:
 - [ ] Version 1.0.0 in setup.py
@@ -979,8 +979,8 @@ twine upload dist/*
 ```
 
 **Post-publish**:
-- [ ] Installation test: `pip install plinto-sdk`
-- [ ] Import test: `from plinto import PlintoClient`
+- [ ] Installation test: `pip install janua-sdk`
+- [ ] Import test: `from janua import JanuaClient`
 - [ ] PyPI page correct
 - [ ] Documentation hosted
 
@@ -991,22 +991,22 @@ twine upload dist/*
 **Release Order** (to avoid dependency issues):
 
 1. **Core/Infrastructure** (no dependencies)
-   - @plinto/core
-   - @plinto/jwt-utils
-   - @plinto/edge
+   - @janua/core
+   - @janua/jwt-utils
+   - @janua/edge
 
 2. **SDKs** (depend on core)
-   - @plinto/typescript-sdk
-   - plinto-sdk (Python)
+   - @janua/typescript-sdk
+   - janua-sdk (Python)
 
 3. **Framework SDKs** (depend on SDKs)
-   - @plinto/react-sdk
-   - @plinto/vue-sdk
-   - @plinto/nextjs-sdk
-   - @plinto/react-native-sdk
+   - @janua/react-sdk
+   - @janua/vue-sdk
+   - @janua/nextjs-sdk
+   - @janua/react-native-sdk
 
 4. **UI/Utilities** (depend on framework SDKs)
-   - @plinto/ui
+   - @janua/ui
 
 **Publishing Script**:
 ```bash
@@ -1015,12 +1015,12 @@ twine upload dist/*
 
 set -e
 
-echo "Publishing Plinto packages v1.0.0"
+echo "Publishing Janua packages v1.0.0"
 
 # Core packages
 packages_core=("core" "jwt-utils" "edge")
 for pkg in "${packages_core[@]}"; do
-  echo "Publishing @plinto/$pkg"
+  echo "Publishing @janua/$pkg"
   cd "packages/$pkg"
   npm run build && npm test && npm publish --access public --provenance
   cd ../..
@@ -1038,7 +1038,7 @@ cd ../..
 # Framework packages
 packages_frameworks=("react-sdk" "vue-sdk" "nextjs-sdk" "react-native-sdk")
 for pkg in "${packages_frameworks[@]}"; do
-  echo "Publishing @plinto/$pkg"
+  echo "Publishing @janua/$pkg"
   cd "packages/$pkg"
   npm run build && npm test && npm publish --access public --provenance
   cd ../..

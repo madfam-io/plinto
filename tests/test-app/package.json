@@ -1,7 +1,7 @@
 {
-  "name": "@plinto/test-app",
+  "name": "@janua/test-app",
   "version": "1.0.0",
-  "description": "Test application for Plinto journey validation",
+  "description": "Test application for Janua journey validation",
   "private": true,
   "main": "dist/app.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@plinto/typescript-sdk": "*",
+    "@janua/typescript-sdk": "*",
     "express": "^4.18.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",

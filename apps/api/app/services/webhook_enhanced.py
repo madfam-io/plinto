@@ -303,7 +303,7 @@ class WebhookService:
                 "X-Webhook-Id": str(event.id),
                 "X-Webhook-Timestamp": str(int(time.time())),
                 "X-Webhook-Signature": signature,
-                "User-Agent": "Plinto-Webhook/1.0"
+                "User-Agent": "Janua-Webhook/1.0"
             }
             
             # Add custom headers if configured

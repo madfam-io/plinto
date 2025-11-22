@@ -4,19 +4,19 @@
 
 export const TEST_USERS = {
   validUser: {
-    email: 'valid.user@plinto.dev',
+    email: 'valid.user@janua.dev',
     password: 'ValidPass123!',
     firstName: 'Valid',
     lastName: 'User',
   },
   weakPassword: {
-    email: 'weak@plinto.dev',
+    email: 'weak@janua.dev',
     password: '123',
     firstName: 'Weak',
     lastName: 'Password',
   },
   existingUser: {
-    email: 'existing@plinto.dev',
+    email: 'existing@janua.dev',
     password: 'ExistingPass123!',
     firstName: 'Existing',
     lastName: 'User',

@@ -1,12 +1,12 @@
-# Plinto API Specification
+# Janua API Specification
 
 ## Overview
 
-The Plinto API is a **RESTful, resource-oriented API** with optional GraphQL endpoint for complex queries. Designed for sub-50ms response times globally with intelligent caching and edge optimization.
+The Janua API is a **RESTful, resource-oriented API** with optional GraphQL endpoint for complex queries. Designed for sub-50ms response times globally with intelligent caching and edge optimization.
 
-**Base URL**: `https://plinto.dev/api/v1`  
-**GraphQL**: `https://plinto.dev/graphql`  
-**WebSocket**: `wss://plinto.dev/ws`
+**Base URL**: `https://janua.dev/api/v1`  
+**GraphQL**: `https://janua.dev/graphql`  
+**WebSocket**: `wss://janua.dev/ws`
 
 ---
 
@@ -15,24 +15,24 @@ The Plinto API is a **RESTful, resource-oriented API** with optional GraphQL end
 ### API Keys (Server-to-Server)
 
 ```bash
-curl https://plinto.dev/api/v1/identities \
+curl https://janua.dev/api/v1/identities \
   -H "Authorization: Bearer pk_live_..." \
-  -H "X-Plinto-Tenant: tenant_123"
+  -H "X-Janua-Tenant: tenant_123"
 ```
 
 ### JWT Tokens (Client-to-Server)
 
 ```bash
-curl https://plinto.dev/api/v1/me \
+curl https://janua.dev/api/v1/me \
   -H "Authorization: Bearer eyJhbGc..." \
-  -H "X-Plinto-Organization: org_456"
+  -H "X-Janua-Organization: org_456"
 ```
 
 ### Session Cookies (Browser)
 
 ```javascript
 // Automatically included in browser requests
-fetch('https://plinto.dev/api/v1/me', {
+fetch('https://janua.dev/api/v1/me', {
   credentials: 'include'
 });
 ```
@@ -385,7 +385,7 @@ type Organization {
 ### Connection
 
 ```javascript
-const ws = new WebSocket('wss://plinto.dev/ws');
+const ws = new WebSocket('wss://janua.dev/ws');
 
 ws.onopen = () => {
   // Authenticate
@@ -438,7 +438,7 @@ interface WebSocketEvent {
       "password": "Password must be at least 12 characters"
     },
     "requestId": "req_2KtYZKyYvhKRU",
-    "documentation": "https://plinto.dev/docs/errors/invalid_request"
+    "documentation": "https://janua.dev/docs/errors/invalid_request"
   }
 }
 ```
@@ -519,7 +519,7 @@ GET /v1/identities?limit=20&offset=40
 ### Request
 
 ```bash
-curl -X POST https://plinto.dev/api/v1/identities \
+curl -X POST https://janua.dev/api/v1/identities \
   -H "Idempotency-Key: 27fadde4-312a-49b7-8579-3ce21a58938f" \
   -H "Content-Type: application/json" \
   -d '{"email": "user@example.com"}'
@@ -582,73 +582,73 @@ function verifyWebhook(payload, signature, secret) {
 ### JavaScript/TypeScript
 
 ```typescript
-import { Plinto } from '@plinto/sdk';
+import { Janua } from '@janua/sdk';
 
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY,
-  tenant: process.env.PLINTO_TENANT_ID
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY,
+  tenant: process.env.JANUA_TENANT_ID
 });
 
 // Create identity
-const identity = await plinto.identities.create({
+const identity = await janua.identities.create({
   email: 'user@example.com',
   password: 'secure-password-123'
 });
 
 // Create session
-const session = await plinto.sessions.create({
+const session = await janua.sessions.create({
   email: 'user@example.com',
   password: 'secure-password-123'
 });
 
 // Verify token
-const claims = await plinto.sessions.verify(token);
+const claims = await janua.sessions.verify(token);
 ```
 
 ### Python
 
 ```python
-from plinto import Plinto
+from janua import Janua
 
-plinto = Plinto(
-    api_key=os.environ['PLINTO_API_KEY'],
-    tenant=os.environ['PLINTO_TENANT_ID']
+janua = Janua(
+    api_key=os.environ['JANUA_API_KEY'],
+    tenant=os.environ['JANUA_TENANT_ID']
 )
 
 # Create identity
-identity = plinto.identities.create(
+identity = janua.identities.create(
     email='user@example.com',
     password='secure-password-123'
 )
 
 # Create session
-session = plinto.sessions.create(
+session = janua.sessions.create(
     email='user@example.com',
     password='secure-password-123'
 )
 
 # Verify token
-claims = plinto.sessions.verify(token)
+claims = janua.sessions.verify(token)
 ```
 
 ### Go
 
 ```go
-import "github.com/plinto/plinto-go"
+import "github.com/janua/janua-go"
 
-client := plinto.NewClient(
-    plinto.WithAPIKey(os.Getenv("PLINTO_API_KEY")),
-    plinto.WithTenant(os.Getenv("PLINTO_TENANT_ID")),
+client := janua.NewClient(
+    janua.WithAPIKey(os.Getenv("JANUA_API_KEY")),
+    janua.WithTenant(os.Getenv("JANUA_TENANT_ID")),
 )
 
 // Create identity
-identity, err := client.Identities.Create(ctx, &plinto.CreateIdentityRequest{
+identity, err := client.Identities.Create(ctx, &janua.CreateIdentityRequest{
     Email:    "user@example.com",
     Password: "secure-password-123",
 })
 
 // Create session
-session, err := client.Sessions.Create(ctx, &plinto.CreateSessionRequest{
+session, err := client.Sessions.Create(ctx, &janua.CreateSessionRequest{
     Email:    "user@example.com",
     Password: "secure-password-123",
 })
@@ -660,25 +660,25 @@ claims, err := client.Sessions.Verify(ctx, token)
 ### Ruby
 
 ```ruby
-require 'plinto'
+require 'janua'
 
-Plinto.api_key = ENV['PLINTO_API_KEY']
-Plinto.tenant = ENV['PLINTO_TENANT_ID']
+Janua.api_key = ENV['JANUA_API_KEY']
+Janua.tenant = ENV['JANUA_TENANT_ID']
 
 # Create identity
-identity = Plinto::Identity.create(
+identity = Janua::Identity.create(
   email: 'user@example.com',
   password: 'secure-password-123'
 )
 
 # Create session
-session = Plinto::Session.create(
+session = Janua::Session.create(
   email: 'user@example.com',
   password: 'secure-password-123'
 )
 
 # Verify token
-claims = Plinto::Session.verify(token)
+claims = Janua::Session.verify(token)
 ```
 
 ---
@@ -696,7 +696,7 @@ claims = Plinto::Session.verify(token)
 
 ```bash
 # Request specific version
-curl https://plinto.dev/api/v1/identities \
+curl https://janua.dev/api/v1/identities \
   -H "X-API-Version: 2024-01-01"
 
 # Response includes version

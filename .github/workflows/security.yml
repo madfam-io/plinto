@@ -170,7 +170,7 @@ jobs:
 
   # Dynamic Application Security Testing (DAST)
   # NOTE: Disabled until API Docker image is published to container registry
-  # Requires: plinto/api:latest image available in Docker Hub or GHCR
+  # Requires: janua/api:latest image available in Docker Hub or GHCR
   # Re-enable when API is deployed and image publishing is configured
   # dast-zap:
   #   name: OWASP ZAP Scan
@@ -179,7 +179,7 @@ jobs:
   #
   #   services:
   #     api:
-  #       image: plinto/api:latest
+  #       image: janua/api:latest
   #       ports:
   #         - 8000:8000
   #       env:

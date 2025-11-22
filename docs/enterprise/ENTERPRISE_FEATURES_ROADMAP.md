@@ -1,4 +1,4 @@
-# 🚀 Plinto Enterprise Features Documentation
+# 🚀 Janua Enterprise Features Documentation
 
 **Version**: 1.0.0  
 **Last Updated**: September 2025  
@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-Plinto provides a comprehensive enterprise identity platform designed for organizations requiring advanced security, compliance, and customization capabilities. This documentation outlines our enterprise-grade features aligned with Blue Ocean market positioning.
+Janua provides a comprehensive enterprise identity platform designed for organizations requiring advanced security, compliance, and customization capabilities. This documentation outlines our enterprise-grade features aligned with Blue Ocean market positioning.
 
 ## 📋 Table of Contents
 
@@ -26,12 +26,12 @@ Plinto provides a comprehensive enterprise identity platform designed for organi
 ## 1. Actions / Hooks / Event System
 
 ### Overview
-Plinto's extensibility framework allows deep customization of authentication flows through a comprehensive event-driven architecture.
+Janua's extensibility framework allows deep customization of authentication flows through a comprehensive event-driven architecture.
 
 ### Event Types & Hooks
 
 ```typescript
-interface PlintoEventSystem {
+interface JanuaEventSystem {
   // Lifecycle Events
   'user.created': (user: User) => void;
   'user.updated': (user: User, changes: Partial<User>) => void;
@@ -59,10 +59,10 @@ interface PlintoEventSystem {
 
 ```javascript
 // Register custom action
-plinto.actions.register('beforeLogin', async (context) => {
+janua.actions.register('beforeLogin', async (context) => {
   // Custom validation logic
   if (context.user.requiresApproval && !context.user.approved) {
-    throw new PlintoError('USER_PENDING_APPROVAL');
+    throw new JanuaError('USER_PENDING_APPROVAL');
   }
   
   // Add custom claims
@@ -73,7 +73,7 @@ plinto.actions.register('beforeLogin', async (context) => {
 });
 
 // Webhook configuration
-plinto.webhooks.configure({
+janua.webhooks.configure({
   url: 'https://your-api.com/webhooks',
   events: ['user.created', 'auth.login.success'],
   headers: {
@@ -111,8 +111,8 @@ steps:
 
 ```javascript
 // Configure SAML provider
-const samlProvider = plinto.sso.configureSAML({
-  entityId: 'https://your-org.plinto.dev',
+const samlProvider = janua.sso.configureSAML({
+  entityId: 'https://your-org.janua.dev',
   ssoUrl: 'https://idp.yourcompany.com/saml/sso',
   certificate: fs.readFileSync('./saml-cert.pem'),
   attributeMapping: {
@@ -123,8 +123,8 @@ const samlProvider = plinto.sso.configureSAML({
 });
 
 // SAML login flow
-app.get('/saml/login', plinto.saml.authenticate());
-app.post('/saml/callback', plinto.saml.callback({
+app.get('/saml/login', janua.saml.authenticate());
+app.post('/saml/callback', janua.saml.callback({
   successRedirect: '/dashboard',
   failureRedirect: '/login'
 }));
@@ -134,7 +134,7 @@ app.post('/saml/callback', plinto.saml.callback({
 
 ```javascript
 // Configure OIDC provider
-const oidcProvider = plinto.sso.configureOIDC({
+const oidcProvider = janua.sso.configureOIDC({
   issuer: 'https://accounts.google.com',
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -170,7 +170,7 @@ const oidcProvider = plinto.sso.configureOIDC({
 
 ```javascript
 // Configure risk scoring
-plinto.security.configureRiskEngine({
+janua.security.configureRiskEngine({
   factors: {
     location: { weight: 0.3, anomalyThreshold: 100 }, // km from usual
     device: { weight: 0.2, trustAfterDays: 30 },
@@ -192,7 +192,7 @@ plinto.security.configureRiskEngine({
 
 ```javascript
 // Define conditional access policy
-const policy = plinto.policies.create({
+const policy = janua.policies.create({
   name: 'Require MFA for Admin Access',
   conditions: {
     users: { groups: ['admins'] },
@@ -212,7 +212,7 @@ const policy = plinto.policies.create({
 
 ```javascript
 // Device registration and trust
-const device = await plinto.devices.register({
+const device = await janua.devices.register({
   fingerprint: deviceFingerprint,
   platform: 'windows',
   checks: {
@@ -224,9 +224,9 @@ const device = await plinto.devices.register({
 });
 
 // Verify device posture
-const posture = await plinto.devices.checkPosture(deviceId);
+const posture = await janua.devices.checkPosture(deviceId);
 if (!posture.compliant) {
-  return plinto.auth.challengeWithRemediation(posture.issues);
+  return janua.auth.challengeWithRemediation(posture.issues);
 }
 ```
 
@@ -238,9 +238,9 @@ if (!posture.compliant) {
 
 ```html
 <!-- Embed admin portal -->
-<div id="plinto-admin-portal"></div>
+<div id="janua-admin-portal"></div>
 <script>
-  PlintoAdmin.mount('#plinto-admin-portal', {
+  JanuaAdmin.mount('#janua-admin-portal', {
     tenant: 'your-tenant-id',
     theme: 'dark',
     features: {
@@ -280,7 +280,7 @@ const roles = {
 };
 
 // Assign delegated admin
-await plinto.admins.assign({
+await janua.admins.assign({
   userId: 'user_123',
   role: 'orgAdmin',
   organization: 'org_456',
@@ -300,7 +300,7 @@ await plinto.admins.assign({
 
 ```javascript
 // Query audit logs
-const logs = await plinto.audit.query({
+const logs = await janua.audit.query({
   filters: {
     actors: ['user_123', 'admin_456'],
     actions: ['user.updated', 'permission.granted'],
@@ -315,9 +315,9 @@ const logs = await plinto.audit.query({
 });
 
 // Export for compliance
-await plinto.audit.export({
+await janua.audit.export({
   format: 'SIEM',
-  destination: 's3://audit-bucket/plinto/',
+  destination: 's3://audit-bucket/janua/',
   encryption: 'AES-256'
 });
 ```
@@ -326,7 +326,7 @@ await plinto.audit.export({
 
 ```javascript
 // Admin impersonation
-const impersonation = await plinto.sessions.impersonate({
+const impersonation = await janua.sessions.impersonate({
   targetUserId: 'user_123',
   adminId: 'admin_456',
   reason: 'Support ticket #789',
@@ -338,13 +338,13 @@ const impersonation = await plinto.sessions.impersonate({
 });
 
 // Session review dashboard
-const sessions = await plinto.sessions.listActive({
+const sessions = await janua.sessions.listActive({
   organizationId: 'org_123',
   include: ['device', 'location', 'lastActivity']
 });
 
 // Bulk session management
-await plinto.sessions.revokeAll({
+await janua.sessions.revokeAll({
   userId: 'user_123',
   except: currentSessionId,
   reason: 'Security incident'
@@ -359,7 +359,7 @@ await plinto.sessions.revokeAll({
 
 ```javascript
 // Configure migration adapter
-const migration = plinto.migration.configure({
+const migration = janua.migration.configure({
   source: {
     type: 'auth0', // or 'cognito', 'firebase', 'custom'
     connectionString: process.env.AUTH0_CONNECTION,
@@ -396,7 +396,7 @@ const result = await migration.execute({
 
 ```javascript
 // Export users
-const exportJob = await plinto.data.export({
+const exportJob = await janua.data.export({
   entities: ['users', 'organizations', 'sessions'],
   format: 'json', // or 'csv', 'parquet'
   filters: {
@@ -410,7 +410,7 @@ const exportJob = await plinto.data.export({
 });
 
 // Import users
-const importJob = await plinto.data.import({
+const importJob = await janua.data.import({
   file: './users.json',
   mapping: customFieldMapping,
   validation: {
@@ -429,7 +429,7 @@ const importJob = await plinto.data.import({
 
 ```javascript
 // Configure white-label theme
-plinto.theme.configure({
+janua.theme.configure({
   brand: {
     name: 'YourCompany Auth',
     logo: 'https://cdn.company.com/logo.svg',
@@ -473,7 +473,7 @@ plinto.theme.configure({
   },
   
   customCSS: `
-    .plinto-login-form {
+    .janua-login-form {
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
   `
@@ -511,7 +511,7 @@ plinto.theme.configure({
 
 ```javascript
 // Configure compliance settings
-plinto.compliance.configure({
+janua.compliance.configure({
   frameworks: {
     gdpr: {
       enabled: true,
@@ -553,10 +553,10 @@ plinto.compliance.configure({
 
 | Certification | Status | Valid Until | Report |
 |--------------|--------|-------------|---------|
-| SOC 2 Type II | ✅ | 2026-12-31 | [Download](https://plinto.dev/compliance/soc2) |
-| ISO 27001 | ✅ | 2026-06-30 | [Download](https://plinto.dev/compliance/iso27001) |
-| GDPR | ✅ | Ongoing | [DPA](https://plinto.dev/compliance/dpa) |
-| HIPAA | ✅ | Ongoing | [BAA](https://plinto.dev/compliance/baa) |
+| SOC 2 Type II | ✅ | 2026-12-31 | [Download](https://janua.dev/compliance/soc2) |
+| ISO 27001 | ✅ | 2026-06-30 | [Download](https://janua.dev/compliance/iso27001) |
+| GDPR | ✅ | Ongoing | [DPA](https://janua.dev/compliance/dpa) |
+| HIPAA | ✅ | Ongoing | [BAA](https://janua.dev/compliance/baa) |
 | PCI DSS | 🔄 | In Progress | Q1 2026 |
 
 ---
@@ -567,7 +567,7 @@ plinto.compliance.configure({
 
 ```javascript
 // Register IoT device
-const device = await plinto.iot.registerDevice({
+const device = await janua.iot.registerDevice({
   type: 'sensor',
   identifier: 'device_abc123',
   certificate: deviceCert,
@@ -579,14 +579,14 @@ const device = await plinto.iot.registerDevice({
 });
 
 // Device authentication flow
-const token = await plinto.iot.authenticate({
+const token = await janua.iot.authenticate({
   method: 'certificate', // or 'pre-shared-key', 'tpm'
   certificate: deviceCert,
   challenge: challengeResponse
 });
 
 // Offline token generation
-const offlineToken = await plinto.iot.generateOfflineToken({
+const offlineToken = await janua.iot.generateOfflineToken({
   deviceId: 'device_123',
   validFor: '30d',
   permissions: ['data:write'],
@@ -598,7 +598,7 @@ const offlineToken = await plinto.iot.generateOfflineToken({
 
 ```yaml
 # edge-config.yaml
-apiVersion: plinto.dev/v1
+apiVersion: janua.dev/v1
 kind: EdgeDeployment
 metadata:
   name: factory-edge
@@ -624,7 +624,7 @@ spec:
 
 ```javascript
 // Configure localization
-plinto.i18n.configure({
+janua.i18n.configure({
   defaultLocale: 'en-US',
   supportedLocales: [
     'en-US', 'es-ES', 'fr-FR', 'de-DE', 
@@ -633,7 +633,7 @@ plinto.i18n.configure({
   
   detection: {
     order: ['header', 'cookie', 'query', 'session'],
-    cookieName: 'plinto_locale',
+    cookieName: 'janua_locale',
     headerName: 'Accept-Language'
   },
   
@@ -651,7 +651,7 @@ plinto.i18n.configure({
 });
 
 // Custom translations
-plinto.i18n.addTranslations('fr-FR', {
+janua.i18n.addTranslations('fr-FR', {
   login: {
     title: 'Connexion',
     email: 'Adresse e-mail',
@@ -666,7 +666,7 @@ plinto.i18n.addTranslations('fr-FR', {
 
 ```javascript
 // Configure regional settings
-plinto.regions.configure({
+janua.regions.configure({
   'eu': {
     dataResidency: 'eu-west-1',
     compliance: ['gdpr'],
@@ -717,16 +717,16 @@ plinto.regions.configure({
 ## 🆘 Support & Resources
 
 ### Enterprise Support
-- **24/7 Support**: enterprise@plinto.dev
+- **24/7 Support**: enterprise@janua.dev
 - **Dedicated Slack Channel**: For enterprise customers
 - **Professional Services**: Implementation and migration assistance
 - **SLA**: 99.99% uptime guarantee
 
 ### Additional Resources
-- [Enterprise Webinars](https://plinto.dev/webinars)
-- [Case Studies](https://plinto.dev/case-studies)
-- [Security Whitepaper](https://plinto.dev/security-whitepaper)
-- [Compliance Portal](https://compliance.plinto.dev)
+- [Enterprise Webinars](https://janua.dev/webinars)
+- [Case Studies](https://janua.dev/case-studies)
+- [Security Whitepaper](https://janua.dev/security-whitepaper)
+- [Compliance Portal](https://compliance.janua.dev)
 
 ---
 

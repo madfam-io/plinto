@@ -1,4 +1,4 @@
-# @plinto/ui Performance Optimization & Bundle Analysis
+# @janua/ui Performance Optimization & Bundle Analysis
 
 **Date**: November 15, 2025
 **Version**: 1.0.0
@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-The `@plinto/ui` package is architected for **optimal tree-shaking and minimal bundle impact**:
+The `@janua/ui` package is architected for **optimal tree-shaking and minimal bundle impact**:
 
 - 📦 **Source-only distribution** (no pre-bundled code)
 - 🌲 **100% tree-shakeable** exports
@@ -89,15 +89,15 @@ export * from './session-management'     // ~420 LOC
 
 ```typescript
 // ✅ OPTIMAL - Import only what you need
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 // Bundle: ~120 LOC + Button dependencies only
 
 // ✅ GOOD - Import multiple related components
-import { SignIn, SignUp, UserButton } from '@plinto/ui'
+import { SignIn, SignUp, UserButton } from '@janua/ui'
 // Bundle: ~900 LOC + shared dependencies
 
 // ❌ AVOID - Wildcard imports bypass tree-shaking
-import * as UI from '@plinto/ui'
+import * as UI from '@janua/ui'
 // Bundle: ALL 6,348 LOC + all dependencies
 ```
 
@@ -106,7 +106,7 @@ import * as UI from '@plinto/ui'
 **Test Setup:**
 ```typescript
 // Consumer app imports only Button
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 
 function App() {
   return <Button>Click me</Button>
@@ -202,7 +202,7 @@ Tailwind CSS with JIT compilation:
 
 // Consumer's tailwind.config.js purges unused CSS
 content: [
-  './node_modules/@plinto/ui/**/*.{js,ts,jsx,tsx}',
+  './node_modules/@janua/ui/**/*.{js,ts,jsx,tsx}',
   './src/**/*.{js,ts,jsx,tsx}'
 ]
 ```
@@ -217,15 +217,15 @@ content: [
 // vite.config.ts
 export default defineConfig({
   optimizeDeps: {
-    include: ['@plinto/ui'],
+    include: ['@janua/ui'],
   },
   build: {
     rollupOptions: {
       output: {
         manualChunks: {
-          'plinto-auth': [
-            '@plinto/ui/src/components/auth/sign-in',
-            '@plinto/ui/src/components/auth/sign-up',
+          'janua-auth': [
+            '@janua/ui/src/components/auth/sign-in',
+            '@janua/ui/src/components/auth/sign-up',
             // Group related auth components
           ],
         },
@@ -240,7 +240,7 @@ export default defineConfig({
 ```javascript
 // next.config.js
 module.exports = {
-  transpilePackages: ['@plinto/ui'],
+  transpilePackages: ['@janua/ui'],
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -251,17 +251,17 @@ module.exports = {
 
 ```typescript
 // ✅ BEST - Direct component imports
-import { SignIn } from '@plinto/ui/src/components/auth/sign-in'
-import { Button } from '@plinto/ui/src/components/button'
+import { SignIn } from '@janua/ui/src/components/auth/sign-in'
+import { Button } from '@janua/ui/src/components/button'
 
 // ✅ GOOD - Named imports from index
-import { SignIn, SignUp, Button } from '@plinto/ui'
+import { SignIn, SignUp, Button } from '@janua/ui'
 
 // ⚠️ OK - Barrel file may include more than needed
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 // ❌ AVOID - Wildcard imports
-import * as UI from '@plinto/ui'
+import * as UI from '@janua/ui'
 ```
 
 ## Performance Benchmarks
@@ -280,7 +280,7 @@ import * as UI from '@plinto/ui'
 ### Runtime Performance
 
 All components:
-- ✅ **First Paint**: <50ms additional from @plinto/ui
+- ✅ **First Paint**: <50ms additional from @janua/ui
 - ✅ **Interactive**: <100ms for component initialization
 - ✅ **Re-renders**: Optimized with React.memo where appropriate
 - ✅ **Accessibility**: No ARIA performance issues
@@ -305,7 +305,7 @@ All components:
 
 ```typescript
 // For large components like AuditLog (~550 LOC)
-const AuditLog = React.lazy(() => import('@plinto/ui/src/components/auth/audit-log'))
+const AuditLog = React.lazy(() => import('@janua/ui/src/components/auth/audit-log'))
 
 function SecurityDashboard() {
   return (
@@ -322,8 +322,8 @@ function SecurityDashboard() {
 
 ```typescript
 // Extract critical CSS for specific components
-import '@plinto/ui/dist/button.css'
-import { Button } from '@plinto/ui'
+import '@janua/ui/dist/button.css'
+import { Button } from '@janua/ui'
 ```
 
 **Benefit:** Reduced CSS bundle for apps using few components
@@ -345,7 +345,7 @@ import { Button } from '@plinto/ui'
 
 **Status**: ✅ **Production-Ready Performance**
 
-The `@plinto/ui` package is architected for optimal performance with:
+The `@janua/ui` package is architected for optimal performance with:
 - Perfect tree-shaking via source distribution
 - Minimal runtime dependencies
 - Modular component structure

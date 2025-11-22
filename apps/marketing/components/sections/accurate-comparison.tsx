@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Check, X, Minus, AlertCircle, Info, ExternalLink } from 'lucide-react'
-import { Badge } from '@plinto/ui'
-import { Button } from '@plinto/ui'
+import { Badge } from '@janua/ui'
+import { Button } from '@janua/ui'
 import Link from 'next/link'
 
 type FeatureStatus = 'yes' | 'no' | 'partial' | 'coming'
@@ -13,7 +13,7 @@ interface ComparisonRow {
   feature: string
   category: string
   description?: string
-  plinto: FeatureStatus | string
+  janua: FeatureStatus | string
   auth0: FeatureStatus | string
   clerk: FeatureStatus | string
   supabase: FeatureStatus | string
@@ -26,7 +26,7 @@ const comparisonData: ComparisonRow[] = [
     feature: 'Edge Latency',
     category: 'Performance',
     description: 'Authentication response time from edge locations',
-    plinto: '<30ms*',
+    janua: '<30ms*',
     auth0: '100-200ms',
     clerk: '80-150ms',
     supabase: '60-120ms',
@@ -35,7 +35,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'Global Edge Deployment',
     category: 'Performance',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'no',
     clerk: 'partial',
     supabase: 'no'
@@ -46,7 +46,7 @@ const comparisonData: ComparisonRow[] = [
     feature: 'Passkeys (WebAuthn)',
     category: 'Authentication',
     description: 'FIDO2/WebAuthn passwordless authentication',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'partial'
@@ -54,7 +54,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'MFA/TOTP',
     category: 'Authentication',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'yes'
@@ -62,7 +62,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'Magic Links',
     category: 'Authentication',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'yes'
@@ -70,7 +70,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'OAuth Providers',
     category: 'Authentication',
-    plinto: '5+',
+    janua: '5+',
     auth0: '50+',
     clerk: '20+',
     supabase: '15+'
@@ -80,7 +80,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'SAML SSO',
     category: 'Enterprise',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'partial'
@@ -88,7 +88,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'OIDC SSO',
     category: 'Enterprise',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'yes'
@@ -97,7 +97,7 @@ const comparisonData: ComparisonRow[] = [
     feature: 'RBAC',
     category: 'Enterprise',
     description: 'Role-based access control',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'yes'
@@ -105,7 +105,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'Audit Logging',
     category: 'Enterprise',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'partial'
@@ -115,7 +115,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'SDK Languages',
     category: 'Developer Experience',
-    plinto: '13',
+    janua: '13',
     auth0: '15+',
     clerk: '5',
     supabase: '8'
@@ -123,7 +123,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'TypeScript SDK',
     category: 'Developer Experience',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'yes'
@@ -131,7 +131,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'React Hooks',
     category: 'Developer Experience',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'yes'
@@ -140,7 +140,7 @@ const comparisonData: ComparisonRow[] = [
     feature: 'Migration Tools',
     category: 'Developer Experience',
     description: 'Tools to migrate from other providers',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'no',
     clerk: 'no',
     supabase: 'no'
@@ -150,25 +150,25 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'Third-Party Security Audit',
     category: 'Security',
-    plinto: 'coming',
+    janua: 'coming',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'partial',
-    footnote: 'Plinto audit scheduled Q1 2025'
+    footnote: 'Janua audit scheduled Q1 2025'
   },
   {
     feature: 'SOC 2 Compliance',
     category: 'Security',
-    plinto: 'coming',
+    janua: 'coming',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'no',
-    footnote: 'Plinto targeting Q2 2025'
+    footnote: 'Janua targeting Q2 2025'
   },
   {
     feature: 'GDPR Compliant',
     category: 'Security',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'yes',
     clerk: 'yes',
     supabase: 'yes'
@@ -177,7 +177,7 @@ const comparisonData: ComparisonRow[] = [
     feature: 'Open Source Core',
     category: 'Security',
     description: 'Core authentication logic is open source',
-    plinto: 'yes',
+    janua: 'yes',
     auth0: 'no',
     clerk: 'no',
     supabase: 'yes'
@@ -188,11 +188,11 @@ const comparisonData: ComparisonRow[] = [
     feature: 'Test Coverage',
     category: 'Quality',
     description: 'Percentage of code covered by tests',
-    plinto: '31.3%',
+    janua: '31.3%',
     auth0: 'N/A',
     clerk: 'N/A',
     supabase: 'N/A',
-    footnote: 'Plinto improving weekly, targeting 85%+'
+    footnote: 'Janua improving weekly, targeting 85%+'
   },
 
   // Pricing
@@ -200,7 +200,7 @@ const comparisonData: ComparisonRow[] = [
     feature: 'Free Tier MAU',
     category: 'Pricing',
     description: 'Monthly Active Users in free tier',
-    plinto: '10,000',
+    janua: '10,000',
     auth0: '7,000',
     clerk: '10,000',
     supabase: '50,000'
@@ -208,7 +208,7 @@ const comparisonData: ComparisonRow[] = [
   {
     feature: 'Pricing Model',
     category: 'Pricing',
-    plinto: '$ (Dev-friendly)',
+    janua: '$ (Dev-friendly)',
     auth0: '$$$$ (Enterprise)',
     clerk: '$$$ (Growth)',
     supabase: '$$ (Usage)'
@@ -256,7 +256,7 @@ export function AccurateComparison() {
             Honest Feature Comparison
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-            A transparent comparison of Plinto with established authentication providers.
+            A transparent comparison of Janua with established authentication providers.
             We believe in honest communication about our capabilities and roadmap.
           </p>
         </div>
@@ -284,7 +284,7 @@ export function AccurateComparison() {
                   Feature
                 </th>
                 <th className="text-center p-4">
-                  <div className="font-semibold text-slate-900 dark:text-white">Plinto</div>
+                  <div className="font-semibold text-slate-900 dark:text-white">Janua</div>
                   <Badge variant="outline" className="mt-1 text-xs">Edge-Native</Badge>
                 </th>
                 <th className="text-center p-4">
@@ -334,7 +334,7 @@ export function AccurateComparison() {
                   </td>
                   <td className="p-4 text-center">
                     <div className="flex justify-center">
-                      <StatusIcon status={row.plinto} />
+                      <StatusIcon status={row.janua} />
                     </div>
                   </td>
                   <td className="p-4 text-center">
@@ -431,7 +431,7 @@ export function AccurateComparison() {
 
           <div className="mt-6 flex gap-4">
             <Button asChild>
-              <Link href="https://github.com/plinto/plinto" target="_blank">
+              <Link href="https://github.com/janua/janua" target="_blank">
                 <ExternalLink className="w-4 h-4 mr-2" />
                 View Source Code
               </Link>

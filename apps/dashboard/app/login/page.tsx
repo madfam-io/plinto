@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui'
-import { Button } from '@plinto/ui'
-import { Input } from '@plinto/ui'
-import { Label } from '@plinto/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui'
+import { Button } from '@janua/ui'
+import { Input } from '@janua/ui'
+import { Label } from '@janua/ui'
 import { Shield, Eye, EyeOff, Loader2 } from 'lucide-react'
 
 export default function LoginPage() {
@@ -43,10 +43,10 @@ export default function LoginPage() {
       }
 
       // Store token in cookie
-      document.cookie = `plinto_token=${data.token}; path=/; secure; samesite=strict`
+      document.cookie = `janua_token=${data.token}; path=/; secure; samesite=strict`
       
       // Store user info in localStorage for quick access
-      localStorage.setItem('plinto_user', JSON.stringify(data.user))
+      localStorage.setItem('janua_user', JSON.stringify(data.user))
       
       // Redirect to intended page
       router.push(redirectTo)
@@ -64,7 +64,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
             <Shield className="h-12 w-12 text-primary" />
           </div>
-          <CardTitle className="text-2xl">Sign in to Plinto</CardTitle>
+          <CardTitle className="text-2xl">Sign in to Janua</CardTitle>
           <CardDescription>
             Enter your credentials to access your dashboard
           </CardDescription>

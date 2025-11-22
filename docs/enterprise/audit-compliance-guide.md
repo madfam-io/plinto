@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto provides comprehensive audit logging, compliance management, and governance features designed to meet enterprise security requirements and regulatory standards including GDPR, HIPAA, SOC 2, ISO 27001, and regional data protection laws.
+Janua provides comprehensive audit logging, compliance management, and governance features designed to meet enterprise security requirements and regulatory standards including GDPR, HIPAA, SOC 2, ISO 27001, and regional data protection laws.
 
 ## Audit Logging System
 
@@ -582,7 +582,7 @@ class GDPRCompliance {
     return {
       data: portable,
       format: 'json',
-      schema: 'https://plinto.dev/schemas/portability/v1',
+      schema: 'https://janua.dev/schemas/portability/v1',
       downloadUrl: await this.generateDownloadUrl(portable)
     };
   }
@@ -1100,7 +1100,7 @@ class SIEMIntegration {
       
       // Additional metadata
       metadata: {
-        source: 'plinto',
+        source: 'janua',
         environment: process.env.ENVIRONMENT,
         version: process.env.VERSION,
         customerOrg: event.organizationId
@@ -1109,7 +1109,7 @@ class SIEMIntegration {
   }
   
   private toCEF(event: AuditEvent): string {
-    return `CEF:0|Plinto|Identity Platform|1.0|${event.eventType}|${event.details.action}|${this.getSeverity(event)}|` +
+    return `CEF:0|Janua|Identity Platform|1.0|${event.eventType}|${event.details.action}|${this.getSeverity(event)}|` +
       `src=${event.actor.ipAddress} ` +
       `suser=${event.actor.email} ` +
       `duser=${event.target.id} ` +
@@ -1153,7 +1153,7 @@ class SIEMIntegration {
 
 ## Support & Resources
 
-- Compliance Documentation: https://docs.plinto.dev/compliance
-- Audit API Reference: https://api.plinto.dev/audit
-- Privacy Center: https://privacy.plinto.dev
-- Compliance Support: compliance@plinto.dev
+- Compliance Documentation: https://docs.janua.dev/compliance
+- Audit API Reference: https://api.janua.dev/audit
+- Privacy Center: https://privacy.janua.dev
+- Compliance Support: compliance@janua.dev

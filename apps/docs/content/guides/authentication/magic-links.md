@@ -18,10 +18,10 @@ Magic links provide a passwordless authentication experience by sending a secure
 ### 1. Send Magic Link
 
 ```typescript
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 // Request magic link
-const { success, message } = await plinto.auth.sendMagicLink({
+const { success, message } = await janua.auth.sendMagicLink({
   email: 'user@example.com',
   redirectUrl: 'https://app.example.com/dashboard',
   expiresIn: 15 * 60, // 15 minutes
@@ -36,7 +36,7 @@ if (success) {
 
 ```typescript
 // In your callback route
-const { user, session } = await plinto.auth.verifyMagicLink({
+const { user, session } = await janua.auth.verifyMagicLink({
   token: request.query.token,
 })
 
@@ -55,11 +55,11 @@ if (session) {
 
 ```javascript
 const express = require('express')
-const { Plinto } = require('@plinto/node')
+const { Janua } = require('@janua/node')
 
 const app = express()
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY,
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY,
 })
 
 // Send magic link endpoint
@@ -67,7 +67,7 @@ app.post('/auth/magic-link', async (req, res) => {
   const { email } = req.body
 
   try {
-    const result = await plinto.auth.sendMagicLink({
+    const result = await janua.auth.sendMagicLink({
       email,
       redirectUrl: `${process.env.APP_URL}/auth/callback`,
       metadata: {
@@ -93,7 +93,7 @@ app.get('/auth/callback', async (req, res) => {
   const { token } = req.query
 
   try {
-    const { user, session } = await plinto.auth.verifyMagicLink({
+    const { user, session } = await janua.auth.verifyMagicLink({
       token,
     })
 
@@ -116,16 +116,16 @@ app.get('/auth/callback', async (req, res) => {
 
 ```python
 from fastapi import FastAPI, HTTPException
-from plinto import Plinto
+from janua import Janua
 import os
 
 app = FastAPI()
-plinto = Plinto(api_key=os.getenv("PLINTO_API_KEY"))
+janua = Janua(api_key=os.getenv("JANUA_API_KEY"))
 
 @app.post("/auth/magic-link")
 async def send_magic_link(email: str):
     try:
-        result = await plinto.auth.send_magic_link(
+        result = await janua.auth.send_magic_link(
             email=email,
             redirect_url=f"{os.getenv('APP_URL')}/auth/callback",
             expires_in=900  # 15 minutes
@@ -137,7 +137,7 @@ async def send_magic_link(email: str):
 @app.get("/auth/callback")
 async def verify_magic_link(token: str):
     try:
-        result = await plinto.auth.verify_magic_link(token=token)
+        result = await janua.auth.verify_magic_link(token=token)
         # Create session and redirect
         return {"user": result.user, "session": result.session}
     except Exception as e:
@@ -150,10 +150,10 @@ async def verify_magic_link(token: str):
 
 ```jsx
 import { useState } from 'react'
-import { usePlinto } from '@plinto/react-sdk'
+import { useJanua } from '@janua/react-sdk'
 
 function MagicLinkLogin() {
-  const { sendMagicLink } = usePlinto()
+  const { sendMagicLink } = useJanua()
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -327,7 +327,7 @@ export async function GET(request: NextRequest) {
 ### Custom Redirect Logic
 
 ```typescript
-const { session } = await plinto.auth.verifyMagicLink({
+const { session } = await janua.auth.verifyMagicLink({
   token,
   onSuccess: async (user) => {
     // Custom logic before redirect
@@ -346,7 +346,7 @@ const { session } = await plinto.auth.verifyMagicLink({
 
 ```typescript
 // Require additional factor after magic link
-const { requiresMfa, mfaToken } = await plinto.auth.verifyMagicLink({
+const { requiresMfa, mfaToken } = await janua.auth.verifyMagicLink({
   token,
   checkMfa: true,
 })
@@ -361,7 +361,7 @@ if (requiresMfa) {
 
 ```typescript
 // Send magic link with organization context
-await plinto.auth.sendMagicLink({
+await janua.auth.sendMagicLink({
   email,
   organizationId: 'org_123',
   redirectUrl: 'https://org.example.com/dashboard',
@@ -396,7 +396,7 @@ app.post('/auth/magic-link', rateLimiter, async (req, res) => {
 ```typescript
 // Verify email ownership
 if (!user.emailVerified) {
-  await plinto.auth.sendEmailVerification(email)
+  await janua.auth.sendEmailVerification(email)
   return {
     requiresVerification: true,
     message: 'Please verify your email first'
@@ -408,15 +408,15 @@ if (!user.emailVerified) {
 
 ```typescript
 // Log authentication events
-plinto.events.on('auth.magicLink.sent', (event) => {
+janua.events.on('auth.magicLink.sent', (event) => {
   console.log('Magic link sent:', event)
 })
 
-plinto.events.on('auth.magicLink.used', (event) => {
+janua.events.on('auth.magicLink.used', (event) => {
   console.log('Magic link used:', event)
 })
 
-plinto.events.on('auth.magicLink.expired', (event) => {
+janua.events.on('auth.magicLink.expired', (event) => {
   console.log('Magic link expired:', event)
 })
 ```
@@ -437,7 +437,7 @@ plinto.events.on('auth.magicLink.expired', (event) => {
 
 ```typescript
 try {
-  const result = await plinto.auth.verifyMagicLink({ token })
+  const result = await janua.auth.verifyMagicLink({ token })
   // Success handling
 } catch (error) {
   switch (error.code) {
@@ -463,7 +463,7 @@ try {
 ```typescript
 describe('Magic Link Authentication', () => {
   it('should send magic link email', async () => {
-    const result = await plinto.auth.sendMagicLink({
+    const result = await janua.auth.sendMagicLink({
       email: 'test@example.com',
     })
 
@@ -478,7 +478,7 @@ describe('Magic Link Authentication', () => {
 
   it('should verify valid token', async () => {
     const token = 'valid_token_123'
-    const result = await plinto.auth.verifyMagicLink({ token })
+    const result = await janua.auth.verifyMagicLink({ token })
 
     expect(result.session).toBeDefined()
     expect(result.user.email).toBe('test@example.com')
@@ -488,7 +488,7 @@ describe('Magic Link Authentication', () => {
     const token = 'expired_token_123'
 
     await expect(
-      plinto.auth.verifyMagicLink({ token })
+      janua.auth.verifyMagicLink({ token })
     ).rejects.toThrow('token_expired')
   })
 })
@@ -522,13 +522,13 @@ test('complete magic link flow', async ({ page }) => {
 
 ```typescript
 // Before: Password-based
-const user = await plinto.auth.signIn({
+const user = await janua.auth.signIn({
   email,
   password,
 })
 
 // After: Magic link
-const result = await plinto.auth.sendMagicLink({
+const result = await janua.auth.sendMagicLink({
   email,
 })
 // User clicks link in email to authenticate
@@ -544,8 +544,8 @@ auth0.passwordlessStart({
   email,
 })
 
-// Plinto equivalent
-plinto.auth.sendMagicLink({
+// Janua equivalent
+janua.auth.sendMagicLink({
   email,
 })
 ```

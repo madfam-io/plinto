@@ -491,7 +491,7 @@ export const useEnterpriseStore = create<EnterpriseState>()(
         },
       }),
       {
-        name: 'plinto-enterprise-store',
+        name: 'janua-enterprise-store',
         // Only persist non-sensitive data
         partialize: (state) => ({
           invitationFilters: state.invitationFilters,

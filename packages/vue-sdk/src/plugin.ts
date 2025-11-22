@@ -1,29 +1,29 @@
 import { App, reactive, readonly } from 'vue';
-import { PlintoClient } from '@plinto/typescript-sdk';
-import type { User, Session, PlintoConfig } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
+import type { User, Session, JanuaConfig } from '@janua/typescript-sdk';
 
-export interface PlintoState {
+export interface JanuaState {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
 
-export interface PlintoPluginOptions extends PlintoConfig {
+export interface JanuaPluginOptions extends JanuaConfig {
   onAuthChange?: (user: User | null) => void;
 }
 
-const PLINTO_KEY = Symbol('plinto');
+const JANUA_KEY = Symbol('janua');
 
-class PlintoVue {
-  private client: PlintoClient;
-  private state: PlintoState;
+class JanuaVue {
+  private client: JanuaClient;
+  private state: JanuaState;
   private onAuthChange?: (user: User | null) => void;
 
-  constructor(options: PlintoPluginOptions) {
+  constructor(options: JanuaPluginOptions) {
     const { onAuthChange, ...config } = options;
     
-    this.client = new PlintoClient(config);
+    this.client = new JanuaClient(config);
     this.onAuthChange = onAuthChange;
     
     this.state = reactive({
@@ -133,15 +133,15 @@ class PlintoVue {
   }
 }
 
-export const createPlinto = (options: PlintoPluginOptions) => {
+export const createJanua = (options: JanuaPluginOptions) => {
   return {
     install(app: App) {
-      const plinto = new PlintoVue(options);
-      app.provide(PLINTO_KEY, plinto);
-      app.config.globalProperties.$plinto = plinto;
+      const janua = new JanuaVue(options);
+      app.provide(JANUA_KEY, janua);
+      app.config.globalProperties.$janua = janua;
     },
   };
 };
 
-export { PLINTO_KEY };
-export type { PlintoVue };
+export { JANUA_KEY };
+export type { JanuaVue };

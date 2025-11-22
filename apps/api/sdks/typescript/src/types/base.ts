@@ -1,5 +1,5 @@
 /**
- * Base types for Plinto TypeScript SDK.
+ * Base types for Janua TypeScript SDK.
  *
  * Mirrors the standardized response models from app.schemas.sdk_models
  * for consistent cross-platform SDK experience.

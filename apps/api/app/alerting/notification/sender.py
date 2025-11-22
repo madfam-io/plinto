@@ -41,7 +41,7 @@ class NotificationSender:
             # HTML email template
             html_template = Template("""
             <html>
-            <head><title>Plinto Alert</title></head>
+            <head><title>Janua Alert</title></head>
             <body>
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <div style="background-color: {{ severity_color }}; color: white; padding: 20px; text-align: center;">
@@ -172,7 +172,7 @@ class NotificationSender:
                                 "short": True
                             }
                         ],
-                        "footer": "Plinto Alert System",
+                        "footer": "Janua Alert System",
                         "ts": int(alert.triggered_at.timestamp())
                     }
                 ]
@@ -295,7 +295,7 @@ class NotificationSender:
                 ],
                 "timestamp": alert.triggered_at.isoformat(),
                 "footer": {
-                    "text": "Plinto Alert System"
+                    "text": "Janua Alert System"
                 }
             }
 

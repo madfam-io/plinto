@@ -1,4 +1,4 @@
-# User Documentation Audit - docs.plinto.dev
+# User Documentation Audit - docs.janua.dev
 
 **Date**: November 14, 2025
 **Scope**: User-facing documentation (apps/landing + apps/docs)
@@ -11,9 +11,9 @@
 The user-facing documentation has comprehensive content but contains **API/SDK method mismatches** with the actual implementation. While the structure and examples are excellent, the code examples reference SDK methods that may not exist in the current implementation.
 
 ### Critical Issues Found
-1. **SDK API Mismatches**: Documentation uses `plinto.auth.mfa.*` methods not found in SDK code
+1. **SDK API Mismatches**: Documentation uses `janua.auth.mfa.*` methods not found in SDK code
 2. **Implementation Assumptions**: Examples assume API endpoints that need verification
-3. **Package Names**: Uses `@plinto/typescript-sdk`, `@plinto/react-sdk` (need to verify these match actual package.json)
+3. **Package Names**: Uses `@janua/typescript-sdk`, `@janua/react-sdk` (need to verify these match actual package.json)
 
 ### Strengths
 - ✅ Comprehensive MFA documentation (2,700+ lines)
@@ -38,9 +38,9 @@ The user-facing documentation has comprehensive content but contains **API/SDK m
 **SDK Installation Names** (apps/landing/app/docs/quickstart/page.tsx:34-50)
 ```typescript
 // Documentation claims:
-npm install @plinto/typescript-sdk
-npm install @plinto/react-sdk
-pip install plinto-sdk
+npm install @janua/typescript-sdk
+npm install @janua/react-sdk
+pip install janua-sdk
 
 // NEED TO VERIFY:
 - Do these package names match package.json?
@@ -51,13 +51,13 @@ pip install plinto-sdk
 **API Method Assumptions** (apps/landing/app/docs/quickstart/page.tsx:78-95)
 ```typescript
 // Documentation shows:
-const plinto = new PlintoClient({
-  apiUrl: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  apiUrl: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 
 // NEED TO VERIFY:
-- Does PlintoClient constructor accept these params?
+- Does JanuaClient constructor accept these params?
 - Is apiKey authentication implemented?
 - Are environment variables documented correctly?
 ```
@@ -65,9 +65,9 @@ const plinto = new PlintoClient({
 **SDK Methods** (apps/landing/app/features/page.tsx:45-62)
 ```typescript
 // Documentation shows:
-await plinto.auth.signUp({...})
-await plinto.auth.signIn({...})
-await plinto.auth.enableMFA('totp', {...})
+await janua.auth.signUp({...})
+await janua.auth.signIn({...})
+await janua.auth.enableMFA('totp', {...})
 
 // NEED TO VERIFY:
 - Do these methods exist in SDK?
@@ -85,13 +85,13 @@ await plinto.auth.enableMFA('totp', {...})
 **MFA API Methods** (content/guides/authentication/mfa.md:32-43)
 ```typescript
 // Documentation shows extensive MFA API:
-plinto.auth.mfa.setup({...})
-plinto.auth.mfa.verify({...})
-plinto.auth.mfa.getStatus({...})
-plinto.auth.mfa.disable({...})
-plinto.auth.mfa.generateBackupCodes({...})
-plinto.auth.mfa.webauthn.generateChallenge({...})
-plinto.auth.mfa.webauthn.verify({...})
+janua.auth.mfa.setup({...})
+janua.auth.mfa.verify({...})
+janua.auth.mfa.getStatus({...})
+janua.auth.mfa.disable({...})
+janua.auth.mfa.generateBackupCodes({...})
+janua.auth.mfa.webauthn.generateChallenge({...})
+janua.auth.mfa.webauthn.verify({...})
 
 // CRITICAL:
 - These methods are NOT found in actual SDK code
@@ -120,14 +120,14 @@ plinto.auth.mfa.webauthn.verify({...})
 ### Key Verification Results
 
 **VERIFIED** (✅ Good News):
-- Package name is correct: `@plinto/typescript-sdk`
+- Package name is correct: `@janua/typescript-sdk`
 - Core auth methods exist: `signUp()`, `signIn()`, `signOut()`, `refreshToken()`
 - MFA basic methods exist: `enableMFA()`, `verifyMFA()`, `getMFAStatus()`, `disableMFA()`
 - OAuth methods exist and work
 - Passkey methods exist and work
 
 **CRITICAL ISSUES FOUND** (❌ Bad News):
-1. **MFA API Structure Mismatch**: Documentation uses `plinto.auth.mfa.*` namespace that does NOT exist
+1. **MFA API Structure Mismatch**: Documentation uses `janua.auth.mfa.*` namespace that does NOT exist
    - Affects: Entire 2,750-line MFA guide
    - Impact: 100% of MFA examples will fail
    - Status: 🔴 PUBLICATION BLOCKER
@@ -167,7 +167,7 @@ packages/python-sdk/setup.py
 **Check against actual SDK code**:
 ```
 packages/typescript-sdk/src/*.ts
-- Does PlintoClient exist?
+- Does JanuaClient exist?
 - Does auth.signUp() exist?
 - Does auth.signIn() exist?
 - Does auth.mfa.* namespace exist?
@@ -299,12 +299,12 @@ apps/api/app/sso/domain/routers/*.py
 
 ```bash
 # 1. Package installation test
-npm install @plinto/typescript-sdk
-npm install @plinto/react-sdk
-pip install plinto-sdk
+npm install @janua/typescript-sdk
+npm install @janua/react-sdk
+pip install janua-sdk
 
 # 2. SDK method existence test
-node -e "const plinto = require('@plinto/typescript-sdk'); console.log(plinto)"
+node -e "const janua = require('@janua/typescript-sdk'); console.log(janua)"
 
 # 3. API endpoint test
 curl -X POST http://localhost:8000/api/v1/auth/signup \
@@ -323,7 +323,7 @@ python example.py --check
 
 ### 1. MFA Documentation Validity
 The 2,750-line MFA guide is comprehensive and well-written BUT:
-- Uses extensive `plinto.auth.mfa.*` API that may not exist
+- Uses extensive `janua.auth.mfa.*` API that may not exist
 - Complex React components assume non-existent SDK methods
 - WebAuthn integration shown but not verified in codebase
 - Could mislead users if published without validation
@@ -348,8 +348,8 @@ The quickstart is the first thing new users see:
 
 ### 3. Package Publication Blockers
 Documentation assumes packages are published:
-- `npm install @plinto/typescript-sdk`
-- `pip install plinto-sdk`
+- `npm install @janua/typescript-sdk`
+- `pip install janua-sdk`
 
 **CRITICAL**: Don't publish docs until packages are actually available, OR clearly state "Pre-release - coming soon"
 

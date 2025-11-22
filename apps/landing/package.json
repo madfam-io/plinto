@@ -1,5 +1,5 @@
 {
-  "name": "@plinto/landing",
+  "name": "@janua/landing",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,7 +13,7 @@
     "next": "^15.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@plinto/typescript-sdk": "*"
+    "@janua/typescript-sdk": "*"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

@@ -3,7 +3,7 @@
  */
 
 import {
-  PlintoError,
+  JanuaError,
   AuthenticationError,
   ValidationError,
   PermissionError,
@@ -26,26 +26,26 @@ import {
   isRateLimitError,
   isNetworkError,
   isServerError,
-  isPlintoError
+  isJanuaError
 } from '../errors';
 
 describe('Error Classes', () => {
-  describe('PlintoError', () => {
+  describe('JanuaError', () => {
     it('should create base error with message', () => {
-      const error = new PlintoError('Test error');
+      const error = new JanuaError('Test error');
       
-      expect(error.name).toBe('PlintoError');
+      expect(error.name).toBe('JanuaError');
       expect(error.message).toBe('Test error');
-      expect(error.code).toBe('PLINTO_ERROR');
+      expect(error.code).toBe('JANUA_ERROR');
       expect(error.statusCode).toBeUndefined();
       expect(error.details).toBeUndefined();
     });
 
     it('should create error with all parameters', () => {
       const details = { field: 'value' };
-      const error = new PlintoError('Test error', 'CUSTOM_CODE', 400, details);
+      const error = new JanuaError('Test error', 'CUSTOM_CODE', 400, details);
       
-      expect(error.name).toBe('PlintoError');
+      expect(error.name).toBe('JanuaError');
       expect(error.message).toBe('Test error');
       expect(error.code).toBe('CUSTOM_CODE');
       expect(error.statusCode).toBe(400);
@@ -54,10 +54,10 @@ describe('Error Classes', () => {
 
     it('should convert to JSON correctly', () => {
       const details = { field: 'value' };
-      const error = new PlintoError('Test error', 'CUSTOM_CODE', 400, details);
+      const error = new JanuaError('Test error', 'CUSTOM_CODE', 400, details);
       const json = error.toJSON();
       
-      expect(json.name).toBe('PlintoError');
+      expect(json.name).toBe('JanuaError');
       expect(json.message).toBe('Test error');
       expect(json.code).toBe('CUSTOM_CODE');
       expect(json.statusCode).toBe(400);
@@ -73,7 +73,7 @@ describe('Error Classes', () => {
         status_code: 400
       };
       
-      const error = PlintoError.fromApiError(apiError);
+      const error = JanuaError.fromApiError(apiError);
       
       // Since status_code is 400, it should return ValidationError
       expect(error).toBeInstanceOf(ValidationError);
@@ -85,9 +85,9 @@ describe('Error Classes', () => {
     });
 
     it('should maintain proper stack trace', () => {
-      const error = new PlintoError('Test error');
+      const error = new JanuaError('Test error');
       expect(error.stack).toBeDefined();
-      expect(error.stack).toContain('PlintoError');
+      expect(error.stack).toContain('JanuaError');
     });
   });
 
@@ -95,7 +95,7 @@ describe('Error Classes', () => {
     it('should create authentication error', () => {
       const error = new AuthenticationError('Invalid credentials');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error).toBeInstanceOf(AuthenticationError);
       expect(error.name).toBe('AuthenticationError');
       expect(error.message).toBe('Invalid credentials');
@@ -118,7 +118,7 @@ describe('Error Classes', () => {
       ];
       const error = new ValidationError('Validation failed', violations);
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('ValidationError');
       expect(error.message).toBe('Validation failed');
       expect(error.code).toBe('VALIDATION_ERROR');
@@ -136,7 +136,7 @@ describe('Error Classes', () => {
     it('should create permission error', () => {
       const error = new PermissionError('Access denied');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('PermissionError');
       expect(error.code).toBe('PERMISSION_ERROR');
       expect(error.statusCode).toBe(403);
@@ -147,7 +147,7 @@ describe('Error Classes', () => {
     it('should create not found error', () => {
       const error = new NotFoundError('Resource not found');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('NotFoundError');
       expect(error.code).toBe('NOT_FOUND');
       expect(error.statusCode).toBe(404);
@@ -158,7 +158,7 @@ describe('Error Classes', () => {
     it('should create conflict error', () => {
       const error = new ConflictError('Email already exists');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('ConflictError');
       expect(error.code).toBe('CONFLICT');
       expect(error.statusCode).toBe(409);
@@ -175,7 +175,7 @@ describe('Error Classes', () => {
       };
       const error = new RateLimitError('Rate limit exceeded', rateLimitInfo);
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('RateLimitError');
       expect(error.code).toBe('RATE_LIMIT_EXCEEDED');
       expect(error.statusCode).toBe(429);
@@ -193,7 +193,7 @@ describe('Error Classes', () => {
     it('should create server error', () => {
       const error = new ServerError('Internal server error');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('ServerError');
       expect(error.code).toBe('SERVER_ERROR');
       expect(error.statusCode).toBe(500);
@@ -204,7 +204,7 @@ describe('Error Classes', () => {
     it('should create network error', () => {
       const error = new NetworkError('Connection timeout');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('NetworkError');
       expect(error.code).toBe('NETWORK_ERROR');
     });
@@ -221,7 +221,7 @@ describe('Error Classes', () => {
     it('should create token error', () => {
       const error = new TokenError('Invalid token format');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('TokenError');
       expect(error.code).toBe('TOKEN_ERROR');
     });
@@ -231,7 +231,7 @@ describe('Error Classes', () => {
     it('should create configuration error', () => {
       const error = new ConfigurationError('Missing API key');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('ConfigurationError');
       expect(error.code).toBe('CONFIGURATION_ERROR');
     });
@@ -241,7 +241,7 @@ describe('Error Classes', () => {
     it('should create MFA error', () => {
       const error = new MFAError('Invalid MFA code');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('MFAError');
       expect(error.code).toBe('MFA_ERROR');
     });
@@ -251,7 +251,7 @@ describe('Error Classes', () => {
     it('should create webhook error', () => {
       const error = new WebhookError('Webhook delivery failed');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('WebhookError');
       expect(error.code).toBe('WEBHOOK_ERROR');
     });
@@ -261,7 +261,7 @@ describe('Error Classes', () => {
     it('should create OAuth error', () => {
       const error = new OAuthError('OAuth provider error');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('OAuthError');
       expect(error.code).toBe('OAUTH_ERROR');
     });
@@ -271,7 +271,7 @@ describe('Error Classes', () => {
     it('should create passkey error', () => {
       const error = new PasskeyError('Passkey registration failed');
       
-      expect(error).toBeInstanceOf(PlintoError);
+      expect(error).toBeInstanceOf(JanuaError);
       expect(error.name).toBe('PasskeyError');
       expect(error.code).toBe('PASSKEY_ERROR');
     });
@@ -279,17 +279,17 @@ describe('Error Classes', () => {
 });
 
 describe('Error Type Guards', () => {
-  describe('isPlintoError', () => {
-    it('should identify PlintoError instances', () => {
-      const plintoError = new PlintoError('Test');
+  describe('isJanuaError', () => {
+    it('should identify JanuaError instances', () => {
+      const januaError = new JanuaError('Test');
       const authError = new AuthenticationError('Test');
       const regularError = new Error('Test');
       
-      expect(isPlintoError(plintoError)).toBe(true);
-      expect(isPlintoError(authError)).toBe(true);
-      expect(isPlintoError(regularError)).toBe(false);
-      expect(isPlintoError(null)).toBe(false);
-      expect(isPlintoError(undefined)).toBe(false);
+      expect(isJanuaError(januaError)).toBe(true);
+      expect(isJanuaError(authError)).toBe(true);
+      expect(isJanuaError(regularError)).toBe(false);
+      expect(isJanuaError(null)).toBe(false);
+      expect(isJanuaError(undefined)).toBe(false);
     });
   });
 
@@ -410,7 +410,7 @@ describe('ErrorHandler', () => {
     expect(mockLogger.error).toHaveBeenCalledTimes(3);
   });
 
-  it('should handle non-Plinto errors', () => {
+  it('should handle non-Janua errors', () => {
     const handler = new ErrorHandler(mockLogger);
     const error = new Error('Regular error');
     

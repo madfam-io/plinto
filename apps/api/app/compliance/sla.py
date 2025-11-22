@@ -829,7 +829,7 @@ class UptimeTracker:
 
     def __init__(self, redis_client: Optional[aioredis.Redis] = None):
         self.redis_client = redis_client
-        self.uptime_key = "plinto:uptime"
+        self.uptime_key = "janua:uptime"
 
     async def record_uptime_check(self, is_up: bool, timestamp: Optional[datetime] = None):
         """Record uptime status check"""

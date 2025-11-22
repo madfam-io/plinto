@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 /**
- * Playwright Configuration for Plinto Demo App E2E Tests
+ * Playwright Configuration for Janua Demo App E2E Tests
  * 
  * Tests authentication flows, MFA, organization management, and critical user journeys
  */

@@ -48,7 +48,7 @@ class SecurityCheck:
 class SecurityValidator:
     """Comprehensive security validation suite"""
     
-    def __init__(self, api_url: str = "https://api.plinto.dev"):
+    def __init__(self, api_url: str = "https://api.janua.dev"):
         self.api_url = api_url
         self.results: List[SecurityCheck] = []
         
@@ -791,8 +791,8 @@ class SecurityValidator:
 
 async def main():
     """Main security validation execution"""
-    parser = argparse.ArgumentParser(description="Plinto Security Hardening Validation")
-    parser.add_argument("--url", default="https://api.plinto.dev", help="API base URL")
+    parser = argparse.ArgumentParser(description="Janua Security Hardening Validation")
+    parser.add_argument("--url", default="https://api.janua.dev", help="API base URL")
     parser.add_argument("--quick", action="store_true", help="Run quick security checks only")
     
     args = parser.parse_args()

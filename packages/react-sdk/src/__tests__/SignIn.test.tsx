@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SignIn } from '../components/SignIn';
-import { PlintoProvider } from '../provider';
+import { JanuaProvider } from '../provider';
 
 const mockSignIn = jest.fn();
 const mockRouter = {
@@ -12,7 +12,7 @@ const mockRouter = {
 
 jest.mock('../provider', () => ({
   ...jest.requireActual('../provider'),
-  usePlinto: () => ({
+  useJanua: () => ({
     signIn: mockSignIn,
     isLoading: false,
     error: null,
@@ -30,13 +30,13 @@ describe('SignIn Component', () => {
 
   const renderSignIn = (props = {}) => {
     return render(
-      <PlintoProvider config={{ 
+      <JanuaProvider config={{ 
         apiKey: 'test-key',
         tenantId: 'test-tenant',
-        baseUrl: 'https://api.plinto.dev' 
+        baseUrl: 'https://api.janua.dev' 
       }}>
         <SignIn {...props} />
-      </PlintoProvider>
+      </JanuaProvider>
     );
   };
 

@@ -1,7 +1,7 @@
 {
-  "name": "@plinto/react-sdk",
+  "name": "@janua/react-sdk",
   "version": "0.1.0-beta.1",
-  "description": "Official Plinto SDK for React applications",
+  "description": "Official Janua SDK for React applications",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -27,7 +27,7 @@
     "test:watch": "jest --config jest.config.js --watch"
   },
   "dependencies": {
-    "@plinto/typescript-sdk": "*"
+    "@janua/typescript-sdk": "*"
   },
   "peerDependencies": {
     "react": "^18.0.0",
@@ -48,7 +48,7 @@
     "typescript": "^5.3.0"
   },
   "keywords": [
-    "plinto",
+    "janua",
     "react",
     "authentication",
     "auth",
@@ -59,17 +59,17 @@
     "mfa",
     "passkeys"
   ],
-  "author": "Plinto Team <team@plinto.dev>",
+  "author": "Janua Team <team@janua.dev>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/madfam-io/plinto.git",
+    "url": "https://github.com/madfam-io/janua.git",
     "directory": "packages/react-sdk"
   },
   "bugs": {
-    "url": "https://github.com/madfam-io/plinto/issues"
+    "url": "https://github.com/madfam-io/janua/issues"
   },
-  "homepage": "https://plinto.dev",
+  "homepage": "https://janua.dev",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

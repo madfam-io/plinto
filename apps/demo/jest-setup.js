@@ -4,7 +4,7 @@ require('@testing-library/jest-dom');
 // Mock environment variables
 process.env.NODE_ENV = 'test';
 process.env.NEXT_PUBLIC_API_URL = 'http://localhost:3000/api';
-process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo';
+process.env.NEXT_PUBLIC_JANUA_ENV = 'demo';
 
 // Mock fetch globally
 global.fetch = jest.fn();

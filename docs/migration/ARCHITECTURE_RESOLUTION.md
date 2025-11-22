@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-**Critical Issue**: The Plinto platform has two separate API implementations:
+**Critical Issue**: The Janua platform has two separate API implementations:
 - **Python FastAPI** (`/apps/api`): Production-ready with migrations, comprehensive features
 - **TypeScript Express** (`/packages/api`): Development API with recent MVP additions
 

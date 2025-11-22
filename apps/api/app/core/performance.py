@@ -1,5 +1,5 @@
 """
-Performance optimization utilities for Plinto API
+Performance optimization utilities for Janua API
 Phase 2: Sub-100ms response time optimization
 """
 
@@ -207,7 +207,7 @@ class CachingManager:
     
     def _generate_cache_key(self, namespace: str, key: str) -> str:
         """Generate standardized cache key"""
-        return f"plinto:{namespace}:{key}"
+        return f"janua:{namespace}:{key}"
     
     async def get(self, namespace: str, key: str) -> Optional[Any]:
         """Get cached value with L1 and L2 cache support"""
@@ -292,7 +292,7 @@ class CachingManager:
         pattern = self._generate_cache_key(namespace, "*")
         
         # Clear L1 cache
-        keys_to_delete = [k for k in self.local_cache.keys() if k.startswith(f"plinto:{namespace}:")]
+        keys_to_delete = [k for k in self.local_cache.keys() if k.startswith(f"janua:{namespace}:")]
         for key in keys_to_delete:
             del self.local_cache[key]
         

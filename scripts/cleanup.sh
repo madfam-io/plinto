@@ -1,11 +1,11 @@
 #!/bin/bash
 # cleanup.sh - Safe cleanup of temporary files and cache
-# Part of Plinto monorepo maintenance
+# Part of Janua monorepo maintenance
 # Usage: bash scripts/cleanup.sh
 
 set -e
 
-echo "🧹 Plinto Codebase Cleanup"
+echo "🧹 Janua Codebase Cleanup"
 echo "=========================="
 echo ""
 

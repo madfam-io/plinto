@@ -1,13 +1,13 @@
 {
-  "name": "plinto-docs",
+  "name": "janua-docs",
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && yarn build --filter=@plinto/docs",
+  "buildCommand": "cd ../.. && yarn build --filter=@janua/docs",
   "outputDirectory": "apps/docs/.next",
   "installCommand": "yarn install",
   "env": {
-    "NEXT_PUBLIC_PLINTO_ISSUER": "https://plinto.dev",
-    "NEXT_PUBLIC_PLINTO_API_URL": "https://api.plinto.dev",
+    "NEXT_PUBLIC_JANUA_ISSUER": "https://janua.dev",
+    "NEXT_PUBLIC_JANUA_API_URL": "https://api.janua.dev",
     "NEXT_PUBLIC_ENVIRONMENT": "production"
   },
   "headers": [

@@ -1,7 +1,7 @@
-import { usePlinto } from '../provider'
+import { useJanua } from '../provider'
 
 export function useAuth() {
-  const { user, session, isLoading, isAuthenticated, signIn, signOut } = usePlinto()
+  const { user, session, isLoading, isAuthenticated, signIn, signOut } = useJanua()
   
   return {
     user,

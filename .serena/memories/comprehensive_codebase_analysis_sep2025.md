@@ -62,7 +62,7 @@
 ## 🏢 **Enterprise Readiness Assessment**
 
 ### vs Auth0/Clerk/Supabase Auth
-| Feature | Enterprise Standard | Plinto Status | Gap |
+| Feature | Enterprise Standard | Janua Status | Gap |
 |---------|-------------------|---------------|-----|
 | **Working SDKs** | All platforms | 60% | Next.js broken, others incomplete |
 | **SAML/OIDC** | Full implementation | Interface-only | 4-6 weeks |

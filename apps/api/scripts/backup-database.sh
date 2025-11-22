@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# Database Backup Script for Plinto
+# Database Backup Script for Janua
 # Supports PostgreSQL backup to local storage and cloud (S3/R2)
 
 set -euo pipefail
 
 # Configuration
-DB_NAME="${DB_NAME:-plinto}"
+DB_NAME="${DB_NAME:-janua}"
 DB_USER="${DB_USER:-postgres}"
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-5432}"
-BACKUP_DIR="${BACKUP_DIR:-/var/backups/plinto}"
-S3_BUCKET="${S3_BUCKET:-plinto-backups}"
+BACKUP_DIR="${BACKUP_DIR:-/var/backups/janua}"
+S3_BUCKET="${S3_BUCKET:-janua-backups}"
 RETENTION_DAYS="${RETENTION_DAYS:-30}"
 ENVIRONMENT="${ENVIRONMENT:-production}"
 
@@ -20,7 +20,7 @@ mkdir -p "$BACKUP_DIR"
 
 # Generate timestamp for backup file
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-BACKUP_FILE="plinto_${ENVIRONMENT}_${TIMESTAMP}.sql.gz"
+BACKUP_FILE="janua_${ENVIRONMENT}_${TIMESTAMP}.sql.gz"
 BACKUP_PATH="${BACKUP_DIR}/${BACKUP_FILE}"
 
 # Function to log messages
@@ -110,14 +110,14 @@ cleanup_old_backups() {
     
     # Find and delete old backup files
     find "$BACKUP_DIR" \
-        -name "plinto_${ENVIRONMENT}_*.sql.gz" \
+        -name "janua_${ENVIRONMENT}_*.sql.gz" \
         -type f \
         -mtime +${RETENTION_DAYS} \
         -exec rm -f {} \; \
         -exec log "Deleted old backup: {}" \;
     
     # Keep at least 3 most recent backups regardless of age
-    BACKUP_COUNT=$(ls -1 "$BACKUP_DIR"/plinto_${ENVIRONMENT}_*.sql.gz 2>/dev/null | wc -l)
+    BACKUP_COUNT=$(ls -1 "$BACKUP_DIR"/janua_${ENVIRONMENT}_*.sql.gz 2>/dev/null | wc -l)
     if [ "$BACKUP_COUNT" -gt 3 ]; then
         log "Keeping minimum 3 recent backups"
     fi
@@ -135,7 +135,7 @@ verify_backup() {
         if [ "${VERIFY_RESTORE:-false}" = "true" ]; then
             log "Testing backup restore (this may take a while)..."
             
-            TEST_DB="plinto_backup_test_${TIMESTAMP}"
+            TEST_DB="janua_backup_test_${TIMESTAMP}"
             
             # Create test database
             PGPASSWORD="${DB_PASSWORD:-}" createdb \

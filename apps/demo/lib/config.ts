@@ -23,7 +23,7 @@ const environments: Record<string, Environment> = {
   demo: {
     name: 'demo',
     apiUrl: process.env.NEXT_PUBLIC_DEMO_API_URL || 'http://localhost:4000',
-    appUrl: 'https://demo.plinto.dev',
+    appUrl: 'https://demo.janua.dev',
     features: {
       realSignups: false,
       realBilling: false,
@@ -42,8 +42,8 @@ const environments: Record<string, Environment> = {
   },
   staging: {
     name: 'staging',
-    apiUrl: process.env.NEXT_PUBLIC_STAGING_API_URL || 'https://staging-api.plinto.dev',
-    appUrl: 'https://staging.plinto.dev',
+    apiUrl: process.env.NEXT_PUBLIC_STAGING_API_URL || 'https://staging-api.janua.dev',
+    appUrl: 'https://staging.janua.dev',
     features: {
       realSignups: true,
       realBilling: false,
@@ -56,8 +56,8 @@ const environments: Record<string, Environment> = {
   },
   production: {
     name: 'production',
-    apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://api.plinto.dev',
-    appUrl: 'https://app.plinto.dev',
+    apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://api.janua.dev',
+    appUrl: 'https://app.janua.dev',
     features: {
       realSignups: true,
       realBilling: true,
@@ -71,7 +71,7 @@ const environments: Record<string, Environment> = {
 }
 
 export function getEnvironment(): Environment {
-  const envName = process.env.NEXT_PUBLIC_PLINTO_ENV || 'production'
+  const envName = process.env.NEXT_PUBLIC_JANUA_ENV || 'production'
   const environment = environments[envName]
   
   if (!environment) {
@@ -96,7 +96,7 @@ export function getFeature(feature: keyof Environment['features']): boolean {
 
 // Demo-specific constants
 export const DEMO_CREDENTIALS = {
-  email: 'demo@plinto.dev',
+  email: 'demo@janua.dev',
   password: 'DemoPassword123!',
   name: 'Demo User'
 }

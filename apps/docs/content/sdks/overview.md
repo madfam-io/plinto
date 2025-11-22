@@ -1,6 +1,6 @@
 # SDK Documentation
 
-Official Software Development Kits (SDKs) for integrating Plinto's authentication and authorization platform.
+Official Software Development Kits (SDKs) for integrating Janua's authentication and authorization platform.
 
 ## Available SDKs
 
@@ -15,19 +15,19 @@ Official Software Development Kits (SDKs) for integrating Plinto's authenticatio
 ### TypeScript SDK
 
 ```bash
-npm install @plinto/sdk
+npm install @janua/sdk
 ```
 
 ```typescript
-import { PlintoClient } from '@plinto/sdk';
+import { JanuaClient } from '@janua/sdk';
 
-const plinto = new PlintoClient({
-  apiKey: process.env.PLINTO_API_KEY,
-  baseUrl: 'https://api.plinto.dev'
+const janua = new JanuaClient({
+  apiKey: process.env.JANUA_API_KEY,
+  baseUrl: 'https://api.janua.dev'
 });
 
 // Register a new user
-const user = await plinto.auth.register({
+const user = await janua.auth.register({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   firstName: 'John',
@@ -35,7 +35,7 @@ const user = await plinto.auth.register({
 });
 
 // Login user
-const session = await plinto.auth.login({
+const session = await janua.auth.login({
   email: 'user@example.com',
   password: 'SecurePassword123!'
 });
@@ -44,17 +44,17 @@ const session = await plinto.auth.login({
 ### React SDK
 
 ```bash
-npm install @plinto/react-sdk
+npm install @janua/react-sdk
 ```
 
 ```jsx
-import { PlintoProvider, useAuth } from '@plinto/react-sdk';
+import { JanuaProvider, useAuth } from '@janua/react-sdk';
 
 function App() {
   return (
-    <PlintoProvider apiKey="your-api-key">
+    <JanuaProvider apiKey="your-api-key">
       <AuthenticatedApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
@@ -83,19 +83,19 @@ function AuthenticatedApp() {
 ### Python SDK
 
 ```bash
-pip install plinto-python
+pip install janua-python
 ```
 
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-plinto = PlintoClient(
-    api_key=os.getenv('PLINTO_API_KEY'),
-    base_url='https://api.plinto.dev'
+janua = JanuaClient(
+    api_key=os.getenv('JANUA_API_KEY'),
+    base_url='https://api.janua.dev'
 )
 
 # Register a new user
-user = plinto.auth.register(
+user = janua.auth.register(
     email='user@example.com',
     password='SecurePassword123!',
     first_name='John',
@@ -103,7 +103,7 @@ user = plinto.auth.register(
 )
 
 # Login user
-session = plinto.auth.login(
+session = janua.auth.login(
     email='user@example.com',
     password='SecurePassword123!'
 )
@@ -116,21 +116,21 @@ session = plinto.auth.login(
 ## Installation
 
 ```bash
-npm install @plinto/sdk
+npm install @janua/sdk
 # or
-yarn add @plinto/sdk
+yarn add @janua/sdk
 # or
-pnpm add @plinto/sdk
+pnpm add @janua/sdk
 ```
 
 ## Configuration
 
 ```typescript
-import { PlintoClient } from '@plinto/sdk';
+import { JanuaClient } from '@janua/sdk';
 
-const plinto = new PlintoClient({
-  apiKey: process.env.PLINTO_API_KEY,
-  baseUrl: 'https://api.plinto.dev', // Optional, defaults to production
+const janua = new JanuaClient({
+  apiKey: process.env.JANUA_API_KEY,
+  baseUrl: 'https://api.janua.dev', // Optional, defaults to production
   timeout: 10000, // Optional, request timeout in ms
   retries: 3, // Optional, number of retries for failed requests
   organizationId: 'org_123', // Optional, for multi-tenant applications
@@ -143,7 +143,7 @@ const plinto = new PlintoClient({
 
 ```typescript
 // Register new user
-const registerResult = await plinto.auth.register({
+const registerResult = await janua.auth.register({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   firstName: 'John',
@@ -155,7 +155,7 @@ const registerResult = await plinto.auth.register({
 });
 
 // Login user
-const loginResult = await plinto.auth.login({
+const loginResult = await janua.auth.login({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   deviceInfo: {
@@ -167,7 +167,7 @@ const loginResult = await plinto.auth.login({
 
 // Handle MFA if required
 if (loginResult.requiresMfa) {
-  const mfaResult = await plinto.auth.completeMfa({
+  const mfaResult = await janua.auth.completeMfa({
     tempToken: loginResult.tempToken,
     method: 'totp',
     code: '123456'
@@ -175,7 +175,7 @@ if (loginResult.requiresMfa) {
 }
 
 // Logout
-await plinto.auth.logout({
+await janua.auth.logout({
   refreshToken: session.refreshToken
 });
 ```
@@ -184,14 +184,14 @@ await plinto.auth.logout({
 
 ```typescript
 // Send magic link
-await plinto.auth.sendMagicLink({
+await janua.auth.sendMagicLink({
   email: 'user@example.com',
   redirectUrl: 'https://app.example.com/auth/callback',
   expiresIn: 3600 // 1 hour
 });
 
 // Verify magic link (typically called from callback page)
-const verifyResult = await plinto.auth.verifyMagicLink({
+const verifyResult = await janua.auth.verifyMagicLink({
   token: 'ml_token_from_url'
 });
 ```
@@ -200,7 +200,7 @@ const verifyResult = await plinto.auth.verifyMagicLink({
 
 ```typescript
 // Start passkey registration
-const registrationOptions = await plinto.auth.passkeys.beginRegistration({
+const registrationOptions = await janua.auth.passkeys.beginRegistration({
   displayName: 'John Doe',
   authenticatorSelection: {
     authenticatorAttachment: 'platform',
@@ -209,7 +209,7 @@ const registrationOptions = await plinto.auth.passkeys.beginRegistration({
 });
 
 // Complete registration with WebAuthn API response
-const registrationResult = await plinto.auth.passkeys.completeRegistration({
+const registrationResult = await janua.auth.passkeys.completeRegistration({
   id: credential.id,
   rawId: credential.rawId,
   response: credential.response,
@@ -217,12 +217,12 @@ const registrationResult = await plinto.auth.passkeys.completeRegistration({
 });
 
 // Start passkey authentication
-const authOptions = await plinto.auth.passkeys.beginAuthentication({
+const authOptions = await janua.auth.passkeys.beginAuthentication({
   email: 'user@example.com'
 });
 
 // Complete authentication
-const authResult = await plinto.auth.passkeys.completeAuthentication({
+const authResult = await janua.auth.passkeys.completeAuthentication({
   id: credential.id,
   rawId: credential.rawId,
   response: credential.response,
@@ -234,17 +234,17 @@ const authResult = await plinto.auth.passkeys.completeAuthentication({
 
 ```typescript
 // Get OAuth providers
-const providers = await plinto.auth.oauth.getProviders();
+const providers = await janua.auth.oauth.getProviders();
 
 // Initiate OAuth flow
-const authUrl = plinto.auth.oauth.getAuthUrl('google', {
+const authUrl = janua.auth.oauth.getAuthUrl('google', {
   redirectUri: 'https://app.example.com/auth/callback',
   state: 'csrf_state_token',
   scope: 'openid profile email'
 });
 
 // Handle OAuth callback
-const oauthResult = await plinto.auth.oauth.handleCallback('google', {
+const oauthResult = await janua.auth.oauth.handleCallback('google', {
   code: 'oauth_code_from_callback',
   state: 'csrf_state_token'
 });
@@ -254,31 +254,31 @@ const oauthResult = await plinto.auth.oauth.handleCallback('google', {
 
 ```typescript
 // Refresh access token
-const refreshResult = await plinto.auth.refresh({
+const refreshResult = await janua.auth.refresh({
   refreshToken: 'rt_refresh_token'
 });
 
 // Get current user
-const user = await plinto.users.me();
+const user = await janua.users.me();
 
 // List user sessions
-const sessions = await plinto.sessions.list();
+const sessions = await janua.sessions.list();
 
 // Revoke session
-await plinto.sessions.revoke('sess_session_id');
+await janua.sessions.revoke('sess_session_id');
 
 // Revoke all other sessions
-await plinto.sessions.revokeAll();
+await janua.sessions.revokeAll();
 ```
 
 ## User Management
 
 ```typescript
 // Get current user profile
-const user = await plinto.users.me();
+const user = await janua.users.me();
 
 // Update user profile
-const updatedUser = await plinto.users.update({
+const updatedUser = await janua.users.update({
   firstName: 'Jane',
   lastName: 'Smith',
   phoneNumber: '+1234567890',
@@ -291,22 +291,22 @@ const updatedUser = await plinto.users.update({
 });
 
 // Change password
-await plinto.users.changePassword({
+await janua.users.changePassword({
   currentPassword: 'OldPassword123!',
   newPassword: 'NewPassword456!',
   logoutOtherSessions: true
 });
 
 // Send email verification
-await plinto.users.sendEmailVerification();
+await janua.users.sendEmailVerification();
 
 // Verify email
-await plinto.users.verifyEmail({
+await janua.users.verifyEmail({
   token: 'verification_token'
 });
 
 // Delete account
-await plinto.users.deleteAccount({
+await janua.users.deleteAccount({
   password: 'UserPassword123!',
   confirmation: 'DELETE'
 });
@@ -316,28 +316,28 @@ await plinto.users.deleteAccount({
 
 ```typescript
 // Enable TOTP MFA
-const totpSecret = await plinto.mfa.enableTotp();
+const totpSecret = await janua.mfa.enableTotp();
 console.log('TOTP Secret:', totpSecret.secret);
 console.log('QR Code:', totpSecret.qrCode);
 
 // Verify TOTP setup
-await plinto.mfa.verifyTotp({
+await janua.mfa.verifyTotp({
   code: '123456'
 });
 
 // Enable SMS MFA
-await plinto.mfa.enableSms({
+await janua.mfa.enableSms({
   phoneNumber: '+1234567890'
 });
 
 // Enable Email MFA
-await plinto.mfa.enableEmail();
+await janua.mfa.enableEmail();
 
 // Generate backup codes
-const backupCodes = await plinto.mfa.generateBackupCodes();
+const backupCodes = await janua.mfa.generateBackupCodes();
 
 // Disable MFA
-await plinto.mfa.disable({
+await janua.mfa.disable({
   method: 'totp',
   code: '123456'
 });
@@ -347,10 +347,10 @@ await plinto.mfa.disable({
 
 ```typescript
 // List user organizations
-const organizations = await plinto.organizations.list();
+const organizations = await janua.organizations.list();
 
 // Create organization
-const newOrg = await plinto.organizations.create({
+const newOrg = await janua.organizations.create({
   name: 'My Organization',
   slug: 'my-org',
   domain: 'myorg.com',
@@ -362,10 +362,10 @@ const newOrg = await plinto.organizations.create({
 });
 
 // Get organization details
-const org = await plinto.organizations.get('org_123');
+const org = await janua.organizations.get('org_123');
 
 // Update organization
-const updatedOrg = await plinto.organizations.update('org_123', {
+const updatedOrg = await janua.organizations.update('org_123', {
   name: 'Updated Organization Name',
   settings: {
     mfaRequired: true,
@@ -374,13 +374,13 @@ const updatedOrg = await plinto.organizations.update('org_123', {
 });
 
 // List organization members
-const members = await plinto.organizations.listMembers('org_123', {
+const members = await janua.organizations.listMembers('org_123', {
   limit: 50,
   role: 'admin'
 });
 
 // Invite user to organization
-const invitation = await plinto.organizations.inviteMember('org_123', {
+const invitation = await janua.organizations.inviteMember('org_123', {
   email: 'newuser@example.com',
   role: 'member',
   permissions: ['users:read'],
@@ -388,23 +388,23 @@ const invitation = await plinto.organizations.inviteMember('org_123', {
 });
 
 // Update member role
-await plinto.organizations.updateMemberRole('org_123', 'usr_456', {
+await janua.organizations.updateMemberRole('org_123', 'usr_456', {
   role: 'admin',
   permissions: ['users:read', 'users:write', 'billing:read']
 });
 
 // Remove member
-await plinto.organizations.removeMember('org_123', 'usr_456');
+await janua.organizations.removeMember('org_123', 'usr_456');
 ```
 
 ## Role-Based Access Control (RBAC)
 
 ```typescript
 // List roles
-const roles = await plinto.rbac.listRoles();
+const roles = await janua.rbac.listRoles();
 
 // Create custom role
-const customRole = await plinto.rbac.createRole({
+const customRole = await janua.rbac.createRole({
   name: 'Marketing Manager',
   description: 'Manage marketing content and campaigns',
   permissions: [
@@ -417,10 +417,10 @@ const customRole = await plinto.rbac.createRole({
 });
 
 // List all permissions
-const permissions = await plinto.rbac.listPermissions();
+const permissions = await janua.rbac.listPermissions();
 
 // Check user permissions
-const permissionCheck = await plinto.rbac.checkPermissions('usr_123', {
+const permissionCheck = await janua.rbac.checkPermissions('usr_123', {
   permissions: ['users:read', 'billing:write'],
   context: {
     organizationId: 'org_abc123',
@@ -429,10 +429,10 @@ const permissionCheck = await plinto.rbac.checkPermissions('usr_123', {
 });
 
 // Assign role to user
-await plinto.rbac.assignRole('usr_123', 'role_admin');
+await janua.rbac.assignRole('usr_123', 'role_admin');
 
 // Remove role from user
-await plinto.rbac.removeRole('usr_123', 'role_admin');
+await janua.rbac.removeRole('usr_123', 'role_admin');
 ```
 
 ## Enterprise Features
@@ -441,7 +441,7 @@ await plinto.rbac.removeRole('usr_123', 'role_admin');
 
 ```typescript
 // Query audit events
-const auditEvents = await plinto.audit.queryEvents({
+const auditEvents = await janua.audit.queryEvents({
   startDate: '2025-01-01T00:00:00Z',
   endDate: '2025-01-15T23:59:59Z',
   eventType: 'user.login',
@@ -450,7 +450,7 @@ const auditEvents = await plinto.audit.queryEvents({
 });
 
 // Verify audit chain integrity
-const verificationResult = await plinto.audit.verifyChain({
+const verificationResult = await janua.audit.verifyChain({
   startEventId: 'evt_start',
   endEventId: 'evt_end'
 });
@@ -460,7 +460,7 @@ const verificationResult = await plinto.audit.verifyChain({
 
 ```typescript
 // Create SCIM user
-const scimUser = await plinto.scim.createUser({
+const scimUser = await janua.scim.createUser({
   schemas: ['urn:ietf:params:scim:schemas:core:2.0:User'],
   userName: 'john.doe@acme.com',
   name: {
@@ -476,15 +476,15 @@ const scimUser = await plinto.scim.createUser({
 });
 
 // Update SCIM user
-const updatedScimUser = await plinto.scim.updateUser('usr_123', {
+const updatedScimUser = await janua.scim.updateUser('usr_123', {
   active: false
 });
 
 // Delete SCIM user
-await plinto.scim.deleteUser('usr_123');
+await janua.scim.deleteUser('usr_123');
 
 // List SCIM users
-const scimUsers = await plinto.scim.listUsers({
+const scimUsers = await janua.scim.listUsers({
   startIndex: 1,
   count: 50,
   filter: 'userName eq "john.doe@acme.com"'
@@ -495,24 +495,24 @@ const scimUsers = await plinto.scim.listUsers({
 
 ```typescript
 // Create webhook
-const webhook = await plinto.webhooks.create({
-  url: 'https://api.example.com/webhooks/plinto',
+const webhook = await janua.webhooks.create({
+  url: 'https://api.example.com/webhooks/janua',
   events: ['user.created', 'user.updated', 'user.deleted'],
   secret: 'whsec_abc123',
   active: true
 });
 
 // List webhooks
-const webhooks = await plinto.webhooks.list();
+const webhooks = await janua.webhooks.list();
 
 // Update webhook
-const updatedWebhook = await plinto.webhooks.update('wh_123', {
+const updatedWebhook = await janua.webhooks.update('wh_123', {
   events: ['user.created', 'user.deleted'],
   active: false
 });
 
 // Delete webhook
-await plinto.webhooks.delete('wh_123');
+await janua.webhooks.delete('wh_123');
 
 // Verify webhook signature (server-side)
 import crypto from 'crypto';
@@ -535,15 +535,15 @@ function verifyWebhookSignature(
 ## Error Handling
 
 ```typescript
-import { PlintoError } from '@plinto/sdk';
+import { JanuaError } from '@janua/sdk';
 
 try {
-  const user = await plinto.auth.login({
+  const user = await janua.auth.login({
     email: 'user@example.com',
     password: 'wrongpassword'
   });
 } catch (error) {
-  if (error instanceof PlintoError) {
+  if (error instanceof JanuaError) {
     console.log('Error Code:', error.code);
     console.log('Error Message:', error.message);
     console.log('HTTP Status:', error.statusCode);
@@ -570,7 +570,7 @@ try {
 ## TypeScript Types
 
 ```typescript
-interface PlintoUser {
+interface JanuaUser {
   id: string;
   email: string;
   firstName: string;
@@ -585,14 +585,14 @@ interface PlintoUser {
   metadata?: Record<string, any>;
 }
 
-interface PlintoSession {
+interface JanuaSession {
   accessToken: string;
   refreshToken: string;
   expiresAt: string;
   deviceId?: string;
 }
 
-interface PlintoOrganization {
+interface JanuaOrganization {
   id: string;
   name: string;
   slug: string;
@@ -605,7 +605,7 @@ interface PlintoOrganization {
   memberCount: number;
 }
 
-interface PlintoError extends Error {
+interface JanuaError extends Error {
   code: string;
   statusCode: number;
   requestId: string;
@@ -620,24 +620,24 @@ interface PlintoError extends Error {
 ## Installation
 
 ```bash
-npm install @plinto/react-sdk
+npm install @janua/react-sdk
 ```
 
 ## Setup
 
 ```jsx
 import React from 'react';
-import { PlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 
 function App() {
   return (
-    <PlintoProvider
-      apiKey={process.env.REACT_APP_PLINTO_API_KEY}
-      baseUrl="https://api.plinto.dev"
+    <JanuaProvider
+      apiKey={process.env.REACT_APP_JANUA_API_KEY}
+      baseUrl="https://api.janua.dev"
       organizationId="org_123" // Optional for multi-tenant
     >
       <YourApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 ```
@@ -647,7 +647,7 @@ function App() {
 ### useAuth
 
 ```jsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function AuthComponent() {
   const { 
@@ -708,7 +708,7 @@ function AuthComponent() {
 ### useMagicLink
 
 ```jsx
-import { useMagicLink } from '@plinto/react-sdk';
+import { useMagicLink } from '@janua/react-sdk';
 
 function MagicLinkComponent() {
   const { sendMagicLink, loading, error, sent } = useMagicLink();
@@ -735,7 +735,7 @@ function MagicLinkComponent() {
 ### usePasskeys
 
 ```jsx
-import { usePasskeys } from '@plinto/react-sdk';
+import { usePasskeys } from '@janua/react-sdk';
 
 function PasskeyComponent() {
   const { 
@@ -787,7 +787,7 @@ function PasskeyComponent() {
 ### useOAuth
 
 ```jsx
-import { useOAuth } from '@plinto/react-sdk';
+import { useOAuth } from '@janua/react-sdk';
 
 function OAuthComponent() {
   const { providers, loginWithProvider, loading, error } = useOAuth();
@@ -820,7 +820,7 @@ function OAuthComponent() {
 ### useUser
 
 ```jsx
-import { useUser } from '@plinto/react-sdk';
+import { useUser } from '@janua/react-sdk';
 
 function UserProfile() {
   const { 
@@ -865,7 +865,7 @@ function UserProfile() {
 ### useMFA
 
 ```jsx
-import { useMFA } from '@plinto/react-sdk';
+import { useMFA } from '@janua/react-sdk';
 
 function MFAComponent() {
   const { 
@@ -916,7 +916,7 @@ function MFAComponent() {
 ### useOrganization
 
 ```jsx
-import { useOrganization } from '@plinto/react-sdk';
+import { useOrganization } from '@janua/react-sdk';
 
 function OrganizationComponent() {
   const { 
@@ -956,7 +956,7 @@ function OrganizationComponent() {
 ### useMembers
 
 ```jsx
-import { useMembers } from '@plinto/react-sdk';
+import { useMembers } from '@janua/react-sdk';
 
 function MembersComponent({ organizationId }) {
   const { 
@@ -1003,7 +1003,7 @@ function MembersComponent({ organizationId }) {
 ### ProtectedRoute
 
 ```jsx
-import { ProtectedRoute } from '@plinto/react-sdk';
+import { ProtectedRoute } from '@janua/react-sdk';
 
 function App() {
   return (
@@ -1038,7 +1038,7 @@ function App() {
 ### PermissionGuard
 
 ```jsx
-import { PermissionGuard } from '@plinto/react-sdk';
+import { PermissionGuard } from '@janua/react-sdk';
 
 function Dashboard() {
   return (
@@ -1063,7 +1063,7 @@ function Dashboard() {
 ### HasPermission
 
 ```jsx
-import { HasPermission } from '@plinto/react-sdk';
+import { HasPermission } from '@janua/react-sdk';
 
 function UserRow({ user }) {
   return (
@@ -1090,7 +1090,7 @@ function UserRow({ user }) {
 ### LoginForm
 
 ```jsx
-import { LoginForm } from '@plinto/react-sdk';
+import { LoginForm } from '@janua/react-sdk';
 
 function LoginPage() {
   return (
@@ -1115,7 +1115,7 @@ function LoginPage() {
 ### RegisterForm
 
 ```jsx
-import { RegisterForm } from '@plinto/react-sdk';
+import { RegisterForm } from '@janua/react-sdk';
 
 function RegisterPage() {
   return (
@@ -1141,7 +1141,7 @@ function RegisterPage() {
 ### MFASetupForm
 
 ```jsx
-import { MFASetupForm } from '@plinto/react-sdk';
+import { MFASetupForm } from '@janua/react-sdk';
 
 function MFASetupPage() {
   return (
@@ -1169,20 +1169,20 @@ function MFASetupPage() {
 ## Installation
 
 ```bash
-pip install plinto-python
+pip install janua-python
 # or
-poetry add plinto-python
+poetry add janua-python
 ```
 
 ## Configuration
 
 ```python
 import os
-from plinto import PlintoClient
+from janua import JanuaClient
 
-plinto = PlintoClient(
-    api_key=os.getenv('PLINTO_API_KEY'),
-    base_url='https://api.plinto.dev',  # Optional
+janua = JanuaClient(
+    api_key=os.getenv('JANUA_API_KEY'),
+    base_url='https://api.janua.dev',  # Optional
     timeout=30,  # Optional, request timeout in seconds
     retries=3,  # Optional, number of retries
     organization_id='org_123',  # Optional, for multi-tenant
@@ -1195,7 +1195,7 @@ plinto = PlintoClient(
 
 ```python
 # Register new user
-user = plinto.auth.register(
+user = janua.auth.register(
     email='user@example.com',
     password='SecurePassword123!',
     first_name='John',
@@ -1207,7 +1207,7 @@ user = plinto.auth.register(
 )
 
 # Login user
-session = plinto.auth.login(
+session = janua.auth.login(
     email='user@example.com',
     password='SecurePassword123!',
     device_info={
@@ -1218,35 +1218,35 @@ session = plinto.auth.login(
 
 # Handle MFA if required
 if session.get('requires_mfa'):
-    mfa_result = plinto.auth.complete_mfa(
+    mfa_result = janua.auth.complete_mfa(
         temp_token=session['temp_token'],
         method='totp',
         code='123456'
     )
 
 # Logout
-plinto.auth.logout(refresh_token=session['refresh_token'])
+janua.auth.logout(refresh_token=session['refresh_token'])
 ```
 
 ### Magic Link Authentication
 
 ```python
 # Send magic link
-plinto.auth.send_magic_link(
+janua.auth.send_magic_link(
     email='user@example.com',
     redirect_url='https://app.example.com/auth/callback',
     expires_in=3600
 )
 
 # Verify magic link
-result = plinto.auth.verify_magic_link(token='ml_token_from_url')
+result = janua.auth.verify_magic_link(token='ml_token_from_url')
 ```
 
 ### Passkeys Authentication
 
 ```python
 # Start passkey registration
-registration_options = plinto.auth.passkeys.begin_registration(
+registration_options = janua.auth.passkeys.begin_registration(
     display_name='John Doe',
     authenticator_selection={
         'authenticator_attachment': 'platform',
@@ -1255,7 +1255,7 @@ registration_options = plinto.auth.passkeys.begin_registration(
 )
 
 # Complete registration (with WebAuthn credential data)
-registration_result = plinto.auth.passkeys.complete_registration(
+registration_result = janua.auth.passkeys.complete_registration(
     id='cred_abc123',
     raw_id='Y3JlZF9hYmMxMjM=',
     response={
@@ -1266,12 +1266,12 @@ registration_result = plinto.auth.passkeys.complete_registration(
 )
 
 # Start passkey authentication
-auth_options = plinto.auth.passkeys.begin_authentication(
+auth_options = janua.auth.passkeys.begin_authentication(
     email='user@example.com'
 )
 
 # Complete authentication
-auth_result = plinto.auth.passkeys.complete_authentication(
+auth_result = janua.auth.passkeys.complete_authentication(
     id='cred_abc123',
     raw_id='Y3JlZF9hYmMxMjM=',
     response={
@@ -1287,26 +1287,26 @@ auth_result = plinto.auth.passkeys.complete_authentication(
 
 ```python
 # Refresh token
-refresh_result = plinto.auth.refresh(refresh_token='rt_refresh_token')
+refresh_result = janua.auth.refresh(refresh_token='rt_refresh_token')
 
 # List sessions
-sessions = plinto.sessions.list()
+sessions = janua.sessions.list()
 
 # Revoke session
-plinto.sessions.revoke('sess_session_id')
+janua.sessions.revoke('sess_session_id')
 
 # Revoke all other sessions
-plinto.sessions.revoke_all()
+janua.sessions.revoke_all()
 ```
 
 ## User Management
 
 ```python
 # Get current user
-user = plinto.users.me()
+user = janua.users.me()
 
 # Update user profile
-updated_user = plinto.users.update(
+updated_user = janua.users.update(
     first_name='Jane',
     last_name='Smith',
     phone_number='+1234567890',
@@ -1319,20 +1319,20 @@ updated_user = plinto.users.update(
 )
 
 # Change password
-plinto.users.change_password(
+janua.users.change_password(
     current_password='OldPassword123!',
     new_password='NewPassword456!',
     logout_other_sessions=True
 )
 
 # Send email verification
-plinto.users.send_email_verification()
+janua.users.send_email_verification()
 
 # Verify email
-plinto.users.verify_email(token='verification_token')
+janua.users.verify_email(token='verification_token')
 
 # Delete account
-plinto.users.delete_account(
+janua.users.delete_account(
     password='UserPassword123!',
     confirmation='DELETE'
 )
@@ -1342,34 +1342,34 @@ plinto.users.delete_account(
 
 ```python
 # Enable TOTP MFA
-totp_secret = plinto.mfa.enable_totp()
+totp_secret = janua.mfa.enable_totp()
 print(f'TOTP Secret: {totp_secret["secret"]}')
 print(f'QR Code: {totp_secret["qr_code"]}')
 
 # Verify TOTP setup
-plinto.mfa.verify_totp(code='123456')
+janua.mfa.verify_totp(code='123456')
 
 # Enable SMS MFA
-plinto.mfa.enable_sms(phone_number='+1234567890')
+janua.mfa.enable_sms(phone_number='+1234567890')
 
 # Enable Email MFA
-plinto.mfa.enable_email()
+janua.mfa.enable_email()
 
 # Generate backup codes
-backup_codes = plinto.mfa.generate_backup_codes()
+backup_codes = janua.mfa.generate_backup_codes()
 
 # Disable MFA
-plinto.mfa.disable(method='totp', code='123456')
+janua.mfa.disable(method='totp', code='123456')
 ```
 
 ## Organization Management
 
 ```python
 # List organizations
-organizations = plinto.organizations.list()
+organizations = janua.organizations.list()
 
 # Create organization
-new_org = plinto.organizations.create(
+new_org = janua.organizations.create(
     name='My Organization',
     slug='my-org',
     domain='myorg.com',
@@ -1381,10 +1381,10 @@ new_org = plinto.organizations.create(
 )
 
 # Get organization details
-org = plinto.organizations.get('org_123')
+org = janua.organizations.get('org_123')
 
 # Update organization
-updated_org = plinto.organizations.update(
+updated_org = janua.organizations.update(
     organization_id='org_123',
     name='Updated Organization Name',
     settings={
@@ -1394,14 +1394,14 @@ updated_org = plinto.organizations.update(
 )
 
 # List organization members
-members = plinto.organizations.list_members(
+members = janua.organizations.list_members(
     organization_id='org_123',
     limit=50,
     role='admin'
 )
 
 # Invite user to organization
-invitation = plinto.organizations.invite_member(
+invitation = janua.organizations.invite_member(
     organization_id='org_123',
     email='newuser@example.com',
     role='member',
@@ -1410,7 +1410,7 @@ invitation = plinto.organizations.invite_member(
 )
 
 # Update member role
-plinto.organizations.update_member_role(
+janua.organizations.update_member_role(
     organization_id='org_123',
     user_id='usr_456',
     role='admin',
@@ -1418,7 +1418,7 @@ plinto.organizations.update_member_role(
 )
 
 # Remove member
-plinto.organizations.remove_member(
+janua.organizations.remove_member(
     organization_id='org_123',
     user_id='usr_456'
 )
@@ -1428,10 +1428,10 @@ plinto.organizations.remove_member(
 
 ```python
 # List roles
-roles = plinto.rbac.list_roles()
+roles = janua.rbac.list_roles()
 
 # Create custom role
-custom_role = plinto.rbac.create_role(
+custom_role = janua.rbac.create_role(
     name='Marketing Manager',
     description='Manage marketing content and campaigns',
     permissions=[
@@ -1444,10 +1444,10 @@ custom_role = plinto.rbac.create_role(
 )
 
 # List all permissions
-permissions = plinto.rbac.list_permissions()
+permissions = janua.rbac.list_permissions()
 
 # Check user permissions
-permission_check = plinto.rbac.check_permissions(
+permission_check = janua.rbac.check_permissions(
     user_id='usr_123',
     permissions=['users:read', 'billing:write'],
     context={
@@ -1457,10 +1457,10 @@ permission_check = plinto.rbac.check_permissions(
 )
 
 # Assign role to user
-plinto.rbac.assign_role(user_id='usr_123', role_id='role_admin')
+janua.rbac.assign_role(user_id='usr_123', role_id='role_admin')
 
 # Remove role from user
-plinto.rbac.remove_role(user_id='usr_123', role_id='role_admin')
+janua.rbac.remove_role(user_id='usr_123', role_id='role_admin')
 ```
 
 ## Enterprise Features
@@ -1469,7 +1469,7 @@ plinto.rbac.remove_role(user_id='usr_123', role_id='role_admin')
 
 ```python
 # Query audit events
-audit_events = plinto.audit.query_events(
+audit_events = janua.audit.query_events(
     start_date='2025-01-01T00:00:00Z',
     end_date='2025-01-15T23:59:59Z',
     event_type='user.login',
@@ -1478,7 +1478,7 @@ audit_events = plinto.audit.query_events(
 )
 
 # Verify audit chain integrity
-verification_result = plinto.audit.verify_chain(
+verification_result = janua.audit.verify_chain(
     start_event_id='evt_start',
     end_event_id='evt_end'
 )
@@ -1488,7 +1488,7 @@ verification_result = plinto.audit.verify_chain(
 
 ```python
 # Create SCIM user
-scim_user = plinto.scim.create_user(
+scim_user = janua.scim.create_user(
     schemas=['urn:ietf:params:scim:schemas:core:2.0:User'],
     user_name='john.doe@acme.com',
     name={
@@ -1504,16 +1504,16 @@ scim_user = plinto.scim.create_user(
 )
 
 # Update SCIM user
-updated_scim_user = plinto.scim.update_user(
+updated_scim_user = janua.scim.update_user(
     user_id='usr_123',
     active=False
 )
 
 # Delete SCIM user
-plinto.scim.delete_user('usr_123')
+janua.scim.delete_user('usr_123')
 
 # List SCIM users
-scim_users = plinto.scim.list_users(
+scim_users = janua.scim.list_users(
     start_index=1,
     count=50,
     filter='userName eq "john.doe@acme.com"'
@@ -1527,25 +1527,25 @@ import hmac
 import hashlib
 
 # Create webhook
-webhook = plinto.webhooks.create(
-    url='https://api.example.com/webhooks/plinto',
+webhook = janua.webhooks.create(
+    url='https://api.example.com/webhooks/janua',
     events=['user.created', 'user.updated', 'user.deleted'],
     secret='whsec_abc123',
     active=True
 )
 
 # List webhooks
-webhooks = plinto.webhooks.list()
+webhooks = janua.webhooks.list()
 
 # Update webhook
-updated_webhook = plinto.webhooks.update(
+updated_webhook = janua.webhooks.update(
     webhook_id='wh_123',
     events=['user.created', 'user.deleted'],
     active=False
 )
 
 # Delete webhook
-plinto.webhooks.delete('wh_123')
+janua.webhooks.delete('wh_123')
 
 # Verify webhook signature (Flask example)
 def verify_webhook_signature(payload, signature, secret, timestamp):
@@ -1562,11 +1562,11 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/webhooks/plinto', methods=['POST'])
+@app.route('/webhooks/janua', methods=['POST'])
 def handle_webhook():
     payload = request.get_data(as_text=True)
-    signature = request.headers.get('X-Plinto-Signature')
-    timestamp = request.headers.get('X-Plinto-Timestamp')
+    signature = request.headers.get('X-Janua-Signature')
+    timestamp = request.headers.get('X-Janua-Timestamp')
     secret = 'whsec_your_secret'
     
     if not verify_webhook_signature(payload, signature, secret, timestamp):
@@ -1591,10 +1591,10 @@ def handle_webhook():
 ## Error Handling
 
 ```python
-from plinto.exceptions import PlintoError, AuthenticationError, ValidationError
+from janua.exceptions import JanuaError, AuthenticationError, ValidationError
 
 try:
-    user = plinto.auth.login(
+    user = janua.auth.login(
         email='user@example.com',
         password='wrongpassword'
     )
@@ -1604,8 +1604,8 @@ except AuthenticationError as e:
 except ValidationError as e:
     print(f'Validation error: {e.message}')
     print(f'Field errors: {e.details}')
-except PlintoError as e:
-    print(f'Plinto API error: {e.message}')
+except JanuaError as e:
+    print(f'Janua API error: {e.message}')
     print(f'Status code: {e.status_code}')
     print(f'Request ID: {e.request_id}')
 except Exception as e:
@@ -1616,19 +1616,19 @@ except Exception as e:
 
 ```python
 # settings.py
-PLINTO_API_KEY = 'your-api-key'
-PLINTO_BASE_URL = 'https://api.plinto.dev'
+JANUA_API_KEY = 'your-api-key'
+JANUA_BASE_URL = 'https://api.janua.dev'
 
 # middleware.py
 from django.utils.deprecation import MiddlewareMixin
-from plinto import PlintoClient
+from janua import JanuaClient
 
-class PlintoAuthMiddleware(MiddlewareMixin):
+class JanuaAuthMiddleware(MiddlewareMixin):
     def __init__(self, get_response):
         self.get_response = get_response
-        self.plinto = PlintoClient(
-            api_key=settings.PLINTO_API_KEY,
-            base_url=settings.PLINTO_BASE_URL
+        self.janua = JanuaClient(
+            api_key=settings.JANUA_API_KEY,
+            base_url=settings.JANUA_BASE_URL
         )
 
     def process_request(self, request):
@@ -1637,10 +1637,10 @@ class PlintoAuthMiddleware(MiddlewareMixin):
         if token:
             try:
                 # Verify token and get user
-                user_data = self.plinto.auth.verify_token(token)
-                request.plinto_user = user_data
-            except PlintoError:
-                request.plinto_user = None
+                user_data = self.janua.auth.verify_token(token)
+                request.janua_user = user_data
+            except JanuaError:
+                request.janua_user = None
 
 # views.py
 from django.http import JsonResponse
@@ -1653,14 +1653,14 @@ def register(request):
         data = json.loads(request.body)
         
         try:
-            user = plinto.auth.register(
+            user = janua.auth.register(
                 email=data['email'],
                 password=data['password'],
                 first_name=data['first_name'],
                 last_name=data['last_name']
             )
             return JsonResponse({'success': True, 'user': user})
-        except PlintoError as e:
+        except JanuaError as e:
             return JsonResponse({
                 'success': False, 
                 'error': e.message
@@ -1673,15 +1673,15 @@ def register(request):
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
-from plinto import PlintoClient
-from plinto.exceptions import PlintoError
+from janua import JanuaClient
+from janua.exceptions import JanuaError
 
 app = FastAPI()
 security = HTTPBearer()
 
-plinto = PlintoClient(
+janua = JanuaClient(
     api_key='your-api-key',
-    base_url='https://api.plinto.dev'
+    base_url='https://api.janua.dev'
 )
 
 class RegisterRequest(BaseModel):
@@ -1696,33 +1696,33 @@ class LoginRequest(BaseModel):
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     try:
-        user = plinto.auth.verify_token(credentials.credentials)
+        user = janua.auth.verify_token(credentials.credentials)
         return user
-    except PlintoError:
+    except JanuaError:
         raise HTTPException(status_code=401, detail="Invalid authentication")
 
 @app.post("/auth/register")
 async def register(request: RegisterRequest):
     try:
-        user = plinto.auth.register(
+        user = janua.auth.register(
             email=request.email,
             password=request.password,
             first_name=request.first_name,
             last_name=request.last_name
         )
         return {"success": True, "user": user}
-    except PlintoError as e:
+    except JanuaError as e:
         raise HTTPException(status_code=e.status_code, detail=e.message)
 
 @app.post("/auth/login")
 async def login(request: LoginRequest):
     try:
-        session = plinto.auth.login(
+        session = janua.auth.login(
             email=request.email,
             password=request.password
         )
         return {"success": True, "session": session}
-    except PlintoError as e:
+    except JanuaError as e:
         raise HTTPException(status_code=e.status_code, detail=e.message)
 
 @app.get("/users/me")
@@ -1737,7 +1737,7 @@ async def get_me(current_user = Depends(get_current_user)):
 ## Installation
 
 ```bash
-npm install @plinto/vue
+npm install @janua/vue
 ```
 
 ## Setup
@@ -1745,18 +1745,18 @@ npm install @plinto/vue
 ```javascript
 // main.js
 import { createApp } from 'vue'
-import { createPlinto } from '@plinto/vue'
+import { createJanua } from '@janua/vue'
 import App from './App.vue'
 
 const app = createApp(App)
 
-const plinto = createPlinto({
-  apiKey: import.meta.env.VITE_PLINTO_API_KEY,
-  baseUrl: 'https://api.plinto.dev',
+const janua = createJanua({
+  apiKey: import.meta.env.VITE_JANUA_API_KEY,
+  baseUrl: 'https://api.janua.dev',
   organizationId: 'org_123' // Optional for multi-tenant
 })
 
-app.use(plinto)
+app.use(janua)
 app.mount('#app')
 ```
 
@@ -1781,7 +1781,7 @@ app.mount('#app')
 </template>
 
 <script setup>
-import { useAuth } from '@plinto/vue'
+import { useAuth } from '@janua/vue'
 
 const { 
   user, 
@@ -1832,7 +1832,7 @@ const handleRegister = async () => {
 </template>
 
 <script setup>
-import { useMagicLink } from '@plinto/vue'
+import { useMagicLink } from '@janua/vue'
 
 const { sendMagicLink, loading, error, sent } = useMagicLink()
 
@@ -1864,7 +1864,7 @@ const sendLink = async () => {
 </template>
 
 <script setup>
-import { usePasskeys } from '@plinto/vue'
+import { usePasskeys } from '@janua/vue'
 
 const { 
   registerPasskey, 
@@ -1916,7 +1916,7 @@ const authenticateWithPasskey = async () => {
 
 <script setup>
 import { ref } from 'vue'
-import { useUser } from '@plinto/vue'
+import { useUser } from '@janua/vue'
 
 const { user, updateUser, loading, error } = useUser()
 
@@ -1948,7 +1948,7 @@ const updateProfile = async () => {
 </template>
 
 <script setup>
-import { useOrganization } from '@plinto/vue'
+import { useOrganization } from '@janua/vue'
 
 const { 
   organizations,
@@ -1970,7 +1970,7 @@ const createOrg = async () => {
 
 ## Permission Components
 
-### PlintoProtectedRoute
+### JanuaProtectedRoute
 
 ```vue
 <template>
@@ -1980,7 +1980,7 @@ const createOrg = async () => {
 </template>
 
 <script setup>
-import { usePermissions } from '@plinto/vue'
+import { usePermissions } from '@janua/vue'
 
 const props = defineProps({
   permissions: Array,
@@ -1994,7 +1994,7 @@ const { hasPermission, loading } = usePermissions(
 </script>
 ```
 
-### PlintoPermissionGuard
+### JanuaPermissionGuard
 
 ```vue
 <template>
@@ -2003,7 +2003,7 @@ const { hasPermission, loading } = usePermissions(
 </template>
 
 <script setup>
-import { usePermissions } from '@plinto/vue'
+import { usePermissions } from '@janua/vue'
 
 const props = defineProps({
   permissions: { type: Array, required: true },
@@ -2023,12 +2023,12 @@ Usage:
   <div>
     <h1>Dashboard</h1>
     
-    <PlintoPermissionGuard :permissions="['users:read']">
+    <JanuaPermissionGuard :permissions="['users:read']">
       <UsersList />
       <template #fallback>
         <p>You don't have permission to view users</p>
       </template>
-    </PlintoPermissionGuard>
+    </JanuaPermissionGuard>
   </div>
 </template>
 ```
@@ -2040,7 +2040,7 @@ Usage:
 ## Installation
 
 ```bash
-npm install @plinto/nextjs
+npm install @janua/nextjs
 ```
 
 ## Setup
@@ -2051,16 +2051,16 @@ npm install @plinto/nextjs
 // app/providers.tsx
 'use client'
 
-import { PlintoProvider } from '@plinto/nextjs'
+import { JanuaProvider } from '@janua/nextjs'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <PlintoProvider
-      apiKey={process.env.NEXT_PUBLIC_PLINTO_API_KEY!}
-      baseUrl="https://api.plinto.dev"
+    <JanuaProvider
+      apiKey={process.env.NEXT_PUBLIC_JANUA_API_KEY!}
+      baseUrl="https://api.janua.dev"
     >
       {children}
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 
@@ -2089,16 +2089,16 @@ export default function RootLayout({
 ```javascript
 // pages/_app.tsx
 import type { AppProps } from 'next/app'
-import { PlintoProvider } from '@plinto/nextjs'
+import { JanuaProvider } from '@janua/nextjs'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <PlintoProvider
-      apiKey={process.env.NEXT_PUBLIC_PLINTO_API_KEY!}
-      baseUrl="https://api.plinto.dev"
+    <JanuaProvider
+      apiKey={process.env.NEXT_PUBLIC_JANUA_API_KEY!}
+      baseUrl="https://api.janua.dev"
     >
       <Component {...pageProps} />
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 ```
@@ -2110,17 +2110,17 @@ export default function App({ Component, pageProps }: AppProps) {
 ```typescript
 // app/api/auth/login/route.ts (App Router)
 import { NextRequest, NextResponse } from 'next/server'
-import { PlintoServerClient } from '@plinto/nextjs/server'
+import { JanuaServerClient } from '@janua/nextjs/server'
 
-const plinto = new PlintoServerClient({
-  apiKey: process.env.PLINTO_API_KEY!
+const janua = new JanuaServerClient({
+  apiKey: process.env.JANUA_API_KEY!
 })
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json()
     
-    const result = await plinto.auth.login({
+    const result = await janua.auth.login({
       email,
       password
     })
@@ -2131,7 +2131,7 @@ export async function POST(request: NextRequest) {
       user: result.user
     })
     
-    response.cookies.set('plinto-token', result.session.accessToken, {
+    response.cookies.set('janua-token', result.session.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -2149,10 +2149,10 @@ export async function POST(request: NextRequest) {
 
 // pages/api/auth/login.ts (Pages Router)
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { PlintoServerClient } from '@plinto/nextjs/server'
+import { JanuaServerClient } from '@janua/nextjs/server'
 
-const plinto = new PlintoServerClient({
-  apiKey: process.env.PLINTO_API_KEY!
+const janua = new JanuaServerClient({
+  apiKey: process.env.JANUA_API_KEY!
 })
 
 export default async function handler(
@@ -2166,7 +2166,7 @@ export default async function handler(
   try {
     const { email, password } = req.body
     
-    const result = await plinto.auth.login({
+    const result = await janua.auth.login({
       email,
       password
     })
@@ -2174,7 +2174,7 @@ export default async function handler(
     // Set secure HTTP-only cookie
     res.setHeader(
       'Set-Cookie',
-      `plinto-token=${result.session.accessToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=${60 * 60 * 24 * 7}; Path=/`
+      `janua-token=${result.session.accessToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=${60 * 60 * 24 * 7}; Path=/`
     )
     
     res.status(200).json({
@@ -2196,14 +2196,14 @@ export default async function handler(
 // middleware.ts
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { PlintoServerClient } from '@plinto/nextjs/server'
+import { JanuaServerClient } from '@janua/nextjs/server'
 
-const plinto = new PlintoServerClient({
-  apiKey: process.env.PLINTO_API_KEY!
+const janua = new JanuaServerClient({
+  apiKey: process.env.JANUA_API_KEY!
 })
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get('plinto-token')?.value
+  const token = request.cookies.get('janua-token')?.value
   
   // Protect routes that require authentication
   if (request.nextUrl.pathname.startsWith('/dashboard')) {
@@ -2212,7 +2212,7 @@ export async function middleware(request: NextRequest) {
     }
     
     try {
-      const user = await plinto.auth.verifyToken(token)
+      const user = await janua.auth.verifyToken(token)
       
       // Add user info to request headers
       const response = NextResponse.next()
@@ -2232,10 +2232,10 @@ export async function middleware(request: NextRequest) {
     }
     
     try {
-      const user = await plinto.auth.verifyToken(token)
+      const user = await janua.auth.verifyToken(token)
       
       // Check admin permissions
-      const hasAdminAccess = await plinto.rbac.checkPermissions(user.id, {
+      const hasAdminAccess = await janua.rbac.checkPermissions(user.id, {
         permissions: ['admin:read']
       })
       
@@ -2264,23 +2264,23 @@ export const config = {
 ```tsx
 // app/dashboard/profile/page.tsx
 import { cookies } from 'next/headers'
-import { PlintoServerClient } from '@plinto/nextjs/server'
+import { JanuaServerClient } from '@janua/nextjs/server'
 import { redirect } from 'next/navigation'
 
-const plinto = new PlintoServerClient({
-  apiKey: process.env.PLINTO_API_KEY!
+const janua = new JanuaServerClient({
+  apiKey: process.env.JANUA_API_KEY!
 })
 
 export default async function ProfilePage() {
   const cookieStore = cookies()
-  const token = cookieStore.get('plinto-token')?.value
+  const token = cookieStore.get('janua-token')?.value
   
   if (!token) {
     redirect('/login')
   }
   
   try {
-    const user = await plinto.users.me(token)
+    const user = await janua.users.me(token)
     
     return (
       <div>
@@ -2302,15 +2302,15 @@ export default async function ProfilePage() {
 ```tsx
 // app/dashboard/members/page.tsx
 import { cookies, headers } from 'next/headers'
-import { PlintoServerClient } from '@plinto/nextjs/server'
+import { JanuaServerClient } from '@janua/nextjs/server'
 
-const plinto = new PlintoServerClient({
-  apiKey: process.env.PLINTO_API_KEY!
+const janua = new JanuaServerClient({
+  apiKey: process.env.JANUA_API_KEY!
 })
 
 export default async function MembersPage() {
   const cookieStore = cookies()
-  const token = cookieStore.get('plinto-token')?.value
+  const token = cookieStore.get('janua-token')?.value
   const headersList = headers()
   const organizationId = headersList.get('x-organization-id')
   
@@ -2319,7 +2319,7 @@ export default async function MembersPage() {
   }
   
   try {
-    const members = await plinto.organizations.listMembers(
+    const members = await janua.organizations.listMembers(
       organizationId,
       { limit: 50 },
       token
@@ -2355,7 +2355,7 @@ export default async function MembersPage() {
 'use client'
 
 import { useState } from 'react'
-import { useAuth } from '@plinto/nextjs'
+import { useAuth } from '@janua/nextjs'
 import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
@@ -2417,7 +2417,7 @@ export default function LoginPage() {
 // app/dashboard/page.tsx
 'use client'
 
-import { useAuth } from '@plinto/nextjs'
+import { useAuth } from '@janua/nextjs'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -2488,9 +2488,9 @@ export default function DashboardPage() {
 
 ```bash
 # .env.local
-PLINTO_API_KEY=your-server-side-api-key
-NEXT_PUBLIC_PLINTO_API_KEY=your-client-side-api-key
-NEXT_PUBLIC_PLINTO_BASE_URL=https://api.plinto.dev
+JANUA_API_KEY=your-server-side-api-key
+NEXT_PUBLIC_JANUA_API_KEY=your-client-side-api-key
+NEXT_PUBLIC_JANUA_BASE_URL=https://api.janua.dev
 ```
 
 ### Vercel Deployment
@@ -2504,8 +2504,8 @@ NEXT_PUBLIC_PLINTO_BASE_URL=https://api.plinto.dev
     }
   },
   "env": {
-    "PLINTO_API_KEY": "@plinto-api-key",
-    "NEXT_PUBLIC_PLINTO_API_KEY": "@plinto-public-api-key"
+    "JANUA_API_KEY": "@janua-api-key",
+    "NEXT_PUBLIC_JANUA_API_KEY": "@janua-public-api-key"
   }
 }
 ```
@@ -2514,11 +2514,11 @@ NEXT_PUBLIC_PLINTO_BASE_URL=https://api.plinto.dev
 
 ## Support and Resources
 
-- **Documentation**: [https://docs.plinto.dev](https://docs.plinto.dev)
-- **GitHub**: [https://github.com/plinto-dev/sdks](https://github.com/plinto-dev/sdks)
-- **npm**: [@plinto/sdk](https://www.npmjs.com/package/@plinto/sdk)
-- **PyPI**: [plinto-python](https://pypi.org/project/plinto-python/)
-- **Support**: [support@plinto.dev](mailto:support@plinto.dev)
+- **Documentation**: [https://docs.janua.dev](https://docs.janua.dev)
+- **GitHub**: [https://github.com/janua-dev/sdks](https://github.com/janua-dev/sdks)
+- **npm**: [@janua/sdk](https://www.npmjs.com/package/@janua/sdk)
+- **PyPI**: [janua-python](https://pypi.org/project/janua-python/)
+- **Support**: [support@janua.dev](mailto:support@janua.dev)
 
 ---
 

@@ -1,13 +1,13 @@
-# @plinto/jwt-utils
+# @janua/jwt-utils
 
-JWT and JWKS utilities for the Plinto Identity Platform.
+JWT and JWKS utilities for the Janua Identity Platform.
 
 ## Installation
 
 ```bash
-npm install @plinto/jwt-utils
+npm install @janua/jwt-utils
 # or
-yarn add @plinto/jwt-utils
+yarn add @janua/jwt-utils
 ```
 
 ## Features
@@ -22,20 +22,20 @@ yarn add @plinto/jwt-utils
 ### Verify JWT Token
 
 ```typescript
-import { verifyToken } from '@plinto/jwt-utils';
+import { verifyToken } from '@janua/jwt-utils';
 
 const payload = await verifyToken(token, jwks, {
   audience: 'your-app',
-  issuer: 'https://plinto.dev'
+  issuer: 'https://janua.dev'
 });
 ```
 
 ### JWKS Cache
 
 ```typescript
-import { JWKSCache } from '@plinto/jwt-utils';
+import { JWKSCache } from '@janua/jwt-utils';
 
-const cache = new JWKSCache('https://plinto.dev/.well-known/jwks.json');
+const cache = new JWKSCache('https://janua.dev/.well-known/jwks.json');
 const jwks = await cache.get();
 ```
 

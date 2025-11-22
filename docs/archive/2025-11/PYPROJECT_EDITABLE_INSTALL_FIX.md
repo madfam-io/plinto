@@ -27,15 +27,15 @@ packages = ["app"]
 
 However, the project structure includes **two** packages:
 1. **`app/`** - Core FastAPI application with all business logic
-2. **`plinto/`** - CLI and middleware wrapper that provides public API
+2. **`janua/`** - CLI and middleware wrapper that provides public API
 
-The CLI entry point expects the `plinto` package:
+The CLI entry point expects the `janua` package:
 ```toml
 [project.scripts]
-plinto = "plinto.cli:cli_main"
+janua = "janua.cli:cli_main"
 ```
 
-When only `app` was included, the build system couldn't find the `plinto` package referenced by the CLI entry point during editable install.
+When only `app` was included, the build system couldn't find the `janua` package referenced by the CLI entry point during editable install.
 
 ## Project Structure
 
@@ -47,7 +47,7 @@ apps/api/
 │   ├── core/
 │   ├── compliance/
 │   └── ...
-├── plinto/                 # CLI and middleware wrapper
+├── janua/                 # CLI and middleware wrapper
 │   ├── __init__.py
 │   ├── cli.py             # CLI entry point
 │   └── middleware.py      # Middleware stack
@@ -62,12 +62,12 @@ Include **both** packages in the wheel build configuration:
 
 ```toml
 [tool.hatch.build.targets.wheel]
-packages = ["app", "plinto"]
+packages = ["app", "janua"]
 ```
 
 This allows:
 - The `app` package to contain the core FastAPI application
-- The `plinto` package to provide the CLI interface (`plinto` command)
+- The `janua` package to provide the CLI interface (`janua` command)
 - Both packages to be installed correctly in editable mode
 
 ## Why Two Packages?
@@ -79,8 +79,8 @@ The dual-package structure provides clean separation:
 - Handles authentication, authorization, compliance, etc.
 - Can be imported by other applications: `from app.core import ...`
 
-**`plinto/` Package (Public API)**:
-- Provides the CLI interface (`plinto server`, `plinto migrate`, etc.)
+**`janua/` Package (Public API)**:
+- Provides the CLI interface (`janua server`, `janua migrate`, etc.)
 - Wraps the `app` package with public entry points
 - Provides middleware registration for FastAPI
 - Clean public API for library consumers
@@ -118,20 +118,20 @@ python -m pip install -e . --dry-run
 pip install -e ".[dev]"
 
 # Verify CLI works
-plinto --version
-plinto health
+janua --version
+janua health
 ```
 
 ## CLI Commands Available
 
-Once installed, the `plinto` CLI provides:
+Once installed, the `janua` CLI provides:
 
-- `plinto server` - Start the Plinto server
-- `plinto migrate` - Run database migrations
-- `plinto create-user` - Create admin/user accounts
-- `plinto init` - Initialize configuration
-- `plinto health` - Check system health
-- `plinto version` - Show version information
+- `janua server` - Start the Janua server
+- `janua migrate` - Run database migrations
+- `janua create-user` - Create admin/user accounts
+- `janua init` - Initialize configuration
+- `janua health` - Check system health
+- `janua version` - Show version information
 
 ## Entry Points
 
@@ -140,22 +140,22 @@ The fix ensures these entry points work correctly:
 **CLI Entry Point**:
 ```toml
 [project.scripts]
-plinto = "plinto.cli:cli_main"
+janua = "janua.cli:cli_main"
 ```
 
 **Middleware Entry Point**:
 ```toml
 [project.entry-points."fastapi.middleware"]
-plinto = "plinto.middleware:get_middleware_stack"
+janua = "janua.middleware:get_middleware_stack"
 ```
 
 **Auth Provider Entry Points**:
 ```toml
-[project.entry-points."plinto.auth_providers"]
-jwt = "plinto.auth.providers.jwt:JWTAuthProvider"
-oauth = "plinto.auth.providers.oauth:OAuthProvider"
-saml = "plinto.auth.providers.saml:SAMLProvider"
-webauthn = "plinto.auth.providers.webauthn:WebAuthnProvider"
+[project.entry-points."janua.auth_providers"]
+jwt = "janua.auth.providers.jwt:JWTAuthProvider"
+oauth = "janua.auth.providers.oauth:OAuthProvider"
+saml = "janua.auth.providers.saml:SAMLProvider"
+webauthn = "janua.auth.providers.webauthn:WebAuthnProvider"
 ```
 
 ## Related Issues
@@ -173,7 +173,7 @@ For future package structure changes:
 1. **Always include all packages** referenced by entry points in `packages = [...]`
 2. **Test editable installs locally** before committing `pyproject.toml` changes
 3. **Use dry-run first**: `pip install -e . --dry-run` to catch build errors
-4. **Verify entry points** with `pip show -f plinto` after installation
+4. **Verify entry points** with `pip show -f janua` after installation
 
 ## References
 

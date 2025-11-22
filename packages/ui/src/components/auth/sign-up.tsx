@@ -40,8 +40,8 @@ export interface SignUpProps {
   requireEmailVerification?: boolean
   /** Show password strength meter */
   showPasswordStrength?: boolean
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -62,7 +62,7 @@ export function SignUp({
   logoUrl,
   requireEmailVerification = true,
   showPasswordStrength = true,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: SignUpProps) {
   const [firstName, setFirstName] = React.useState('')
@@ -112,9 +112,9 @@ export function SignUp({
     setIsLoading(true)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        const response = await plintoClient.auth.signUp({
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        const response = await januaClient.auth.signUp({
           email,
           password,
           firstName,
@@ -182,9 +182,9 @@ export function SignUp({
   const handleSocialSignUp = async (provider: string) => {
     setIsLoading(true)
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for OAuth flow
-        const response = await plintoClient.auth.initiateOAuth(provider, {
+      if (januaClient) {
+        // Use Janua SDK for OAuth flow
+        const response = await januaClient.auth.initiateOAuth(provider, {
           redirectUrl: redirectUrl || window.location.origin,
         })
         // Redirect to OAuth provider

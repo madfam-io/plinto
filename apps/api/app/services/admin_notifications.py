@@ -59,9 +59,9 @@ class AdminNotificationService:
 
         # Fallback defaults
         fallback_emails = [
-            settings.SUPPORT_EMAIL or 'support@plinto.dev',
-            'admin@plinto.dev',
-            'alerts@plinto.dev'
+            settings.SUPPORT_EMAIL or 'support@janua.dev',
+            'admin@janua.dev',
+            'alerts@janua.dev'
         ]
 
         admin_emails.extend([email for email in fallback_emails if email not in admin_emails])
@@ -174,7 +174,7 @@ class AdminNotificationService:
             email_priority = EmailPriority.NORMAL
 
         # Generate email content
-        subject = f"[PLINTO ADMIN] {notification.level.value.upper()}: {notification.title}"
+        subject = f"[JANUA ADMIN] {notification.level.value.upper()}: {notification.title}"
 
         html_content = self._generate_admin_email_html(notification)
         text_content = self._generate_admin_email_text(notification)
@@ -219,14 +219,14 @@ class AdminNotificationService:
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plinto Admin Notification</title>
+    <title>Janua Admin Notification</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9fafb;">
     <div style="max-width: 600px; margin: 0 auto; background-color: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
         <!-- Header -->
         <div style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); padding: 20px; text-align: center;">
             <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 600;">
-                Plinto Admin Alert
+                Janua Admin Alert
             </h1>
         </div>
 
@@ -283,7 +283,7 @@ class AdminNotificationService:
             NotificationLevel.CRITICAL: '🚨'
         }.get(notification.level, 'ℹ️')
 
-        text = f"""PLINTO ADMIN NOTIFICATION
+        text = f"""JANUA ADMIN NOTIFICATION
 
 {level_icon} {notification.level.value.upper()} - {notification.category.title()}
 
@@ -300,7 +300,7 @@ Timestamp: {notification.timestamp.isoformat()} UTC
 Environment: {getattr(settings, 'ENVIRONMENT', 'production')}
 
 ---
-This is an automated admin notification from Plinto Identity Platform.
+This is an automated admin notification from Janua Identity Platform.
 """
 
         return text

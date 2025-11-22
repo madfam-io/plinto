@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Production Build Script for Plinto Platform
+# Production Build Script for Janua Platform
 # Optimized build with security checks and validation
 
 set -euo pipefail
@@ -118,10 +118,10 @@ build_packages() {
     print_status "Building shared packages..."
     
     # Build packages in dependency order
-    yarn workspace @plinto/sdk build
-    yarn workspace @plinto/ui build
-    yarn workspace @plinto/react build
-    yarn workspace @plinto/sdk-js build
+    yarn workspace @janua/sdk build
+    yarn workspace @janua/ui build
+    yarn workspace @janua/react build
+    yarn workspace @janua/sdk-js build
     
     print_status "Packages built successfully"
 }
@@ -138,10 +138,10 @@ build_applications() {
     apps=("marketing" "dashboard" "admin" "demo" "docs")
     
     for app in "${apps[@]}"; do
-        print_status "Building @plinto/$app..."
+        print_status "Building @janua/$app..."
         
         # Create optimized production build
-        yarn workspace @plinto/$app build || {
+        yarn workspace @janua/$app build || {
             print_error "Failed to build $app"
             exit 1
         }
@@ -253,7 +253,7 @@ EOF
 create_deployment_package() {
     print_status "Creating deployment package..."
     
-    package_name="plinto-build-$(date +%Y%m%d-%H%M%S).tar.gz"
+    package_name="janua-build-$(date +%Y%m%d-%H%M%S).tar.gz"
     
     # Create package with essential files
     tar -czf "$package_name" \
@@ -277,7 +277,7 @@ create_deployment_package() {
 
 # Main execution
 main() {
-    print_status "Starting production build for Plinto..."
+    print_status "Starting production build for Janua..."
     print_status "Build environment: $BUILD_ENV"
     
     START_TIME=$(date +%s)
@@ -310,7 +310,7 @@ main() {
     echo ""
     print_status "Next steps:"
     echo "  1. Review build manifest: build-manifest.json"
-    echo "  2. Deploy package: plinto-build-*.tar.gz"
+    echo "  2. Deploy package: janua-build-*.tar.gz"
     echo "  3. Run smoke tests in staging environment"
     echo "  4. Deploy to production with monitoring"
 }

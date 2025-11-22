@@ -12,7 +12,7 @@ SLEEP_INTERVAL=2
 wait_for_postgres() {
   echo "Waiting for PostgreSQL..."
   for i in $(seq 1 $MAX_ATTEMPTS); do
-    if docker exec plinto-postgres-test pg_isready -U test_user -d plinto_test > /dev/null 2>&1; then
+    if docker exec janua-postgres-test pg_isready -U test_user -d janua_test > /dev/null 2>&1; then
       echo "✅ PostgreSQL is ready"
       return 0
     fi
@@ -27,7 +27,7 @@ wait_for_postgres() {
 wait_for_redis() {
   echo "Waiting for Redis..."
   for i in $(seq 1 $MAX_ATTEMPTS); do
-    if docker exec plinto-redis-test redis-cli ping > /dev/null 2>&1; then
+    if docker exec janua-redis-test redis-cli ping > /dev/null 2>&1; then
       echo "✅ Redis is ready"
       return 0
     fi

@@ -15,7 +15,7 @@ describe('RootLayout', () => {
 
   it('should have correct metadata export', async () => {
     const { metadata } = await import('./layout')
-    expect(metadata.title).toContain('Plinto Admin')
+    expect(metadata.title).toContain('Janua Admin')
     expect(metadata.description).toContain('Internal superadmin tools')
   })
 })

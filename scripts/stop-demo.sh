@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Plinto Local Demo Shutdown Script
+# Janua Local Demo Shutdown Script
 # Stops all services started by start-demo.sh
 
 set -e
@@ -18,7 +18,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 echo -e "${BLUE}"
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║          PLINTO LOCAL DEMO - SHUTDOWN SCRIPT               ║"
+echo "║          JANUA LOCAL DEMO - SHUTDOWN SCRIPT               ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 

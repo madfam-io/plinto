@@ -11,7 +11,7 @@
 ## 1. Overview
 
 ### 1.1 Purpose
-This document defines the configuration and implementation of Plinto's compliance monitoring dashboard for real-time SOC2 control effectiveness tracking, evidence collection, and audit readiness.
+This document defines the configuration and implementation of Janua's compliance monitoring dashboard for real-time SOC2 control effectiveness tracking, evidence collection, and audit readiness.
 
 ### 1.2 Scope
 The compliance dashboard provides:
@@ -23,7 +23,7 @@ The compliance dashboard provides:
 
 ### 1.3 Integration Architecture
 ```
-Plinto Application Layer
+Janua Application Layer
 ├── Audit Logging System ――→ Compliance Dashboard
 ├── Authentication System ――→ Access Control Monitoring
 ├── Monitoring & Alerting ――→ Control Effectiveness Tracking
@@ -35,7 +35,7 @@ Plinto Application Layer
 
 ### 2.1 Technical Stack
 - **Frontend**: React-based dashboard with real-time updates
-- **Backend**: FastAPI integration with existing Plinto API
+- **Backend**: FastAPI integration with existing Janua API
 - **Database**: PostgreSQL for compliance data storage
 - **Cache**: Redis for real-time metrics and session data
 - **Analytics**: Custom analytics engine for compliance metrics
@@ -431,10 +431,10 @@ class ReportDistribution:
     """Manage compliance report distribution"""
 
     DISTRIBUTION_LISTS = {
-        "executive": ["ceo@plinto.dev", "ciso@plinto.dev", "cfo@plinto.dev"],
-        "compliance": ["compliance@plinto.dev", "legal@plinto.dev"],
-        "technical": ["cto@plinto.dev", "engineering@plinto.dev"],
-        "audit": ["audit@plinto.dev", "external-auditor@example.com"]
+        "executive": ["ceo@janua.dev", "ciso@janua.dev", "cfo@janua.dev"],
+        "compliance": ["compliance@janua.dev", "legal@janua.dev"],
+        "technical": ["cto@janua.dev", "engineering@janua.dev"],
+        "audit": ["audit@janua.dev", "external-auditor@example.com"]
     }
 
     async def distribute_reports(self, report_type: str, recipients: List[str]):
@@ -445,7 +445,7 @@ class ReportDistribution:
 
 ## 8. Integration Points
 
-### 8.1 Plinto System Integration
+### 8.1 Janua System Integration
 **Authentication System**:
 - Real-time authentication event streaming
 - MFA enrollment status tracking

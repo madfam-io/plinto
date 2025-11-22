@@ -17,7 +17,7 @@ describe('WebAuthnService', () => {
   let mockRedisService: jest.Mocked<RedisService>;
   
   const config = {
-    rpName: 'Plinto Test',
+    rpName: 'Janua Test',
     rpID: 'localhost',
     origin: 'http://localhost:3000',
     challengeTTL: 300
@@ -52,7 +52,7 @@ describe('WebAuthnService', () => {
     it('should generate registration options', async () => {
       const mockOptions = {
         challenge: 'test-challenge',
-        rp: { id: 'localhost', name: 'Plinto Test' },
+        rp: { id: 'localhost', name: 'Janua Test' },
         user: {
           id: Buffer.from('user123'),
           name: 'test@example.com',

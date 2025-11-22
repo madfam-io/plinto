@@ -499,7 +499,7 @@ class TestEmailSending:
                 SMTP_USERNAME=None,
                 SMTP_PASSWORD=None,
                 FROM_EMAIL="noreply@example.com",
-                FROM_NAME="Test Plinto"
+                FROM_NAME="Test Janua"
             )
 
             mock_smtp = AsyncMock()

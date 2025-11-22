@@ -1,5 +1,5 @@
 """
-Plinto Core API - Entry Point
+Janua Core API - Entry Point
 
 This module imports and exposes the FastAPI app from the app module.
 """

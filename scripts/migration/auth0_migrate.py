@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Auth0 to Plinto Migration Tool
+Auth0 to Janua Migration Tool
 
-Exports users from Auth0 and imports them into Plinto.
+Exports users from Auth0 and imports them into Janua.
 Handles password hashes, user metadata, and generates a migration report.
 
 Usage:
     python auth0_migrate.py --config config.json
     python auth0_migrate.py --export-only  # Just export from Auth0
-    python auth0_migrate.py --import-only users.json  # Just import to Plinto
+    python auth0_migrate.py --import-only users.json  # Just import to Janua
 """
 
 import argparse
@@ -109,8 +109,8 @@ class Auth0Client:
         return users
 
 
-class PlintoClient:
-    """Client for Plinto API."""
+class JanuaClient:
+    """Client for Janua API."""
 
     def __init__(self, api_url: str, admin_token: str):
         self.api_url = api_url.rstrip("/")
@@ -119,8 +119,8 @@ class PlintoClient:
     def import_users(
         self, users: List[Dict[str, Any]], skip_existing: bool = True
     ) -> Dict[str, Any]:
-        """Import users into Plinto."""
-        console.print(f"[blue]Importing {len(users)} users to Plinto...[/blue]")
+        """Import users into Janua."""
+        console.print(f"[blue]Importing {len(users)} users to Janua...[/blue]")
 
         results = {
             "success": 0,
@@ -137,10 +137,10 @@ class PlintoClient:
 
             for user in users:
                 try:
-                    plinto_user = self._convert_auth0_user(user)
+                    janua_user = self._convert_auth0_user(user)
 
                     # Check if user exists
-                    if skip_existing and self._user_exists(plinto_user["email"]):
+                    if skip_existing and self._user_exists(janua_user["email"]):
                         results["skipped"] += 1
                         progress.advance(task)
                         continue
@@ -152,7 +152,7 @@ class PlintoClient:
                             "Authorization": f"Bearer {self.admin_token}",
                             "Content-Type": "application/json",
                         },
-                        json=plinto_user,
+                        json=janua_user,
                     )
 
                     if response.status_code in (200, 201):
@@ -161,7 +161,7 @@ class PlintoClient:
                         results["failed"] += 1
                         results["errors"].append(
                             {
-                                "email": plinto_user["email"],
+                                "email": janua_user["email"],
                                 "error": response.text,
                             }
                         )
@@ -186,7 +186,7 @@ class PlintoClient:
         return results
 
     def _convert_auth0_user(self, auth0_user: Dict[str, Any]) -> Dict[str, Any]:
-        """Convert Auth0 user format to Plinto format."""
+        """Convert Auth0 user format to Janua format."""
         # Extract name components
         name = auth0_user.get("name", "")
         given_name = auth0_user.get("given_name", "")
@@ -218,7 +218,7 @@ class PlintoClient:
         }
 
     def _user_exists(self, email: str) -> bool:
-        """Check if user already exists in Plinto."""
+        """Check if user already exists in Janua."""
         response = requests.get(
             f"{self.api_url}/v1/admin/users",
             headers={"Authorization": f"Bearer {self.admin_token}"},
@@ -237,7 +237,7 @@ def generate_report(
         "migration_date": datetime.utcnow().isoformat(),
         "summary": {
             "exported_from_auth0": export_count,
-            "imported_to_plinto": import_results["success"],
+            "imported_to_janua": import_results["success"],
             "failed": import_results["failed"],
             "skipped": import_results["skipped"],
         },
@@ -253,7 +253,7 @@ def generate_report(
     table.add_column("Count", justify="right", style="green")
 
     table.add_row("Exported from Auth0", str(export_count))
-    table.add_row("Imported to Plinto", str(import_results["success"]))
+    table.add_row("Imported to Janua", str(import_results["success"]))
     table.add_row("Skipped (existing)", str(import_results["skipped"]))
     table.add_row("Failed", str(import_results["failed"]), style="red")
 
@@ -270,7 +270,7 @@ def generate_report(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Migrate users from Auth0 to Plinto"
+        description="Migrate users from Auth0 to Janua"
     )
     parser.add_argument(
         "--config",
@@ -326,7 +326,7 @@ def main():
             console.print("[blue]Export complete (--export-only mode)[/blue]")
             return
 
-    # Import to Plinto
+    # Import to Janua
     if args.import_only:
         with open(args.import_only) as f:
             users = json.load(f)
@@ -339,12 +339,12 @@ def main():
     with open(args.config) as f:
         config = json.load(f)
 
-    plinto = PlintoClient(
-        api_url=config["plinto"]["api_url"],
-        admin_token=config["plinto"]["admin_token"],
+    janua = JanuaClient(
+        api_url=config["janua"]["api_url"],
+        admin_token=config["janua"]["admin_token"],
     )
 
-    results = plinto.import_users(users)
+    results = janua.import_users(users)
 
     # Generate report
     generate_report(len(users), results, args.output)

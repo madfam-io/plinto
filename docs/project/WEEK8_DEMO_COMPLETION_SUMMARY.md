@@ -38,7 +38,7 @@ Complete automated service orchestration:
 **Output**:
 ```
 ╔════════════════════════════════════════════════════════════╗
-║              PLINTO LOCAL DEMO ENVIRONMENT                 ║
+║              JANUA LOCAL DEMO ENVIRONMENT                 ║
 ╚════════════════════════════════════════════════════════════╝
 
 ✓ Python 3 installed

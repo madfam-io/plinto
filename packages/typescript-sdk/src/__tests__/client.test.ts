@@ -1,8 +1,8 @@
 /**
- * Tests for PlintoClient class
+ * Tests for JanuaClient class
  */
 
-import { PlintoClient, createClient } from '../client';
+import { JanuaClient, createClient } from '../client';
 import { ConfigurationError } from '../errors';
 import { authMocks } from '../../../../tests/mocks/api';
 import { userFixtures } from '../../../../tests/fixtures/data';
@@ -47,7 +47,7 @@ const mockHttpClient = {
   off: jest.fn()
 };
 
-describe('PlintoClient', () => {
+describe('JanuaClient', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     
@@ -66,11 +66,11 @@ describe('PlintoClient', () => {
 
   describe('constructor', () => {
     it('should create client with valid configuration', () => {
-      const client = new PlintoClient({
+      const client = new JanuaClient({
         baseURL: 'https://api.example.com'
       });
       
-      expect(client).toBeInstanceOf(PlintoClient);
+      expect(client).toBeInstanceOf(JanuaClient);
       expect(client.auth).toBeDefined();
       expect(client.users).toBeDefined();
       expect(client.organizations).toBeDefined();
@@ -80,30 +80,30 @@ describe('PlintoClient', () => {
 
     it('should throw error for missing baseURL', () => {
       expect(() => {
-        new PlintoClient({});
+        new JanuaClient({});
       }).toThrow(ConfigurationError);
       
       expect(() => {
-        new PlintoClient({});
+        new JanuaClient({});
       }).toThrow('baseURL is required');
     });
 
     it('should throw error for invalid baseURL format', () => {
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'invalid-url'
         });
       }).toThrow(ConfigurationError);
       
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'invalid-url'
         });
       }).toThrow('Invalid baseURL format');
     });
 
     it('should apply default configuration values', () => {
-      const client = new PlintoClient({
+      const client = new JanuaClient({
         baseURL: 'https://api.example.com'
       });
       
@@ -116,7 +116,7 @@ describe('PlintoClient', () => {
     });
 
     it('should merge custom configuration with defaults', () => {
-      const client = new PlintoClient({
+      const client = new JanuaClient({
         baseURL: 'https://api.example.com',
         timeout: 10000,
         debug: true,
@@ -133,14 +133,14 @@ describe('PlintoClient', () => {
 
     it('should validate timeout configuration', () => {
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'https://api.example.com',
           timeout: 0
         });
       }).toThrow(ConfigurationError);
       
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'https://api.example.com',
           timeout: -1000
         });
@@ -149,14 +149,14 @@ describe('PlintoClient', () => {
 
     it('should validate retry attempts configuration', () => {
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'https://api.example.com',
           retryAttempts: -1
         });
       }).toThrow(ConfigurationError);
       
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'https://api.example.com',
           retryAttempts: -1
         });
@@ -165,14 +165,14 @@ describe('PlintoClient', () => {
 
     it('should validate retry delay configuration', () => {
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'https://api.example.com',
           retryDelay: 0
         });
       }).toThrow(ConfigurationError);
       
       expect(() => {
-        new PlintoClient({
+        new JanuaClient({
           baseURL: 'https://api.example.com',
           retryDelay: -500
         });
@@ -186,7 +186,7 @@ describe('PlintoClient', () => {
         baseURL: 'https://api.example.com'
       });
       
-      expect(client).toBeInstanceOf(PlintoClient);
+      expect(client).toBeInstanceOf(JanuaClient);
     });
 
     it('should work with empty configuration using defaults', () => {
@@ -197,10 +197,10 @@ describe('PlintoClient', () => {
   });
 
   describe('authentication state methods', () => {
-    let client: PlintoClient;
+    let client: JanuaClient;
 
     beforeEach(() => {
-      client = new PlintoClient({
+      client = new JanuaClient({
         baseURL: 'https://api.example.com'
       });
     });
@@ -340,10 +340,10 @@ describe('PlintoClient', () => {
   });
 
   describe('configuration methods', () => {
-    let client: PlintoClient;
+    let client: JanuaClient;
 
     beforeEach(() => {
-      client = new PlintoClient({
+      client = new JanuaClient({
         baseURL: 'https://api.example.com',
         debug: false,
         timeout: 30000
@@ -405,10 +405,10 @@ describe('PlintoClient', () => {
   });
 
   describe('utility methods', () => {
-    let client: PlintoClient;
+    let client: JanuaClient;
 
     beforeEach(() => {
-      client = new PlintoClient({
+      client = new JanuaClient({
         baseURL: 'https://api.example.com'
       });
     });
@@ -468,10 +468,10 @@ describe('PlintoClient', () => {
   });
 
   describe('event handling', () => {
-    let client: PlintoClient;
+    let client: JanuaClient;
 
     beforeEach(() => {
-      client = new PlintoClient({
+      client = new JanuaClient({
         baseURL: 'https://api.example.com'
       });
     });
@@ -515,7 +515,7 @@ describe('PlintoClient', () => {
     });
 
     it('should set up auto refresh when enabled', () => {
-      const client = new PlintoClient({
+      const client = new JanuaClient({
         baseURL: 'https://api.example.com',
         autoRefreshTokens: true
       });
@@ -535,7 +535,7 @@ describe('PlintoClient', () => {
     });
 
     it('should not set up auto refresh when disabled', () => {
-      const client = new PlintoClient({
+      const client = new JanuaClient({
         baseURL: 'https://api.example.com',
         autoRefreshTokens: false
       });

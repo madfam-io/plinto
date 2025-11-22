@@ -120,7 +120,7 @@ return SignInResponse(
 
 ### Create Test User
 ```bash
-cd /Users/aldoruizluna/labspace/plinto/apps/api
+cd /Users/aldoruizluna/labspace/janua/apps/api
 python3 -c "
 from passlib.context import CryptContext
 import uuid
@@ -133,7 +133,7 @@ print(f'Password hash: {hashed}')
 "
 
 # Insert into SQLite
-sqlite3 plinto_dev.db "
+sqlite3 janua_dev.db "
 INSERT INTO users (
   id, email, email_verified, password_hash, status,
   first_name, last_name, tenant_id, is_active, created_at, updated_at

@@ -4,7 +4,7 @@ Implement social authentication with major OAuth providers including Google, Git
 
 ## Overview
 
-OAuth 2.0 social login allows users to authenticate using their existing accounts from popular services. Plinto supports all major providers with a unified interface and automatic profile synchronization.
+OAuth 2.0 social login allows users to authenticate using their existing accounts from popular services. Janua supports all major providers with a unified interface and automatic profile synchronization.
 
 ## Supported Providers
 
@@ -24,7 +24,7 @@ OAuth 2.0 social login allows users to authenticate using their existing account
 
 ```typescript
 // Initialize OAuth provider
-const plinto = new Plinto({
+const janua = new Janua({
   providers: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -45,7 +45,7 @@ const plinto = new Plinto({
 
 ```typescript
 // Generate OAuth URL
-const authUrl = await plinto.auth.oauth.getAuthorizationUrl({
+const authUrl = await janua.auth.oauth.getAuthorizationUrl({
   provider: 'google',
   state: generateState(), // CSRF protection
   scopes: ['email', 'profile'], // Optional custom scopes
@@ -59,7 +59,7 @@ redirect(authUrl)
 
 ```typescript
 // In callback route
-const { user, session, isNewUser } = await plinto.auth.oauth.callback({
+const { user, session, isNewUser } = await janua.auth.oauth.callback({
   provider: 'google',
   code: request.query.code,
   state: request.query.state,
@@ -104,10 +104,10 @@ const OPTIONAL_SCOPES = [
 
 ```typescript
 // app/api/auth/google/route.ts
-import { plinto } from '@/lib/auth'
+import { janua } from '@/lib/auth'
 
 export async function GET() {
-  const authUrl = await plinto.auth.oauth.getAuthorizationUrl({
+  const authUrl = await janua.auth.oauth.getAuthorizationUrl({
     provider: 'google',
     scopes: ['openid', 'email', 'profile'],
     prompt: 'select_account', // Force account selection
@@ -124,7 +124,7 @@ export async function GET(request: Request) {
   const state = searchParams.get('state')
 
   try {
-    const result = await plinto.auth.oauth.callback({
+    const result = await janua.auth.oauth.callback({
       provider: 'google',
       code,
       state,
@@ -166,7 +166,7 @@ const GITHUB_CONFIG = {
 
 ```typescript
 // Get additional GitHub data
-const { user, githubData } = await plinto.auth.oauth.callback({
+const { user, githubData } = await janua.auth.oauth.callback({
   provider: 'github',
   code,
   enrichProfile: true, // Fetch additional data
@@ -204,7 +204,7 @@ const MICROSOFT_CONFIG = {
 
 ```typescript
 // Azure AD with organization validation
-const result = await plinto.auth.oauth.callback({
+const result = await janua.auth.oauth.callback({
   provider: 'microsoft',
   code,
   validateDomain: 'contoso.com', // Restrict to domain
@@ -234,7 +234,7 @@ const APPLE_CONFIG = {
 }
 
 // Apple-specific options
-const authUrl = await plinto.auth.oauth.getAuthorizationUrl({
+const authUrl = await janua.auth.oauth.getAuthorizationUrl({
   provider: 'apple',
   responseMode: 'form_post', // Apple uses POST
   scope: 'email name',
@@ -254,7 +254,7 @@ app.post('/auth/apple/callback', async (req, res) => {
     // Store user data as Apple won't send it again
   }
 
-  const result = await plinto.auth.oauth.callback({
+  const result = await janua.auth.oauth.callback({
     provider: 'apple',
     code,
     state,
@@ -268,7 +268,7 @@ app.post('/auth/apple/callback', async (req, res) => {
 
 ```typescript
 // Request additional permissions
-const authUrl = await plinto.auth.oauth.getAuthorizationUrl({
+const authUrl = await janua.auth.oauth.getAuthorizationUrl({
   provider: 'google',
   scopes: [
     'email',
@@ -317,14 +317,14 @@ function verifyState(receivedState: string): boolean {
 
 ```typescript
 // Link OAuth account to existing user
-const result = await plinto.auth.oauth.callback({
+const result = await janua.auth.oauth.callback({
   provider: 'github',
   code,
   linkToUser: currentUser.id, // Link to authenticated user
 })
 
 // Handle multiple OAuth accounts
-const linkedAccounts = await plinto.users.getLinkedAccounts(userId)
+const linkedAccounts = await janua.users.getLinkedAccounts(userId)
 // Returns: [
 //   { provider: 'google', email: 'user@gmail.com' },
 //   { provider: 'github', username: 'user' }
@@ -335,7 +335,7 @@ const linkedAccounts = await plinto.users.getLinkedAccounts(userId)
 
 ```typescript
 // Automatically fetch and merge profile data
-const { user } = await plinto.auth.oauth.callback({
+const { user } = await janua.auth.oauth.callback({
   provider: 'linkedin',
   code,
   enrichProfile: {
@@ -351,10 +351,10 @@ const { user } = await plinto.auth.oauth.callback({
 ### OAuth Button Component
 
 ```jsx
-import { usePlinto } from '@plinto/react-sdk'
+import { useJanua } from '@janua/react-sdk'
 
 function OAuthButton({ provider, children }) {
-  const { initiateOAuth } = usePlinto()
+  const { initiateOAuth } = useJanua()
 
   const handleClick = async () => {
     try {
@@ -425,7 +425,7 @@ function OAuthProviderSelector() {
 const state = crypto.randomBytes(32).toString('hex')
 storeInSession('oauth_state', state)
 
-const authUrl = await plinto.auth.oauth.getAuthorizationUrl({
+const authUrl = await janua.auth.oauth.getAuthorizationUrl({
   provider: 'google',
   state, // Required for security
 })
@@ -505,7 +505,7 @@ function validateProvider(provider: string) {
 
 ```typescript
 try {
-  const result = await plinto.auth.oauth.callback({
+  const result = await janua.auth.oauth.callback({
     provider,
     code,
   })
@@ -598,8 +598,8 @@ auth0.authorize({
   connection: 'google-oauth2',
 })
 
-// Plinto equivalent
-await plinto.auth.oauth.getAuthorizationUrl({
+// Janua equivalent
+await janua.auth.oauth.getAuthorizationUrl({
   provider: 'google',
 })
 ```
@@ -611,8 +611,8 @@ await plinto.auth.oauth.getAuthorizationUrl({
 const provider = new firebase.auth.GoogleAuthProvider()
 firebase.auth().signInWithPopup(provider)
 
-// Plinto equivalent
-await plinto.auth.oauth.initiateFlow({
+// Janua equivalent
+await janua.auth.oauth.initiateFlow({
   provider: 'google',
   mode: 'popup', // or 'redirect'
 })
@@ -650,7 +650,7 @@ async function refreshOAuthToken(userId: string, provider: string) {
   const tokens = await getStoredTokens(userId, provider)
 
   if (isExpired(tokens.accessToken)) {
-    const newTokens = await plinto.auth.oauth.refreshToken({
+    const newTokens = await janua.auth.oauth.refreshToken({
       provider,
       refreshToken: tokens.refreshToken,
     })

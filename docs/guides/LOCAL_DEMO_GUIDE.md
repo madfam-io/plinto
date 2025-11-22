@@ -1,6 +1,6 @@
 # Local Demo Guide - Test Everything
 
-**Complete step-by-step guide to run and test the entire Plinto platform locally**
+**Complete step-by-step guide to run and test the entire Janua platform locally**
 
 **Time Required**: 10-15 minutes for complete setup and demo
 
@@ -22,7 +22,7 @@ docker --version
 docker-compose --version
 
 # Check current directory
-pwd  # Should be: /Users/aldoruizluna/labspace/plinto
+pwd  # Should be: /Users/aldoruizluna/labspace/janua
 ```
 
 ---
@@ -54,7 +54,7 @@ brew services start postgresql@15
 brew services start redis
 
 # Create database
-createdb plinto_db
+createdb janua_db
 ```
 
 ### Step 2: Start FastAPI Backend
@@ -127,7 +127,7 @@ curl http://localhost:8000/health
 curl -X POST http://localhost:8000/api/v1/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "demo@plinto.dev",
+    "email": "demo@janua.dev",
     "password": "SecurePass123!",
     "first_name": "Demo",
     "last_name": "User"
@@ -144,7 +144,7 @@ curl -X POST http://localhost:8000/api/v1/auth/signup \
 curl -X POST http://localhost:8000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "demo@plinto.dev",
+    "email": "demo@janua.dev",
     "password": "SecurePass123!"
   }'
 
@@ -226,7 +226,7 @@ Each showcase page includes:
 
 1. Navigate to http://localhost:3002/auth/signin-showcase
 2. Enter credentials:
-   - Email: `demo@plinto.dev`
+   - Email: `demo@janua.dev`
    - Password: `SecurePass123!`
 3. Click "Sign In"
 4. Observe:
@@ -275,7 +275,7 @@ Each showcase page includes:
 
 ```typescript
 // Example: Test SignIn component
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 <SignIn
   redirectUrl="/dashboard"
@@ -422,14 +422,14 @@ python -m pytest tests/ --cov=app --cov-report=term-missing --tb=no -q
 
 ## 📊 Demo Script (15-Minute Walkthrough)
 
-Use this script to demonstrate Plinto's capabilities:
+Use this script to demonstrate Janua's capabilities:
 
 ### Minute 0-2: Platform Overview
 
 **Open**: http://localhost:3002
 
 **Talking Points**:
-- "Plinto is an enterprise authentication platform that combines Better-Auth's data control with Clerk's developer experience"
+- "Janua is an enterprise authentication platform that combines Better-Auth's data control with Clerk's developer experience"
 - "Everything you see is 100% free and open source - including enterprise SSO, SCIM, MFA, and multi-tenancy"
 - "Let me show you how it works..."
 
@@ -518,7 +518,7 @@ Use this script to demonstrate Plinto's capabilities:
 **Talking Points**:
 - "These features cost $2,000-5,000/month in Auth0"
 - "Clerk charges $1,000+/month for SSO"
-- "In Plinto? Free forever in our MIT-licensed OSS"
+- "In Janua? Free forever in our MIT-licensed OSS"
 - "We charge for managed hosting convenience, not capabilities"
 
 ### Minute 11-13: Migration Path (Anti-Lock-In)
@@ -591,7 +591,7 @@ docker-compose ps
 docker-compose restart postgres
 
 # Check connection
-psql -U plinto -h localhost -d plinto_db
+psql -U janua -h localhost -d janua_db
 ```
 
 ### Issue: Redis Connection Failed
@@ -628,7 +628,7 @@ pip install -r requirements.txt
 
 ### Issue: Module Not Found (Node.js)
 
-**Symptom**: `Error: Cannot find module '@plinto/ui'`
+**Symptom**: `Error: Cannot find module '@janua/ui'`
 
 **Solution**:
 ```bash
@@ -700,7 +700,7 @@ cd apps/api && docker-compose logs -f redis
 # Database operations
 cd apps/api && alembic upgrade head  # Run migrations
 cd apps/api && alembic downgrade -1  # Rollback one migration
-psql -U plinto -h localhost -d plinto_db  # Connect to DB
+psql -U janua -h localhost -d janua_db  # Connect to DB
 
 # Clean slate
 cd apps/api && docker-compose down -v  # Remove volumes
@@ -796,7 +796,7 @@ After completing local testing:
    - Railway: `railway up`
    - Custom: `npm run build && npm start`
 
-4. **Launch Plinto Cloud** (Q1 2026)
+4. **Launch Janua Cloud** (Q1 2026)
    - Managed hosting platform
    - Zero-config deployment
    - Git integration
@@ -805,6 +805,6 @@ After completing local testing:
 ---
 
 **Questions or Issues?**
-- GitHub Discussions: https://github.com/plinto/plinto/discussions
-- Discord: https://discord.gg/plinto
-- Email: support@plinto.dev
+- GitHub Discussions: https://github.com/janua/janua/discussions
+- Discord: https://discord.gg/janua
+- Email: support@janua.dev

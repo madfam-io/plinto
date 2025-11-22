@@ -1,14 +1,14 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Compare - Plinto vs Auth0, Clerk, Supabase',
-  description: 'Compare Plinto with other authentication platforms. See why Plinto is the best choice for your application.',
+  title: 'Compare - Janua vs Auth0, Clerk, Supabase',
+  description: 'Compare Janua with other authentication platforms. See why Janua is the best choice for your application.',
 }
 
 export default function ComparePage() {
   const competitors = [
     {
-      name: 'Plinto',
+      name: 'Janua',
       pricing: '$0 - $49/mo',
       openSource: true,
       selfHosted: true,
@@ -83,10 +83,10 @@ export default function ComparePage() {
       <div className="bg-gradient-to-br from-primary-50 to-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-extrabold text-gray-900">
-            How Plinto Compares
+            How Janua Compares
           </h1>
           <p className="mt-4 text-xl text-gray-600">
-            See how Plinto stacks up against other authentication platforms
+            See how Janua stacks up against other authentication platforms
           </p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function ComparePage() {
                     <th
                       key={comp.name}
                       className={`px-6 py-4 text-center text-sm font-semibold ${
-                        comp.name === 'Plinto' ? 'text-primary-600 bg-primary-50' : 'text-gray-900'
+                        comp.name === 'Janua' ? 'text-primary-600 bg-primary-50' : 'text-gray-900'
                       }`}
                     >
                       {comp.name}
@@ -120,7 +120,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-sm text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50 font-semibold text-primary-700' : 'text-gray-600'
+                        comp.name === 'Janua' ? 'bg-primary-50 font-semibold text-primary-700' : 'text-gray-600'
                       }`}
                     >
                       {comp.pricing}
@@ -133,7 +133,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.openSource ? '✓' : '✗'}
@@ -146,7 +146,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.selfHosted ? '✓' : '✗'}
@@ -159,7 +159,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.saml ? '✓' : '✗'}
@@ -172,7 +172,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.oidc ? '✓' : '✗'}
@@ -185,7 +185,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.mfa ? '✓' : '✗'}
@@ -198,7 +198,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.passkeys ? '✓' : '✗'}
@@ -211,7 +211,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.rbac ? '✓' : '✗'}
@@ -224,7 +224,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.scim ? '✓' : '✗'}
@@ -237,7 +237,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.auditLogs ? '✓' : '✗'}
@@ -250,7 +250,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : ''
+                        comp.name === 'Janua' ? 'bg-primary-50' : ''
                       }`}
                     >
                       {comp.customDomain ? '✓' : '✗'}
@@ -263,7 +263,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-sm text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50 font-semibold text-primary-700' : 'text-gray-600'
+                        comp.name === 'Janua' ? 'bg-primary-50 font-semibold text-primary-700' : 'text-gray-600'
                       }`}
                     >
                       {comp.dataResidency}
@@ -276,7 +276,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-sm text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : 'text-gray-600'
+                        comp.name === 'Janua' ? 'bg-primary-50' : 'text-gray-600'
                       }`}
                     >
                       {comp.sdks}
@@ -289,7 +289,7 @@ export default function ComparePage() {
                     <td
                       key={comp.name}
                       className={`px-6 py-4 text-sm text-center ${
-                        comp.name === 'Plinto' ? 'bg-primary-50' : 'text-gray-600'
+                        comp.name === 'Janua' ? 'bg-primary-50' : 'text-gray-600'
                       }`}
                     >
                       {comp.support}
@@ -302,11 +302,11 @@ export default function ComparePage() {
         </div>
       </section>
 
-      {/* Why Plinto */}
+      {/* Why Janua */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Why Choose Plinto?
+            Why Choose Janua?
           </h2>
 
           <div className="space-y-6">

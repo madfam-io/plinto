@@ -8,7 +8,7 @@
 
 Week 4 delivered 15 production-ready authentication components. Week 5 focuses on:
 1. **Integration Testing**: Validate components work correctly in consuming applications
-2. **Dogfooding Implementation**: Replace custom code with @plinto/ui in demo/admin/dashboard apps
+2. **Dogfooding Implementation**: Replace custom code with @janua/ui in demo/admin/dashboard apps
 3. **Real-World Validation**: Ensure components meet actual usage requirements
 4. **Performance Verification**: Validate bundle size and runtime performance
 
@@ -18,9 +18,9 @@ Week 4 delivered 15 production-ready authentication components. Week 5 focuses o
 
 **apps/demo Integration:**
 ```bash
-# Verify @plinto/ui dependency
+# Verify @janua/ui dependency
 cd apps/demo
-npm ls @plinto/ui
+npm ls @janua/ui
 
 # Run build to verify tree-shaking
 npm run build
@@ -31,7 +31,7 @@ ls -lh .next/static/chunks/*.js | head -20
 ```
 
 **Expected Outcome:**
-- ✅ @plinto/ui resolves correctly
+- ✅ @janua/ui resolves correctly
 - ✅ Build succeeds without errors
 - ✅ Bundle size <500KB total for demo app
 - ✅ Tree-shaking eliminates unused components
@@ -51,7 +51,7 @@ import {
   SessionManagement,
   DeviceManagement,
   AuditLog
-} from '@plinto/ui'
+} from '@janua/ui'
 
 describe('Component Integration Tests', () => {
   describe('Authentication Flow Components', () => {
@@ -120,7 +120,7 @@ npm run test:coverage
 ```typescript
 // apps/demo/app/signin/page.tsx (BEFORE)
 'use client'
-import { Button, Input, Card } from '@plinto/ui'
+import { Button, Input, Card } from '@janua/ui'
 
 export default function SignInPage() {
   return (
@@ -135,7 +135,7 @@ export default function SignInPage() {
 ```typescript
 // apps/demo/app/signin/page.tsx (AFTER)
 'use client'
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 export default function SignInPage() {
   const handleSuccess = (data) => {
@@ -178,8 +178,8 @@ npm run dev
 1. **MFA Showcase** (`apps/demo/app/mfa/page.tsx`):
 ```typescript
 'use client'
-import { MFASetup, MFAChallenge, BackupCodes } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { MFASetup, MFAChallenge, BackupCodes } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 
 export default function MFAShowcase() {
   return (
@@ -209,8 +209,8 @@ export default function MFAShowcase() {
 2. **Security Showcase** (`apps/demo/app/security/page.tsx`):
 ```typescript
 'use client'
-import { SessionManagement, DeviceManagement } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { SessionManagement, DeviceManagement } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 
 export default function SecurityShowcase() {
   const sessions = [/* sample session data */]
@@ -247,7 +247,7 @@ export default function SecurityShowcase() {
 3. **Compliance Showcase** (`apps/demo/app/compliance/page.tsx`):
 ```typescript
 'use client'
-import { AuditLog } from '@plinto/ui'
+import { AuditLog } from '@janua/ui'
 
 export default function ComplianceShowcase() {
   const events = [/* sample audit events */]
@@ -272,9 +272,9 @@ export default function ComplianceShowcase() {
 
 ```typescript
 'use client'
-import { SessionManagement, DeviceManagement, AuditLog } from '@plinto/ui'
-import { Card, CardHeader, CardTitle, CardContent } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { SessionManagement, DeviceManagement, AuditLog } from '@janua/ui'
+import { Card, CardHeader, CardTitle, CardContent } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 
 export default function SecurityDashboard() {
   // Fetch real data from API
@@ -391,7 +391,7 @@ npx @next/bundle-analyzer
 ```
 
 **Success Criteria:**
-- ✅ @plinto/ui contributes <100KB gzipped to each app
+- ✅ @janua/ui contributes <100KB gzipped to each app
 - ✅ Unused components not included in bundles
 - ✅ Radix UI primitives properly tree-shaken
 - ✅ lucide-react icons individually imported
@@ -403,7 +403,7 @@ npx @next/bundle-analyzer
 ```typescript
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
-import { SignIn, SessionManagement, AuditLog } from '@plinto/ui'
+import { SignIn, SessionManagement, AuditLog } from '@janua/ui'
 
 describe('Render Performance', () => {
   it('SignIn renders in <50ms', () => {
@@ -468,7 +468,7 @@ npx lighthouse http://localhost:3002/security --view
 ## Installation
 
 \`\`\`bash
-npm install @plinto/ui
+npm install @janua/ui
 \`\`\`
 
 ## Configuration
@@ -476,7 +476,7 @@ npm install @plinto/ui
 \`\`\`typescript
 // next.config.js
 module.exports = {
-  transpilePackages: ['@plinto/ui'],
+  transpilePackages: ['@janua/ui'],
 }
 \`\`\`
 
@@ -486,7 +486,7 @@ module.exports = {
 
 \`\`\`typescript
 // app/signin/page.tsx
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 export default function SignInPage() {
   return (
@@ -559,7 +559,7 @@ export default function SignInPage() {
 ## Next Steps (Week 5)
 
 1. Integration testing with apps/demo, apps/admin, apps/dashboard
-2. Dogfooding implementation (replace custom code with @plinto/ui)
+2. Dogfooding implementation (replace custom code with @janua/ui)
 3. Real-world performance validation
 4. Component API refinement based on usage
 5. Comprehensive test coverage (target: 80%+)

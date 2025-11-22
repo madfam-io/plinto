@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Card } from '@plinto/ui'
+import { Card } from '@janua/ui'
 
 export default function AuthShowcaseIndex() {
   const showcases = [
@@ -89,7 +89,7 @@ export default function AuthShowcaseIndex() {
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 mb-8 text-white">
         <h1 className="text-4xl font-bold mb-4">
-          @plinto/ui Component Showcase
+          @janua/ui Component Showcase
         </h1>
         <p className="text-xl text-blue-100 mb-6">
           Production-ready authentication components with 90%+ Clerk parity
@@ -194,7 +194,7 @@ export default function AuthShowcaseIndex() {
       {/* Features Overview */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 mb-8">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          Why @plinto/ui?
+          Why @janua/ui?
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -265,14 +265,14 @@ export default function AuthShowcaseIndex() {
         <div className="mb-6">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Installation</h3>
           <pre className="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-            npm install @plinto/ui
+            npm install @janua/ui
           </pre>
         </div>
 
         <div className="mb-6">
           <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Basic Usage</h3>
           <pre className="bg-gray-900 dark:bg-black text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-{`import { SignIn } from '@plinto/ui'
+{`import { SignIn } from '@janua/ui'
 
 export default function LoginPage() {
   return (
@@ -292,7 +292,7 @@ export default function LoginPage() {
         <div>
           <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Documentation</h3>
           <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-            <li>• <a href="https://github.com/yourusername/plinto" className="text-blue-600 dark:text-blue-400 hover:underline">GitHub Repository</a></li>
+            <li>• <a href="https://github.com/yourusername/janua" className="text-blue-600 dark:text-blue-400 hover:underline">GitHub Repository</a></li>
             <li>• <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">Storybook Documentation</a></li>
             <li>• <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">API Reference</a></li>
           </ul>

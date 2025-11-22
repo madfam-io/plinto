@@ -35,7 +35,7 @@ None found. All critical functionality is complete.
 
 **Code**:
 ```python
-base_url = "https://api.plinto.dev"  # TODO: Get from settings
+base_url = "https://api.janua.dev"  # TODO: Get from settings
 ```
 
 **Issue**: Hardcoded base URL instead of reading from environment configuration

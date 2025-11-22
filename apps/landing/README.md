@@ -1,6 +1,6 @@
-# Plinto Landing Site
+# Janua Landing Site
 
-Next.js landing and documentation site for Plinto authentication platform.
+Next.js landing and documentation site for Janua authentication platform.
 
 ## Features
 
@@ -119,10 +119,10 @@ npm start
 
 ```bash
 # Build image
-docker build -t plinto-landing .
+docker build -t janua-landing .
 
 # Run container
-docker run -p 3000:3000 plinto-landing
+docker run -p 3000:3000 janua-landing
 ```
 
 ## Environment Variables
@@ -132,7 +132,7 @@ docker run -p 3000:3000 plinto-landing
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 
 # Optional: API URL for live demos
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
+NEXT_PUBLIC_API_URL=https://api.janua.dev
 ```
 
 ## Contributing

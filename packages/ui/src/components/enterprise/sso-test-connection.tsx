@@ -31,7 +31,7 @@ export interface SSOTestConnectionProps {
   onTest?: (request: SSOTestRequest) => Promise<SSOTestResponse>
   onClose?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
 }
 
@@ -42,7 +42,7 @@ export function SSOTestConnection({
   onTest,
   onClose,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: SSOTestConnectionProps) {
   const [isTesting, setIsTesting] = React.useState(false)
@@ -64,8 +64,8 @@ export function SSOTestConnection({
 
       let response: SSOTestResponse
 
-      if (plintoClient) {
-        response = await plintoClient.sso.testConfiguration(configurationId)
+      if (januaClient) {
+        response = await januaClient.sso.testConfiguration(configurationId)
       } else if (onTest) {
         response = await onTest(testRequest)
       } else {

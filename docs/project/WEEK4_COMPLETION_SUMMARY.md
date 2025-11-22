@@ -48,7 +48,7 @@ Week 4 goal was to create a landing site that validates actual functionality wit
 - Side-by-side comparison with Auth0, Clerk, Supabase
 - 15+ feature comparisons
 - Pricing comparison
-- "Why Choose Plinto" section highlighting open source, data control, pricing advantages
+- "Why Choose Janua" section highlighting open source, data control, pricing advantages
 
 **Documentation Hub** (`/docs`)
 - Organized sidebar navigation
@@ -260,7 +260,7 @@ The content validation test suite ensures:
 - **Fast Start**: 5-minute quickstart gets developers coding immediately
 - **Clear Examples**: 15+ working code examples to copy-paste
 - **Multi-Framework**: Support for 6 different frameworks
-- **Complete Docs**: Everything needed to integrate Plinto
+- **Complete Docs**: Everything needed to integrate Janua
 
 ### Business
 - **SEO Foundation**: Optimized for organic search traffic
@@ -301,7 +301,7 @@ The content validation test suite ensures:
 
 ### Future Enhancements
 - Blog section for SEO and thought leadership
-- Interactive demos (try Plinto in browser)
+- Interactive demos (try Janua in browser)
 - Video tutorials
 - Live chat support
 - Customer testimonials

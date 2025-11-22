@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto provides specialized authentication and identity management for IoT devices, edge computing environments, and resource-constrained systems. Our IoT platform supports device attestation, offline authentication, certificate-based identity, and lightweight protocols optimized for embedded systems.
+Janua provides specialized authentication and identity management for IoT devices, edge computing environments, and resource-constrained systems. Our IoT platform supports device attestation, offline authentication, certificate-based identity, and lightweight protocols optimized for embedded systems.
 
 ## Device Identity Management
 
@@ -1162,7 +1162,7 @@ class FleetManagementService {
 
 ## Support & Resources
 
-- IoT Documentation: https://docs.plinto.dev/iot
-- Device SDKs: https://github.com/plinto/device-sdks
-- Edge Gateway: https://github.com/plinto/edge-gateway
-- Support: iot@plinto.dev
+- IoT Documentation: https://docs.janua.dev/iot
+- Device SDKs: https://github.com/janua/device-sdks
+- Edge Gateway: https://github.com/janua/edge-gateway
+- Support: iot@janua.dev

@@ -1,8 +1,8 @@
 # Architecture Documentation
 
-> **System design, patterns, and technical decisions for the Plinto API**
+> **System design, patterns, and technical decisions for the Janua API**
 
-This section provides comprehensive architectural documentation for the Plinto authentication platform, including system design, technology choices, and implementation patterns.
+This section provides comprehensive architectural documentation for the Janua authentication platform, including system design, technology choices, and implementation patterns.
 
 ## 🏗️ Architecture Overview
 

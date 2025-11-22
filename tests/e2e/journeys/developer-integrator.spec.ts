@@ -153,9 +153,9 @@ test.describe('Developer Integrator Journey', () => {
       const hasInstallCmd = await page.locator('text=/npm install|yarn add|pnpm add/i').count();
       expect(hasInstallCmd).toBeGreaterThan(0);
       
-      // Should mention Plinto SDK package
-      const hasPlintoSDK = await page.locator('text=/@plinto/i').count();
-      expect(hasPlintoSDK).toBeGreaterThan(0);
+      // Should mention Janua SDK package
+      const hasJanuaSDK = await page.locator('text=/@janua/i').count();
+      expect(hasJanuaSDK).toBeGreaterThan(0);
     });
 
     test('Quickstart example exists and is valid TypeScript', async ({ page }) => {
@@ -167,8 +167,8 @@ test.describe('Developer Integrator Journey', () => {
       if (await codeBlock.isVisible()) {
         const codeExample = await codeBlock.textContent();
         
-        // Should include Plinto client initialization
-        expect(codeExample).toMatch(/Plinto|new.*Client|import.*plinto/i);
+        // Should include Janua client initialization
+        expect(codeExample).toMatch(/Janua|new.*Client|import.*janua/i);
         
         // Note: Full TypeScript compilation validation would require
         // a more complex setup, see ContentValidator.validateCodeExamples()
@@ -319,7 +319,7 @@ test.describe('Developer Integrator Journey', () => {
       expect(packageJson.version).toBeTruthy();
       
       // Should have name
-      expect(packageJson.name).toContain('plinto');
+      expect(packageJson.name).toContain('janua');
       
       console.log(`SDK Version: ${packageJson.version}`);
     });

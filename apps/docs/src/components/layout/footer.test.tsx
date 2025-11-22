@@ -14,6 +14,6 @@ jest.mock('next/link', () => {
 describe('Footer', () => {
   it('should render without crashing', () => {
     render(<Footer />)
-    expect(screen.getByText('© 2024 Plinto. All rights reserved.')).toBeInTheDocument()
+    expect(screen.getByText('© 2024 Janua. All rights reserved.')).toBeInTheDocument()
   })
 })

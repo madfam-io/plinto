@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { usePlinto } from '../provider'
+import { useJanua } from '../provider'
 
 interface SignInProps {
   onSuccess?: () => void
@@ -16,7 +16,7 @@ export function SignIn({
   redirectTo,
   enablePasskeys = true 
 }: SignInProps) {
-  const { signIn, isLoading, client } = usePlinto()
+  const { signIn, isLoading, client } = useJanua()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -49,7 +49,7 @@ export function SignIn({
     try {
       setError(null)
       
-      // Authenticate with passkey using the Plinto SDK
+      // Authenticate with passkey using the Janua SDK
       await client.signInWithPasskey()
       
       if (onSuccess) {
@@ -70,7 +70,7 @@ export function SignIn({
   }
 
   return (
-    <div className={`plinto-signin ${className}`}>
+    <div className={`janua-signin ${className}`}>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">

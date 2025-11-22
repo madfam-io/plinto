@@ -56,7 +56,7 @@ class MockDatabase {
   init() {
     // Create demo user
     this.createUser({
-      email: 'demo@plinto.dev',
+      email: 'demo@janua.dev',
       password: 'DemoPassword123!',
       name: 'Demo User',
       email_verified: true

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto's Zero-Trust architecture implements continuous verification and adaptive authentication, ensuring that no user, device, or network is inherently trusted. Every access request is evaluated based on real-time context and risk assessment.
+Janua's Zero-Trust architecture implements continuous verification and adaptive authentication, ensuring that no user, device, or network is inherently trusted. Every access request is evaluated based on real-time context and risk assessment.
 
 ## Core Principles
 
@@ -982,7 +982,7 @@ class SecurityAnalytics {
 
 ## Support and Resources
 
-- Documentation: https://docs.plinto.dev/enterprise/zero-trust
-- Security Center: https://security.plinto.dev
-- Compliance Portal: https://compliance.plinto.dev
-- Enterprise Support: enterprise@plinto.dev
+- Documentation: https://docs.janua.dev/enterprise/zero-trust
+- Security Center: https://security.janua.dev
+- Compliance Portal: https://compliance.janua.dev
+- Enterprise Support: enterprise@janua.dev

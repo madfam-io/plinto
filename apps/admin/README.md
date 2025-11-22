@@ -1,12 +1,12 @@
-# Plinto Admin
+# Janua Admin
 
 > **Internal superadmin tools** for platform management
 
-**Status:** Active Development · **Domain:** `admin.plinto.dev` · **Port:** 3004
+**Status:** Active Development · **Domain:** `admin.janua.dev` · **Port:** 3004
 
 ## 📋 Overview
 
-The Plinto Admin panel provides comprehensive administrative tools for platform operators, including user management, system monitoring, security controls, and compliance features. Built with enhanced security measures and restricted access patterns.
+The Janua Admin panel provides comprehensive administrative tools for platform operators, including user management, system monitoring, security controls, and compliance features. Built with enhanced security measures and restricted access patterns.
 
 ## 🚀 Quick Start
 
@@ -255,7 +255,7 @@ export function AuditLogViewer() {
 ```tsx
 // Real-time WebSocket connection for live updates
 useEffect(() => {
-  const ws = new WebSocket('wss://admin.plinto.dev/metrics');
+  const ws = new WebSocket('wss://admin.janua.dev/metrics');
   ws.onmessage = (event) => {
     updateDashboard(JSON.parse(event.data));
   };
@@ -321,7 +321,7 @@ yarn deploy:admin
 ```sql
 -- Admin users require manual database provisioning
 INSERT INTO admin_users (email, role, mfa_required)
-VALUES ('admin@plinto.dev', 'super_admin', true);
+VALUES ('admin@janua.dev', 'super_admin', true);
 ```
 
 ### Session Management
@@ -462,4 +462,4 @@ Admin panel contributions require additional security review. See [Admin Contrib
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

@@ -81,7 +81,7 @@ export class EnvUtils {
    */
   static hasLocalStorage(): boolean {
     try {
-      const test = '__plinto_test__';
+      const test = '__janua_test__';
       localStorage.setItem(test, test);
       localStorage.removeItem(test);
       return true;
@@ -95,7 +95,7 @@ export class EnvUtils {
    */
   static hasSessionStorage(): boolean {
     try {
-      const test = '__plinto_test__';
+      const test = '__janua_test__';
       sessionStorage.setItem(test, test);
       sessionStorage.removeItem(test);
       return true;

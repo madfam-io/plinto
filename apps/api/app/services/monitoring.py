@@ -204,7 +204,7 @@ class MetricsCollector:
         payload = {
             "timestamp": datetime.utcnow().isoformat(),
             "environment": settings.ENVIRONMENT,
-            "service": "plinto-api",
+            "service": "janua-api",
             "metrics": list(metrics.values()),
         }
 

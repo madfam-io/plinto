@@ -1,39 +1,39 @@
 # React SDK Complete Guide
 
-> **Comprehensive guide to using the Plinto React SDK with hooks, components, and advanced patterns**
+> **Comprehensive guide to using the Janua React SDK with hooks, components, and advanced patterns**
 
 ## Overview
 
-The `@plinto/react-sdk` SDK provides React-specific hooks, components, and providers for seamless authentication integration. Built on top of the TypeScript SDK, it offers a declarative, React-native approach to authentication.
+The `@janua/react-sdk` SDK provides React-specific hooks, components, and providers for seamless authentication integration. Built on top of the TypeScript SDK, it offers a declarative, React-native approach to authentication.
 
 ## 🚀 Quick Start
 
 ### Installation
 
 ```bash
-npm install @plinto/react-sdk @plinto/typescript-sdk
+npm install @janua/react-sdk @janua/typescript-sdk
 # or
-yarn add @plinto/react-sdk @plinto/typescript-sdk
+yarn add @janua/react-sdk @janua/typescript-sdk
 # or
-pnpm add @plinto/react-sdk @plinto/typescript-sdk
+pnpm add @janua/react-sdk @janua/typescript-sdk
 ```
 
 ### Basic Setup
 
 ```tsx
 import React from 'react';
-import { PlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 
 function App() {
   return (
-    <PlintoProvider
+    <JanuaProvider
       config={{
-        apiUrl: 'https://api.plinto.dev',
+        apiUrl: 'https://api.janua.dev',
         apiKey: 'your_api_key' // Optional for public apps
       }}
     >
       <YourApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
@@ -44,7 +44,7 @@ export default App;
 
 ```tsx
 import React from 'react';
-import { useAuth, SignIn, SignUp } from '@plinto/react-sdk';
+import { useAuth, SignIn, SignUp } from '@janua/react-sdk';
 
 function AuthenticatedApp() {
   const { user, isLoading, isAuthenticated, signOut } = useAuth();
@@ -75,21 +75,21 @@ function AuthenticatedApp() {
 
 ## 🎯 Core Provider
 
-### PlintoProvider
+### JanuaProvider
 
-The root provider that manages authentication state and provides the Plinto client to your app.
+The root provider that manages authentication state and provides the Janua client to your app.
 
 ```tsx
-import { PlintoProvider, type PlintoConfig } from '@plinto/react-sdk';
+import { JanuaProvider, type JanuaConfig } from '@janua/react-sdk';
 
 interface AppProps {
   children: React.ReactNode;
 }
 
 function App({ children }: AppProps) {
-  const config: PlintoConfig = {
-    apiUrl: 'https://api.plinto.dev',
-    apiKey: process.env.REACT_APP_PLINTO_API_KEY, // Optional
+  const config: JanuaConfig = {
+    apiUrl: 'https://api.janua.dev',
+    apiKey: process.env.REACT_APP_JANUA_API_KEY, // Optional
     enableDebug: process.env.NODE_ENV === 'development',
 
     // Advanced options
@@ -99,9 +99,9 @@ function App({ children }: AppProps) {
   };
 
   return (
-    <PlintoProvider config={config}>
+    <JanuaProvider config={config}>
       {children}
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 ```
@@ -110,7 +110,7 @@ function App({ children }: AppProps) {
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `apiUrl` | string | Required | Base URL for Plinto API |
+| `apiUrl` | string | Required | Base URL for Janua API |
 | `apiKey` | string | Optional | API key for server-side apps |
 | `enableDebug` | boolean | false | Enable debug logging |
 | `tokenStorage` | string | 'localStorage' | Where to store auth tokens |
@@ -124,7 +124,7 @@ function App({ children }: AppProps) {
 Primary hook for authentication state and actions.
 
 ```tsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function ProfileComponent() {
   const {
@@ -179,7 +179,7 @@ function ProfileComponent() {
 Hook for session management and monitoring.
 
 ```tsx
-import { useSession } from '@plinto/react-sdk';
+import { useSession } from '@janua/react-sdk';
 
 function SessionMonitor() {
   const {
@@ -225,7 +225,7 @@ function SessionMonitor() {
 Hook for organization management in multi-tenant apps.
 
 ```tsx
-import { useOrganization } from '@plinto/react-sdk';
+import { useOrganization } from '@janua/react-sdk';
 
 function OrganizationSelector() {
   const {
@@ -290,7 +290,7 @@ function OrganizationSelector() {
 Complete sign-in form with email/password and passkey support.
 
 ```tsx
-import { SignIn } from '@plinto/react-sdk';
+import { SignIn } from '@janua/react-sdk';
 
 function LoginPage() {
   return (
@@ -330,7 +330,7 @@ function LoginPage() {
 Complete registration form with validation.
 
 ```tsx
-import { SignUp } from '@plinto/react-sdk';
+import { SignUp } from '@janua/react-sdk';
 
 function RegisterPage() {
   return (
@@ -371,7 +371,7 @@ function RegisterPage() {
 User profile display and editing component.
 
 ```tsx
-import { UserProfile } from '@plinto/react-sdk';
+import { UserProfile } from '@janua/react-sdk';
 
 function ProfilePage() {
   return (
@@ -415,7 +415,7 @@ function ProfilePage() {
 Create route guards using authentication state.
 
 ```tsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
@@ -465,7 +465,7 @@ function App() {
 ### Role-Based Access Control
 
 ```tsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 interface RoleGuardProps {
   children: React.ReactNode;
@@ -501,11 +501,11 @@ function AdminPanel() {
 ### Magic Link Authentication
 
 ```tsx
-import { usePlinto } from '@plinto/react-sdk';
+import { useJanua } from '@janua/react-sdk';
 import { useState } from 'react';
 
 function MagicLinkSignIn() {
-  const { client } = usePlinto();
+  const { client } = useJanua();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -557,11 +557,11 @@ function MagicLinkSignIn() {
 ### Multi-Factor Authentication
 
 ```tsx
-import { usePlinto } from '@plinto/react-sdk';
+import { useJanua } from '@janua/react-sdk';
 import { useState, useEffect } from 'react';
 
 function MFASetup() {
-  const { client, user } = usePlinto();
+  const { client, user } = useJanua();
   const [qrCode, setQrCode] = useState<string>('');
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
   const [verificationCode, setVerificationCode] = useState('');
@@ -641,7 +641,7 @@ function MFASetup() {
 The React components include basic Tailwind CSS classes. You can override them:
 
 ```tsx
-import { SignIn } from '@plinto/react-sdk';
+import { SignIn } from '@janua/react-sdk';
 import './custom-auth.css';
 
 function CustomStyledSignIn() {
@@ -692,7 +692,7 @@ function CustomStyledSignIn() {
 Build your own components using the hooks:
 
 ```tsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 import { useState } from 'react';
 
 function CustomSignInForm() {
@@ -830,9 +830,9 @@ class AuthErrorBoundary extends Component<Props, State> {
 function App() {
   return (
     <AuthErrorBoundary>
-      <PlintoProvider config={config}>
+      <JanuaProvider config={config}>
         <YourApp />
-      </PlintoProvider>
+      </JanuaProvider>
     </AuthErrorBoundary>
   );
 }
@@ -841,7 +841,7 @@ function App() {
 ### Custom Token Storage
 
 ```tsx
-import { PlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 
 // Custom storage implementation
 class SecureTokenStorage {
@@ -880,14 +880,14 @@ function App() {
   const tokenStorage = new SecureTokenStorage('your-encryption-key');
 
   const config = {
-    apiUrl: 'https://api.plinto.dev',
+    apiUrl: 'https://api.janua.dev',
     customTokenStorage: tokenStorage
   };
 
   return (
-    <PlintoProvider config={config}>
+    <JanuaProvider config={config}>
       <YourApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 ```
@@ -895,7 +895,7 @@ function App() {
 ### Optimistic Updates
 
 ```tsx
-import { useAuth, useOrganization } from '@plinto/react-sdk';
+import { useAuth, useOrganization } from '@janua/react-sdk';
 import { useState } from 'react';
 
 function OptimisticUserUpdate() {
@@ -944,10 +944,10 @@ function OptimisticUserUpdate() {
 // test-utils.tsx
 import React from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { PlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 
 const mockConfig = {
-  apiUrl: 'https://test-api.plinto.dev',
+  apiUrl: 'https://test-api.janua.dev',
   enableDebug: false
 };
 
@@ -960,9 +960,9 @@ const customRender = (
   { providerProps, ...renderOptions }: CustomRenderOptions = {}
 ) => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
-    <PlintoProvider config={mockConfig} {...providerProps}>
+    <JanuaProvider config={mockConfig} {...providerProps}>
       {children}
-    </PlintoProvider>
+    </JanuaProvider>
   );
 
   return render(ui, { wrapper: Wrapper, ...renderOptions });
@@ -977,11 +977,11 @@ export { customRender as render };
 ```tsx
 // SignIn.test.tsx
 import { render, screen, fireEvent, waitFor } from './test-utils';
-import { SignIn } from '@plinto/react-sdk';
+import { SignIn } from '@janua/react-sdk';
 
-// Mock the Plinto client
-jest.mock('@plinto/typescript-sdk', () => ({
-  PlintoClient: jest.fn().mockImplementation(() => ({
+// Mock the Janua client
+jest.mock('@janua/typescript-sdk', () => ({
+  JanuaClient: jest.fn().mockImplementation(() => ({
     signIn: jest.fn(),
     getCurrentUser: jest.fn()
   }))
@@ -1020,13 +1020,13 @@ describe('SignIn Component', () => {
 ```tsx
 // useAuth.test.tsx
 import { renderHook, act } from '@testing-library/react';
-import { useAuth } from '@plinto/react-sdk';
-import { PlintoProvider } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <PlintoProvider config={{ apiUrl: 'https://test-api.plinto.dev' }}>
+  <JanuaProvider config={{ apiUrl: 'https://test-api.janua.dev' }}>
     {children}
-  </PlintoProvider>
+  </JanuaProvider>
 );
 
 describe('useAuth Hook', () => {
@@ -1090,7 +1090,7 @@ interface Organization {
   member_count?: number;
 }
 
-interface PlintoConfig {
+interface JanuaConfig {
   apiUrl: string;
   apiKey?: string;
   enableDebug?: boolean;
@@ -1110,7 +1110,7 @@ interface TokenStorage {
 ### Error Handling
 
 ```tsx
-import { PlintoError, AuthenticationError, ValidationError } from '@plinto/react-sdk';
+import { JanuaError, AuthenticationError, ValidationError } from '@janua/react-sdk';
 
 function ErrorHandlingExample() {
   const { signIn } = useAuth();
@@ -1123,8 +1123,8 @@ function ErrorHandlingExample() {
         console.log('Authentication failed:', error.message);
       } else if (error instanceof ValidationError) {
         console.log('Validation error:', error.field, error.message);
-      } else if (error instanceof PlintoError) {
-        console.log('Plinto API error:', error.code, error.message);
+      } else if (error instanceof JanuaError) {
+        console.log('Janua API error:', error.code, error.message);
       } else {
         console.log('Unexpected error:', error);
       }
@@ -1147,13 +1147,13 @@ function ErrorHandlingExample() {
 // ✅ Good: Single provider at app root
 function App() {
   return (
-    <PlintoProvider config={config}>
+    <JanuaProvider config={config}>
       <Router>
         <Routes>
           <Route path="/*" element={<AppRoutes />} />
         </Routes>
       </Router>
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
@@ -1165,9 +1165,9 @@ function BadExample() {
         <Route
           path="/auth"
           element={
-            <PlintoProvider config={config}>
+            <JanuaProvider config={config}>
               <AuthPage />
-            </PlintoProvider>
+            </JanuaProvider>
           }
         />
       </Routes>
@@ -1238,4 +1238,4 @@ function BadDashboard() {
 
 ---
 
-**📦 [Package Repository](https://github.com/plinto-dev/react-sdk)** • **🔗 [API Reference](../api/README.md)** • **🚀 [Quick Start Examples](../examples/react/)**
+**📦 [Package Repository](https://github.com/janua-dev/react-sdk)** • **🔗 [API Reference](../api/README.md)** • **🚀 [Quick Start Examples](../examples/react/)**

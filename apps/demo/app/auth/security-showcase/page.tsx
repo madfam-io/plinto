@@ -1,7 +1,7 @@
 'use client'
 
-import { SessionManagement, DeviceManagement } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { SessionManagement, DeviceManagement } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 import { useState } from 'react'
 
 export default function SecurityShowcase() {
@@ -239,7 +239,7 @@ export default function SecurityShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Session Management with API</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { SessionManagement } from '@plinto/ui'
+import { SessionManagement } from '@janua/ui'
 import { useEffect, useState } from 'react'
 
 export default function SessionsPage() {
@@ -283,7 +283,7 @@ export default function SessionsPage() {
           <div>
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Device Management with Trust</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
-{`import { DeviceManagement } from '@plinto/ui'
+{`import { DeviceManagement } from '@janua/ui'
 
 <DeviceManagement
   devices={devices}

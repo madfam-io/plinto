@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Plinto** is a secure identity platform providing edge-fast verification and full control. Currently in private alpha stage, operating entirely on the single domain `plinto.dev`.
+**Janua** is a secure identity platform providing edge-fast verification and full control. Currently in private alpha stage, operating entirely on the single domain `janua.dev`.
 
-**Company**: Plinto by Aureo Labs (a MADFAM company)
+**Company**: Janua by Aureo Labs (a MADFAM company)
 **Status**: Private alpha
-**Domain**: https://plinto.dev
+**Domain**: https://janua.dev
 
 ## Critical Context
 
@@ -21,15 +21,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Architecture & Stack
 
 **Infrastructure Stack**:
-- **Vercel**: Next.js app hosting (marketing, docs, admin UI at plinto.dev)
+- **Vercel**: Next.js app hosting (marketing, docs, admin UI at janua.dev)
 - **Railway**: Core API services (FastAPI/Python), Postgres, Redis, workers
 - **Cloudflare**: WAF/CDN, R2 for audit storage, Turnstile for bot protection, JWKS caching
 
 **Core Components**:
-- **Auth API (Plinto Core)**: FastAPI + SuperTokens core + OPA for policy
+- **Auth API (Janua Core)**: FastAPI + SuperTokens core + OPA for policy
 - **Edge Adapters**: Vercel Middleware + Cloudflare Workers for token verification
 - **Admin UI**: Next.js app with RBAC-gated operations
-- **SDKs**: `@plinto/nextjs`, `@plinto/react-sdk`, `@plinto/edge`, `@plinto/node`, `@plinto/core`
+- **SDKs**: `@janua/nextjs`, `@janua/react-sdk`, `@janua/edge`, `@janua/node`, `@janua/core`
 
 **Data Layer**:
 - **Postgres**: Primary database (users, tenants, orgs, sessions, policies)
@@ -38,7 +38,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Domain Routing (Single Domain Strategy)
 
-All services operate on `plinto.dev`:
+All services operate on `janua.dev`:
 - `/` - Public site and documentation (Next.js on Vercel)
 - `/docs` - Documentation
 - `/admin` - Admin dashboard (RBAC-gated)
@@ -60,7 +60,7 @@ Since this is currently a specification/planning repository without implementati
 
 ### Key Technical Decisions
 
-1. **Single-domain architecture** during alpha - everything on plinto.dev
+1. **Single-domain architecture** during alpha - everything on janua.dev
 2. **Per-tenant signing keys** with region pinning (US/EU)
 3. **Edge verification** with p95 < 50ms target using cached JWKS
 4. **WebAuthn/Passkeys** as primary auth method, email+password as fallback
@@ -77,7 +77,7 @@ Since this is currently a specification/planning repository without implementati
 
 ### API Patterns
 
-Base URL: `https://plinto.dev/api/v1`
+Base URL: `https://janua.dev/api/v1`
 
 Key endpoints:
 - `/auth/signup`, `/auth/signin`, `/auth/signout` - Core auth flows
@@ -107,33 +107,33 @@ Key endpoints:
 
 The project provides a streamlined integration for Next.js apps:
 
-1. Install: `@plinto/nextjs` and `@plinto/react-sdk`
+1. Install: `@janua/nextjs` and `@janua/react-sdk`
 2. Add edge middleware for route protection
-3. Wrap app with `PlintoProvider`
+3. Wrap app with `JanuaProvider`
 4. Use prebuilt UI components (`<SignIn/>`, `<SignUp/>`)
 5. Protect routes with `getSession()` in server components
 
 ### Environment Variables
 
-Required for Plinto Core:
+Required for Janua Core:
 ```
-PLINTO_ENV=prod
+JANUA_ENV=prod
 DATABASE_URL=postgres://...
 REDIS_URL=redis://...
 EMAIL_PROVIDER=ses|sendgrid
 TURNSTILE_SECRET=...
 KMS_KEY_ARN=...
-JWT_AUDIENCE=plinto.dev
-JWT_ISSUER=https://plinto.dev
-COOKIE_DOMAIN=plinto.dev
+JWT_AUDIENCE=janua.dev
+JWT_ISSUER=https://janua.dev
+COOKIE_DOMAIN=janua.dev
 ```
 
 For client apps:
 ```
-PLINTO_ISSUER=https://plinto.dev
-PLINTO_AUDIENCE=plinto.dev
-PLINTO_TENANT_ID=tenant_123
-PLINTO_JWKS_URL=https://plinto.dev/.well-known/jwks.json
+JANUA_ISSUER=https://janua.dev
+JANUA_AUDIENCE=janua.dev
+JANUA_TENANT_ID=tenant_123
+JANUA_JWKS_URL=https://janua.dev/.well-known/jwks.json
 ```
 
 ### Current Project State

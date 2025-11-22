@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Play, Code, Lock, Zap, Copy, Check } from 'lucide-react'
-import { Button } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { Button } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 
 export function PlaygroundSection() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
@@ -16,7 +16,7 @@ export function PlaygroundSection() {
       title: 'JWT Token Generation',
       description: 'Generate and verify JWTs with automatic key rotation',
       code: `// Generate a secure JWT token
-const token = await plinto.sessions.create({
+const token = await janua.sessions.create({
   email: 'demo@example.com',
   password: 'secure-password'
 })
@@ -38,7 +38,7 @@ const token = await plinto.sessions.create({
       title: 'Edge Verification',
       description: 'Verify tokens at the edge in milliseconds',
       code: `// Verify token at the edge
-const claims = await plinto.sessions.verify(token)
+const claims = await janua.sessions.verify(token)
 
 // Response includes verified claims:
 {
@@ -58,10 +58,10 @@ const claims = await plinto.sessions.verify(token)
       title: 'Passkey Authentication',
       description: 'Passwordless authentication with WebAuthn',
       code: `// Start passkey authentication
-const options = await plinto.passkeys.beginAuthentication()
+const options = await janua.passkeys.beginAuthentication()
 
 // Complete with biometric verification
-const session = await plinto.passkeys.completeAuthentication({
+const session = await janua.passkeys.completeAuthentication({
   credential: navigatorCredential
 })
 
@@ -76,7 +76,7 @@ const session = await plinto.passkeys.completeAuthentication({
       title: 'Policy Evaluation',
       description: 'Fine-grained authorization with OPA policies',
       code: `// Evaluate complex policies
-const decision = await plinto.policies.evaluate({
+const decision = await janua.policies.evaluate({
   subject: 'user_123',
   action: 'document:write',
   resource: 'doc_456',
@@ -126,7 +126,7 @@ const decision = await plinto.policies.evaluate({
             Try it live — no signup required
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Experience the speed and simplicity of Plinto's API. 
+            Experience the speed and simplicity of Janua's API. 
             Test real authentication flows in our sandboxed environment.
           </p>
         </motion.div>
@@ -220,7 +220,7 @@ const decision = await plinto.policies.evaluate({
                       Result
                     </h3>
                     <p className="text-sm text-gray-400 mt-1">
-                      API response from Plinto
+                      API response from Janua
                     </p>
                   </div>
 
@@ -276,10 +276,10 @@ const decision = await plinto.policies.evaluate({
         </p>
         <div className="flex gap-4 justify-center">
           <Button variant="outline" asChild>
-            <a href="https://docs.plinto.dev/quickstart">View Quickstart</a>
+            <a href="https://docs.janua.dev/quickstart">View Quickstart</a>
           </Button>
           <Button asChild>
-            <a href="https://app.plinto.dev/auth/signup">Create Free Account</a>
+            <a href="https://app.janua.dev/auth/signup">Create Free Account</a>
           </Button>
         </div>
       </motion.div>

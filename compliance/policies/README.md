@@ -99,4 +99,4 @@ This directory contains the comprehensive security policy framework required for
 
 ---
 
-*These policies form the foundation of Plinto's security governance framework and directly support SOC2 Type II audit requirements.*
+*These policies form the foundation of Janua's security governance framework and directly support SOC2 Type II audit requirements.*

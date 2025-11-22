@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@plinto/ui'
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@janua/ui'
 import { 
   User, 
   Shield, 
@@ -53,12 +53,12 @@ export default function DashboardPage() {
 
   const checkAuth = async () => {
     try {
-      const plinto = (window as any).plinto
-      if (!plinto) {
-        throw new Error('Plinto SDK not initialized')
+      const janua = (window as any).janua
+      if (!janua) {
+        throw new Error('Janua SDK not initialized')
       }
 
-      const currentUser = await plinto.getUser()
+      const currentUser = await janua.getUser()
       if (!currentUser) {
         router.push('/signin')
         return
@@ -67,7 +67,7 @@ export default function DashboardPage() {
       setUser(currentUser)
       
       // Get user sessions
-      const userSessions = await plinto.getSessions()
+      const userSessions = await janua.getSessions()
       setSessions(userSessions || [])
     } catch (err) {
       // Error handled by UI state
@@ -79,8 +79,8 @@ export default function DashboardPage() {
 
   const handleSignOut = async () => {
     try {
-      const plinto = (window as any).plinto
-      await plinto.signOut()
+      const janua = (window as any).janua
+      await janua.signOut()
       router.push('/signin')
     } catch (err) {
       // Error handled by UI state
@@ -123,7 +123,7 @@ export default function DashboardPage() {
                 <span className="text-white font-bold text-sm">P</span>
               </div>
               <div className="flex items-center space-x-4">
-                <span className="text-xl font-bold text-gray-900 dark:text-white">Plinto Dashboard</span>
+                <span className="text-xl font-bold text-gray-900 dark:text-white">Janua Dashboard</span>
                 {mounted && isDemo && showDemoNotice?.() && (
                   <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded">
                     DEMO
@@ -347,21 +347,21 @@ export default function DashboardPage() {
                   <Button 
                     className="w-full justify-start" 
                     variant="ghost"
-                    onClick={() => window.open('https://docs.plinto.dev', '_blank')}
+                    onClick={() => window.open('https://docs.janua.dev', '_blank')}
                   >
                     View Documentation →
                   </Button>
                   <Button 
                     className="w-full justify-start" 
                     variant="ghost"
-                    onClick={() => window.open('https://plinto.dev/pricing', '_blank')}
+                    onClick={() => window.open('https://janua.dev/pricing', '_blank')}
                   >
                     Upgrade Plan →
                   </Button>
                   <Button 
                     className="w-full justify-start" 
                     variant="ghost"
-                    onClick={() => window.open('https://plinto.dev/contact', '_blank')}
+                    onClick={() => window.open('https://janua.dev/contact', '_blank')}
                   >
                     Get Support →
                   </Button>

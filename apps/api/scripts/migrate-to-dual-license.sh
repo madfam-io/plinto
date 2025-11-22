@@ -5,12 +5,12 @@
 
 set -e
 
-echo "🚀 Starting dual-license migration for Plinto"
+echo "🚀 Starting dual-license migration for Janua"
 echo "============================================"
 
 # Configuration
-PRIVATE_REPO="plinto"
-PUBLIC_REPO="plinto-sdks"
+PRIVATE_REPO="janua"
+PUBLIC_REPO="janua-sdks"
 CURRENT_DIR=$(pwd)
 
 # Colors for output
@@ -76,7 +76,7 @@ cp -r packages/vue-sdk/* ../$PUBLIC_REPO/vue/
 echo "Copying Python SDK..."
 cp -r packages/python-sdk/* ../$PUBLIC_REPO/python/
 # Remove enterprise module from public version
-rm -f ../$PUBLIC_REPO/python/plinto/enterprise.py
+rm -f ../$PUBLIC_REPO/python/janua/enterprise.py
 
 # Go SDK
 echo "Copying Go SDK..."
@@ -96,11 +96,11 @@ echo "-----------------------------------------------------"
 # Create open-source TypeScript client
 cat > ../$PUBLIC_REPO/typescript/src/client.ts << 'EOF'
 /**
- * Main Plinto SDK client (Open Source Version)
+ * Main Janua SDK client (Open Source Version)
  */
 
 import type {
-  PlintoConfig,
+  JanuaConfig,
   SdkEventMap,
   SdkEventType,
   SdkEventHandler,
@@ -117,12 +117,12 @@ import { Webhooks } from './webhooks';
 import { Admin } from './admin';
 
 /**
- * Main Plinto SDK client class (Community Edition)
+ * Main Janua SDK client class (Community Edition)
  *
- * For enterprise features, see https://plinto.dev/pricing
+ * For enterprise features, see https://janua.dev/pricing
  */
-export class PlintoClient extends EventEmitter<SdkEventMap> {
-  private config: Required<PlintoConfig>;
+export class JanuaClient extends EventEmitter<SdkEventMap> {
+  private config: Required<JanuaConfig>;
   private tokenManager: TokenManager;
   private httpClient: HttpClient;
 
@@ -133,7 +133,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
   public readonly webhooks: Webhooks;
   public readonly admin: Admin;
 
-  constructor(config: Partial<PlintoConfig> = {}) {
+  constructor(config: Partial<JanuaConfig> = {}) {
     super();
 
     // Validate and merge configuration
@@ -181,7 +181,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
    */
   getEnterpriseInfo(): string {
     return `
-      This is the open-source Community Edition of Plinto SDK.
+      This is the open-source Community Edition of Janua SDK.
 
       For enterprise features including:
       - Single Sign-On (SAML/OIDC)
@@ -191,7 +191,7 @@ export class PlintoClient extends EventEmitter<SdkEventMap> {
       - Compliance Reports
       - On-premise deployment
 
-      Visit https://plinto.dev/pricing or contact sales@plinto.dev
+      Visit https://janua.dev/pricing or contact sales@janua.dev
     `;
   }
 }
@@ -200,9 +200,9 @@ EOF
 print_status "Created open-source TypeScript client"
 
 # Create open-source Python client
-cat > ../$PUBLIC_REPO/python/plinto/client.py << 'EOF'
+cat > ../$PUBLIC_REPO/python/janua/client.py << 'EOF'
 """
-Main Plinto SDK client (Open Source Version)
+Main Janua SDK client (Open Source Version)
 """
 
 import os
@@ -218,11 +218,11 @@ from .admin import AdminModule
 from .exceptions import ConfigurationError
 
 
-class PlintoClient:
+class JanuaClient:
     """
-    Main Plinto SDK client (Community Edition)
+    Main Janua SDK client (Community Edition)
 
-    For enterprise features, see https://plinto.dev/pricing
+    For enterprise features, see https://janua.dev/pricing
     """
 
     def __init__(
@@ -233,12 +233,12 @@ class PlintoClient:
         max_retries: int = 3,
         retry_delay: float = 1.0,
     ):
-        """Initialize Plinto client"""
+        """Initialize Janua client"""
         # Get base URL from parameter or environment
-        self.base_url = base_url or os.getenv("PLINTO_BASE_URL")
+        self.base_url = base_url or os.getenv("JANUA_BASE_URL")
         if not self.base_url:
             raise ConfigurationError(
-                "Base URL is required. Provide it as a parameter or set PLINTO_BASE_URL environment variable."
+                "Base URL is required. Provide it as a parameter or set JANUA_BASE_URL environment variable."
             )
 
         # Initialize modules
@@ -255,7 +255,7 @@ class PlintoClient:
     def get_enterprise_info(self) -> str:
         """Get information about upgrading to enterprise"""
         return """
-        This is the open-source Community Edition of Plinto SDK.
+        This is the open-source Community Edition of Janua SDK.
 
         For enterprise features including:
         - Single Sign-On (SAML/OIDC)
@@ -265,7 +265,7 @@ class PlintoClient:
         - Compliance Reports
         - On-premise deployment
 
-        Visit https://plinto.dev/pricing or contact sales@plinto.dev
+        Visit https://janua.dev/pricing or contact sales@janua.dev
         """
 EOF
 
@@ -279,20 +279,20 @@ echo "-------------------------------------------------------"
 # Update TypeScript SDK package.json
 cat > ../$PUBLIC_REPO/typescript/package.json << 'EOF'
 {
-  "name": "@plinto/sdk",
+  "name": "@janua/sdk",
   "version": "1.0.0",
-  "description": "Official Plinto SDK for JavaScript/TypeScript (Community Edition)",
+  "description": "Official Janua SDK for JavaScript/TypeScript (Community Edition)",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/madfam-io/plinto-sdks.git",
+    "url": "https://github.com/madfam-io/janua-sdks.git",
     "directory": "typescript"
   },
   "keywords": [
-    "plinto",
+    "janua",
     "authentication",
     "auth",
     "sdk",
@@ -300,11 +300,11 @@ cat > ../$PUBLIC_REPO/typescript/package.json << 'EOF'
     "javascript",
     "opensource"
   ],
-  "author": "Plinto Team",
+  "author": "Janua Team",
   "bugs": {
-    "url": "https://github.com/madfam-io/plinto-sdks/issues"
+    "url": "https://github.com/madfam-io/janua-sdks/issues"
   },
-  "homepage": "https://plinto.dev",
+  "homepage": "https://janua.dev",
   "publishConfig": {
     "access": "public"
   }
@@ -322,7 +322,7 @@ echo "------------------------------"
 cat > ../$PUBLIC_REPO/LICENSE << 'EOF'
 MIT License
 
-Copyright (c) 2025 Plinto
+Copyright (c) 2025 Janua
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -356,9 +356,9 @@ echo "Step 6: Creating README for public repository"
 echo "---------------------------------------------"
 
 cat > ../$PUBLIC_REPO/README.md << 'EOF'
-# Plinto SDKs - Open Source Authentication Platform
+# Janua SDKs - Open Source Authentication Platform
 
-Official SDKs for integrating with Plinto authentication platform.
+Official SDKs for integrating with Janua authentication platform.
 
 ## 🎯 Available SDKs
 
@@ -373,14 +373,14 @@ Official SDKs for integrating with Plinto authentication platform.
 
 ### TypeScript/JavaScript
 ```bash
-npm install @plinto/sdk
+npm install @janua/sdk
 ```
 
 ```typescript
-import { PlintoClient } from '@plinto/sdk';
+import { JanuaClient } from '@janua/sdk';
 
-const client = new PlintoClient({
-  baseURL: 'https://api.plinto.dev'
+const client = new JanuaClient({
+  baseURL: 'https://api.janua.dev'
 });
 
 // Sign in
@@ -392,17 +392,17 @@ const { user, tokens } = await client.auth.signIn({
 
 ### React
 ```bash
-npm install @plinto/react
+npm install @janua/react
 ```
 
 ```jsx
-import { PlintoProvider, useAuth } from '@plinto/react';
+import { JanuaProvider, useAuth } from '@janua/react';
 
 function App() {
   return (
-    <PlintoProvider baseURL="https://api.plinto.dev">
+    <JanuaProvider baseURL="https://api.janua.dev">
       <YourApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
@@ -414,13 +414,13 @@ function YourApp() {
 
 ### Python
 ```bash
-pip install plinto
+pip install janua
 ```
 
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-async with PlintoClient(base_url="https://api.plinto.dev") as client:
+async with JanuaClient(base_url="https://api.janua.dev") as client:
     # Sign in
     response = await client.auth.sign_in(
         email="user@example.com",
@@ -455,7 +455,7 @@ async with PlintoClient(base_url="https://api.plinto.dev") as client:
 
 ## 🏢 Enterprise Features
 
-For additional features, consider [Plinto Enterprise](https://plinto.dev/pricing):
+For additional features, consider [Janua Enterprise](https://janua.dev/pricing):
 
 - **Single Sign-On (SSO)** - SAML 2.0, OpenID Connect
 - **Advanced Security** - Audit logs, compliance reports
@@ -466,7 +466,7 @@ For additional features, consider [Plinto Enterprise](https://plinto.dev/pricing
 
 ## 📖 Documentation
 
-Full documentation available at [https://docs.plinto.dev](https://docs.plinto.dev)
+Full documentation available at [https://docs.janua.dev](https://docs.janua.dev)
 
 ## 🤝 Contributing
 
@@ -478,10 +478,10 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ## 💬 Support
 
-- **Documentation**: [https://docs.plinto.dev](https://docs.plinto.dev)
-- **Community Forum**: [https://community.plinto.dev](https://community.plinto.dev)
-- **GitHub Issues**: [https://github.com/madfam-io/plinto-sdks/issues](https://github.com/madfam-io/plinto-sdks/issues)
-- **Enterprise Support**: [sales@plinto.dev](mailto:sales@plinto.dev)
+- **Documentation**: [https://docs.janua.dev](https://docs.janua.dev)
+- **Community Forum**: [https://community.janua.dev](https://community.janua.dev)
+- **GitHub Issues**: [https://github.com/madfam-io/janua-sdks/issues](https://github.com/madfam-io/janua-sdks/issues)
+- **Enterprise Support**: [sales@janua.dev](mailto:sales@janua.dev)
 EOF
 
 print_status "Created README for public repository"
@@ -544,7 +544,7 @@ cd ../$PUBLIC_REPO
 if [ ! -d ".git" ]; then
     git init
     git add .
-    git commit -m "Initial commit: Open source Plinto SDKs"
+    git commit -m "Initial commit: Open source Janua SDKs"
     print_status "Git repository initialized"
 else
     print_warning "Git repository already initialized"
@@ -561,16 +561,16 @@ mkdir -p packages/enterprise-extensions
 
 cat > packages/enterprise-extensions/package.json << 'EOF'
 {
-  "name": "@plinto/enterprise",
+  "name": "@janua/enterprise",
   "version": "1.0.0",
   "private": true,
-  "description": "Enterprise extensions for Plinto SDK",
+  "description": "Enterprise extensions for Janua SDK",
   "license": "Commercial",
-  "author": "Plinto Team",
+  "author": "Janua Team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@plinto/sdk": "^1.0.0"
+    "@janua/sdk": "^1.0.0"
   }
 }
 EOF
@@ -592,7 +592,7 @@ echo "  1. Review the public repository at ../$PUBLIC_REPO"
 echo "  2. Create GitHub repository: https://github.com/new"
 echo "  3. Push public SDKs:"
 echo "     cd ../$PUBLIC_REPO"
-echo "     git remote add origin git@github.com:madfam-io/plinto-sdks.git"
+echo "     git remote add origin git@github.com:madfam-io/janua-sdks.git"
 echo "     git push -u origin main"
 echo ""
 echo "  4. Publish packages:"

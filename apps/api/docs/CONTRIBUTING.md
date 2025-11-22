@@ -1,6 +1,6 @@
-# Contributing to Plinto API
+# Contributing to Janua API
 
-> **Thank you for your interest in contributing to the Plinto authentication platform!**
+> **Thank you for your interest in contributing to the Janua authentication platform!**
 
 This guide will help you understand our contribution process, development standards, and how to get your contributions merged successfully.
 
@@ -31,11 +31,11 @@ We welcome various types of contributions:
 ```bash
 # Fork the repository on GitHub
 # Then clone your fork
-git clone https://github.com/yourusername/plinto.git
-cd plinto/apps/api
+git clone https://github.com/yourusername/janua.git
+cd janua/apps/api
 
 # Add upstream remote
-git remote add upstream https://github.com/original-org/plinto.git
+git remote add upstream https://github.com/original-org/janua.git
 ```
 
 ### 2. Development Setup
@@ -278,7 +278,7 @@ print(response.status_code)  # Expected: 200, Actual: 500
 ## ✨ Feature Requests
 
 ### Before Requesting
-1. **Check Roadmap**: Review our [project roadmap](https://github.com/your-org/plinto/projects)
+1. **Check Roadmap**: Review our [project roadmap](https://github.com/your-org/janua/projects)
 2. **Search Issues**: Look for similar feature requests
 3. **Consider Scope**: Ensure feature aligns with project goals
 4. **Gather Feedback**: Discuss with community first
@@ -320,8 +320,8 @@ Other solutions you've considered.
 
 We take security seriously. Please follow responsible disclosure:
 
-1. **Email**: Send security issues to [security@plinto.dev](mailto:security@plinto.dev)
-2. **Encrypt**: Use our [PGP key](https://plinto.dev/.well-known/security.txt) for sensitive reports
+1. **Email**: Send security issues to [security@janua.dev](mailto:security@janua.dev)
+2. **Encrypt**: Use our [PGP key](https://janua.dev/.well-known/security.txt) for sensitive reports
 3. **Details**: Include reproduction steps and impact assessment
 4. **Patience**: Allow time for investigation and fix
 5. **Credit**: We'll credit you in security advisories (if desired)
@@ -472,9 +472,9 @@ We use labels to categorize and prioritize issues:
 
 ### Community Resources
 - **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
-- **[GitHub Discussions](https://github.com/your-org/plinto/discussions)** - Community Q&A
-- **[Discord](https://discord.gg/plinto-dev)** - Real-time chat
-- **[Stack Overflow](https://stackoverflow.com/questions/tagged/plinto-api)** - Q&A platform
+- **[GitHub Discussions](https://github.com/your-org/janua/discussions)** - Community Q&A
+- **[Discord](https://discord.gg/janua-dev)** - Real-time chat
+- **[Stack Overflow](https://stackoverflow.com/questions/tagged/janua-api)** - Q&A platform
 
 ### Learning Resources
 - **[FastAPI Documentation](https://fastapi.tiangolo.com/)** - Web framework
@@ -502,9 +502,9 @@ We are committed to providing a welcoming and inclusive environment. Please read
 ## 📞 Contact
 
 ### Maintainer Team
-- **Lead Maintainer**: [lead@plinto.dev](mailto:lead@plinto.dev)
-- **Security Team**: [security@plinto.dev](mailto:security@plinto.dev)
-- **Documentation Team**: [docs@plinto.dev](mailto:docs@plinto.dev)
+- **Lead Maintainer**: [lead@janua.dev](mailto:lead@janua.dev)
+- **Security Team**: [security@janua.dev](mailto:security@janua.dev)
+- **Documentation Team**: [docs@janua.dev](mailto:docs@janua.dev)
 
 ### Response Times
 - **Bug Reports**: 2-3 business days
@@ -516,12 +516,12 @@ We are committed to providing a welcoming and inclusive environment. Please read
 
 ## 🙏 Thank You
 
-Thank you for contributing to Plinto! Your contributions help make authentication more secure and accessible for everyone.
+Thank you for contributing to Janua! Your contributions help make authentication more secure and accessible for everyone.
 
 ---
 
 <div align="center">
 
-**[⬅️ Back to Documentation](README.md)** • **[🚀 Development Guide](development/README.md)** • **[🐛 Report Bug](https://github.com/your-org/plinto/issues/new?template=bug-report.md)**
+**[⬅️ Back to Documentation](README.md)** • **[🚀 Development Guide](development/README.md)** • **[🐛 Report Bug](https://github.com/your-org/janua/issues/new?template=bug-report.md)**
 
 </div>

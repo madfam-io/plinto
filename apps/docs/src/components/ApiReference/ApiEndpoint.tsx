@@ -111,7 +111,7 @@ export function ApiEndpoint({
   responses = [],
   examples = [],
   tryItEnabled = true,
-  baseUrl = 'https://plinto.dev/api/v1',
+  baseUrl = 'https://janua.dev/api/v1',
 }: ApiEndpointProps) {
   const [selectedResponseTab, setSelectedResponseTab] = useState(0);
   const [tryItOpen, setTryItOpen] = useState(false);

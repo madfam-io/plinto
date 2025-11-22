@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Plinto Production Monitoring Script
+# Janua Production Monitoring Script
 # Run this manually or via cron to monitor all services
 
 set -euo pipefail
@@ -17,12 +17,12 @@ LOG_FILE="${LOG_FILE:-monitoring.log}"
 
 # Services to monitor
 declare -A SERVICES
-SERVICES["API Health"]="https://api.plinto.dev/health"
-SERVICES["Marketing Site"]="https://www.plinto.dev"
-SERVICES["Main App"]="https://app.plinto.dev"
-SERVICES["Documentation"]="https://docs.plinto.dev"
-SERVICES["Admin Panel"]="https://admin.plinto.dev"
-SERVICES["Demo App"]="https://demo.plinto.dev"
+SERVICES["API Health"]="https://api.janua.dev/health"
+SERVICES["Marketing Site"]="https://www.janua.dev"
+SERVICES["Main App"]="https://app.janua.dev"
+SERVICES["Documentation"]="https://docs.janua.dev"
+SERVICES["Admin Panel"]="https://admin.janua.dev"
+SERVICES["Demo App"]="https://demo.janua.dev"
 
 # Initialize counters
 TOTAL_SERVICES=0
@@ -31,7 +31,7 @@ SERVICES_DOWN=0
 TOTAL_RESPONSE_TIME=0
 
 echo "════════════════════════════════════════════════════════"
-echo "     Plinto Production Monitoring - $(date)"
+echo "     Janua Production Monitoring - $(date)"
 echo "════════════════════════════════════════════════════════"
 echo ""
 
@@ -104,7 +104,7 @@ check_api_endpoints() {
     
     # Check auth status
     echo -n "Auth Router: "
-    if curl -s "https://api.plinto.dev/api/v1/auth/status" | grep -q "auth router working"; then
+    if curl -s "https://api.janua.dev/api/v1/auth/status" | grep -q "auth router working"; then
         echo -e "${GREEN}Working${NC}"
     else
         echo -e "${RED}Not Working${NC}"
@@ -112,7 +112,7 @@ check_api_endpoints() {
     
     # Check OpenAPI docs
     echo -n "API Documentation: "
-    if curl -s "https://api.plinto.dev/openapi.json" | grep -q "Plinto API"; then
+    if curl -s "https://api.janua.dev/openapi.json" | grep -q "Janua API"; then
         echo -e "${GREEN}Available${NC}"
     else
         echo -e "${RED}Not Available${NC}"
@@ -120,7 +120,7 @@ check_api_endpoints() {
     
     # Check database connectivity
     echo -n "Database Connection: "
-    if curl -s "https://api.plinto.dev/ready" | grep -q '"database":true'; then
+    if curl -s "https://api.janua.dev/ready" | grep -q '"database":true'; then
         echo -e "${GREEN}Connected${NC}"
     else
         echo -e "${RED}Not Connected${NC}"
@@ -128,7 +128,7 @@ check_api_endpoints() {
     
     # Check Redis connectivity
     echo -n "Redis Connection: "
-    if curl -s "https://api.plinto.dev/ready" | grep -q '"redis":true'; then
+    if curl -s "https://api.janua.dev/ready" | grep -q '"redis":true'; then
         echo -e "${GREEN}Connected${NC}"
     else
         echo -e "${RED}Not Connected${NC}"
@@ -142,7 +142,7 @@ check_ssl_certificates() {
     echo "━━━ SSL Certificate Status ━━━"
     echo ""
     
-    for domain in api.plinto.dev www.plinto.dev app.plinto.dev; do
+    for domain in api.janua.dev www.janua.dev app.janua.dev; do
         echo -n "$domain: "
         if echo | openssl s_client -connect $domain:443 -servername $domain 2>/dev/null | openssl x509 -noout -checkend 604800 &>/dev/null; then
             # Certificate valid for at least 7 more days

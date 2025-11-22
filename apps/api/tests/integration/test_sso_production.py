@@ -25,7 +25,7 @@ class TestCertificateManager:
         manager = CertificateManager(cert_dir=str(tmp_path))
         
         cert_pem, key_pem = manager.generate_self_signed_certificate(
-            common_name="test.plinto.dev",
+            common_name="test.janua.dev",
             validity_days=365
         )
         
@@ -36,7 +36,7 @@ class TestCertificateManager:
         # Validate certificate
         validation = manager.validate_certificate(cert_pem)
         assert validation['valid']
-        assert validation['subject']['commonName'] == "test.plinto.dev"
+        assert validation['subject']['commonName'] == "test.janua.dev"
     
     def test_validate_certificate_expiry(self, tmp_path):
         """Test certificate expiry validation."""
@@ -44,7 +44,7 @@ class TestCertificateManager:
         
         # Generate short-lived certificate
         cert_pem, _ = manager.generate_self_signed_certificate(
-            common_name="test.plinto.dev",
+            common_name="test.janua.dev",
             validity_days=1
         )
         
@@ -63,7 +63,7 @@ class TestCertificateManager:
         manager = CertificateManager(cert_dir=str(tmp_path))
         
         cert_pem, _ = manager.generate_self_signed_certificate(
-            common_name="test.plinto.dev"
+            common_name="test.janua.dev"
         )
         
         public_key_pem = manager.extract_public_key(cert_pem)
@@ -76,7 +76,7 @@ class TestCertificateManager:
         
         # Generate certificate
         cert_pem, _ = manager.generate_self_signed_certificate(
-            common_name="test.plinto.dev"
+            common_name="test.janua.dev"
         )
         
         # Store certificate
@@ -92,7 +92,7 @@ class TestCertificateManager:
         manager = CertificateManager(cert_dir=str(tmp_path))
         
         cert_pem, _ = manager.generate_self_signed_certificate(
-            common_name="test.plinto.dev"
+            common_name="test.janua.dev"
         )
         
         der_bytes = manager.convert_pem_to_der(cert_pem)
@@ -118,23 +118,23 @@ class TestMetadataManager:
         
         # Generate certificate for metadata
         cert_pem, _ = cert_manager.generate_self_signed_certificate(
-            common_name="sp.plinto.dev"
+            common_name="sp.janua.dev"
         )
         
         # Generate metadata
         metadata_xml = metadata_manager.generate_sp_metadata(
-            entity_id="https://sp.plinto.dev",
-            acs_url="https://sp.plinto.dev/saml/acs",
-            sls_url="https://sp.plinto.dev/saml/sls",
-            organization_name="Plinto",
-            contact_email="admin@plinto.dev",
+            entity_id="https://sp.janua.dev",
+            acs_url="https://sp.janua.dev/saml/acs",
+            sls_url="https://sp.janua.dev/saml/sls",
+            organization_name="Janua",
+            contact_email="admin@janua.dev",
             certificate_pem=cert_pem
         )
         
         # Verify metadata structure
         assert "EntityDescriptor" in metadata_xml
         assert "SPSSODescriptor" in metadata_xml
-        assert "https://sp.plinto.dev" in metadata_xml
+        assert "https://sp.janua.dev" in metadata_xml
         assert "AssertionConsumerService" in metadata_xml
         assert "SingleLogoutService" in metadata_xml
         assert "Organization" in metadata_xml
@@ -194,13 +194,13 @@ class TestMetadataManager:
         
         # Generate certificate
         cert_pem, _ = cert_manager.generate_self_signed_certificate(
-            common_name="sp.plinto.dev"
+            common_name="sp.janua.dev"
         )
         
         # Generate valid metadata
         metadata_xml = metadata_manager.generate_sp_metadata(
-            entity_id="https://sp.plinto.dev",
-            acs_url="https://sp.plinto.dev/saml/acs",
+            entity_id="https://sp.janua.dev",
+            acs_url="https://sp.janua.dev/saml/acs",
             certificate_pem=cert_pem
         )
         
@@ -218,13 +218,13 @@ class TestMetadataManager:
         # Create expired metadata
         expired_metadata = """<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-                     entityID="https://sp.plinto.dev"
+                     entityID="https://sp.janua.dev"
                      validUntil="2020-01-01T00:00:00Z">
     <md:SPSSODescriptor AuthnRequestsSigned="true"
                        WantAssertionsSigned="true"
                        protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
-                                    Location="https://sp.plinto.dev/saml/acs"
+                                    Location="https://sp.janua.dev/saml/acs"
                                     index="0"/>
     </md:SPSSODescriptor>
 </md:EntityDescriptor>"""
@@ -253,13 +253,13 @@ class TestSAMLIntegration:
         
         # Generate SP certificate
         sp_cert, sp_key = cert_manager.generate_self_signed_certificate(
-            common_name="sp.plinto.dev"
+            common_name="sp.janua.dev"
         )
         
         # Generate SP metadata
         sp_metadata = metadata_manager.generate_sp_metadata(
-            entity_id="https://sp.plinto.dev",
-            acs_url="https://sp.plinto.dev/saml/acs",
+            entity_id="https://sp.janua.dev",
+            acs_url="https://sp.janua.dev/saml/acs",
             certificate_pem=sp_cert
         )
         
@@ -297,17 +297,17 @@ class TestSSOEndToEnd:
         
         # Step 1: Generate SP certificate
         sp_cert, sp_key = cert_manager.generate_self_signed_certificate(
-            common_name="sp.plinto.dev",
+            common_name="sp.janua.dev",
             validity_days=365
         )
         
         # Step 2: Generate SP metadata
         sp_metadata = metadata_manager.generate_sp_metadata(
-            entity_id="https://sp.plinto.dev",
-            acs_url="https://sp.plinto.dev/saml/acs",
-            sls_url="https://sp.plinto.dev/saml/sls",
-            organization_name="Plinto",
-            contact_email="admin@plinto.dev",
+            entity_id="https://sp.janua.dev",
+            acs_url="https://sp.janua.dev/saml/acs",
+            sls_url="https://sp.janua.dev/saml/sls",
+            organization_name="Janua",
+            contact_email="admin@janua.dev",
             certificate_pem=sp_cert
         )
         

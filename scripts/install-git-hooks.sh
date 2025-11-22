@@ -1,6 +1,6 @@
 #!/bin/bash
 # Install Git Pre-Commit Hooks
-# Provides two-tier protection for the Plinto codebase
+# Provides two-tier protection for the Janua codebase
 
 set -e
 
@@ -44,7 +44,7 @@ if [ -n "$DEBUG_FILES" ]; then
   if [ $DEBUG_COUNT -gt 0 ]; then
     echo ""
     echo "Consider using the logger utility instead:"
-    echo "  TypeScript: import { createLogger } from '@plinto/core/utils/logger'"
+    echo "  TypeScript: import { createLogger } from '@janua/core/utils/logger'"
     echo "  Python: from app.utils.logger import create_logger"
     echo ""
     echo "Press Ctrl+C to cancel commit, or Continue to commit anyway."

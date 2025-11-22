@@ -2,7 +2,7 @@
  * Comprehensive Error Message Utilities
  *
  * Provides actionable, user-friendly error messages with recovery suggestions
- * for all Plinto authentication components.
+ * for all Janua authentication components.
  */
 
 export interface ErrorContext {

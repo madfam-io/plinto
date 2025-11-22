@@ -1,6 +1,6 @@
-# Plinto Flutter SDK
+# Janua Flutter SDK
 
-Official Flutter SDK for the Plinto Identity Platform with support for iOS, Android, and Web platforms.
+Official Flutter SDK for the Janua Identity Platform with support for iOS, Android, and Web platforms.
 
 ## Installation
 
@@ -8,7 +8,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  plinto_flutter: ^1.0.0
+  janua_flutter: ^1.0.0
 ```
 
 Then run:
@@ -42,24 +42,24 @@ Minimum Android SDK: 23 (Android 6.0)
 
 Add to your `index.html`:
 ```html
-<script src="https://cdn.plinto.dev/js/plinto-web.min.js"></script>
+<script src="https://cdn.janua.dev/js/janua-web.min.js"></script>
 ```
 
 ## Quick Start
 
 ```dart
-import 'package:plinto_flutter/plinto_flutter.dart';
+import 'package:janua_flutter/janua_flutter.dart';
 
 void main() async {
   // Initialize the SDK
-  final plinto = Plinto(
-    baseUrl: 'https://api.plinto.dev',
+  final janua = Janua(
+    baseUrl: 'https://api.janua.dev',
     apiKey: 'your-api-key',
     enableBiometrics: true,
   );
 
   // Sign in
-  final authResult = await plinto.signIn(
+  final authResult = await janua.signIn(
     email: 'user@example.com',
     password: 'password',
   );
@@ -85,32 +85,32 @@ void main() async {
 
 ```dart
 // Sign up
-final authResult = await plinto.signUp(
+final authResult = await janua.signUp(
   email: 'user@example.com',
   password: 'SecurePassword123!',
   name: 'John Doe',
 );
 
 // Sign in
-final authResult = await plinto.signIn(
+final authResult = await janua.signIn(
   email: 'user@example.com',
   password: 'password',
 );
 
 // Sign in with biometrics
-final authResult = await plinto.signInWithBiometrics();
+final authResult = await janua.signInWithBiometrics();
 
 // Sign in with OAuth
-final authResult = await plinto.signInWithProvider(
+final authResult = await janua.signInWithProvider(
   OAuthProvider.google,
   scopes: ['email', 'profile'],
 );
 
 // Sign out
-await plinto.signOut();
+await janua.signOut();
 
 // Listen to auth state changes
-plinto.authStateChanges.listen((user) {
+janua.authStateChanges.listen((user) {
   if (user != null) {
     print('User signed in: ${user.email}');
   } else {
@@ -123,19 +123,19 @@ plinto.authStateChanges.listen((user) {
 
 ```dart
 // Check biometric availability
-final isAvailable = await plinto.isBiometricAvailable();
+final isAvailable = await janua.isBiometricAvailable();
 
 // Get available biometric types
-final types = await plinto.getAvailableBiometrics();
+final types = await janua.getAvailableBiometrics();
 // Returns: [BiometricType.faceId, BiometricType.touchId]
 
 // Enable biometric authentication
-await plinto.enableBiometricAuth(
+await janua.enableBiometricAuth(
   localizedReason: 'Authenticate to access your account',
 );
 
 // Authenticate with biometrics
-final authenticated = await plinto.authenticateWithBiometrics(
+final authenticated = await janua.authenticateWithBiometrics(
   localizedReason: 'Verify your identity',
   options: AuthenticationOptions(
     biometricOnly: true,
@@ -148,10 +148,10 @@ final authenticated = await plinto.authenticateWithBiometrics(
 
 ```dart
 // Get current user
-final user = plinto.currentUser;
+final user = janua.currentUser;
 
 // Update user profile
-await plinto.updateProfile(
+await janua.updateProfile(
   name: 'Jane Doe',
   photoUrl: 'https://example.com/photo.jpg',
   metadata: {
@@ -161,30 +161,30 @@ await plinto.updateProfile(
 );
 
 // Change password
-await plinto.changePassword(
+await janua.changePassword(
   currentPassword: 'old-password',
   newPassword: 'new-password',
 );
 
 // Upload avatar
 final File imageFile = File('path/to/image.jpg');
-final avatarUrl = await plinto.uploadAvatar(imageFile);
+final avatarUrl = await janua.uploadAvatar(imageFile);
 ```
 
 ### Session Management
 
 ```dart
 // Get current session
-final session = plinto.currentSession;
+final session = janua.currentSession;
 
 // List all sessions
-final sessions = await plinto.listSessions();
+final sessions = await janua.listSessions();
 
 // Revoke a session
-await plinto.revokeSession(sessionId);
+await janua.revokeSession(sessionId);
 
 // Listen to session events
-plinto.sessionEvents.listen((event) {
+janua.sessionEvents.listen((event) {
   switch (event.type) {
     case SessionEventType.created:
       print('New session created');
@@ -204,10 +204,10 @@ plinto.sessionEvents.listen((event) {
 Pre-built authentication widgets with Material Design and Cupertino support:
 
 ```dart
-import 'package:plinto_flutter/widgets.dart';
+import 'package:janua_flutter/widgets.dart';
 
 // Sign in widget
-PlintoSignInWidget(
+JanuaSignInWidget(
   onSuccess: (user) {
     Navigator.pushReplacementNamed(context, '/home');
   },
@@ -216,7 +216,7 @@ PlintoSignInWidget(
       SnackBar(content: Text(error.message)),
     );
   },
-  theme: PlintoTheme(
+  theme: JanuaTheme(
     primaryColor: Colors.blue,
     backgroundColor: Colors.white,
     errorColor: Colors.red,
@@ -230,7 +230,7 @@ PlintoSignInWidget(
 )
 
 // Sign up widget
-PlintoSignUpWidget(
+JanuaSignUpWidget(
   onSuccess: (user) {
     Navigator.pushReplacementNamed(context, '/onboarding');
   },
@@ -243,20 +243,20 @@ PlintoSignUpWidget(
 )
 
 // Profile widget
-PlintoProfileWidget(
+JanuaProfileWidget(
   user: currentUser,
   onSignOut: () {
     Navigator.pushReplacementNamed(context, '/login');
   },
   onUpdateProfile: (updates) async {
-    await plinto.updateProfile(updates);
+    await janua.updateProfile(updates);
   },
   enableAvatarUpload: true,
   enableMFA: true,
 )
 
 // Auth guard widget
-PlintoAuthGuard(
+JanuaAuthGuard(
   child: HomeScreen(),
   fallback: SignInScreen(),
   loadingWidget: CircularProgressIndicator(),
@@ -270,14 +270,14 @@ Built-in BLoC pattern support for state management:
 ```dart
 // Auth BLoC
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final Plinto plinto;
+  final Janua janua;
   
-  AuthBloc({required this.plinto}) : super(AuthInitial()) {
+  AuthBloc({required this.janua}) : super(AuthInitial()) {
     on<SignInRequested>(_onSignInRequested);
     on<SignOutRequested>(_onSignOutRequested);
     
     // Listen to auth state changes
-    plinto.authStateChanges.listen((user) {
+    janua.authStateChanges.listen((user) {
       add(AuthStateChanged(user));
     });
   }
@@ -288,7 +288,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      final result = await plinto.signIn(
+      final result = await janua.signIn(
         email: event.email,
         password: event.password,
       );
@@ -301,7 +301,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
 // Using with BlocProvider
 BlocProvider(
-  create: (context) => AuthBloc(plinto: plinto),
+  create: (context) => AuthBloc(janua: janua),
   child: MyApp(),
 )
 ```
@@ -312,22 +312,22 @@ Platform-specific encrypted storage implementation:
 
 ```dart
 // Store sensitive data
-await plinto.secureStorage.write(
+await janua.secureStorage.write(
   key: 'api_token',
   value: 'secret-token',
 );
 
 // Read sensitive data
-final token = await plinto.secureStorage.read(key: 'api_token');
+final token = await janua.secureStorage.read(key: 'api_token');
 
 // Delete sensitive data
-await plinto.secureStorage.delete(key: 'api_token');
+await janua.secureStorage.delete(key: 'api_token');
 
 // Clear all secure storage
-await plinto.secureStorage.deleteAll();
+await janua.secureStorage.deleteAll();
 
 // Check if key exists
-final hasToken = await plinto.secureStorage.containsKey(key: 'api_token');
+final hasToken = await janua.secureStorage.containsKey(key: 'api_token');
 ```
 
 ## WebSocket Support
@@ -336,29 +336,29 @@ Real-time updates and live data synchronization:
 
 ```dart
 // Connect to WebSocket
-await plinto.connectWebSocket();
+await janua.connectWebSocket();
 
 // Listen to real-time events
-plinto.on('user.updated', (data) {
+janua.on('user.updated', (data) {
   print('User updated: $data');
 });
 
-plinto.on('session.created', (data) {
+janua.on('session.created', (data) {
   print('New session: $data');
 });
 
-plinto.on('security.alert', (data) {
+janua.on('security.alert', (data) {
   showSecurityAlert(data);
 });
 
 // Send WebSocket message
-plinto.send('message', {
+janua.send('message', {
   'type': 'ping',
   'timestamp': DateTime.now().toIso8601String(),
 });
 
 // Disconnect WebSocket
-await plinto.disconnectWebSocket();
+await janua.disconnectWebSocket();
 ```
 
 ## Internationalization
@@ -367,16 +367,16 @@ Multi-language support with easy localization:
 
 ```dart
 // Set locale
-await plinto.setLocale(Locale('es', 'ES'));
+await janua.setLocale(Locale('es', 'ES'));
 
 // Get available locales
-final locales = plinto.supportedLocales;
+final locales = janua.supportedLocales;
 
 // Use localized strings
-Text(plinto.t('auth.sign_in')); // "Sign In" or "Iniciar Sesión"
+Text(janua.t('auth.sign_in')); // "Sign In" or "Iniciar Sesión"
 
 // Add custom translations
-plinto.addTranslations('fr', {
+janua.addTranslations('fr', {
   'auth.sign_in': 'Se connecter',
   'auth.sign_up': "S'inscrire",
 });
@@ -386,8 +386,8 @@ plinto.addTranslations('fr', {
 
 ```dart
 try {
-  await plinto.signIn(email: email, password: password);
-} on PlintoAuthException catch (e) {
+  await janua.signIn(email: email, password: password);
+} on JanuaAuthException catch (e) {
   switch (e.code) {
     case 'invalid-credentials':
       showError('Invalid email or password');
@@ -401,7 +401,7 @@ try {
     default:
       showError(e.message);
   }
-} on PlintoNetworkException catch (e) {
+} on JanuaNetworkException catch (e) {
   showError('Network error. Please check your connection');
 } catch (e) {
   showError('An unexpected error occurred');
@@ -414,7 +414,7 @@ try {
 ```dart
 if (Platform.isIOS) {
   // Sign in with Apple
-  final result = await plinto.signInWithApple(
+  final result = await janua.signInWithApple(
     scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
   );
 }
@@ -424,7 +424,7 @@ if (Platform.isIOS) {
 ```dart
 if (Platform.isAndroid) {
   // Configure Android-specific biometric settings
-  await plinto.configureBiometric(
+  await janua.configureBiometric(
     androidAuthStrings: AndroidAuthMessages(
       biometricHint: 'Verify identity',
       biometricNotRecognized: 'Not recognized. Try again.',
@@ -444,9 +444,9 @@ if (Platform.isAndroid) {
 ```dart
 if (kIsWeb) {
   // Configure WebAuthn for web platform
-  await plinto.configureWebAuthn(
-    rpName: 'Plinto Demo',
-    rpId: 'plinto.dev',
+  await janua.configureWebAuthn(
+    rpName: 'Janua Demo',
+    rpId: 'janua.dev',
     userVerification: 'preferred',
   );
 }
@@ -456,9 +456,9 @@ if (kIsWeb) {
 
 ```dart
 // Use mock client for testing
-final mockPlinto = MockPlinto();
+final mockJanua = MockJanua();
 
-when(mockPlinto.signIn(any, any)).thenAnswer(
+when(mockJanua.signIn(any, any)).thenAnswer(
   (_) async => AuthResult(
     user: User(id: '123', email: 'test@example.com'),
     session: Session(token: 'mock-token'),
@@ -469,8 +469,8 @@ when(mockPlinto.signIn(any, any)).thenAnswer(
 testWidgets('Sign in button test', (WidgetTester tester) async {
   await tester.pumpWidget(
     MaterialApp(
-      home: PlintoSignInWidget(
-        plinto: mockPlinto,
+      home: JanuaSignInWidget(
+        janua: mockJanua,
         onSuccess: (user) {},
       ),
     ),
@@ -479,7 +479,7 @@ testWidgets('Sign in button test', (WidgetTester tester) async {
   await tester.tap(find.text('Sign In'));
   await tester.pump();
   
-  verify(mockPlinto.signIn(any, any)).called(1);
+  verify(mockJanua.signIn(any, any)).called(1);
 });
 ```
 

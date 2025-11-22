@@ -1,14 +1,14 @@
-# Plinto Codebase Audit Report
+# Janua Codebase Audit Report
 **Date**: November 19, 2025
 **Auditor**: Claude Code (Anthropic)
-**Repository**: madfam-io/plinto
+**Repository**: madfam-io/janua
 **Branch**: claude/codebase-audit-01Re2L6DdU3drSqiGHS9dJoZ
 
 ---
 
 ## Executive Summary
 
-This comprehensive audit analyzed the **Plinto** authentication platform - a production-ready, open-source enterprise authentication and user management system. The codebase consists of **18 packages**, **8 applications**, **~50,300 lines of Python code**, **535 TypeScript files**, and **152+ test files**.
+This comprehensive audit analyzed the **Janua** authentication platform - a production-ready, open-source enterprise authentication and user management system. The codebase consists of **18 packages**, **8 applications**, **~50,300 lines of Python code**, **535 TypeScript files**, and **152+ test files**.
 
 ### Overall Assessment
 
@@ -74,7 +74,7 @@ allow_headers=["Authorization", "Content-Type", "X-Requested-With", "X-API-Key"]
 **File**: `apps/api/app/database.py:57`
 **Code**:
 ```python
-"postgresql://plinto:plinto@localhost/plinto"
+"postgresql://janua:janua@localhost/janua"
 ```
 
 **Impact**: Predictable credentials if deployed without DATABASE_URL
@@ -559,7 +559,7 @@ Run `npm outdated` and `pip list --outdated` for full list.
 ### Load Testing Recommendations
 ```bash
 # Test with Locust
-locust -f tests/load/locustfile.py --host=https://api.plinto.dev
+locust -f tests/load/locustfile.py --host=https://api.janua.dev
 
 # Target metrics:
 # - 1000 concurrent users
@@ -780,7 +780,7 @@ locust -f tests/load/locustfile.py --host=https://api.plinto.dev
 
 ## 13. Conclusion
 
-The **Plinto** codebase is a **solid foundation** for an enterprise authentication platform with excellent features and design principles. However, it requires **immediate attention** to critical security vulnerabilities and architectural issues to be production-ready for high-scale deployments.
+The **Janua** codebase is a **solid foundation** for an enterprise authentication platform with excellent features and design principles. However, it requires **immediate attention** to critical security vulnerabilities and architectural issues to be production-ready for high-scale deployments.
 
 ### Top 3 Priorities
 1. **Security**: Fix critical CVEs and hardcoded secrets (1-2 weeks)

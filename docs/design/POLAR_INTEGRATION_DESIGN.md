@@ -1,4 +1,4 @@
-# Polar Integration Design for Plinto
+# Polar Integration Design for Janua
 
 **Date**: November 16, 2025  
 **Status**: Design Phase  
@@ -11,11 +11,11 @@
 ### 1. Use Polar as Merchant of Record (MoR)
 Replace Fungies.io with Polar for all non-Mexican paying customers, leveraging Polar's developer-first payment infrastructure.
 
-### 2. Offer Polar Plugin for Plinto Customers
-Provide a Plinto plugin similar to Better-Auth's Polar implementation, enabling Plinto users to accept payments through Polar while using Plinto authentication.
+### 2. Offer Polar Plugin for Janua Customers
+Provide a Janua plugin similar to Better-Auth's Polar implementation, enabling Janua users to accept payments through Polar while using Janua authentication.
 
 ### 3. Dogfood Our Own Features
-Use Plinto's own authentication and organization management features to power our Polar integration, demonstrating real-world usage.
+Use Janua's own authentication and organization management features to power our Polar integration, demonstrating real-world usage.
 
 ---
 
@@ -54,7 +54,7 @@ class Subscription(Base):
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Plinto Platform                           │
+│                    Janua Platform                           │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │              Authentication Layer                     │   │
 │  │  - User Management                                    │   │
@@ -76,17 +76,17 @@ class Subscription(Base):
 
 ### Three Integration Levels
 
-**Level 1: Internal Use (Plinto → Polar)**
+**Level 1: Internal Use (Janua → Polar)**
 - Replace Fungies.io with Polar
 - Use Polar for all non-Mexican customers
 - Direct API integration
 
-**Level 2: Plugin System (Plinto Users → Polar)**
-- Offer Polar plugin to Plinto customers
+**Level 2: Plugin System (Janua Users → Polar)**
+- Offer Polar plugin to Janua customers
 - SDK/plugin for easy integration
 - Similar to Better-Auth's approach
 
-**Level 3: Dogfooding (Plinto Self-Use)**
+**Level 3: Dogfooding (Janua Self-Use)**
 - Use our own authentication
 - Use our own organization management
 - Use our own Polar plugin
@@ -137,12 +137,12 @@ class PolarSubscriptionTier(str, enum.Enum):
 
 
 class PolarCustomer(Base):
-    """Polar customer mapping to Plinto users/organizations"""
+    """Polar customer mapping to Janua users/organizations"""
     __tablename__ = "polar_customers"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     
-    # Link to Plinto entities
+    # Link to Janua entities
     organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=True)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     
@@ -167,7 +167,7 @@ class PolarCheckout(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     
-    # Link to Plinto entities
+    # Link to Janua entities
     organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=True)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     polar_customer_id = Column(UUID(as_uuid=True), ForeignKey("polar_customers.id"), nullable=True)
@@ -198,7 +198,7 @@ class PolarSubscription(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     
-    # Link to Plinto subscription
+    # Link to Janua subscription
     subscription_id = Column(UUID(as_uuid=True), ForeignKey("subscriptions.id"), nullable=False)
     organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
     polar_customer_id = Column(UUID(as_uuid=True), ForeignKey("polar_customers.id"), nullable=False)
@@ -896,16 +896,16 @@ async def handle_webhook(
 
 ```typescript
 /**
- * Polar Plugin for Plinto TypeScript SDK
+ * Polar Plugin for Janua TypeScript SDK
  * 
  * Provides Polar payment integration similar to Better-Auth's implementation
  */
 
-import { PlintoClient } from '../client'
+import { JanuaClient } from '../client'
 
 export interface PolarPluginConfig {
   /**
-   * Polar organization ID (for Plinto users accepting payments)
+   * Polar organization ID (for Janua users accepting payments)
    */
   organizationId?: string
   
@@ -940,10 +940,10 @@ export interface CustomerPortalData {
 }
 
 export class PolarPlugin {
-  private client: PlintoClient
+  private client: JanuaClient
   private config: PolarPluginConfig
   
-  constructor(client: PlintoClient, config: PolarPluginConfig = {}) {
+  constructor(client: JanuaClient, config: PolarPluginConfig = {}) {
     this.client = client
     this.config = config
   }
@@ -1032,7 +1032,7 @@ export class PolarPlugin {
 export function createPolarPlugin(config: PolarPluginConfig = {}) {
   return {
     name: 'polar',
-    install(client: PlintoClient) {
+    install(client: JanuaClient) {
       const polar = new PolarPlugin(client, config)
       
       // Attach to client
@@ -1045,7 +1045,7 @@ export function createPolarPlugin(config: PolarPluginConfig = {}) {
 
 // Type augmentation for client
 declare module '../client' {
-  interface PlintoClient {
+  interface JanuaClient {
     polar: PolarPlugin
   }
 }
@@ -1059,7 +1059,7 @@ declare module '../client' {
 'use client'
 
 import { useState } from 'react'
-import { usePlintoClient } from '../../hooks/use-plinto-client'
+import { useJanuaClient } from '../../hooks/use-janua-client'
 
 export interface PolarCheckoutButtonProps {
   productId: string
@@ -1078,7 +1078,7 @@ export function PolarCheckoutButton({
   children = 'Subscribe',
   onError,
 }: PolarCheckoutButtonProps) {
-  const client = usePlintoClient()
+  const client = useJanuaClient()
   const [loading, setLoading] = useState(false)
   
   const handleCheckout = async () => {
@@ -1114,7 +1114,7 @@ export function PolarCheckoutButton({
 ```typescript
 'use client'
 
-import { usePlintoClient } from '../../hooks/use-plinto-client'
+import { useJanuaClient } from '../../hooks/use-janua-client'
 
 export interface PolarCustomerPortalProps {
   organizationId?: string
@@ -1127,7 +1127,7 @@ export function PolarCustomerPortal({
   className,
   children = 'Manage Subscription',
 }: PolarCustomerPortalProps) {
-  const client = usePlintoClient()
+  const client = useJanuaClient()
   
   const handlePortal = async () => {
     try {
@@ -1175,7 +1175,7 @@ POLAR_CREATE_CUSTOMER_ON_SIGNUP=true  # Auto-create customers on signup
 
 ### Phase 1: Internal Use (Weeks 1-2)
 
-**Goal**: Replace Fungies.io with Polar for Plinto's own billing
+**Goal**: Replace Fungies.io with Polar for Janua's own billing
 
 **Tasks**:
 1. ✅ Implement Polar service and models
@@ -1191,7 +1191,7 @@ POLAR_CREATE_CUSTOMER_ON_SIGNUP=true  # Auto-create customers on signup
 
 ### Phase 2: Plugin Development (Weeks 3-4)
 
-**Goal**: Create Polar plugin for Plinto customers
+**Goal**: Create Polar plugin for Janua customers
 
 **Tasks**:
 1. ✅ Develop TypeScript SDK plugin
@@ -1210,13 +1210,13 @@ POLAR_CREATE_CUSTOMER_ON_SIGNUP=true  # Auto-create customers on signup
 **Goal**: Use our own Polar plugin for our billing
 
 **Tasks**:
-1. ✅ Integrate Plinto Polar plugin into Plinto demo app
-2. ✅ Use Plinto auth for our own platform
+1. ✅ Integrate Janua Polar plugin into Janua demo app
+2. ✅ Use Janua auth for our own platform
 3. ✅ Document learnings and improvements
 4. ✅ Create case study
 
 **Success Criteria**:
-- Plinto uses its own Polar plugin
+- Janua uses its own Polar plugin
 - Real-world validation complete
 - Case study published
 
@@ -1353,7 +1353,7 @@ POLAR_CREATE_CUSTOMER_ON_SIGNUP=true  # Auto-create customers on signup
 
 ### Data Privacy
 - ✅ PCI compliance through Polar
-- ✅ No credit card storage in Plinto
+- ✅ No credit card storage in Janua
 - ✅ GDPR compliance for customer data
 - ✅ Data retention policies
 

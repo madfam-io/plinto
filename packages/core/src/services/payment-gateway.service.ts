@@ -362,7 +362,7 @@ export class PaymentGatewayService extends EventEmitter {
       metadata: {
         ...params.metadata,
         organization_id: params.organization_id,
-        plinto_customer_id: params.customer_id
+        janua_customer_id: params.customer_id
       }
     });
 
@@ -439,7 +439,7 @@ export class PaymentGatewayService extends EventEmitter {
       cancel_url: params.cancel_url,
       metadata: {
         ...params.metadata,
-        plinto_customer_id: params.customer_id,
+        janua_customer_id: params.customer_id,
         locale: params.locale || this.getDefaultLocale(country)
       }
     });

@@ -24,7 +24,7 @@ export class JWKSCache {
       const response = await fetch(url, {
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'Plinto-Edge-Verify/1.0'
+          'User-Agent': 'Janua-Edge-Verify/1.0'
         }
       })
 
@@ -84,7 +84,7 @@ export async function getJWKS(
       const response = await fetch(url, {
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'Plinto-Edge-Verify/1.0'
+          'User-Agent': 'Janua-Edge-Verify/1.0'
         }
       })
 

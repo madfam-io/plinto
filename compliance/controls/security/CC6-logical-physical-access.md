@@ -13,7 +13,7 @@ The entity implements logical and physical access controls to prevent unauthoriz
 
 ## Control Description
 
-Plinto maintains comprehensive access controls that protect both logical (system) and physical (facility) access to information assets. This includes authentication systems, authorization mechanisms, physical security controls, and monitoring capabilities.
+Janua maintains comprehensive access controls that protect both logical (system) and physical (facility) access to information assets. This includes authentication systems, authorization mechanisms, physical security controls, and monitoring capabilities.
 
 ## Sub-Controls
 
@@ -22,7 +22,7 @@ Plinto maintains comprehensive access controls that protect both logical (system
 #### CC6.1.1 Authentication Systems
 **Control Statement**: The entity implements strong authentication mechanisms for all system access.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Multi-factor authentication (MFA) required for all administrative access
 - TOTP-based MFA using industry-standard pyotp library
 - WebAuthn/Passkey support for passwordless authentication
@@ -48,7 +48,7 @@ pwd_context = CryptContext(
 #### CC6.1.2 Authorization and Access Management
 **Control Statement**: The entity implements role-based access control and principle of least privilege.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Role-Based Access Control (RBAC) system with granular permissions
 - Organization-level access segregation
 - Privileged access management for administrative functions
@@ -74,7 +74,7 @@ pwd_context = CryptContext(
 #### CC6.1.3 Session Management
 **Control Statement**: The entity implements secure session management practices.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Redis-based session storage with encryption
 - Session timeout and automatic logout
 - Concurrent session limits
@@ -102,7 +102,7 @@ pwd_context = CryptContext(
 #### CC6.2.1 Network Segmentation
 **Control Statement**: The entity implements network segmentation to control access between system components.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Docker network isolation using dedicated bridge networks
 - Service-to-service communication controls
 - Database and Redis isolation from external networks
@@ -113,9 +113,9 @@ pwd_context = CryptContext(
 ```yaml
 # Location: docker-compose.yml
 networks:
-  plinto-network:
+  janua-network:
     driver: bridge
-    # Isolated network for all Plinto services
+    # Isolated network for all Janua services
 ```
 
 **Evidence Sources**:
@@ -127,7 +127,7 @@ networks:
 #### CC6.2.2 Firewall and Security Controls
 **Control Statement**: The entity implements network security controls including firewall rules and intrusion detection.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Application-level firewall rules via reverse proxy
 - Rate limiting middleware for API protection
 - Security headers for web application security
@@ -159,7 +159,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 #### CC6.3.1 Data Classification and Handling
 **Control Statement**: The entity implements data classification and appropriate access controls based on data sensitivity.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Data classification schema (Public, Internal, Confidential, Restricted)
 - Encryption at rest for sensitive data
 - Encryption in transit for all data transmissions
@@ -184,7 +184,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 #### CC6.3.2 Database Security
 **Control Statement**: The entity implements comprehensive database security controls.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Database authentication and authorization
 - SQL injection prevention via ORM usage
 - Database connection encryption
@@ -212,7 +212,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 #### CC6.4.1 Data Center Security
 **Control Statement**: The entity implements physical security controls for computing infrastructure.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Cloud infrastructure hosted on Railway platform
 - Physical security controls inherited from cloud provider
 - Multi-factor authentication for cloud platform access
@@ -235,7 +235,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 #### CC6.4.2 Equipment and Media Security
 **Control Statement**: The entity implements controls for secure handling of computing equipment and media.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Secure disposal procedures for hardware and media
 - Asset inventory and lifecycle management
 - Secure data destruction verification
@@ -253,7 +253,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 #### CC6.5.1 Access Monitoring
 **Control Statement**: The entity implements continuous monitoring of access activities.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Comprehensive audit logging of all access activities
 - Real-time monitoring and alerting for suspicious activities
 - Failed authentication attempt tracking
@@ -280,7 +280,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 #### CC6.5.2 Access Reviews and Certification
 **Control Statement**: The entity conducts regular reviews of user access rights and certifications.
 
-**Plinto Implementation**:
+**Janua Implementation**:
 - Quarterly access reviews by data owners
 - Annual certification of user access rights
 - Automated detection of excessive privileges
@@ -365,4 +365,4 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 ---
 
-*This control documentation demonstrates Plinto's comprehensive access control implementation and provides the framework for SOC2 Type II audit evidence collection.*
+*This control documentation demonstrates Janua's comprehensive access control implementation and provides the framework for SOC2 Type II audit evidence collection.*

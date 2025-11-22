@@ -8,7 +8,7 @@
 
 ## Overview
 
-This guide demonstrates how to migrate from `structlog.get_logger()` to the enhanced `app.core.logger` infrastructure for consistent, context-aware logging across the Plinto API.
+This guide demonstrates how to migrate from `structlog.get_logger()` to the enhanced `app.core.logger` infrastructure for consistent, context-aware logging across the Janua API.
 
 ---
 
@@ -248,7 +248,7 @@ setup_logging(
     json_output=os.getenv("ENVIRONMENT", "development") == "production"
 )
 
-app = FastAPI(title="Plinto API")
+app = FastAPI(title="Janua API")
 
 @app.on_event("startup")
 async def startup_event():
@@ -361,8 +361,8 @@ ENVIRONMENT=production
       "files": {
         "collect_list": [
           {
-            "file_path": "/var/log/plinto/*.log",
-            "log_group_name": "/aws/plinto/api",
+            "file_path": "/var/log/janua/*.log",
+            "log_group_name": "/aws/janua/api",
             "log_stream_name": "{instance_id}",
             "timestamp_format": "%Y-%m-%dT%H:%M:%S"
           }

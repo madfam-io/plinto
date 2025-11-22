@@ -5,7 +5,7 @@ Comprehensive tests for app.core.errors module
 import pytest
 from fastapi import status
 from app.core.errors import (
-    PlintoAPIException,
+    JanuaAPIException,
     ErrorDetail,
     ErrorResponse,
     BadRequestError,
@@ -72,12 +72,12 @@ class TestErrorResponse:
         assert response.details[0].field == "email"
 
 
-class TestPlintoAPIException:
-    """Test PlintoAPIException base class"""
+class TestJanuaAPIException:
+    """Test JanuaAPIException base class"""
 
-    def test_plinto_api_exception_creation(self):
-        """Test basic PlintoAPIException creation"""
-        exc = PlintoAPIException(
+    def test_janua_api_exception_creation(self):
+        """Test basic JanuaAPIException creation"""
+        exc = JanuaAPIException(
             status_code=400,
             error="Test Error",
             message="Test message"
@@ -87,10 +87,10 @@ class TestPlintoAPIException:
         assert exc.message == "Test message"
         assert exc.detail == "Test message"
 
-    def test_plinto_api_exception_with_details(self):
-        """Test PlintoAPIException with error details"""
+    def test_janua_api_exception_with_details(self):
+        """Test JanuaAPIException with error details"""
         details = [ErrorDetail(field="email", message="Required")]
-        exc = PlintoAPIException(
+        exc = JanuaAPIException(
             status_code=422,
             error="Validation Error",
             message="Validation failed",
@@ -100,10 +100,10 @@ class TestPlintoAPIException:
         assert exc.error_code == "VALIDATION_001"
         assert len(exc.details) == 1
 
-    def test_plinto_api_exception_inheritance(self):
-        """Test PlintoAPIException inherits from HTTPException"""
+    def test_janua_api_exception_inheritance(self):
+        """Test JanuaAPIException inherits from HTTPException"""
         from fastapi import HTTPException
-        exc = PlintoAPIException(
+        exc = JanuaAPIException(
             status_code=400,
             error="Test",
             message="Test"
@@ -285,8 +285,8 @@ class TestServiceUnavailableError:
 class TestErrorHierarchy:
     """Test error class inheritance and relationships"""
 
-    def test_all_errors_inherit_from_plinto_api_exception(self):
-        """Test that all error classes inherit from PlintoAPIException"""
+    def test_all_errors_inherit_from_janua_api_exception(self):
+        """Test that all error classes inherit from JanuaAPIException"""
         error_classes = [
             BadRequestError, UnauthorizedError, ForbiddenError,
             NotFoundError, ConflictError, ValidationError,
@@ -295,7 +295,7 @@ class TestErrorHierarchy:
 
         for error_class in error_classes:
             error_instance = error_class()
-            assert isinstance(error_instance, PlintoAPIException)
+            assert isinstance(error_instance, JanuaAPIException)
 
     def test_all_errors_inherit_from_http_exception(self):
         """Test that all error classes inherit from HTTPException"""
@@ -335,7 +335,7 @@ class TestErrorEdgeCases:
 
     def test_error_with_none_values(self):
         """Test error creation with None values"""
-        error = PlintoAPIException(
+        error = JanuaAPIException(
             status_code=400,
             error="Test",
             message="Test",

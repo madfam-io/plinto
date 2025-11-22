@@ -82,7 +82,7 @@ class LogContext:
 class StructuredLogger:
     """Enhanced structured logger with correlation tracking and performance monitoring"""
 
-    def __init__(self, name: str = "plinto"):
+    def __init__(self, name: str = "janua"):
         self.name = name
         self.logger = structlog.get_logger(name)
         self._setup_stdlib_logging()
@@ -145,7 +145,7 @@ class StructuredLogger:
     def _get_base_context(self) -> Dict[str, Any]:
         """Get base logging context"""
         context = {
-            "service": "plinto-api",
+            "service": "janua-api",
             "version": getattr(settings, 'VERSION', '1.0.0'),
             "environment": getattr(settings, 'ENVIRONMENT', 'development'),
             "timestamp": datetime.utcnow().isoformat(),
@@ -537,7 +537,7 @@ def generate_correlation_id() -> str:
     return str(uuid.uuid4())
 
 
-def get_logger(name: str = "plinto") -> StructuredLogger:
+def get_logger(name: str = "janua") -> StructuredLogger:
     """Get a structured logger instance"""
     return StructuredLogger(name)
 

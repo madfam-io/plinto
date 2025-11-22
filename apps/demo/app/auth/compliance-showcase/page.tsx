@@ -1,6 +1,6 @@
 'use client'
 
-import { AuditLog } from '@plinto/ui'
+import { AuditLog } from '@janua/ui'
 import { useState } from 'react'
 
 export default function ComplianceShowcase() {
@@ -223,7 +223,7 @@ export default function ComplianceShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Basic Audit Log with API</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { AuditLog } from '@plinto/ui'
+import { AuditLog } from '@janua/ui'
 import { useEffect, useState } from 'react'
 
 export default function AuditPage() {

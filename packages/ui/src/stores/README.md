@@ -26,11 +26,11 @@ npm install zustand
 ### SSO Management
 
 ```tsx
-import { useSSO } from '@plinto/ui/stores'
-import { PlintoClient } from '@plinto/typescript-sdk'
+import { useSSO } from '@janua/ui/stores'
+import { JanuaClient } from '@janua/typescript-sdk'
 
 function SSODashboard() {
-  const client = new PlintoClient({ baseURL: 'http://localhost:8000' })
+  const client = new JanuaClient({ baseURL: 'http://localhost:8000' })
   const {
     providers,
     loading,
@@ -76,7 +76,7 @@ function SSODashboard() {
 ### Invitations Management
 
 ```tsx
-import { useInvitations } from '@plinto/ui/stores'
+import { useInvitations } from '@janua/ui/stores'
 
 function InvitationManager() {
   const {
@@ -348,7 +348,7 @@ console.log('Expired:', stats.expired)
 For advanced use cases, access the store directly:
 
 ```tsx
-import { useEnterpriseStore } from '@plinto/ui/stores'
+import { useEnterpriseStore } from '@janua/ui/stores'
 
 function AdvancedComponent() {
   // Use selectors for optimal performance
@@ -453,13 +453,13 @@ Only non-sensitive UI state is persisted to localStorage:
 ### Custom Persistence
 
 ```tsx
-import { useEnterpriseStore } from '@plinto/ui/stores'
+import { useEnterpriseStore } from '@janua/ui/stores'
 
 // Clear persisted state
-localStorage.removeItem('plinto-enterprise-store')
+localStorage.removeItem('janua-enterprise-store')
 
 // Access persisted state
-const persisted = localStorage.getItem('plinto-enterprise-store')
+const persisted = localStorage.getItem('janua-enterprise-store')
 console.log(JSON.parse(persisted))
 ```
 
@@ -627,7 +627,7 @@ console.log('NODE_ENV:', process.env.NODE_ENV)
 ### State Not Persisting
 ```tsx
 // Check localStorage
-console.log(localStorage.getItem('plinto-enterprise-store'))
+console.log(localStorage.getItem('janua-enterprise-store'))
 
 // Only selected provider and filters are persisted
 // Full data lists are NOT persisted (security/freshness)

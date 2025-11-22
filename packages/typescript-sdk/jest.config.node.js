@@ -12,7 +12,7 @@ module.exports = {
   // Module name mapping
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^@plinto/(.*)$': '<rootDir>/../../packages/$1/src',
+    '^@janua/(.*)$': '<rootDir>/../../packages/$1/src',
   },
 
   // Test patterns - only env-utils for now

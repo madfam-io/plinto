@@ -1,10 +1,10 @@
-# Plinto Maintenance System
+# Janua Maintenance System
 
 Automated maintenance infrastructure for code quality, documentation health, and system monitoring.
 
 ## Overview
 
-The maintenance system provides automated checks, scheduled workflows, and manual utilities to keep the Plinto codebase healthy and production-ready.
+The maintenance system provides automated checks, scheduled workflows, and manual utilities to keep the Janua codebase healthy and production-ready.
 
 ## Quick Start
 
@@ -122,7 +122,7 @@ The maintenance system provides automated checks, scheduled workflows, and manua
 ```
 
 **Output**:
-- Generates markdown files in `/tmp/plinto_*.md`
+- Generates markdown files in `/tmp/janua_*.md`
 - Provides instructions for updating Serena memories
 - Auto-refreshes metrics from current codebase state
 
@@ -307,7 +307,7 @@ Add to `update-memory.sh`:
 ENDPOINT_COUNT=$(grep -r "@app\." apps/api --include="*.py" | wc -l)
 
 # Add to memory template
-echo "- **API Endpoints**: ${ENDPOINT_COUNT}" >> /tmp/plinto_project_status.md
+echo "- **API Endpoints**: ${ENDPOINT_COUNT}" >> /tmp/janua_project_status.md
 ```
 
 ### Alert Thresholds

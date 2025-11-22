@@ -1,6 +1,6 @@
-# Plinto UI - Authentication Components
+# Janua UI - Authentication Components
 
-Production-ready authentication components for React applications. These components are designed to match Clerk's developer experience while integrating seamlessly with the Plinto authentication platform.
+Production-ready authentication components for React applications. These components are designed to match Clerk's developer experience while integrating seamlessly with the Janua authentication platform.
 
 ## 🎨 Components
 
@@ -9,7 +9,7 @@ Production-ready authentication components for React applications. These compone
 A complete sign-in component with email/password and social login support.
 
 ```tsx
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 function App() {
   return (
@@ -56,7 +56,7 @@ function App() {
 A complete registration component with validation and password strength meter.
 
 ```tsx
-import { SignUp } from '@plinto/ui'
+import { SignUp } from '@janua/ui'
 
 function App() {
   return (
@@ -104,7 +104,7 @@ function App() {
 A user profile dropdown menu with account management and sign-out.
 
 ```tsx
-import { UserButton } from '@plinto/ui'
+import { UserButton } from '@janua/ui'
 
 function App() {
   const user = {
@@ -190,27 +190,27 @@ Configure which social login providers to display:
 - ✅ Microsoft
 - ✅ Apple
 
-## 🔐 Integration with Plinto SDK
+## 🔐 Integration with Janua SDK
 
-These components are designed to work seamlessly with the Plinto authentication SDK:
+These components are designed to work seamlessly with the Janua authentication SDK:
 
 ```tsx
-import { PlintoProvider } from '@plinto/react'
-import { SignIn } from '@plinto/ui'
+import { JanuaProvider } from '@janua/react'
+import { SignIn } from '@janua/ui'
 
 function App() {
   return (
-    <PlintoProvider
+    <JanuaProvider
       apiUrl={process.env.NEXT_PUBLIC_API_URL}
-      apiKey={process.env.NEXT_PUBLIC_PLINTO_KEY}
+      apiKey={process.env.NEXT_PUBLIC_JANUA_KEY}
     >
       <SignIn
         afterSignIn={async (user) => {
-          // User is automatically authenticated via Plinto context
+          // User is automatically authenticated via Janua context
           console.log('Authenticated user:', user)
         }}
       />
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 ```
@@ -248,7 +248,7 @@ Components are fully tested with:
 
 ```tsx
 // app/sign-in/page.tsx
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 export default function SignInPage() {
   return (
@@ -266,7 +266,7 @@ export default function SignInPage() {
 
 ```tsx
 // pages/sign-in.tsx
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 
 export default function SignInPage() {
   return (
@@ -284,8 +284,8 @@ export default function SignInPage() {
 
 ```tsx
 // src/pages/SignIn.tsx
-import { SignIn } from '@plinto/ui'
-import '@plinto/ui/globals.css' // Import global styles
+import { SignIn } from '@janua/ui'
+import '@janua/ui/globals.css' // Import global styles
 
 export function SignInPage() {
   return (
@@ -306,7 +306,7 @@ export function SignInPage() {
 Multi-factor authentication enrollment component with QR code generation.
 
 ```tsx
-import { MFASetup } from '@plinto/ui'
+import { MFASetup } from '@janua/ui'
 
 function App() {
   return (
@@ -352,7 +352,7 @@ function App() {
 Multi-factor authentication verification component for sign-in flow.
 
 ```tsx
-import { MFAChallenge } from '@plinto/ui'
+import { MFAChallenge } from '@janua/ui'
 
 function App() {
   return (
@@ -399,7 +399,7 @@ function App() {
 Backup code management component for viewing and regenerating recovery codes.
 
 ```tsx
-import { BackupCodes } from '@plinto/ui'
+import { BackupCodes } from '@janua/ui'
 
 function App() {
   return (
@@ -447,7 +447,7 @@ function App() {
 Multi-tenant organization switching component with dropdown menu.
 
 ```tsx
-import { OrganizationSwitcher } from '@plinto/ui'
+import { OrganizationSwitcher } from '@janua/ui'
 
 function App() {
   return (
@@ -507,7 +507,7 @@ function App() {
 Complete organization settings management component with tabs.
 
 ```tsx
-import { OrganizationProfile } from '@plinto/ui'
+import { OrganizationProfile } from '@janua/ui'
 
 function App() {
   return (
@@ -588,7 +588,7 @@ function App() {
 Complete user profile management component with tabs for profile, security, and account settings.
 
 ```tsx
-import { UserProfile } from '@plinto/ui'
+import { UserProfile } from '@janua/ui'
 
 function ProfilePage() {
   return (
@@ -654,7 +654,7 @@ function ProfilePage() {
 Complete password reset flow component with multi-step process.
 
 ```tsx
-import { PasswordReset } from '@plinto/ui'
+import { PasswordReset } from '@janua/ui'
 
 function ResetPasswordPage() {
   return (
@@ -702,7 +702,7 @@ function ResetPasswordPage() {
 Email verification component with automatic token verification.
 
 ```tsx
-import { EmailVerification } from '@plinto/ui'
+import { EmailVerification } from '@janua/ui'
 
 function VerifyEmailPage() {
   const token = new URLSearchParams(window.location.search).get('token')
@@ -754,7 +754,7 @@ function VerifyEmailPage() {
 SMS verification component with two-step flow.
 
 ```tsx
-import { PhoneVerification } from '@plinto/ui'
+import { PhoneVerification } from '@janua/ui'
 
 function VerifyPhonePage() {
   return (
@@ -833,4 +833,4 @@ We welcome contributions! Please see our contributing guidelines for more inform
 
 ## 📄 License
 
-MIT © Plinto
+MIT © Janua

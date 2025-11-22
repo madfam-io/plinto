@@ -61,7 +61,7 @@ features: {
 ```json
 // BEFORE (breaks npm)
 "dependencies": {
-  "@plinto/types": "workspace:*",  // pnpm/yarn only
+  "@janua/types": "workspace:*",  // pnpm/yarn only
   "zod": "^3.22.4"
 }
 

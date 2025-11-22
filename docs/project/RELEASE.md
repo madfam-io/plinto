@@ -1,4 +1,4 @@
-# Plinto Package Release Management
+# Janua Package Release Management
 
 ## 🚀 Release Process
 
@@ -68,24 +68,24 @@
 ## 📦 Package Status
 
 ### Core SDKs (v1.0.0)
-- ✅ `@plinto/typescript-sdk` - Main SDK for TypeScript/JavaScript
-- ✅ `@plinto/react-sdk` - React hooks and components  
-- ✅ `@plinto/vue-sdk` - Vue.js integration
-- ✅ `@plinto/react-native-sdk` - React Native mobile SDK
-- ✅ `@plinto/nextjs-sdk` - Next.js specific SDK (v1.0.0)
-- ✅ `@plinto/flutter-sdk` - Flutter/Dart SDK
-- ✅ `@plinto/go-sdk` - Go language SDK
-- ✅ `plinto-sdk` - Python SDK
+- ✅ `@janua/typescript-sdk` - Main SDK for TypeScript/JavaScript
+- ✅ `@janua/react-sdk` - React hooks and components  
+- ✅ `@janua/vue-sdk` - Vue.js integration
+- ✅ `@janua/react-native-sdk` - React Native mobile SDK
+- ✅ `@janua/nextjs-sdk` - Next.js specific SDK (v1.0.0)
+- ✅ `@janua/flutter-sdk` - Flutter/Dart SDK
+- ✅ `@janua/go-sdk` - Go language SDK
+- ✅ `janua-sdk` - Python SDK
 
 ### Utility Packages (v1.0.0)
-- ✅ `@plinto/core` - Shared business logic
-- ✅ `@plinto/ui` - Component library (v1.0.0)
-- ✅ `@plinto/jwt-utils` - JWT utilities (v1.0.0)
-- ✅ `@plinto/edge` - Edge function utilities (v1.0.0)
-- ✅ `@plinto/monitoring` - Monitoring tools (v1.0.0)
+- ✅ `@janua/core` - Shared business logic
+- ✅ `@janua/ui` - Component library (v1.0.0)
+- ✅ `@janua/jwt-utils` - JWT utilities (v1.0.0)
+- ✅ `@janua/edge` - Edge function utilities (v1.0.0)
+- ✅ `@janua/monitoring` - Monitoring tools (v1.0.0)
 
 ### Private Packages
-- 🔒 `@plinto/mock-api` - Development testing (v1.0.0, private)
+- 🔒 `@janua/mock-api` - Development testing (v1.0.0, private)
 
 ## 🔧 CI/CD Integration
 
@@ -157,7 +157,7 @@ npm run build
 npm whoami
 
 # Check package permissions
-npm access list packages @plinto
+npm access list packages @janua
 
 # Force publish if needed
 npm publish --force --access public
@@ -174,6 +174,6 @@ npm version --workspace=packages/typescript-sdk patch
 
 ## 📊 Registry Links
 
-- **NPM Organization**: https://www.npmjs.com/org/plinto
-- **PyPI Project**: https://pypi.org/project/plinto-sdk/
-- **GitHub Releases**: https://github.com/madfam-io/plinto/releases
+- **NPM Organization**: https://www.npmjs.com/org/janua
+- **PyPI Project**: https://pypi.org/project/janua-sdk/
+- **GitHub Releases**: https://github.com/madfam-io/janua/releases

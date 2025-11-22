@@ -1,5 +1,5 @@
 """
-Structured logging configuration for Plinto API
+Structured logging configuration for Janua API
 Replaces print() statements with structured JSON logging
 """
 

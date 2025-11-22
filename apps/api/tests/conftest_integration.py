@@ -1,5 +1,5 @@
 """
-Main test configuration and shared fixtures for Plinto API tests
+Main test configuration and shared fixtures for Janua API tests
 """
 
 import asyncio

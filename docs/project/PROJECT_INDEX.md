@@ -1,6 +1,6 @@
 # Project Documentation Index
 
-> **Complete documentation map** for the Plinto monorepo
+> **Complete documentation map** for the Janua monorepo
 
 **Last Updated:** January 2025 · **Status:** Active Development
 
@@ -163,31 +163,31 @@
 #### Dashboard (`apps/dashboard`)
 - **README:** [Dashboard README](../apps/dashboard/README.md) - *To be created*
 - **Port:** 3001
-- **Domain:** app.plinto.dev
+- **Domain:** app.janua.dev
 - **Stack:** Next.js 14, TanStack Query
 
 #### Admin Panel (`apps/admin`)
 - **README:** [Admin README](../apps/admin/README.md) - *To be created*
 - **Port:** 3004
-- **Domain:** admin.plinto.dev
+- **Domain:** admin.janua.dev
 - **Stack:** Next.js 14, Enhanced security
 
 #### Marketing Site (`apps/marketing`)
 - **README:** [Marketing README](../apps/marketing/README.md) - *To be created*
 - **Port:** 3003
-- **Domain:** plinto.dev
+- **Domain:** janua.dev
 - **Stack:** Next.js 14, Three.js
 
 #### Demo App (`apps/demo`)
 - **README:** [Demo README](../apps/demo/README.md) - *To be created*
 - **Port:** 3002
-- **Domain:** demo.plinto.dev
+- **Domain:** demo.janua.dev
 - **Stack:** Next.js 14, Framer Motion
 
 #### Documentation (`apps/docs`)
 - **README:** [Docs README](../apps/docs/README.md) - *To be created*
 - **Port:** 3003 ⚠️ (conflict with marketing)
-- **Domain:** docs.plinto.dev
+- **Domain:** docs.janua.dev
 - **Stack:** Next.js 14, MDX
 
 ### Backend Applications
@@ -195,7 +195,7 @@
 #### API (`apps/api`)
 - **README:** [API README](../apps/api/README.md) - **✅ CREATED**
 - **Port:** 8000
-- **Domain:** api.plinto.dev
+- **Domain:** api.janua.dev
 - **Stack:** FastAPI, PostgreSQL, Redis
 - **Coverage:** 22% (target: 100%)
 
@@ -208,46 +208,46 @@
 
 ### UI/Component Libraries
 
-#### @plinto/ui
+#### @janua/ui
 - **README:** [UI Package README](../packages/ui/README.md) - *To be created*
 - **Purpose:** Shared design system
 - **Stack:** Radix UI, Tailwind CSS
 
-#### @plinto/react-sdk
+#### @janua/react-sdk
 - **README:** [React Package README](../packages/react/README.md) - *To be created*
 - **Purpose:** React hooks and utilities
 - **Dependencies:** React 18+
 
 ### SDK Libraries
 
-#### @plinto/sdk
+#### @janua/sdk
 - **README:** [SDK README](../packages/sdk/README.md) - *To be created*
 - **Purpose:** Core JavaScript SDK
 - **Support:** Browser & Node.js
 
-#### @plinto/sdk-js
+#### @janua/sdk-js
 - **README:** [SDK-JS README](../packages/sdk-js/README.md) - *To be created*
 - **Purpose:** Alternative SDK implementation
 - **Status:** In development
 
 ### Utility Packages
 
-#### @plinto/core
+#### @janua/core
 - **README:** [Core README](../packages/core/README.md) - *To be created*
 - **Purpose:** Shared business logic
 - **Status:** Placeholder
 
-#### @plinto/database
+#### @janua/database
 - **README:** [Database README](../packages/database/README.md) - *To be created*
 - **Purpose:** Database utilities
 - **Status:** Placeholder
 
-#### @plinto/monitoring
+#### @janua/monitoring
 - **README:** [Monitoring README](../packages/monitoring/README.md) - *To be created*
 - **Purpose:** Observability utilities
 - **Stack:** OpenTelemetry
 
-#### @plinto/mock-api
+#### @janua/mock-api
 - **README:** [Mock API README](../packages/mock-api/README.md) - *To be created*
 - **Purpose:** Development API server
 - **Port:** 4000
@@ -272,7 +272,7 @@
 
 1. **High Priority**
    - Create README files for all applications
-   - Create README files for core packages (@plinto/ui, @plinto/sdk)
+   - Create README files for core packages (@janua/ui, @janua/sdk)
    - Complete API endpoint documentation
    - Resolve port conflict (docs/marketing)
 

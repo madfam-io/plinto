@@ -1,8 +1,8 @@
-# Plinto Implementation Guide
+# Janua Implementation Guide
 
 ## Quick Start Development Path
 
-This guide provides the optimal implementation strategy to build Plinto from zero to production-ready in 12 weeks.
+This guide provides the optimal implementation strategy to build Janua from zero to production-ready in 12 weeks.
 
 ---
 
@@ -12,7 +12,7 @@ This guide provides the optimal implementation strategy to build Plinto from zer
 
 ```bash
 # Initialize monorepo
-mkdir plinto && cd plinto
+mkdir janua && cd janua
 npm init -y
 npm install -D turbo typescript @types/node
 
@@ -120,8 +120,8 @@ export default {
 
 ```typescript
 // packages/sdk-js/src/index.ts
-export class PlintoClient {
-  constructor(private config: PlintoConfig) {}
+export class JanuaClient {
+  constructor(private config: JanuaConfig) {}
   
   async createIdentity(data: CreateIdentityData) {
     return this.request('/identities', { method: 'POST', body: data });
@@ -158,7 +158,7 @@ terraform {
 module "backend" {
   source = "./modules/railway"
   
-  project_name = "plinto-production"
+  project_name = "janua-production"
   services = {
     api = {
       source = "../../apps/api"
@@ -185,7 +185,7 @@ module "frontend" {
 module "edge" {
   source = "./modules/cloudflare"
   
-  domain = "plinto.dev"
+  domain = "janua.dev"
   workers = {
     verify = { source = "../../apps/edge-verify" }
   }
@@ -203,7 +203,7 @@ services:
     build: ./apps/api
     ports: ["8000:8000"]
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/plinto
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/janua
       REDIS_URL: redis://redis:6379
     depends_on: [db, redis]
     volumes:
@@ -224,7 +224,7 @@ services:
     image: postgres:15-alpine
     environment:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: plinto
+      POSTGRES_DB: janua
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./infrastructure/postgres:/docker-entrypoint-initdb.d
@@ -255,8 +255,8 @@ class PasskeyManager:
         identity = await self.get_identity(identity_id)
         
         options = generate_registration_options(
-            rp_id="plinto.dev",
-            rp_name="Plinto",
+            rp_id="janua.dev",
+            rp_name="Janua",
             user_id=identity_id.bytes,
             user_name=identity.email,
             user_display_name=identity.profile.get("name", identity.email),
@@ -278,8 +278,8 @@ class PasskeyManager:
         verification = verify_registration_response(
             credential=credential,
             expected_challenge=challenge,
-            expected_origin="https://plinto.dev",
-            expected_rp_id="plinto.dev"
+            expected_origin="https://janua.dev",
+            expected_rp_id="janua.dev"
         )
         
         if verification.verified:
@@ -464,9 +464,9 @@ from opentelemetry import trace, metrics
 from prometheus_client import Counter, Histogram
 
 # Metrics
-auth_requests = Counter('plinto_auth_requests_total', 'Total auth requests')
-auth_latency = Histogram('plinto_auth_latency_seconds', 'Auth latency')
-session_duration = Histogram('plinto_session_duration_seconds', 'Session duration')
+auth_requests = Counter('janua_auth_requests_total', 'Total auth requests')
+auth_latency = Histogram('janua_auth_latency_seconds', 'Auth latency')
+session_duration = Histogram('janua_session_duration_seconds', 'Session duration')
 
 # Tracing
 tracer = trace.get_tracer(__name__)
@@ -503,7 +503,7 @@ export let options = {
 
 export default function() {
   // Create identity
-  let createRes = http.post('https://plinto.dev/api/v1/identities', {
+  let createRes = http.post('https://janua.dev/api/v1/identities', {
     email: `test${Date.now()}@example.com`,
     password: 'Test123!@#'
   });
@@ -514,7 +514,7 @@ export default function() {
   });
   
   // Create session
-  let sessionRes = http.post('https://plinto.dev/api/v1/sessions', {
+  let sessionRes = http.post('https://janua.dev/api/v1/sessions', {
     email: email,
     password: 'Test123!@#'
   });
@@ -597,7 +597,7 @@ vercel --prod
 npm run test:production
 
 # 6. Monitor
-open https://plinto.dev/admin/monitoring
+open https://janua.dev/admin/monitoring
 ```
 
 ---

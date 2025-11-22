@@ -196,7 +196,7 @@ Complete MFA and Organization Management components to achieve 85% competitive p
 - Final step completion action
 
 ### 2. Tabbed Interface Pattern (OrganizationProfile)
-- Using `@plinto/ui/Tabs` component
+- Using `@janua/ui/Tabs` component
 - Tab state management
 - Permission-based tab visibility
 - Lazy loading content per tab

@@ -4,7 +4,7 @@
 
 ## Overview
 
-Plinto API provides enterprise-grade MFA/2FA using Time-based One-Time Passwords (TOTP) compatible with Google Authenticator, Authy, and other standard authenticator apps. This guide covers the complete implementation process.
+Janua API provides enterprise-grade MFA/2FA using Time-based One-Time Passwords (TOTP) compatible with Google Authenticator, Authy, and other standard authenticator apps. This guide covers the complete implementation process.
 
 ## 🔐 MFA Features
 
@@ -29,7 +29,7 @@ Plinto API provides enterprise-grade MFA/2FA using Time-based One-Time Passwords
 
 ```bash
 # Step 1: Initiate MFA setup
-curl -X POST "https://api.plinto.dev/api/v1/mfa/enable" \
+curl -X POST "https://api.janua.dev/api/v1/mfa/enable" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -55,7 +55,7 @@ curl -X POST "https://api.plinto.dev/api/v1/mfa/enable" \
 
 ```bash
 # Step 2: Verify with code from authenticator app
-curl -X POST "https://api.plinto.dev/api/v1/mfa/verify" \
+curl -X POST "https://api.janua.dev/api/v1/mfa/verify" \
   -H "Authorization: Bearer <access_token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -67,7 +67,7 @@ curl -X POST "https://api.plinto.dev/api/v1/mfa/verify" \
 
 ```bash
 curl -H "Authorization: Bearer <access_token>" \
-     "https://api.plinto.dev/api/v1/mfa/status"
+     "https://api.janua.dev/api/v1/mfa/status"
 ```
 
 **Response:**

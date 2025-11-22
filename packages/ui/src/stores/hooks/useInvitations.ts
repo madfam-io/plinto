@@ -7,7 +7,7 @@ import type { Invitation, InvitationStats } from '../enterprise.store'
  *
  * @example
  * ```tsx
- * const { invitations, stats, loading, createInvitation, revokeInvitation } = useInvitations(plintoClient)
+ * const { invitations, stats, loading, createInvitation, revokeInvitation } = useInvitations(januaClient)
  *
  * // Create invitation with optimistic update
  * await createInvitation({

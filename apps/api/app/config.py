@@ -19,12 +19,12 @@ class Settings(BaseSettings):
 
     # Application
     VERSION: str = "0.1.0"
-    APP_NAME: str = Field(default="Plinto")
+    APP_NAME: str = Field(default="Janua")
     DEBUG: bool = Field(default=False)
     ENVIRONMENT: str = Field(
         default="development", pattern="^(development|staging|production|test)$"
     )
-    BASE_URL: str = Field(default="https://plinto.dev")
+    BASE_URL: str = Field(default="https://janua.dev")
     INTERNAL_BASE_URL: Optional[str] = Field(
         default=None, description="Internal service URL for Railway private networking"
     )
@@ -34,7 +34,7 @@ class Settings(BaseSettings):
 
     # Database
     DATABASE_URL: str = Field(
-        default="postgresql://postgres:postgres@localhost:5432/plinto",
+        default="postgresql://postgres:postgres@localhost:5432/janua",
         description="PostgreSQL connection URL",
     )
     DATABASE_POOL_SIZE: int = Field(default=20)
@@ -50,8 +50,8 @@ class Settings(BaseSettings):
     # JWT
     JWT_SECRET_KEY: Optional[str] = Field(default=None)
     JWT_ALGORITHM: str = Field(default="RS256")
-    JWT_ISSUER: str = Field(default="https://plinto.dev")
-    JWT_AUDIENCE: str = Field(default="plinto.dev")
+    JWT_ISSUER: str = Field(default="https://janua.dev")
+    JWT_AUDIENCE: str = Field(default="janua.dev")
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(default=15)
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = Field(default=7)
     # Aliases for compatibility
@@ -70,7 +70,7 @@ class Settings(BaseSettings):
 
     # CORS
     CORS_ORIGINS: str = Field(
-        default="http://localhost:3000,https://plinto.dev",
+        default="http://localhost:3000,https://janua.dev",
         description="Comma-separated string or JSON array of allowed CORS origins",
     )
 
@@ -85,8 +85,8 @@ class Settings(BaseSettings):
     # Email
     EMAIL_ENABLED: bool = Field(default=False)
     EMAIL_PROVIDER: str = Field(default="resend", pattern="^(resend|ses|smtp|sendgrid)$")
-    EMAIL_FROM_ADDRESS: str = Field(default="noreply@plinto.dev")
-    EMAIL_FROM_NAME: str = Field(default="Plinto")
+    EMAIL_FROM_ADDRESS: str = Field(default="noreply@janua.dev")
+    EMAIL_FROM_NAME: str = Field(default="Janua")
     RESEND_API_KEY: Optional[str] = Field(default=None)
 
     # SMTP Configuration (for development/self-hosted)
@@ -112,9 +112,9 @@ class Settings(BaseSettings):
             self.SUPPORT_EMAIL = self.EMAIL_FROM_ADDRESS
 
     # WebAuthn
-    WEBAUTHN_RP_ID: str = Field(default="plinto.dev")
-    WEBAUTHN_RP_NAME: str = Field(default="Plinto")
-    WEBAUTHN_ORIGIN: str = Field(default="https://plinto.dev")
+    WEBAUTHN_RP_ID: str = Field(default="janua.dev")
+    WEBAUTHN_RP_NAME: str = Field(default="Janua")
+    WEBAUTHN_ORIGIN: str = Field(default="https://janua.dev")
     WEBAUTHN_TIMEOUT: int = Field(default=60000)  # milliseconds
 
     # Cloudflare
@@ -122,7 +122,7 @@ class Settings(BaseSettings):
     CLOUDFLARE_ACCOUNT_ID: Optional[str] = Field(default=None)
     CLOUDFLARE_R2_ACCESS_KEY: Optional[str] = Field(default=None)
     CLOUDFLARE_R2_SECRET_KEY: Optional[str] = Field(default=None)
-    CLOUDFLARE_R2_BUCKET: str = Field(default="plinto-audit")
+    CLOUDFLARE_R2_BUCKET: str = Field(default="janua-audit")
     R2_ENDPOINT: Optional[str] = Field(default=None, description="Cloudflare R2 endpoint URL")
     R2_ACCESS_KEY_ID: Optional[str] = Field(default=None, description="Cloudflare R2 access key ID")
     R2_SECRET_ACCESS_KEY: Optional[str] = Field(
@@ -325,7 +325,7 @@ class Settings(BaseSettings):
         import json
 
         if not self.CORS_ORIGINS.strip():
-            return ["http://localhost:3000", "https://plinto.dev"]
+            return ["http://localhost:3000", "https://janua.dev"]
 
         # Try to parse as JSON first (for backwards compatibility)
         if self.CORS_ORIGINS.strip().startswith("["):

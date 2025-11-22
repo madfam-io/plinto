@@ -462,8 +462,8 @@ async def passkey_register_options(
         "message": "WebAuthn registration options would be generated here",
         "challenge": str(uuid4()),
         "rp": {
-            "name": "Plinto",
-            "id": "plinto.dev"
+            "name": "Janua",
+            "id": "janua.dev"
         },
         "user": {
             "id": str(uuid4()),

@@ -6,7 +6,7 @@ import { getEnvironment, isDemo, isProduction, getFeature, DEMO_CREDENTIALS, DEM
 
 // Mock Next.js environment variables
 const mockEnv = {
-  NEXT_PUBLIC_PLINTO_ENV: 'demo',
+  NEXT_PUBLIC_JANUA_ENV: 'demo',
   NEXT_PUBLIC_API_URL: '',
   NEXT_PUBLIC_APP_URL: ''
 }
@@ -20,14 +20,14 @@ Object.defineProperty(process, 'env', {
 describe('config', () => {
   beforeEach(() => {
     // Reset environment variables
-    mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+    mockEnv.NEXT_PUBLIC_JANUA_ENV = 'demo'
     mockEnv.NEXT_PUBLIC_API_URL = ''
     mockEnv.NEXT_PUBLIC_APP_URL = ''
   })
 
   describe('getEnvironment', () => {
-    it('should return demo environment when NEXT_PUBLIC_PLINTO_ENV is demo', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+    it('should return demo environment when NEXT_PUBLIC_JANUA_ENV is demo', () => {
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'demo'
       const env = getEnvironment()
       
       expect(env.name).toBe('demo')
@@ -37,39 +37,39 @@ describe('config', () => {
       expect(env.demo).toBeDefined()
     })
 
-    it('should return staging environment when NEXT_PUBLIC_PLINTO_ENV is staging', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'staging'
+    it('should return staging environment when NEXT_PUBLIC_JANUA_ENV is staging', () => {
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'staging'
       const env = getEnvironment()
       
       expect(env.name).toBe('staging')
-      expect(env.apiUrl).toBe('https://staging-api.plinto.dev')
+      expect(env.apiUrl).toBe('https://staging-api.janua.dev')
       expect(env.features.showDemoNotice).toBe(false)
       expect(env.features.realSignups).toBe(true)
     })
 
-    it('should return production environment when NEXT_PUBLIC_PLINTO_ENV is production', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'production'
+    it('should return production environment when NEXT_PUBLIC_JANUA_ENV is production', () => {
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'production'
       const env = getEnvironment()
       
       expect(env.name).toBe('production')
-      expect(env.apiUrl).toBe('https://api.plinto.dev')
+      expect(env.apiUrl).toBe('https://api.janua.dev')
       expect(env.features.realSignups).toBe(true)
       expect(env.features.realBilling).toBe(true)
     })
 
-    it('should default to production when NEXT_PUBLIC_PLINTO_ENV is not set', () => {
-      delete mockEnv.NEXT_PUBLIC_PLINTO_ENV
+    it('should default to production when NEXT_PUBLIC_JANUA_ENV is not set', () => {
+      delete mockEnv.NEXT_PUBLIC_JANUA_ENV
       const env = getEnvironment()
       
       expect(env.name).toBe('production')
-      expect(env.apiUrl).toBe('https://api.plinto.dev')
+      expect(env.apiUrl).toBe('https://api.janua.dev')
     })
 
     it('should fallback to production for unknown environment', () => {
       // This should trigger the console.warn and fallback
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
       
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'unknown'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'unknown'
       const env = getEnvironment()
       
       expect(env.name).toBe('production')
@@ -86,47 +86,47 @@ describe('config', () => {
     })
 
     it('should use default API URLs when env vars are not set', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'staging'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'staging'
       delete mockEnv.NEXT_PUBLIC_API_URL
       
       const env = getEnvironment()
-      expect(env.apiUrl).toBe('https://staging-api.plinto.dev')
+      expect(env.apiUrl).toBe('https://staging-api.janua.dev')
     })
   })
 
   describe('isDemo', () => {
     it('should return true when environment is demo', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'demo'
       expect(isDemo()).toBe(true)
     })
 
     it('should return false when environment is not demo', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'production'
       expect(isDemo()).toBe(false)
     })
   })
 
   describe('isProduction', () => {
     it('should return true when environment is production', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'production'
       expect(isProduction()).toBe(true)
     })
 
     it('should return false when environment is not production', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'demo'
       expect(isProduction()).toBe(false)
     })
   })
 
   describe('getFeature', () => {
     it('should return feature flag value for demo environment', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'demo'
       expect(getFeature('showDemoNotice')).toBe(true)
       expect(getFeature('realSignups')).toBe(false)
     })
 
     it('should return feature flag value for production environment', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'production'
       expect(getFeature('showDemoNotice')).toBe(false)
       expect(getFeature('realSignups')).toBe(true)
       expect(getFeature('realBilling')).toBe(true)
@@ -143,7 +143,7 @@ describe('config', () => {
         'demoCredentials'
       ]
       
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'demo'
       
       features.forEach(feature => {
         const value = getFeature(feature as any)
@@ -195,7 +195,7 @@ describe('config', () => {
 
   describe('Environment interface compliance', () => {
     it('should have all required properties in demo environment', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'demo'
       const env = getEnvironment()
       
       const requiredProps = ['name', 'apiUrl', 'appUrl', 'features']
@@ -208,7 +208,7 @@ describe('config', () => {
     })
 
     it('should have all required properties in production environment', () => {
-      mockEnv.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      mockEnv.NEXT_PUBLIC_JANUA_ENV = 'production'
       const env = getEnvironment()
       
       const requiredProps = ['name', 'apiUrl', 'appUrl', 'features']

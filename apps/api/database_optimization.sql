@@ -1,4 +1,4 @@
--- Database Optimization Strategy for Plinto Platform
+-- Database Optimization Strategy for Janua Platform
 -- Phase 2: Performance Optimization - Database Indexing and Query Optimization
 -- Target: Sub-100ms API response times
 

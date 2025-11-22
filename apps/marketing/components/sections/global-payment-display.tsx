@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion'
 import { CreditCard, Globe, DollarSign, Building2, Check, ArrowRight, Percent, Shield } from 'lucide-react'
-import { Badge } from '@plinto/ui'
-import { Button } from '@plinto/ui'
+import { Badge } from '@janua/ui'
+import { Button } from '@janua/ui'
 
 interface PaymentProvider {
   name: string

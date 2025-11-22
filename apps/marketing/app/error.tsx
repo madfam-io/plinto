@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { AlertCircle, RefreshCw, Home } from 'lucide-react'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 
 export default function Error({
   error,

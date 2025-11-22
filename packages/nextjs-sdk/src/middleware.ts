@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-export interface PlintoMiddlewareConfig {
+export interface JanuaMiddlewareConfig {
   jwtSecret: string;
   publicRoutes?: string[];
   protectedRoutes?: string[];
@@ -9,13 +9,13 @@ export interface PlintoMiddlewareConfig {
   cookieName?: string;
 }
 
-export function createPlintoMiddleware(config: PlintoMiddlewareConfig) {
+export function createJanuaMiddleware(config: JanuaMiddlewareConfig) {
   const {
     jwtSecret,
     publicRoutes = ['/login', '/signup', '/forgot-password'],
     protectedRoutes = [],
     redirectUrl = '/login',
-    cookieName = 'plinto-session',
+    cookieName = 'janua-session',
   } = config;
 
   const secret = new TextEncoder().encode(jwtSecret);
@@ -76,17 +76,17 @@ export function createPlintoMiddleware(config: PlintoMiddlewareConfig) {
 
 // Pre-configured middleware for common use cases
 export function withAuth(
-  config: Omit<PlintoMiddlewareConfig, 'jwtSecret'> & { jwtSecret?: string }
+  config: Omit<JanuaMiddlewareConfig, 'jwtSecret'> & { jwtSecret?: string }
 ) {
-  const jwtSecret = config.jwtSecret || process.env.PLINTO_JWT_SECRET;
+  const jwtSecret = config.jwtSecret || process.env.JANUA_JWT_SECRET;
   
   if (!jwtSecret) {
     throw new Error(
-      'JWT secret is required. Set PLINTO_JWT_SECRET environment variable or pass jwtSecret in config.'
+      'JWT secret is required. Set JANUA_JWT_SECRET environment variable or pass jwtSecret in config.'
     );
   }
 
-  return createPlintoMiddleware({ ...config, jwtSecret });
+  return createJanuaMiddleware({ ...config, jwtSecret });
 }
 
 // Middleware matcher configuration

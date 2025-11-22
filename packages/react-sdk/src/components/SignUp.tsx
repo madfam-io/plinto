@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { usePlinto } from '../provider'
+import { useJanua } from '../provider'
 
 interface SignUpProps {
   onSuccess?: () => void
@@ -18,7 +18,7 @@ export function SignUp({
   requireOrganization = false,
   requireEmailVerification = false
 }: SignUpProps) {
-  const { client, signIn, isLoading } = usePlinto()
+  const { client, signIn, isLoading } = useJanua()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -38,7 +38,7 @@ export function SignUp({
     setError(null)
 
     try {
-      // Sign up the user with the Plinto SDK
+      // Sign up the user with the Janua SDK
       await client.signUp({
         email: formData.email,
         password: formData.password,
@@ -73,7 +73,7 @@ export function SignUp({
   }
 
   return (
-    <div className={`plinto-signup ${className}`}>
+    <div className={`janua-signup ${className}`}>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>

@@ -17,11 +17,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Subscription, SubscriptionPlan, BillingInterval } from '@plinto/typescript-sdk';
+import type { Subscription, SubscriptionPlan, BillingInterval } from '@janua/typescript-sdk';
 
 export interface SubscriptionManagementProps {
   /**
-   * Plinto client instance
+   * Janua client instance
    */
   client: any;
 

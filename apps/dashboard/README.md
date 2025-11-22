@@ -1,12 +1,12 @@
-# Plinto Dashboard
+# Janua Dashboard
 
-> **Customer tenant management portal** for the Plinto platform
+> **Customer tenant management portal** for the Janua platform
 
-**Status:** Active Development · **Domain:** `app.plinto.dev` · **Port:** 3001
+**Status:** Active Development · **Domain:** `app.janua.dev` · **Port:** 3001
 
 ## 📋 Overview
 
-The Plinto Dashboard is the primary customer-facing application where users manage their accounts, organizations, team members, and platform settings. Built with Next.js 14 and modern React patterns for optimal performance and user experience.
+The Janua Dashboard is the primary customer-facing application where users manage their accounts, organizations, team members, and platform settings. Built with Next.js 14 and modern React patterns for optimal performance and user experience.
 
 ## 🚀 Quick Start
 
@@ -14,7 +14,7 @@ The Plinto Dashboard is the primary customer-facing application where users mana
 
 - Node.js 18+
 - Yarn (workspace management)
-- Access to Plinto API (local or remote)
+- Access to Janua API (local or remote)
 
 ### Installation
 
@@ -41,8 +41,8 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 # Authentication
-NEXT_PUBLIC_AUTH_DOMAIN=plinto.dev
-NEXT_PUBLIC_JWT_ISSUER=https://plinto.dev
+NEXT_PUBLIC_AUTH_DOMAIN=janua.dev
+NEXT_PUBLIC_JWT_ISSUER=https://janua.dev
 
 # Features
 NEXT_PUBLIC_ENABLE_ANALYTICS=true
@@ -91,7 +91,7 @@ apps/dashboard/
 ### Technology Stack
 
 - **Framework:** Next.js 14 (App Router)
-- **UI Library:** @plinto/ui (shared design system)
+- **UI Library:** @janua/ui (shared design system)
 - **State Management:** TanStack Query v5
 - **Forms:** React Hook Form + Zod validation
 - **Tables:** TanStack Table v8
@@ -137,20 +137,20 @@ apps/dashboard/
 
 ## 🧩 Components
 
-### Shared Components from @plinto/ui
+### Shared Components from @janua/ui
 
 The dashboard leverages the shared design system:
 
 ```tsx
-import { Button, Card, Input, Select } from '@plinto/ui';
-import { useAuth } from '@plinto/react-sdk';
+import { Button, Card, Input, Select } from '@janua/ui';
+import { useAuth } from '@janua/react-sdk';
 ```
 
 ### Dashboard-Specific Components
 
 ```tsx
 // components/dashboard/StatsCard.tsx
-import { Card } from '@plinto/ui';
+import { Card } from '@janua/ui';
 
 export function StatsCard({ title, value, change }) {
   return (
@@ -188,9 +188,9 @@ export function useUserData() {
 
 ```tsx
 // lib/api/client.ts
-import { PlintoClient } from '@plinto/sdk';
+import { JanuaClient } from '@janua/sdk';
 
-export const plinto = new PlintoClient({
+export const janua = new JanuaClient({
   apiUrl: process.env.NEXT_PUBLIC_API_URL,
   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
 });
@@ -244,22 +244,22 @@ The dashboard is configured for automatic deployment on Vercel:
 
 ```bash
 # Build Docker image
-docker build -t plinto-dashboard .
+docker build -t janua-dashboard .
 
 # Run container
-docker run -p 3001:3001 plinto-dashboard
+docker run -p 3001:3001 janua-dashboard
 ```
 
 ## 🔧 Configuration
 
 ### Tailwind Configuration
 
-The dashboard extends the base Tailwind config from @plinto/ui:
+The dashboard extends the base Tailwind config from @janua/ui:
 
 ```js
 // tailwind.config.js
 module.exports = {
-  presets: [require('@plinto/ui/tailwind.config')],
+  presets: [require('@janua/ui/tailwind.config')],
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
@@ -365,4 +365,4 @@ See the [Contributing Guide](../../CONTRIBUTING.md) for development guidelines.
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

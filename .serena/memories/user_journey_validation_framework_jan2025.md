@@ -188,7 +188,7 @@ Creates GitHub issue on failure with:
    - `tests/e2e/journeys/business-decision-maker.spec.ts`
 
 2. **Build test application**:
-   - `tests/test-app/src/` - Express server with Plinto SDK integration
+   - `tests/test-app/src/` - Express server with Janua SDK integration
    - Authentication flows (signup, login, MFA, passkey)
    - Profile management and security settings
 
@@ -249,12 +249,12 @@ package.json                            # Updated with test scripts
 
 | Service | Port | Container |
 |---------|------|-----------|
-| API | 8000 | plinto-api-test |
-| Landing | 3000 | plinto-landing-test |
-| Test App | 3001 | plinto-test-app |
-| Dashboard | 3002 | plinto-dashboard-test |
-| PostgreSQL | 5432 | plinto-postgres-test |
-| Redis | 6379 | plinto-redis-test |
+| API | 8000 | janua-api-test |
+| Landing | 3000 | janua-landing-test |
+| Test App | 3001 | janua-test-app |
+| Dashboard | 3002 | janua-dashboard-test |
+| PostgreSQL | 5432 | janua-postgres-test |
+| Redis | 6379 | janua-redis-test |
 
 ### Dependencies Required
 
@@ -267,7 +267,7 @@ package.json                            # Updated with test scripts
 
 ```bash
 ENVIRONMENT=test
-DATABASE_URL=postgresql://test_user:test_pass@postgres:5432/plinto_test
+DATABASE_URL=postgresql://test_user:test_pass@postgres:5432/janua_test
 REDIS_URL=redis://redis:6379/0
 JWT_SECRET=test_jwt_secret_key_for_journey_tests_only
 API_KEY=test-api-key-journey-validation

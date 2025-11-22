@@ -15,33 +15,33 @@ export async function GET(_request: NextRequest) {
 
   // Basic Prometheus format metrics
   const prometheusMetrics = `
-# HELP plinto_admin_actions_total Total admin actions performed
-# TYPE plinto_admin_actions_total counter
-plinto_admin_actions_total ${metrics.adminActions}
+# HELP janua_admin_actions_total Total admin actions performed
+# TYPE janua_admin_actions_total counter
+janua_admin_actions_total ${metrics.adminActions}
 
-# HELP plinto_admin_user_operations_total Total user operations
-# TYPE plinto_admin_user_operations_total counter
-plinto_admin_user_operations_total ${metrics.userOperations}
+# HELP janua_admin_user_operations_total Total user operations
+# TYPE janua_admin_user_operations_total counter
+janua_admin_user_operations_total ${metrics.userOperations}
 
-# HELP plinto_admin_config_changes_total Total configuration changes
-# TYPE plinto_admin_config_changes_total counter
-plinto_admin_config_changes_total ${metrics.configChanges}
+# HELP janua_admin_config_changes_total Total configuration changes
+# TYPE janua_admin_config_changes_total counter
+janua_admin_config_changes_total ${metrics.configChanges}
 
-# HELP plinto_admin_errors_total Total admin interface errors
-# TYPE plinto_admin_errors_total counter
-plinto_admin_errors_total ${metrics.errors}
+# HELP janua_admin_errors_total Total admin interface errors
+# TYPE janua_admin_errors_total counter
+janua_admin_errors_total ${metrics.errors}
 
-# HELP plinto_admin_uptime_seconds Application uptime in seconds
-# TYPE plinto_admin_uptime_seconds gauge
-plinto_admin_uptime_seconds ${Math.floor(uptime / 1000)}
+# HELP janua_admin_uptime_seconds Application uptime in seconds
+# TYPE janua_admin_uptime_seconds gauge
+janua_admin_uptime_seconds ${Math.floor(uptime / 1000)}
 
-# HELP plinto_admin_build_info Build information
-# TYPE plinto_admin_build_info gauge
-plinto_admin_build_info{version="1.0.0",environment="${process.env.NODE_ENV || 'development'}"} 1
+# HELP janua_admin_build_info Build information
+# TYPE janua_admin_build_info gauge
+janua_admin_build_info{version="1.0.0",environment="${process.env.NODE_ENV || 'development'}"} 1
 
-# HELP plinto_admin_memory_usage_bytes Memory usage in bytes
-# TYPE plinto_admin_memory_usage_bytes gauge
-plinto_admin_memory_usage_bytes ${process.memoryUsage().rss}
+# HELP janua_admin_memory_usage_bytes Memory usage in bytes
+# TYPE janua_admin_memory_usage_bytes gauge
+janua_admin_memory_usage_bytes ${process.memoryUsage().rss}
 `.trim()
 
   return new NextResponse(prometheusMetrics, {

@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Play, Globe, Zap, AlertCircle, ChevronRight, Server } from 'lucide-react'
-import { Button } from '@plinto/ui'
-import { Badge } from '@plinto/ui'
+import { Button } from '@janua/ui'
+import { Badge } from '@janua/ui'
 
 interface LatencyTest {
   location: string
@@ -14,7 +14,7 @@ interface LatencyTest {
 }
 
 interface ComparisonData {
-  plinto: number
+  janua: number
   auth0: number
   clerk: number
   supabase: number
@@ -69,7 +69,7 @@ export function PerformanceDemo() {
 
     // These are realistic estimates based on typical CDN performance
     setComparison({
-      plinto: avgLatency,
+      janua: avgLatency,
       auth0: 120 + Math.random() * 40, // Auth0 typically 120-160ms
       clerk: 80 + Math.random() * 30,   // Clerk typically 80-110ms
       supabase: 60 + Math.random() * 30 // Supabase typically 60-90ms
@@ -199,9 +199,9 @@ export function PerformanceDemo() {
             {comparison ? (
               <div className="space-y-4">
                 {Object.entries(comparison).map(([provider, latency]) => {
-                  const isPlinto = provider === 'plinto'
+                  const isJanua = provider === 'janua'
                   const displayName = {
-                    plinto: 'Plinto (Edge)',
+                    janua: 'Janua (Edge)',
                     auth0: 'Auth0',
                     clerk: 'Clerk',
                     supabase: 'Supabase'
@@ -213,19 +213,19 @@ export function PerformanceDemo() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       className={`p-4 rounded-lg border ${
-                        isPlinto
+                        isJanua
                           ? 'bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-blue-200 dark:border-blue-800'
                           : 'bg-slate-50 dark:bg-slate-800/30 border-slate-200 dark:border-slate-700'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className={`font-medium ${
-                          isPlinto ? 'text-blue-900 dark:text-blue-100' : 'text-slate-700 dark:text-slate-300'
+                          isJanua ? 'text-blue-900 dark:text-blue-100' : 'text-slate-700 dark:text-slate-300'
                         }`}>
                           {displayName}
                         </span>
                         <span className={`font-mono font-bold ${
-                          isPlinto ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-white'
+                          isJanua ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-white'
                         }`}>
                           {Math.round(latency)}ms
                         </span>
@@ -236,13 +236,13 @@ export function PerformanceDemo() {
                           animate={{ width: `${(latency / 200) * 100}%` }}
                           transition={{ duration: 0.5, ease: 'easeOut' }}
                           className={`h-full ${
-                            isPlinto
+                            isJanua
                               ? 'bg-gradient-to-r from-blue-500 to-cyan-500'
                               : 'bg-slate-400'
                           }`}
                         />
                       </div>
-                      {isPlinto && (
+                      {isJanua && (
                         <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
                           {Math.round(((comparison.auth0 - latency) / comparison.auth0) * 100)}% faster than Auth0
                         </p>

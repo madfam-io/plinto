@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# Plinto Development Setup Script
+# Janua Development Setup Script
 # This script sets up local development environment with subdomain routing
 
-echo "🚀 Setting up Plinto development environment..."
+echo "🚀 Setting up Janua development environment..."
 
 # Add local domains to /etc/hosts
 echo "
-# Plinto local development
-127.0.0.1 plinto.local
-127.0.0.1 app.plinto.local
-127.0.0.1 admin.plinto.local
-127.0.0.1 api.plinto.local
+# Janua local development
+127.0.0.1 janua.local
+127.0.0.1 app.janua.local
+127.0.0.1 admin.janua.local
+127.0.0.1 api.janua.local
 " | sudo tee -a /etc/hosts
 
 # Install dependencies for all apps
@@ -45,10 +45,10 @@ cd ..
 echo "✅ Development environment is ready!"
 echo ""
 echo "🌐 Access your apps at:"
-echo "   Marketing: http://plinto.local"
-echo "   Dashboard: http://app.plinto.local"
-echo "   Admin: http://admin.plinto.local"
-echo "   API: http://api.plinto.local"
+echo "   Marketing: http://janua.local"
+echo "   Dashboard: http://app.janua.local"
+echo "   Admin: http://admin.janua.local"
+echo "   API: http://api.janua.local"
 echo ""
 echo "📝 Don't forget to start nginx with: nginx -c $(pwd)/nginx.conf"
 echo ""

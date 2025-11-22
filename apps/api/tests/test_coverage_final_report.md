@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Successfully improved the Plinto Authentication Platform test coverage through systematic test implementation and infrastructure fixes.
+Successfully improved the Janua Authentication Platform test coverage through systematic test implementation and infrastructure fixes.
 
 ### 📊 Coverage Metrics
 

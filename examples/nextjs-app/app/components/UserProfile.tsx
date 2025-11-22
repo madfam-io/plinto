@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth, useUser } from '@plinto/react-sdk';
+import { useAuth, useUser } from '@janua/react-sdk';
 
 export function UserProfile() {
   const { signOut } = useAuth();

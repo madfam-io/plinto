@@ -1,8 +1,8 @@
-# Plinto Database Backup and Disaster Recovery Strategy
+# Janua Database Backup and Disaster Recovery Strategy
 
 ## Overview
 
-This document outlines the comprehensive backup and disaster recovery (DR) procedures for the Plinto Identity Platform, ensuring business continuity and data protection.
+This document outlines the comprehensive backup and disaster recovery (DR) procedures for the Janua Identity Platform, ensuring business continuity and data protection.
 
 ## Backup Strategy
 
@@ -89,9 +89,9 @@ set -e
 
 # Configuration
 DB_HOST="${DB_HOST:-localhost}"
-DB_NAME="${DB_NAME:-plinto}"
-DB_USER="${DB_USER:-plinto}"
-S3_BUCKET="${S3_BUCKET:-plinto-backups}"
+DB_NAME="${DB_NAME:-janua}"
+DB_USER="${DB_USER:-janua}"
+S3_BUCKET="${S3_BUCKET:-janua-backups}"
 BACKUP_DIR="/tmp/backups"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 BACKUP_FILE="postgres_${DB_NAME}_${TIMESTAMP}.sql.gz"
@@ -144,9 +144,9 @@ set -e
 
 # Configuration
 DB_HOST="${DB_HOST:-localhost}"
-DB_NAME="${DB_NAME:-plinto}"
-DB_USER="${DB_USER:-plinto}"
-S3_BUCKET="${S3_BUCKET:-plinto-backups}"
+DB_NAME="${DB_NAME:-janua}"
+DB_USER="${DB_USER:-janua}"
+S3_BUCKET="${S3_BUCKET:-janua-backups}"
 RESTORE_DIR="/tmp/restore"
 
 # Parse arguments
@@ -168,7 +168,7 @@ aws s3 cp s3://${S3_BUCKET}/postgres/daily/${BACKUP_FILE} \
 
 # Stop application connections
 echo "Stopping application connections"
-kubectl scale deployment plinto-api --replicas=0
+kubectl scale deployment janua-api --replicas=0
 
 # Restore database
 echo "Restoring database from backup"
@@ -194,7 +194,7 @@ PGPASSWORD=${DB_PASSWORD} psql \
 
 # Restart application
 echo "Restarting application"
-kubectl scale deployment plinto-api --replicas=3
+kubectl scale deployment janua-api --replicas=3
 
 # Clean up
 rm -f ${RESTORE_DIR}/${BACKUP_FILE}

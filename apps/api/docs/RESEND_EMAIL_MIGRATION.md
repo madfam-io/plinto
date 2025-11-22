@@ -6,7 +6,7 @@
 
 ## Overview
 
-Successfully migrated from SendGrid to Resend for all email delivery in the Plinto platform. Resend provides a superior developer experience, modern API, and better deliverability for transactional emails.
+Successfully migrated from SendGrid to Resend for all email delivery in the Janua platform. Resend provides a superior developer experience, modern API, and better deliverability for transactional emails.
 
 ## Migration Summary
 
@@ -107,14 +107,14 @@ async def send_email(
 await email_service.send_verification_email(
     to_email="user@example.com",
     user_name="John Doe",
-    verification_url="https://plinto.dev/verify?token=..."
+    verification_url="https://janua.dev/verify?token=..."
 )
 
 # Password reset
 await email_service.send_password_reset_email(
     to_email="user@example.com",
     user_name="John Doe",
-    reset_url="https://plinto.dev/reset?token=..."
+    reset_url="https://janua.dev/reset?token=..."
 )
 
 # Welcome email
@@ -132,7 +132,7 @@ await email_service.send_invitation_email(
     inviter_name="Admin User",
     organization_name="Acme Corp",
     role="member",
-    invitation_url="https://plinto.dev/invite?token=...",
+    invitation_url="https://janua.dev/invite?token=...",
     expires_at=datetime.utcnow() + timedelta(days=7),
     teams=["engineering", "product"]
 )
@@ -143,7 +143,7 @@ await email_service.send_sso_configuration_email(
     admin_name="Admin User",
     organization_name="Acme Corp",
     sso_provider="okta",
-    configuration_url="https://plinto.dev/settings/sso",
+    configuration_url="https://janua.dev/settings/sso",
     domains=["company.com", "company.io"]
 )
 
@@ -153,7 +153,7 @@ await email_service.send_sso_enabled_email(
     user_name="John Doe",
     organization_name="Acme Corp",
     sso_provider="okta",
-    login_url="https://plinto.dev/login"
+    login_url="https://janua.dev/login"
 )
 
 # Compliance alerts
@@ -164,7 +164,7 @@ await email_service.send_compliance_alert_email(
     alert_type="Data Subject Request",
     alert_description="User requested data export under GDPR Article 15",
     action_required=True,
-    action_url="https://plinto.dev/compliance/requests/123",
+    action_url="https://janua.dev/compliance/requests/123",
     deadline=datetime.utcnow() + timedelta(days=30)
 )
 
@@ -173,7 +173,7 @@ await email_service.send_data_export_ready_email(
     to_email="user@company.com",
     user_name="John Doe",
     request_type="GDPR Data Access Request",
-    download_url="https://plinto.dev/exports/xyz123",
+    download_url="https://janua.dev/exports/xyz123",
     expires_at=datetime.utcnow() + timedelta(days=7)
 )
 ```
@@ -188,7 +188,7 @@ All email templates use Jinja2 and extend a base template with consistent brandi
 
 **Base Template**: `base.html`
 - Responsive design
-- Consistent Plinto branding
+- Consistent Janua branding
 - Mobile-optimized
 - Dark mode friendly
 
@@ -212,9 +212,9 @@ All email templates use Jinja2 and extend a base template with consistent brandi
 **Common Variables** (all templates):
 ```python
 {
-    'base_url': 'https://plinto.dev',
-    'company_name': 'Plinto',
-    'support_email': 'support@plinto.dev',
+    'base_url': 'https://janua.dev',
+    'company_name': 'Janua',
+    'support_email': 'support@janua.dev',
     'current_year': 2025
 }
 ```
@@ -245,7 +245,7 @@ When `RESEND_API_KEY` is not configured or `ENVIRONMENT=development`:
 
 **Console Output Example**:
 ```
-[CONSOLE EMAIL] To: user@example.com | Subject: Verify your Plinto account | ID: plinto-abc123def456
+[CONSOLE EMAIL] To: user@example.com | Subject: Verify your Janua account | ID: janua-abc123def456
 HTML Preview: <!DOCTYPE html><html>...
 ```
 
@@ -261,7 +261,7 @@ HTML Preview: <!DOCTYPE html><html>...
 
 1. **Add Domain to Resend**:
    ```bash
-   Domain: plinto.dev
+   Domain: janua.dev
    Add DNS records as shown in Resend dashboard
    Verify domain ownership
    ```
@@ -270,8 +270,8 @@ HTML Preview: <!DOCTYPE html><html>...
    ```bash
    RESEND_API_KEY=re_xxxxxxxxxxxxx
    EMAIL_ENABLED=true
-   EMAIL_FROM_ADDRESS=noreply@plinto.dev
-   EMAIL_FROM_NAME=Plinto
+   EMAIL_FROM_ADDRESS=noreply@janua.dev
+   EMAIL_FROM_NAME=Janua
    ```
 
 3. **Test Email Delivery**:
@@ -281,7 +281,7 @@ HTML Preview: <!DOCTYPE html><html>...
      -H "Authorization: Bearer $RESEND_API_KEY" \
      -H "Content-Type: application/json" \
      -d '{
-       "from": "noreply@plinto.dev",
+       "from": "noreply@janua.dev",
        "to": ["test@example.com"],
        "subject": "Test Email",
        "html": "<p>Testing Resend integration</p>"
@@ -385,7 +385,7 @@ await email_service.send_invitation_email(
     inviter_name="Admin",
     organization_name="Test Org",
     role="member",
-    invitation_url="https://plinto.dev/invite?token=test",
+    invitation_url="https://janua.dev/invite?token=test",
     expires_at=datetime.utcnow() + timedelta(days=7)
 )
 ```
@@ -488,9 +488,9 @@ If issues occur, rollback is straightforward:
 
 ## Contributors
 
-- Migration Lead: Claude Code (Plinto Team)
-- Code Review: Plinto Engineering
-- Documentation: Plinto Team
+- Migration Lead: Claude Code (Janua Team)
+- Code Review: Janua Engineering
+- Documentation: Janua Team
 - Testing: QA Team
 
 ---

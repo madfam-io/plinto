@@ -10,7 +10,7 @@ This provides HTTP status codes and consistent error handling across the applica
 
 # Import from unified exception system
 from app.core.exceptions import (
-    PlintoSSOException as SSOException,
+    JanuaSSOException as SSOException,
     SSOAuthenticationError as AuthenticationError,
     SSOValidationError as ValidationError,
     SSOConfigurationError as ConfigurationError,

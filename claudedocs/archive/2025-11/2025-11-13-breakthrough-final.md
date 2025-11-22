@@ -118,7 +118,7 @@ async def test_login(client):
 
 ## Files Modified and Why
 
-### `/Users/aldoruizluna/labspace/plinto/apps/api/tests/conftest.py`
+### `/Users/aldoruizluna/labspace/janua/apps/api/tests/conftest.py`
 **Purpose**: Central fixture configuration file for all tests.
 
 **Why Modified**: This file contained the root cause of fixture injection failure.
@@ -163,7 +163,7 @@ async def client():
 
 ---
 
-### `/Users/aldoruizluna/labspace/plinto/apps/api/app/routers/v1/auth.py`
+### `/Users/aldoruizluna/labspace/janua/apps/api/app/routers/v1/auth.py`
 **Purpose**: Main authentication router with signin, signup, signout endpoints.
 
 **Why Modified**: Tests expected endpoint paths that didn't exist (/login vs /signin).
@@ -213,7 +213,7 @@ async def verify_email_alias(request: VerifyEmailRequest, db: Session = Depends(
 
 ---
 
-### `/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_auth_login.py`
+### `/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_auth_login.py`
 **Purpose**: Login flow integration tests.
 
 **Why Modified**: Import error blocking test collection.
@@ -232,7 +232,7 @@ from app.models import Session  # ✅ Correct import
 
 ---
 
-### `/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_auth_registration.py`
+### `/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_auth_registration.py`
 **Purpose**: User registration flow integration tests.
 
 **Why Modified**: Converted from class-based to function-based structure.
@@ -299,7 +299,7 @@ async def test_user_signup_success(client: AsyncClient):
 
 ---
 
-### `/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_tokens.py`
+### `/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_tokens.py`
 **Purpose**: JWT token security and management tests.
 
 **Why Modified**: Converted from class-based to function-based structure.
@@ -315,7 +315,7 @@ async def test_user_signup_success(client: AsyncClient):
 
 ---
 
-### `/Users/aldoruizluna/labspace/plinto/apps/api/tests/integration/test_mfa.py`
+### `/Users/aldoruizluna/labspace/janua/apps/api/tests/integration/test_mfa.py`
 **Purpose**: Multi-factor authentication flow tests.
 
 **Why Modified**: Converted from class-based to function-based structure.
@@ -332,7 +332,7 @@ async def test_user_signup_success(client: AsyncClient):
 
 ---
 
-### `/Users/aldoruizluna/labspace/plinto/apps/api/scripts/convert_tests_to_functions.py`
+### `/Users/aldoruizluna/labspace/janua/apps/api/scripts/convert_tests_to_functions.py`
 **Purpose**: Automation script to convert class-based tests to function-based.
 
 **Why Created**: Manual conversion of 55+ tests would be error-prone and time-consuming.
@@ -396,21 +396,21 @@ def convert_test_file(file_path: Path) -> Tuple[int, int]:
 
 ### Documentation Files Created
 
-#### `/Users/aldoruizluna/labspace/plinto/claudedocs/AUTH_ENDPOINTS_IMPLEMENTATION_STATUS.md`
+#### `/Users/aldoruizluna/labspace/janua/claudedocs/AUTH_ENDPOINTS_IMPLEMENTATION_STATUS.md`
 **Purpose**: Track endpoint implementation status during initial phase.
 
 **Contents**: Endpoint inventory, implementation checklist, test alignment status.
 
 **Why Created**: Document progress on aligning tests with implemented endpoints.
 
-#### `/Users/aldoruizluna/labspace/plinto/claudedocs/SESSION_SUMMARY_AUTH_ENDPOINTS.md`
+#### `/Users/aldoruizluna/labspace/janua/claudedocs/SESSION_SUMMARY_AUTH_ENDPOINTS.md`
 **Purpose**: Session work log before breakthrough.
 
 **Contents**: Detailed chronology of endpoint implementation work, decisions made, issues encountered.
 
 **Why Created**: Maintain session continuity across context limits.
 
-#### `/Users/aldoruizluna/labspace/plinto/claudedocs/FIXTURE_INJECTION_BREAKTHROUGH.md`
+#### `/Users/aldoruizluna/labspace/janua/claudedocs/FIXTURE_INJECTION_BREAKTHROUGH.md`
 **Purpose**: Document the successful resolution of fixture injection issue.
 
 **Contents**:
@@ -470,7 +470,7 @@ Pytest-asyncio documentation suggests `asyncio_mode = "auto"` handles async test
 
 **Solution Applied**:
 ```python
-# /Users/aldoruizluna/labspace/plinto/apps/api/tests/conftest.py
+# /Users/aldoruizluna/labspace/janua/apps/api/tests/conftest.py
 
 # Line 8: Added import
 import pytest_asyncio

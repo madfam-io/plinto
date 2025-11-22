@@ -1,7 +1,7 @@
 {
-  "name": "plinto-monorepo",
+  "name": "janua-monorepo",
   "version": "1.0.0",
-  "description": "Plinto multi-tenant payment platform",
+  "description": "Janua multi-tenant payment platform",
   "private": true,
   "packageManager": "npm@10.8.2",
   "workspaces": [

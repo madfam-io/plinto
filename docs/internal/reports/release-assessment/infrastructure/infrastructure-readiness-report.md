@@ -20,7 +20,7 @@ postgres:
   environment:                       # ✅ Proper configuration
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
-    POSTGRES_DB: plinto
+    POSTGRES_DB: janua
   volumes:                          # ✅ Data persistence
     - postgres_data:/var/lib/postgresql/data
     - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql
@@ -28,7 +28,7 @@ postgres:
     test: ["CMD-SHELL", "pg_isready -U postgres"]
     interval: 10s
   networks:                         # ✅ Isolated networking
-    - plinto-network
+    - janua-network
 ```
 
 #### Cache Layer
@@ -49,7 +49,7 @@ api:                               # ✅ FastAPI backend
     context: ./apps/api
     dockerfile: Dockerfile
   environment:                     # ✅ Environment configuration
-    DATABASE_URL: postgresql://postgres:postgres@postgres:5432/plinto
+    DATABASE_URL: postgresql://postgres:postgres@postgres:5432/janua
     REDIS_URL: redis://:redis123@redis:6379/0
   depends_on:                      # ✅ Service dependencies
     postgres:
@@ -79,7 +79,7 @@ api:                               # ✅ FastAPI backend
 
 ```yaml
 networks:
-  plinto-network:
+  janua-network:
     driver: bridge                 # ✅ Isolated container networking
 ```
 

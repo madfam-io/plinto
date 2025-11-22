@@ -1,12 +1,12 @@
 # Testing Strategy
 
-> **Comprehensive testing approach** for the Plinto platform
+> **Comprehensive testing approach** for the Janua platform
 
 **Last Updated:** January 2025 · **Coverage Target:** 100% · **Status:** Active Implementation
 
 ## 📋 Overview
 
-This document outlines the comprehensive testing strategy for the Plinto monorepo, covering unit tests, integration tests, end-to-end tests, and performance testing across all applications and packages.
+This document outlines the comprehensive testing strategy for the Janua monorepo, covering unit tests, integration tests, end-to-end tests, and performance testing across all applications and packages.
 
 ## 🎯 Testing Philosophy
 
@@ -35,7 +35,7 @@ This document outlines the comprehensive testing strategy for the Plinto monorep
 ### Test Organization
 
 ```
-plinto/
+janua/
 ├── apps/
 │   ├── api/tests/           # API-specific tests
 │   │   ├── unit/           # Unit tests
@@ -83,7 +83,7 @@ def test_cors_origins_list_property():
 ```typescript
 // tests/unit/Button.test.tsx
 import { render, screen } from '@testing-library/react';
-import { Button } from '@plinto/ui';
+import { Button } from '@janua/ui';
 
 test('renders button with text', () => {
   render(<Button>Click me</Button>);
@@ -143,12 +143,12 @@ async def test_complete_signup_signin_flow(test_client):
 import { test, expect } from '@playwright/test';
 
 test('user can sign up and access dashboard', async ({ page }) => {
-  await page.goto('https://plinto.dev');
+  await page.goto('https://janua.dev');
   await page.click('text=Get Started');
   await page.fill('[name=email]', 'test@example.com');
   await page.fill('[name=password]', 'SecurePassword123!');
   await page.click('button[type=submit]');
-  await expect(page).toHaveURL('https://app.plinto.dev/dashboard');
+  await expect(page).toHaveURL('https://app.janua.dev/dashboard');
 });
 ```
 
@@ -169,10 +169,10 @@ test('user can sign up and access dashboard', async ({ page }) => {
 
 | Package | Target | Rationale |
 |---------|--------|-----------|
-| @plinto/sdk | 100% | Core functionality |
-| @plinto/ui | 95% | Component library |
-| @plinto/react-sdk | 95% | React utilities |
-| @plinto/core | 100% | Business logic |
+| @janua/sdk | 100% | Core functionality |
+| @janua/ui | 95% | Component library |
+| @janua/react-sdk | 95% | React utilities |
+| @janua/core | 100% | Business logic |
 
 ## 🛠️ Testing Tools
 
@@ -248,7 +248,7 @@ yarn test:e2e
 yarn test:all
 
 # Run tests for specific workspace
-yarn workspace @plinto/dashboard test
+yarn workspace @janua/dashboard test
 
 # Run E2E tests across all apps
 yarn test:e2e:all
@@ -362,7 +362,7 @@ class UserFactory(factory.Factory):
 # Using locust for API load testing
 from locust import HttpUser, task, between
 
-class PlintoUser(HttpUser):
+class JanuaUser(HttpUser):
     wait_time = between(1, 3)
     
     @task

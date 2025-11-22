@@ -1,6 +1,6 @@
-# Plinto Development Guide
+# Janua Development Guide
 
-> **Complete guide for contributing to and developing the Plinto platform**
+> **Complete guide for contributing to and developing the Janua platform**
 
 ## Table of Contents
 
@@ -34,8 +34,8 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-org/plinto.git
-cd plinto
+git clone https://github.com/your-org/janua.git
+cd janua
 ```
 
 ### 2. Install Dependencies
@@ -55,7 +55,7 @@ Create `.env.local` files in each app directory:
 #### Core API (`apps/api/.env.local`)
 
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/plinto
+DATABASE_URL=postgresql://user:password@localhost:5432/janua
 REDIS_URL=redis://localhost:6379
 JWT_SECRET=development-secret-change-in-production
 JWKS_PATH=.well-known/jwks.json
@@ -77,8 +77,8 @@ ADMIN_SECRET_KEY=admin-secret-key
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-PLINTO_ISSUER=http://localhost:8000
-PLINTO_AUDIENCE=plinto.dev
+JANUA_ISSUER=http://localhost:8000
+JANUA_AUDIENCE=janua.dev
 ```
 
 ### 4. Start Development Services
@@ -88,25 +88,25 @@ PLINTO_AUDIENCE=plinto.dev
 yarn dev
 
 # Or start specific apps
-yarn workspace @plinto/api dev        # API on :8000
-yarn workspace @plinto/admin dev      # Admin on :3004
-yarn workspace @plinto/dashboard dev  # Dashboard on :3000
+yarn workspace @janua/api dev        # API on :8000
+yarn workspace @janua/admin dev      # Admin on :3004
+yarn workspace @janua/dashboard dev  # Dashboard on :3000
 ```
 
 ### 5. Database Setup
 
 ```bash
 # Run migrations
-yarn workspace @plinto/database migrate
+yarn workspace @janua/database migrate
 
 # Seed development data
-yarn workspace @plinto/database seed
+yarn workspace @janua/database seed
 ```
 
 ## Project Structure
 
 ```
-plinto/
+janua/
 ├── apps/                    # Application packages
 │   ├── api/                # Core API (NestJS)
 │   ├── admin/              # Admin panel (Next.js)
@@ -189,8 +189,8 @@ yarn test:watch
 yarn test:coverage
 
 # Run specific workspace tests
-yarn workspace @plinto/api test
-yarn workspace @plinto/admin test
+yarn workspace @janua/api test
+yarn workspace @janua/admin test
 
 # Run E2E tests
 yarn test:e2e
@@ -263,8 +263,8 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 // 2. Internal imports
-import { Button } from '@plinto/ui';
-import { useAuth } from '@plinto/react-sdk';
+import { Button } from '@janua/ui';
+import { useAuth } from '@janua/react-sdk';
 
 // 3. Relative imports
 import { UserProfile } from './components/UserProfile';
@@ -283,7 +283,7 @@ yarn init -y
 
 # Update package.json
 {
-  "name": "@plinto/new-package",
+  "name": "@janua/new-package",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts"
@@ -297,13 +297,13 @@ yarn install
 
 ```bash
 # Create new migration
-yarn workspace @plinto/database migrate:create add_user_preferences
+yarn workspace @janua/database migrate:create add_user_preferences
 
 # Run migrations
-yarn workspace @plinto/database migrate:up
+yarn workspace @janua/database migrate:up
 
 # Rollback migration
-yarn workspace @plinto/database migrate:down
+yarn workspace @janua/database migrate:down
 ```
 
 ### Updating Dependencies
@@ -313,7 +313,7 @@ yarn workspace @plinto/database migrate:down
 yarn upgrade-interactive --latest
 
 # Update specific workspace
-yarn workspace @plinto/api upgrade-interactive --latest
+yarn workspace @janua/api upgrade-interactive --latest
 
 # Security audit
 yarn audit
@@ -327,7 +327,7 @@ yarn audit fix
 yarn build
 
 # Build specific app
-yarn workspace @plinto/admin build
+yarn workspace @janua/admin build
 
 # Type check
 yarn typecheck
@@ -365,7 +365,7 @@ docker-compose up -d postgres
 
 **Solution**: Rebuild TypeScript declarations:
 ```bash
-yarn workspace @plinto/typescript-sdk build
+yarn workspace @janua/typescript-sdk build
 yarn typecheck
 ```
 
@@ -381,10 +381,10 @@ Enable debug logging:
 
 ```bash
 # API debug mode
-DEBUG=plinto:* yarn workspace @plinto/api dev
+DEBUG=janua:* yarn workspace @janua/api dev
 
 # Next.js verbose logging
-NEXT_PUBLIC_DEBUG=true yarn workspace @plinto/admin dev
+NEXT_PUBLIC_DEBUG=true yarn workspace @janua/admin dev
 ```
 
 ## Architecture Decisions
@@ -472,7 +472,7 @@ NEXT_PUBLIC_DEBUG=true yarn workspace @plinto/admin dev
 
 - **Discord**: Join our developer Discord (invite link in admin panel)
 - **Issues**: Open an issue with the `question` label
-- **Email**: dev-support@plinto.dev
+- **Email**: dev-support@janua.dev
 
 ## License
 

@@ -36,7 +36,7 @@ export interface SSOProviderFormProps {
   onSubmit?: (config: SSOConfigurationCreate) => Promise<SSOConfiguration>
   onCancel?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   mode?: 'create' | 'edit'
 }
@@ -48,7 +48,7 @@ export function SSOProviderForm({
   onSubmit,
   onCancel,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   mode = configuration ? 'edit' : 'create',
 }: SSOProviderFormProps) {
@@ -136,11 +136,11 @@ export function SSOProviderForm({
         if (oidcDiscoveryUrl) configData.oidc_discovery_url = oidcDiscoveryUrl
       }
 
-      if (plintoClient) {
+      if (januaClient) {
         if (mode === 'create') {
-          await plintoClient.sso.createConfiguration(organizationId, configData)
+          await januaClient.sso.createConfiguration(organizationId, configData)
         } else {
-          await plintoClient.sso.updateConfiguration(organizationId, configData)
+          await januaClient.sso.updateConfiguration(organizationId, configData)
         }
       } else if (onSubmit) {
         await onSubmit(configData)

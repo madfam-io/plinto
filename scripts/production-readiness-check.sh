@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Plinto Production Readiness Automated Check
+# Janua Production Readiness Automated Check
 # This script performs comprehensive health checks for production readiness
 # Run: bash scripts/production-readiness-check.sh
 
@@ -15,8 +15,8 @@ NC='\033[0m' # No Color
 
 # Configuration
 API_URL="${API_URL:-http://localhost:8000}"
-STAGING_URL="${STAGING_URL:-https://staging.api.plinto.dev}"
-PROD_URL="${PROD_URL:-https://api.plinto.dev}"
+STAGING_URL="${STAGING_URL:-https://staging.api.janua.dev}"
+PROD_URL="${PROD_URL:-https://api.janua.dev}"
 MIN_ALPHA_SCORE=60
 MIN_BETA_SCORE=80
 
@@ -26,10 +26,10 @@ TOTAL_COUNT=0
 CRITICAL_FAIL=0
 
 echo -e "${BLUE}╔══════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║        Plinto Production Readiness Assessment            ║${NC}"
+echo -e "${BLUE}║        Janua Production Readiness Assessment            ║${NC}"
 echo -e "${BLUE}╚══════════════════════════════════════════════════════════╝${NC}"
 echo -e "Date: $(date)"
-echo -e "Environment: ${PLINTO_ENV:-development}\n"
+echo -e "Environment: ${JANUA_ENV:-development}\n"
 
 # Function to check a requirement
 check_requirement() {
@@ -86,7 +86,7 @@ infrastructure_checks() {
     check_requirement "Environment variables configured" "test -f apps/api/.env"
     check_requirement "Production deployment configured" "test -f config/railway.json || test -f config/vercel.json"
     check_requirement "Staging environment defined" "grep -q STAGING .github/workflows/*.yml 2>/dev/null"
-    check_requirement "Domain configured" "grep -qE 'plinto\.(dev|io|com)' apps/*/package.json 2>/dev/null"
+    check_requirement "Domain configured" "grep -qE 'janua\.(dev|io|com)' apps/*/package.json 2>/dev/null"
 }
 
 # 2. SECURITY CHECKS
@@ -277,7 +277,7 @@ REPORT_FILE="production-readiness-report-$(date +%Y%m%d-%H%M%S).json"
 cat > "$REPORT_FILE" << EOF
 {
   "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
-  "environment": "${PLINTO_ENV:-development}",
+  "environment": "${JANUA_ENV:-development}",
   "total_checks": $TOTAL_COUNT,
   "passed_checks": $READY_COUNT,
   "failed_checks": $((TOTAL_COUNT - READY_COUNT)),

@@ -114,17 +114,17 @@ test_python_sdk() {
     
     echo -e "${GREEN}  ✓ setup.py exists${NC}"
     
-    # Check for plinto package
-    if [ ! -d "$PKG_PATH/plinto" ]; then
-        echo -e "${RED}  ❌ plinto/ directory not found${NC}\n"
+    # Check for janua package
+    if [ ! -d "$PKG_PATH/janua" ]; then
+        echo -e "${RED}  ❌ janua/ directory not found${NC}\n"
         FAILED=$((FAILED + 1))
         return 1
     fi
     
-    echo -e "${GREEN}  ✓ plinto/ package exists${NC}"
+    echo -e "${GREEN}  ✓ janua/ package exists${NC}"
     
     # Count Python files
-    PY_FILES=$(find "$PKG_PATH/plinto" -name "*.py" 2>/dev/null | wc -l | tr -d ' ')
+    PY_FILES=$(find "$PKG_PATH/janua" -name "*.py" 2>/dev/null | wc -l | tr -d ' ')
     echo -e "${GREEN}  ✓ Contains $PY_FILES Python files${NC}"
     
     # Check for dist/ (if built)
@@ -171,14 +171,14 @@ test_go_sdk() {
         echo -e "${GREEN}  ✓ Makefile exists${NC}"
     fi
     
-    # Check for plinto package
-    if [ ! -d "$PKG_PATH/plinto" ]; then
-        echo -e "${RED}  ❌ plinto/ directory not found${NC}\n"
+    # Check for janua package
+    if [ ! -d "$PKG_PATH/janua" ]; then
+        echo -e "${RED}  ❌ janua/ directory not found${NC}\n"
         FAILED=$((FAILED + 1))
         return 1
     fi
     
-    echo -e "${GREEN}  ✓ plinto/ package exists${NC}"
+    echo -e "${GREEN}  ✓ janua/ package exists${NC}"
     
     # Count Go files
     GO_FILES=$(find "$PKG_PATH" -name "*.go" 2>/dev/null | wc -l | tr -d ' ')

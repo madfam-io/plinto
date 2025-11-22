@@ -1,23 +1,23 @@
 {
-  "name": "plinto-marketing",
+  "name": "janua-marketing",
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && yarn build --filter=@plinto/marketing",
+  "buildCommand": "cd ../.. && yarn build --filter=@janua/marketing",
   "outputDirectory": "apps/marketing/.next",
   "installCommand": "yarn install",
   "env": {
-    "NEXT_PUBLIC_PLINTO_ISSUER": "https://plinto.dev",
-    "NEXT_PUBLIC_PLINTO_API_URL": "https://api.plinto.dev",
+    "NEXT_PUBLIC_JANUA_ISSUER": "https://janua.dev",
+    "NEXT_PUBLIC_JANUA_API_URL": "https://api.janua.dev",
     "NEXT_PUBLIC_ENVIRONMENT": "production"
   },
   "rewrites": [
     {
       "source": "/api/v1/(.*)",
-      "destination": "https://api.plinto.dev/api/v1/$1"
+      "destination": "https://api.janua.dev/api/v1/$1"
     },
     {
       "source": "/.well-known/(.*)",
-      "destination": "https://api.plinto.dev/.well-known/$1"
+      "destination": "https://api.janua.dev/.well-known/$1"
     }
   ],
   "headers": [

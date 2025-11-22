@@ -1,20 +1,20 @@
 {
-  "name": "plinto-admin",
+  "name": "janua-admin",
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && yarn build --filter=@plinto/admin",
+  "buildCommand": "cd ../.. && yarn build --filter=@janua/admin",
   "outputDirectory": "apps/admin/.next",
   "installCommand": "yarn install",
   "env": {
-    "NEXT_PUBLIC_PLINTO_ISSUER": "https://plinto.dev",
-    "NEXT_PUBLIC_PLINTO_API_URL": "https://api.plinto.dev",
+    "NEXT_PUBLIC_JANUA_ISSUER": "https://janua.dev",
+    "NEXT_PUBLIC_JANUA_API_URL": "https://api.janua.dev",
     "NEXT_PUBLIC_ENVIRONMENT": "production",
     "NEXT_PUBLIC_ADMIN_MODE": "true"
   },
   "rewrites": [
     {
       "source": "/api/v1/(.*)",
-      "destination": "https://api.plinto.dev/api/v1/$1"
+      "destination": "https://api.janua.dev/api/v1/$1"
     }
   ],
   "headers": [
@@ -43,7 +43,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.plinto.dev"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.janua.dev"
         }
       ]
     }

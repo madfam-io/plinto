@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -22,9 +22,9 @@ const navigation = [
     name: 'Developers',
     href: '#',
     children: [
-      { name: 'Documentation', href: 'https://docs.plinto.dev' },
-      { name: 'API Reference', href: 'https://docs.plinto.dev/api' },
-      { name: 'SDKs', href: 'https://docs.plinto.dev/sdks' },
+      { name: 'Documentation', href: 'https://docs.janua.dev' },
+      { name: 'API Reference', href: 'https://docs.janua.dev/api' },
+      { name: 'SDKs', href: 'https://docs.janua.dev/sdks' },
       { name: 'Playground', href: '#playground' }
     ]
   },
@@ -66,14 +66,14 @@ export function Navigation() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
               <Image 
-                src="/images/plinto-logo.png" 
-                alt="Plinto Logo" 
+                src="/images/janua-logo.png" 
+                alt="Janua Logo" 
                 width={32} 
                 height={32}
                 className="w-8 h-8 object-contain"
               />
               <span className="text-xl font-bold text-gray-900 dark:text-white">
-                Plinto
+                Janua
               </span>
             </Link>
           </div>
@@ -122,10 +122,10 @@ export function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="https://app.plinto.dev/auth/signin">
+            <Link href="https://app.janua.dev/auth/signin">
               <Button variant="ghost">Sign In</Button>
             </Link>
-            <Link href="https://app.plinto.dev/auth/signup">
+            <Link href="https://app.janua.dev/auth/signup">
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 Start Free
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -184,12 +184,12 @@ export function Navigation() {
               ))}
               
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
-                <Link href="https://app.plinto.dev/auth/signin" className="block">
+                <Link href="https://app.janua.dev/auth/signin" className="block">
                   <Button variant="outline" className="w-full">
                     Sign In
                   </Button>
                 </Link>
-                <Link href="https://app.plinto.dev/auth/signup" className="block">
+                <Link href="https://app.janua.dev/auth/signup" className="block">
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
                     Start Free
                     <ArrowRight className="ml-2 h-4 w-4" />

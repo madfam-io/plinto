@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Github, Twitter, Linkedin, Mail, ArrowRight } from 'lucide-react'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -16,12 +16,12 @@ const navigation = {
     { name: 'Changelog', href: '/changelog' }
   ],
   developers: [
-    { name: 'Documentation', href: 'https://docs.plinto.dev' },
-    { name: 'API Reference', href: 'https://docs.plinto.dev/api' },
-    { name: 'SDKs', href: 'https://docs.plinto.dev/sdks' },
-    { name: 'Examples', href: 'https://docs.plinto.dev/examples' },
+    { name: 'Documentation', href: 'https://docs.janua.dev' },
+    { name: 'API Reference', href: 'https://docs.janua.dev/api' },
+    { name: 'SDKs', href: 'https://docs.janua.dev/sdks' },
+    { name: 'Examples', href: 'https://docs.janua.dev/examples' },
     { name: 'Playground', href: '#playground' },
-    { name: 'Status', href: 'https://status.plinto.dev' }
+    { name: 'Status', href: 'https://status.janua.dev' }
   ],
   solutions: [
     { name: 'E-commerce', href: '/solutions/ecommerce' },
@@ -51,22 +51,22 @@ const navigation = {
 const socialLinks = [
   {
     name: 'Twitter',
-    href: 'https://twitter.com/getplinto',
+    href: 'https://twitter.com/getjanua',
     icon: Twitter
   },
   {
     name: 'GitHub',
-    href: 'https://github.com/aureolabs/plinto',
+    href: 'https://github.com/aureolabs/janua',
     icon: Github
   },
   {
     name: 'LinkedIn',
-    href: 'https://linkedin.com/company/plinto-dev',
+    href: 'https://linkedin.com/company/janua-dev',
     icon: Linkedin
   },
   {
     name: 'Email',
-    href: 'mailto:hello@plinto.dev',
+    href: 'mailto:hello@janua.dev',
     icon: Mail
   }
 ]
@@ -85,7 +85,7 @@ export function Footer() {
             className="max-w-2xl mx-auto text-center"
           >
             <h3 className="text-2xl font-bold mb-4">
-              Stay up to date with Plinto
+              Stay up to date with Janua
             </h3>
             <p className="text-gray-400 mb-8">
               Get the latest updates on new features, security insights, and developer resources.
@@ -111,13 +111,13 @@ export function Footer() {
             <div className="col-span-2 lg:col-span-2">
               <Link href="/" className="flex items-center space-x-2 mb-6">
                 <Image 
-                  src="/images/plinto-logo.png" 
-                  alt="Plinto Logo" 
+                  src="/images/janua-logo.png" 
+                  alt="Janua Logo" 
                   width={32} 
                   height={32}
                   className="w-8 h-8 object-contain"
                 />
-                <span className="text-xl font-bold">Plinto</span>
+                <span className="text-xl font-bold">Janua</span>
               </Link>
               <p className="text-gray-400 mb-6 max-w-sm">
                 Secure identity infrastructure that moves at the speed of your users. 
@@ -223,7 +223,7 @@ export function Footer() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-4 lg:mb-0">
               <p className="text-gray-400 text-sm">
-                © 2024 Plinto by Aureo Labs. All rights reserved.
+                © 2024 Janua by Aureo Labs. All rights reserved.
               </p>
               <div className="flex space-x-6">
                 {navigation.legal.map((item) => (

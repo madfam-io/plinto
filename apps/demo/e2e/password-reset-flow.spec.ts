@@ -23,7 +23,7 @@ test.describe('Password Reset Flow', () => {
   let newPassword: string
 
   test.beforeEach(async ({ page }) => {
-    testEmail = 'existing@plinto.dev'
+    testEmail = 'existing@janua.dev'
     newPassword = generateTestPassword()
     
     await clearAuth(page)
@@ -75,7 +75,7 @@ test.describe('Password Reset Flow', () => {
     await page.goto('/auth/forgot-password-showcase')
     
     // Enter unregistered email
-    await fillByLabel(page, /email/i, 'nonexistent@plinto.dev')
+    await fillByLabel(page, /email/i, 'nonexistent@janua.dev')
     
     // Submit
     await clickButton(page, /send.*link|reset/i)

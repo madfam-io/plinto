@@ -1,7 +1,7 @@
 /**
  * Payment Components
  *
- * Complete payment UI components for Plinto multi-provider payment infrastructure.
+ * Complete payment UI components for Janua multi-provider payment infrastructure.
  */
 
 export { SubscriptionPlans } from './subscription-plans';

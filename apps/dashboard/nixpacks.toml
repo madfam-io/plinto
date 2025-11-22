@@ -6,7 +6,7 @@ nixPkgs = ["nodejs-22_x", "yarn-1_x"]
 cmds = ["cd ../.. && yarn install --frozen-lockfile"]
 
 [phases.build]
-cmds = ["cd ../.. && yarn workspace @plinto/dashboard build"]
+cmds = ["cd ../.. && yarn workspace @janua/dashboard build"]
 
 [start]
 cmd = "yarn start"

@@ -1,12 +1,12 @@
-# @plinto/mock-api
+# @janua/mock-api
 
-> **Mock API server and testing utilities** for Plinto development
+> **Mock API server and testing utilities** for Janua development
 
 **Version:** 0.1.0 · **Purpose:** Development & Testing · **Status:** Production Ready
 
 ## 📋 Overview
 
-@plinto/mock-api provides a fully-featured mock API server that mirrors the production Plinto API, enabling frontend development, integration testing, and demos without requiring the actual backend. Includes realistic data generation, configurable responses, and testing utilities.
+@janua/mock-api provides a fully-featured mock API server that mirrors the production Janua API, enabling frontend development, integration testing, and demos without requiring the actual backend. Includes realistic data generation, configurable responses, and testing utilities.
 
 ## 🚀 Quick Start
 
@@ -14,10 +14,10 @@
 
 ```bash
 # Install package
-yarn add -D @plinto/mock-api
+yarn add -D @janua/mock-api
 
 # Or globally for CLI usage
-npm install -g @plinto/mock-api
+npm install -g @janua/mock-api
 ```
 
 ### Basic Usage
@@ -26,19 +26,19 @@ npm install -g @plinto/mock-api
 
 ```bash
 # Start mock server with defaults
-plinto-mock
+janua-mock
 
 # With custom configuration
-plinto-mock --port 8080 --delay 500 --seed 12345
+janua-mock --port 8080 --delay 500 --seed 12345
 
 # With specific scenarios
-plinto-mock --scenario auth-error --verbose
+janua-mock --scenario auth-error --verbose
 ```
 
 #### Programmatic Usage
 
 ```typescript
-import { MockServer } from '@plinto/mock-api';
+import { MockServer } from '@janua/mock-api';
 
 // Start mock server
 const server = new MockServer({
@@ -56,7 +56,7 @@ await server.start();
 #### In Tests
 
 ```typescript
-import { createMockClient } from '@plinto/mock-api/testing';
+import { createMockClient } from '@janua/mock-api/testing';
 
 const mockApi = createMockClient();
 
@@ -194,7 +194,7 @@ DELETE /sessions/revoke-all  // Revoke all sessions
 ### Predefined Scenarios
 
 ```typescript
-import { MockServer, Scenarios } from '@plinto/mock-api';
+import { MockServer, Scenarios } from '@janua/mock-api';
 
 const server = new MockServer();
 
@@ -251,7 +251,7 @@ server
 ### Factories
 
 ```typescript
-import { UserFactory, OrgFactory } from '@plinto/mock-api/factories';
+import { UserFactory, OrgFactory } from '@janua/mock-api/factories';
 
 // Generate single user
 const user = UserFactory.create({
@@ -270,7 +270,7 @@ const org = OrgFactory.create({
 ### Custom Generators
 
 ```typescript
-import { Generator } from '@plinto/mock-api';
+import { Generator } from '@janua/mock-api';
 
 // Configure data generator
 const generator = new Generator({
@@ -289,7 +289,7 @@ const uuid = generator.uuid();
 ### Fixtures
 
 ```typescript
-import { Fixtures } from '@plinto/mock-api';
+import { Fixtures } from '@janua/mock-api';
 
 // Load fixtures
 const fixtures = new Fixtures();
@@ -308,7 +308,7 @@ await fixtures.reset();
 ### In-Memory Store
 
 ```typescript
-import { DataStore } from '@plinto/mock-api';
+import { DataStore } from '@janua/mock-api';
 
 const store = new DataStore();
 
@@ -407,7 +407,7 @@ server.customize('/auth/login', {
 ### Mock Client
 
 ```typescript
-import { MockClient } from '@plinto/mock-api/testing';
+import { MockClient } from '@janua/mock-api/testing';
 
 describe('Auth Flow', () => {
   let client: MockClient;
@@ -456,7 +456,7 @@ client.expectRequest('POST', '/auth/login', {
 ### WebSocket Testing
 
 ```typescript
-import { MockWebSocket } from '@plinto/mock-api/testing';
+import { MockWebSocket } from '@janua/mock-api/testing';
 
 const ws = new MockWebSocket('ws://localhost:8080');
 
@@ -510,7 +510,7 @@ ws.on('message', (data) => {
 ### React Integration
 
 ```tsx
-import { MockProvider } from '@plinto/mock-api/react';
+import { MockProvider } from '@janua/mock-api/react';
 
 function App() {
   return (
@@ -527,7 +527,7 @@ function App() {
 ### Vue Integration
 
 ```javascript
-import { createMockPlugin } from '@plinto/mock-api/vue';
+import { createMockPlugin } from '@janua/mock-api/vue';
 
 const app = createApp(App);
 app.use(createMockPlugin({
@@ -540,7 +540,7 @@ app.use(createMockPlugin({
 ### Load Simulation
 
 ```typescript
-import { LoadTester } from '@plinto/mock-api/load';
+import { LoadTester } from '@janua/mock-api/load';
 
 const tester = new LoadTester({
   baseUrl: 'http://localhost:8080',
@@ -564,31 +564,31 @@ console.log('Results:', {
 
 ```bash
 # Start server
-plinto-mock start
+janua-mock start
 
 # With options
-plinto-mock start --port 8080 --delay 500
+janua-mock start --port 8080 --delay 500
 
 # Load scenario
-plinto-mock scenario auth-error
+janua-mock scenario auth-error
 
 # Generate data
-plinto-mock generate users --count 100
+janua-mock generate users --count 100
 
 # Export data
-plinto-mock export ./data.json
+janua-mock export ./data.json
 
 # Import data
-plinto-mock import ./data.json
+janua-mock import ./data.json
 
 # Reset data
-plinto-mock reset
+janua-mock reset
 ```
 
 ### Configuration File
 
 ```yaml
-# .plinto-mock.yml
+# .janua-mock.yml
 server:
   port: 8080
   delay: 200
@@ -625,8 +625,8 @@ server.enableRateLimit({
 // JWT token validation
 server.validateTokens({
   secret: 'mock-secret',
-  issuer: 'plinto-mock',
-  audience: 'plinto-app'
+  issuer: 'janua-mock',
+  audience: 'janua-app'
 });
 ```
 
@@ -662,7 +662,7 @@ console.log('Avg response time:', stats.avgResponseTime);
 
 ```bash
 # Clone the repo
-git clone https://github.com/plinto/plinto.git
+git clone https://github.com/janua/janua.git
 
 # Navigate to mock-api package
 cd packages/mock-api
@@ -682,9 +682,9 @@ yarn build
 
 ## 📚 Resources
 
-- [Mock API Documentation](https://docs.plinto.dev/testing/mock-api)
-- [Testing Guide](https://docs.plinto.dev/testing)
-- [Scenario Examples](https://github.com/plinto/mock-api-scenarios)
+- [Mock API Documentation](https://docs.janua.dev/testing/mock-api)
+- [Testing Guide](https://docs.janua.dev/testing)
+- [Scenario Examples](https://github.com/janua/mock-api-scenarios)
 
 ## 🎯 Roadmap
 
@@ -706,4 +706,4 @@ See [Mock API Contributing Guide](../../docs/contributing/mock-api.md) for devel
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

@@ -414,7 +414,7 @@ class VersionMiddleware:
             Compatibility analysis results
         """
         # Parse SDK version to extract API version expectation
-        # SDK versions might be like "plinto-python-1.2.3-api-v1"
+        # SDK versions might be like "janua-python-1.2.3-api-v1"
         expected_api_version = self._extract_api_version_from_sdk(sdk_version)
 
         compatibility = self.version_manager.get_compatibility_level(
@@ -447,7 +447,7 @@ class VersionMiddleware:
             Expected API version (defaults to v1)
         """
         # Try to extract API version from SDK version string
-        # Patterns: "1.2.3-api-v1", "plinto-python-1.2.3-v1", "v1.2.3"
+        # Patterns: "1.2.3-api-v1", "janua-python-1.2.3-v1", "v1.2.3"
         patterns = [
             r"-api-(v\d+)",
             r"-(v\d+)$",
@@ -481,13 +481,13 @@ def parse_sdk_version(version_string: str) -> Dict[str, str]:
     Parse SDK version string into components.
 
     Args:
-        version_string: SDK version string (e.g., "plinto-python-1.2.3-api-v1")
+        version_string: SDK version string (e.g., "janua-python-1.2.3-api-v1")
 
     Returns:
         Parsed version components
     """
     # Pattern: platform-language-version-api-version
-    pattern = r"(?:plinto-)?(\w+)-(\d+\.\d+\.\d+)(?:-api-)?(v\d+)?"
+    pattern = r"(?:janua-)?(\w+)-(\d+\.\d+\.\d+)(?:-api-)?(v\d+)?"
     match = re.match(pattern, version_string, re.IGNORECASE)
 
     if match:

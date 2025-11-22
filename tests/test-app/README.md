@@ -1,10 +1,10 @@
 # Test Application
 
-Simple application using Plinto SDK for validating user journey tests.
+Simple application using Janua SDK for validating user journey tests.
 
 ## Purpose
 
-This test app simulates a real application integrating Plinto authentication.
+This test app simulates a real application integrating Janua authentication.
 It validates that:
 - SDK integration works as documented
 - Authentication flows complete successfully
@@ -42,8 +42,8 @@ cd tests/test-app
 npm install
 
 # Set environment variables
-export PLINTO_API_URL=http://localhost:8000
-export PLINTO_API_KEY=your-test-api-key
+export JANUA_API_URL=http://localhost:8000
+export JANUA_API_KEY=your-test-api-key
 
 # Run test app
 npm start

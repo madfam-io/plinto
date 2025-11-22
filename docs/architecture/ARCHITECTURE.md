@@ -1,8 +1,8 @@
-# Plinto Architecture Design
+# Janua Architecture Design
 
 ## Executive Summary
 
-Plinto is designed as a **edge-native, event-driven identity platform** that outperforms Clerk through superior architecture, not just features. Our design enables sub-30ms global verification, 5-minute integration, and complete data sovereignty.
+Janua is designed as a **edge-native, event-driven identity platform** that outperforms Clerk through superior architecture, not just features. Our design enables sub-30ms global verification, 5-minute integration, and complete data sovereignty.
 
 **Key Differentiators:**
 - 🚀 **Edge-first**: Authorization decisions at the edge, not round-trips to origin
@@ -131,7 +131,7 @@ User Action → Command → Domain Logic → Event → Event Store
 # OpenAPI 3.1 Specification
 openapi: 3.1.0
 info:
-  title: Plinto Identity API
+  title: Janua Identity API
   version: 1.0.0
 
 paths:
@@ -281,40 +281,40 @@ export default {
 
 ```typescript
 // Level 1: Simple REST Client
-import { PlintoClient } from '@plinto/core';
+import { JanuaClient } from '@janua/core';
 
-const plinto = new PlintoClient({ 
+const janua = new JanuaClient({ 
   apiKey: 'pk_live_...' 
 });
 
-await plinto.identities.create({ email, password });
+await janua.identities.create({ email, password });
 
 // Level 2: Smart Client with Caching
-import { PlintoClient } from '@plinto/core';
+import { JanuaClient } from '@janua/core';
 
-const plinto = new PlintoClient({ 
+const janua = new JanuaClient({ 
   apiKey: 'pk_live_...',
   cache: true,
   cacheStore: localStorage
 });
 
 // Level 3: Edge-Aware with Local Policy Evaluation
-import { PlintoEdge } from '@plinto/edge';
+import { JanuaEdge } from '@janua/edge';
 
-const plinto = new PlintoEdge({
-  jwksUrl: 'https://plinto.dev/.well-known/jwks.json',
+const janua = new JanuaEdge({
+  jwksUrl: 'https://janua.dev/.well-known/jwks.json',
   policies: './policies.wasm', // WebAssembly policies
   syncInterval: 60000
 });
 
 // Verify locally without network call
-const session = await plinto.verifyLocal(token);
-const allowed = await plinto.evaluatePolicy(session, 'read:documents');
+const session = await janua.verifyLocal(token);
+const allowed = await janua.evaluatePolicy(session, 'read:documents');
 
 // Level 4: Offline-Capable with Sync
-import { PlintoOffline } from '@plinto/offline';
+import { JanuaOffline } from '@janua/offline';
 
-const plinto = new PlintoOffline({
+const janua = new JanuaOffline({
   indexedDB: true,
   syncStrategy: 'eventual',
   conflictResolution: 'last-write-wins'
@@ -325,9 +325,9 @@ const plinto = new PlintoOffline({
 
 ```typescript
 // Next.js App Router
-import { withPlinto } from '@plinto/nextjs';
+import { withJanua } from '@janua/nextjs';
 
-export default withPlinto({
+export default withJanua({
   publicRoutes: ['/sign-in', '/sign-up'],
   afterAuth: (auth, req) => {
     if (!auth.orgId && req.url !== '/org-selection') {
@@ -337,7 +337,7 @@ export default withPlinto({
 });
 
 // React Components
-import { SignIn, UserButton, OrganizationSwitcher } from '@plinto/react-sdk';
+import { SignIn, UserButton, OrganizationSwitcher } from '@janua/react-sdk';
 
 export default function App() {
   return (
@@ -450,7 +450,7 @@ services:
   api:
     build: ./apps/api
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/plinto
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/janua
       - REDIS_URL=redis://redis:6379
       - KAFKA_BROKERS=kafka:9092
     ports:
@@ -463,7 +463,7 @@ services:
   worker:
     build: ./apps/worker
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/plinto
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/janua
       - REDIS_URL=redis://redis:6379
       - KAFKA_BROKERS=kafka:9092
     depends_on:
@@ -481,7 +481,7 @@ services:
   db:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_DB=plinto
+      - POSTGRES_DB=janua
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
@@ -526,13 +526,13 @@ terraform {
 }
 
 # Railway - Backend Services
-resource "railway_project" "plinto" {
-  name = "plinto-production"
+resource "railway_project" "janua" {
+  name = "janua-production"
 }
 
 resource "railway_service" "api" {
-  project_id = railway_project.plinto.id
-  name       = "plinto-api"
+  project_id = railway_project.janua.id
+  name       = "janua-api"
   
   environment_variables = {
     PORT = "8000"
@@ -541,18 +541,18 @@ resource "railway_service" "api" {
 }
 
 resource "railway_postgres" "main" {
-  project_id = railway_project.plinto.id
-  name       = "plinto-postgres"
+  project_id = railway_project.janua.id
+  name       = "janua-postgres"
 }
 
 resource "railway_redis" "cache" {
-  project_id = railway_project.plinto.id
-  name       = "plinto-redis"
+  project_id = railway_project.janua.id
+  name       = "janua-redis"
 }
 
 # Vercel - Frontend & Edge
 resource "vercel_project" "admin" {
-  name      = "plinto-admin"
+  name      = "janua-admin"
   framework = "nextjs"
   
   environment = {
@@ -561,18 +561,18 @@ resource "vercel_project" "admin" {
 }
 
 # Cloudflare - CDN & Edge Workers
-resource "cloudflare_zone" "plinto" {
-  zone = "plinto.dev"
+resource "cloudflare_zone" "janua" {
+  zone = "janua.dev"
 }
 
 resource "cloudflare_worker_script" "edge_verify" {
-  name    = "plinto-edge-verify"
+  name    = "janua-edge-verify"
   content = file("../../workers/verify.js")
 }
 
 resource "cloudflare_worker_route" "api_verify" {
-  zone_id     = cloudflare_zone.plinto.id
-  pattern     = "plinto.dev/api/v1/verify*"
+  zone_id     = cloudflare_zone.janua.id
+  pattern     = "janua.dev/api/v1/verify*"
   script_name = cloudflare_worker_script.edge_verify.name
 }
 ```
@@ -641,14 +641,14 @@ async function authorizeRequest(req: Request): Promise<boolean> {
 
 ```yaml
 # Key metrics to track
-plinto_auth_requests_total
-plinto_auth_failures_total
-plinto_session_duration_seconds
-plinto_jwt_verification_duration_milliseconds
-plinto_database_query_duration_milliseconds
-plinto_cache_hit_ratio
-plinto_webhook_delivery_success_rate
-plinto_tenant_mau
+janua_auth_requests_total
+janua_auth_failures_total
+janua_session_duration_seconds
+janua_jwt_verification_duration_milliseconds
+janua_database_query_duration_milliseconds
+janua_cache_hit_ratio
+janua_webhook_delivery_success_rate
+janua_tenant_mau
 ```
 
 ### Distributed Tracing (OpenTelemetry)
@@ -656,7 +656,7 @@ plinto_tenant_mau
 ```typescript
 import { trace } from '@opentelemetry/api';
 
-const tracer = trace.getTracer('plinto-api');
+const tracer = trace.getTracer('janua-api');
 
 export async function createSession(input: CreateSessionInput) {
   const span = tracer.startSpan('createSession');
@@ -687,35 +687,35 @@ export async function createSession(input: CreateSessionInput) {
 
 ## Migration Strategy
 
-### From Clerk to Plinto
+### From Clerk to Janua
 
 ```typescript
 // Dual-write adapter during migration
 class AuthAdapter {
   async createUser(data: CreateUserData) {
     // Write to both systems
-    const [clerkUser, plintoIdentity] = await Promise.all([
+    const [clerkUser, januaIdentity] = await Promise.all([
       this.clerk.users.create(data),
-      this.plinto.identities.create(data)
+      this.janua.identities.create(data)
     ]);
     
     // Map IDs for consistency
     await this.mapping.save({
       clerkId: clerkUser.id,
-      plintoId: plintoIdentity.id
+      januaId: januaIdentity.id
     });
     
-    return plintoIdentity;
+    return januaIdentity;
   }
   
   async verifySession(token: string) {
-    // Try Plinto first, fall back to Clerk
+    // Try Janua first, fall back to Clerk
     try {
-      return await this.plinto.sessions.verify(token);
+      return await this.janua.sessions.verify(token);
     } catch {
       const clerkSession = await this.clerk.sessions.verify(token);
-      // Create shadow session in Plinto
-      return await this.plinto.sessions.createShadow(clerkSession);
+      // Create shadow session in Janua
+      return await this.janua.sessions.createShadow(clerkSession);
     }
   }
 }
@@ -777,7 +777,7 @@ CREATE MATERIALIZED VIEW daily_active_users AS
 
 ## Competitive Advantages vs Clerk
 
-| Feature | Clerk | Plinto | Advantage |
+| Feature | Clerk | Janua | Advantage |
 |---------|-------|---------|-----------|
 | Verification Speed | 50-100ms | <30ms | 2-3x faster |
 | Integration Time | 30 minutes | 5 minutes | 6x faster |
@@ -824,4 +824,4 @@ CREATE MATERIALIZED VIEW daily_active_users AS
 - Audit logs
 - Compliance reports
 
-This architecture positions Plinto to not just compete with Clerk, but to redefine the identity platform category through superior technical design and developer experience.
+This architecture positions Janua to not just compete with Clerk, but to redefine the identity platform category through superior technical design and developer experience.

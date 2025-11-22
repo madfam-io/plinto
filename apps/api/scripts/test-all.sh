@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Plinto Platform - Comprehensive Test Orchestration
+# Janua Platform - Comprehensive Test Orchestration
 # This script runs all tests across the entire platform
 
 set -e
@@ -89,7 +89,7 @@ run_package_tests() {
 
 # Main test execution
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "📦 Plinto Platform - Test Orchestration"
+echo "📦 Janua Platform - Test Orchestration"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 

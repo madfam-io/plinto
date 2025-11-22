@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Forward the request to the Railway API
-    const apiResponse = await fetch('https://plinto-api.railway.app/api/audit/recent', {
+    const apiResponse = await fetch('https://janua-api.railway.app/api/audit/recent', {
       method: 'GET',
       headers: {
         'Authorization': authHeader,

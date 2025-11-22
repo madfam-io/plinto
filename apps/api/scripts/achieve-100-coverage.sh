@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to Achieve 100% Test Coverage for Plinto Platform
+# Script to Achieve 100% Test Coverage for Janua Platform
 # Goal: Fix all test failures and reach 100% coverage
 
 set -euo pipefail
@@ -283,7 +283,7 @@ jest.mock('next/navigation', () => ({
 }))
 
 // Mock environment
-process.env.NEXT_PUBLIC_PLINTO_ENV = 'test'
+process.env.NEXT_PUBLIC_JANUA_ENV = 'test'
 process.env.NEXT_PUBLIC_API_URL = 'http://localhost:4000'
 EOF
 
@@ -333,7 +333,7 @@ generate_report() {
     print_status "Generating comprehensive coverage report..."
     
     cat > FINAL_TEST_REPORT.md << 'EOF'
-# Final Test Coverage Report - Plinto Platform
+# Final Test Coverage Report - Janua Platform
 
 **Date:** $(date)
 **Goal:** 100% test coverage with all tests passing

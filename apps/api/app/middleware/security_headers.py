@@ -1,4 +1,4 @@
-"""Security Headers Middleware for Plinto API"""
+"""Security Headers Middleware for Janua API"""
 from fastapi import Request
 from fastapi.responses import Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -38,7 +38,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",   # For Swagger UI
             "img-src 'self' data: https:",
             "font-src 'self' data:",
-            "connect-src 'self' https://api.plinto.dev",
+            "connect-src 'self' https://api.janua.dev",
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "form-action 'self'",
@@ -63,6 +63,6 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             del response.headers["server"]
         
         # Add custom server header
-        response.headers["X-Powered-By"] = "Plinto Identity Platform"
+        response.headers["X-Powered-By"] = "Janua Identity Platform"
         
         return response

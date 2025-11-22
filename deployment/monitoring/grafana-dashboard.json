@@ -1,8 +1,8 @@
 {
   "dashboard": {
     "id": null,
-    "title": "Plinto Platform - Production Monitoring",
-    "tags": ["plinto", "production", "api", "authentication"],
+    "title": "Janua Platform - Production Monitoring",
+    "tags": ["janua", "production", "api", "authentication"],
     "timezone": "browser",
     "panels": [
       {

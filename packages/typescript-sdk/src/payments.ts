@@ -1,7 +1,7 @@
 /**
  * Payments SDK Module
  *
- * TypeScript SDK for Plinto billing and subscription management.
+ * TypeScript SDK for Janua billing and subscription management.
  *
  * Features:
  * - Multi-provider support (Conekta, Stripe, Polar)
@@ -11,7 +11,7 @@
  * - Provider fallback tracking
  */
 
-import type { PlintoClient } from './client';
+import type { JanuaClient } from './client';
 
 // ============================================================================
 // Types
@@ -127,7 +127,7 @@ export interface AddPaymentMethodRequest {
 // ============================================================================
 
 export class Payments {
-  constructor(private client: PlintoClient) {}
+  constructor(private client: JanuaClient) {}
 
   // --------------------------------------------------------------------------
   // Subscription Plans

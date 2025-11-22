@@ -1,4 +1,4 @@
-# Makefile for Plinto Go SDK
+# Makefile for Janua Go SDK
 
 .PHONY: help build test lint fmt vet tidy clean install-tools
 
@@ -18,7 +18,7 @@ GOLINT=golangci-lint
 
 # Build targets
 help: ## Display this help message
-	@echo "Plinto Go SDK - Available targets:"
+	@echo "Janua Go SDK - Available targets:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 build: ## Build the SDK

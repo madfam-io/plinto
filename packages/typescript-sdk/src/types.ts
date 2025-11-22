@@ -1,5 +1,5 @@
 /**
- * Core types and interfaces for the Plinto TypeScript SDK
+ * Core types and interfaces for the Janua TypeScript SDK
  */
 
 // Base Types
@@ -428,7 +428,7 @@ export interface ApiError {
 }
 
 // SDK Configuration
-export interface PlintoConfig {
+export interface JanuaConfig {
   // GraphQL configuration
   graphqlUrl?: string
   graphqlWsUrl?: string

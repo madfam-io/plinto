@@ -7,10 +7,10 @@ export default function SDKsPage() {
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-          Plinto SDKs
+          Janua SDKs
         </h1>
         <p className="mt-6 text-xl leading-8 text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-          Official SDKs and libraries for integrating Plinto into your applications.
+          Official SDKs and libraries for integrating Janua into your applications.
           Choose your preferred language and framework.
         </p>
       </div>
@@ -22,42 +22,42 @@ export default function SDKsPage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <SDKCard
-            name="@plinto/nextjs"
+            name="@janua/nextjs"
             description="Complete Next.js integration with App Router and Pages Router support"
             version="1.2.0"
             href="/sdks/javascript/nextjs"
-            githubUrl="https://github.com/plinto/plinto-nextjs"
-            installCommand="npm install @plinto/nextjs"
+            githubUrl="https://github.com/janua/janua-nextjs"
+            installCommand="npm install @janua/nextjs"
             features={["App Router Support", "Middleware Integration", "Server Components", "API Routes"]}
             stable
           />
           <SDKCard
-            name="@plinto/react-sdk"
+            name="@janua/react-sdk"
             description="React hooks and components for authentication"
             version="1.1.8"
             href="/sdks/javascript/react"
-            githubUrl="https://github.com/plinto/plinto-react"
-            installCommand="npm install @plinto/react-sdk"
+            githubUrl="https://github.com/janua/janua-react"
+            installCommand="npm install @janua/react-sdk"
             features={["React Hooks", "Context Provider", "Auth Components", "TypeScript Support"]}
             stable
           />
           <SDKCard
-            name="@plinto/vue"
+            name="@janua/vue"
             description="Vue 3 composables and plugin for authentication"
             version="1.0.5"
             href="/sdks/javascript/vue"
-            githubUrl="https://github.com/plinto/plinto-vue"
-            installCommand="npm install @plinto/vue"
+            githubUrl="https://github.com/janua/janua-vue"
+            installCommand="npm install @janua/vue"
             features={["Vue 3 Composables", "Pinia Integration", "TypeScript Support", "Nuxt 3 Compatible"]}
             stable
           />
           <SDKCard
-            name="@plinto/typescript-sdk"
+            name="@janua/typescript-sdk"
             description="Universal TypeScript SDK for any framework"
             version="1.2.1"
             href="/sdks/javascript/universal"
-            githubUrl="https://github.com/plinto/plinto-typescript"
-            installCommand="npm install @plinto/typescript-sdk"
+            githubUrl="https://github.com/janua/janua-typescript"
+            installCommand="npm install @janua/typescript-sdk"
             features={["Framework Agnostic", "Node.js Support", "Browser Support", "Full TypeScript Support"]}
             stable
           />
@@ -71,42 +71,42 @@ export default function SDKsPage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <SDKCard
-            name="plinto-python"
+            name="janua-python"
             description="Official Python SDK with async/await support"
             version="0.8.2"
             href="/sdks/python"
-            githubUrl="https://github.com/plinto/plinto-python"
-            installCommand="pip install plinto-python"
+            githubUrl="https://github.com/janua/janua-python"
+            installCommand="pip install janua-python"
             features={["Async/Await Support", "Type Hints", "Pydantic Models", "Framework Agnostic"]}
             stable
           />
           <SDKCard
-            name="plinto-django"
+            name="janua-django"
             description="Django integration with middleware and decorators"
             version="0.6.0"
             href="/sdks/python/django"
-            githubUrl="https://github.com/plinto/plinto-django"
-            installCommand="pip install plinto-django"
+            githubUrl="https://github.com/janua/janua-django"
+            installCommand="pip install janua-django"
             features={["Middleware", "Decorators", "Admin Integration", "User Model"]}
             stable
           />
           <SDKCard
-            name="plinto-fastapi"
+            name="janua-fastapi"
             description="FastAPI plugin with dependency injection"
             version="0.5.1"
             href="/sdks/python/fastapi"
-            githubUrl="https://github.com/plinto/plinto-fastapi"
-            installCommand="pip install plinto-fastapi"
+            githubUrl="https://github.com/janua/janua-fastapi"
+            installCommand="pip install janua-fastapi"
             features={["Dependency Injection", "OAuth2 Scopes", "OpenAPI Integration", "Async Support"]}
             stable
           />
           <SDKCard
-            name="plinto-flask"
+            name="janua-flask"
             description="Flask extension for authentication"
             version="0.4.2"
             href="/sdks/python/flask"
-            githubUrl="https://github.com/plinto/plinto-flask"
-            installCommand="pip install plinto-flask"
+            githubUrl="https://github.com/janua/janua-flask"
+            installCommand="pip install janua-flask"
             features={["Flask Extension", "Session Management", "Decorators", "Blueprint Support"]}
             beta
           />
@@ -120,42 +120,42 @@ export default function SDKsPage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <SDKCard
-            name="plinto-go"
+            name="janua-go"
             description="Go SDK with Gin and standard library support"
             version="0.3.0"
             href="/sdks/go"
-            githubUrl="https://github.com/plinto/plinto-go"
-            installCommand="go get github.com/plinto/plinto-go"
+            githubUrl="https://github.com/janua/janua-go"
+            installCommand="go get github.com/janua/janua-go"
             features={["Standard Library", "Gin Integration", "JWT Validation", "Middleware Support"]}
             beta
           />
           <SDKCard
-            name="plinto-php"
+            name="janua-php"
             description="PHP SDK with Laravel and Symfony support"
             version="0.2.1"
             href="/sdks/php"
-            githubUrl="https://github.com/plinto/plinto-php"
-            installCommand="composer require plinto/plinto-php"
+            githubUrl="https://github.com/janua/janua-php"
+            installCommand="composer require janua/janua-php"
             features={["Laravel Support", "Symfony Bundle", "PSR-7 Compatible", "JWT Validation"]}
             alpha
           />
           <SDKCard
-            name="plinto-rust"
+            name="janua-rust"
             description="Rust crate for server-side authentication"
             version="0.1.5"
             href="/sdks/rust"
-            githubUrl="https://github.com/plinto/plinto-rust"
-            installCommand="cargo add plinto"
+            githubUrl="https://github.com/janua/janua-rust"
+            installCommand="cargo add janua"
             features={["Axum Integration", "Async/Await", "Type Safety", "JWT Validation"]}
             alpha
           />
           <SDKCard
-            name="plinto-ruby"
+            name="janua-ruby"
             description="Ruby gem with Rails integration"
             version="0.1.2"
             href="/sdks/ruby"
-            githubUrl="https://github.com/plinto/plinto-ruby"
-            installCommand="gem install plinto"
+            githubUrl="https://github.com/janua/janua-ruby"
+            installCommand="gem install janua"
             features={["Rails Integration", "Rack Middleware", "ActiveRecord", "JWT Validation"]}
             alpha
           />
@@ -169,22 +169,22 @@ export default function SDKsPage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <SDKCard
-            name="@plinto/react-sdk-native"
+            name="@janua/react-sdk-native"
             description="React Native SDK with biometric authentication"
             version="0.7.0"
             href="/sdks/mobile/react-native"
-            githubUrl="https://github.com/plinto/plinto-react-native"
-            installCommand="npm install @plinto/react-sdk-native"
+            githubUrl="https://github.com/janua/janua-react-native"
+            installCommand="npm install @janua/react-sdk-native"
             features={["Biometric Auth", "Keychain Storage", "Deep Linking", "Push Notifications"]}
             beta
           />
           <SDKCard
-            name="plinto_flutter"
+            name="janua_flutter"
             description="Flutter plugin for cross-platform mobile apps"
             version="0.6.2"
             href="/sdks/mobile/flutter"
-            githubUrl="https://github.com/plinto/plinto-flutter"
-            installCommand="flutter pub add plinto_flutter"
+            githubUrl="https://github.com/janua/janua-flutter"
+            installCommand="flutter pub add janua_flutter"
             features={["Cross Platform", "Secure Storage", "Biometric Auth", "Deep Linking"]}
             beta
           />
@@ -204,18 +204,18 @@ export default function SDKsPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CommunitySDKCard
-            name="plinto-svelte"
+            name="janua-svelte"
             description="SvelteKit integration with stores and actions"
             maintainer="@johndoe"
-            githubUrl="https://github.com/community/plinto-svelte"
-            installCommand="npm install plinto-svelte"
+            githubUrl="https://github.com/community/janua-svelte"
+            installCommand="npm install janua-svelte"
           />
           <CommunitySDKCard
-            name="plinto-angular"
+            name="janua-angular"
             description="Angular services and guards for authentication"
             maintainer="@janedoe"
-            githubUrl="https://github.com/community/plinto-angular"
-            installCommand="npm install plinto-angular"
+            githubUrl="https://github.com/community/janua-angular"
+            installCommand="npm install janua-angular"
           />
         </div>
       </section>
@@ -249,7 +249,7 @@ export default function SDKsPage() {
                   Next.js
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                  @plinto/nextjs
+                  @janua/nextjs
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   Full-stack React applications
@@ -265,7 +265,7 @@ export default function SDKsPage() {
                   React SPA
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                  @plinto/react-sdk
+                  @janua/react-sdk
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   Single-page applications
@@ -281,7 +281,7 @@ export default function SDKsPage() {
                   Vue / Nuxt
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                  @plinto/vue
+                  @janua/vue
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   Vue.js applications
@@ -297,7 +297,7 @@ export default function SDKsPage() {
                   Python API
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                  plinto-python
+                  janua-python
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   Backend services and APIs

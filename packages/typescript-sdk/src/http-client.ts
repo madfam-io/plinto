@@ -1,15 +1,15 @@
 /**
- * HTTP client for the Plinto TypeScript SDK
+ * HTTP client for the Janua TypeScript SDK
  */
 
 import type {
   RequestConfig,
   HttpResponse,
   RateLimitInfo,
-  PlintoConfig
+  JanuaConfig
 } from './types';
 import {
-  PlintoError,
+  JanuaError,
   NetworkError,
   RateLimitError
 } from './errors';
@@ -20,11 +20,11 @@ import type { SdkEventMap } from './types';
  * HTTP client with automatic token refresh and retry logic
  */
 export class HttpClient extends EventEmitter<SdkEventMap> {
-  private config: Required<Pick<PlintoConfig, 'baseURL' | 'timeout' | 'retryAttempts' | 'retryDelay'>>;
+  private config: Required<Pick<JanuaConfig, 'baseURL' | 'timeout' | 'retryAttempts' | 'retryDelay'>>;
   private tokenManager: TokenManager;
   private refreshPromise: Promise<void> | null = null;
 
-  constructor(config: PlintoConfig, tokenManager: TokenManager) {
+  constructor(config: JanuaConfig, tokenManager: TokenManager) {
     super();
     
     this.config = {
@@ -188,7 +188,7 @@ export class HttpClient extends EventEmitter<SdkEventMap> {
     
     if (!refreshToken) {
       this.emit('auth:signedOut', {});
-      throw new PlintoError('No refresh token available', 'AUTHENTICATION_ERROR');
+      throw new JanuaError('No refresh token available', 'AUTHENTICATION_ERROR');
     }
 
     try {
@@ -242,7 +242,7 @@ export class HttpClient extends EventEmitter<SdkEventMap> {
       status_code: response.status
     };
 
-    throw PlintoError.fromApiError(apiError);
+    throw JanuaError.fromApiError(apiError);
   }
 
   /**
@@ -284,11 +284,11 @@ export class HttpClient extends EventEmitter<SdkEventMap> {
     const sdkVersion = '1.0.0'; // This should be dynamically set
     
     if (typeof window !== 'undefined') {
-      return `plinto-typescript-sdk/${sdkVersion} (Browser)`;
+      return `janua-typescript-sdk/${sdkVersion} (Browser)`;
     } else if (typeof process !== 'undefined') {
-      return `plinto-typescript-sdk/${sdkVersion} (Node.js ${process.version})`;
+      return `janua-typescript-sdk/${sdkVersion} (Node.js ${process.version})`;
     } else {
-      return `plinto-typescript-sdk/${sdkVersion}`;
+      return `janua-typescript-sdk/${sdkVersion}`;
     }
   }
 
@@ -348,7 +348,7 @@ export class AxiosHttpClient extends EventEmitter<SdkEventMap> {
   private tokenManager: TokenManager;
   private refreshPromise: Promise<void> | null = null;
 
-  constructor(config: PlintoConfig, tokenManager: TokenManager) {
+  constructor(config: JanuaConfig, tokenManager: TokenManager) {
     super();
     
     this.tokenManager = tokenManager;
@@ -362,7 +362,7 @@ export class AxiosHttpClient extends EventEmitter<SdkEventMap> {
     }
   }
 
-  private setupAxiosInstance(config: PlintoConfig): void {
+  private setupAxiosInstance(config: JanuaConfig): void {
     this.axios = this.axiosLib.create({
       baseURL: config.baseURL,
       timeout: config.timeout || 30000,
@@ -407,7 +407,7 @@ export class AxiosHttpClient extends EventEmitter<SdkEventMap> {
             details: error.response.data?.details || {},
             status_code: error.response.status
           };
-          throw PlintoError.fromApiError(apiError);
+          throw JanuaError.fromApiError(apiError);
         } else if (error.request) {
           throw new NetworkError('Network request failed', error);
         } else {
@@ -436,7 +436,7 @@ export class AxiosHttpClient extends EventEmitter<SdkEventMap> {
     
     if (!refreshToken) {
       this.emit('auth:signedOut', {});
-      throw new PlintoError('No refresh token available', 'AUTHENTICATION_ERROR');
+      throw new JanuaError('No refresh token available', 'AUTHENTICATION_ERROR');
     }
 
     try {
@@ -508,7 +508,7 @@ export class AxiosHttpClient extends EventEmitter<SdkEventMap> {
 /**
  * Factory function to create appropriate HTTP client
  */
-export function createHttpClient(config: PlintoConfig, tokenManager: TokenManager): HttpClient | AxiosHttpClient {
+export function createHttpClient(config: JanuaConfig, tokenManager: TokenManager): HttpClient | AxiosHttpClient {
   // Check if axios is available and preferred
   if (config.environment && config.environment !== 'browser' as any) {
     try {

@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Code2, Copy, Check, Play, Terminal, FileCode, Package } from 'lucide-react'
-import { Button } from '@plinto/ui'
-import { Badge } from '@plinto/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { Button } from '@janua/ui'
+import { Badge } from '@janua/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 
 interface SDKExample {
   language: string
@@ -22,17 +22,17 @@ const sdkExamples: SDKExample[] = [
   {
     language: 'typescript',
     label: 'TypeScript',
-    packageName: '@plinto/typescript-sdk',
+    packageName: '@janua/typescript-sdk',
     version: '1.0.0',
-    installation: 'npm install @plinto/typescript-sdk',
-    code: `import { createClient } from '@plinto/typescript-sdk';
+    installation: 'npm install @janua/typescript-sdk',
+    code: `import { createClient } from '@janua/typescript-sdk';
 
-const plinto = createClient({
+const janua = createClient({
   baseURL: 'https://api.yourapp.com'
 });
 
 // Sign up a new user (actually implemented)
-const { user, tokens } = await plinto.auth.signUp({
+const { user, tokens } = await janua.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   first_name: 'Jane',
@@ -40,21 +40,21 @@ const { user, tokens } = await plinto.auth.signUp({
 });
 
 // Enable passkey authentication (WebAuthn/FIDO2)
-const { options } = await plinto.passkeys.getRegistrationOptions();
+const { options } = await janua.passkeys.getRegistrationOptions();
 const credential = await navigator.credentials.create({
   publicKey: options
 });
-const { verified } = await plinto.passkeys.verifyRegistration({
+const { verified } = await janua.passkeys.verifyRegistration({
   credential
 });
 
 // Enable MFA with TOTP (actually working)
-const { qrCode, backupCodes } = await plinto.mfa.enable({
+const { qrCode, backupCodes } = await janua.mfa.enable({
   password: 'SecurePassword123!'
 });
 
 // Create an organization (implemented feature)
-const org = await plinto.organizations.create({
+const org = await janua.organizations.create({
   name: 'Acme Corp',
   slug: 'acme-corp'
 });`,
@@ -66,14 +66,14 @@ const org = await plinto.organizations.create({
   {
     language: 'python',
     label: 'Python',
-    packageName: 'plinto',
+    packageName: 'janua',
     version: '1.0.0',
-    installation: 'pip install plinto',
-    code: `from plinto import PlintoClient
+    installation: 'pip install janua',
+    code: `from janua import JanuaClient
 import asyncio
 
 # Initialize client with your API key
-client = PlintoClient(api_key="your_api_key")
+client = JanuaClient(api_key="your_api_key")
 
 # Sign up a new user (async support)
 async def main():
@@ -113,9 +113,9 @@ Session: sess_123 - Chrome/120.0`
   {
     language: 'go',
     label: 'Go',
-    packageName: 'github.com/plinto/go-sdk',
+    packageName: 'github.com/janua/go-sdk',
     version: '1.0.0',
-    installation: 'go get github.com/plinto/go-sdk',
+    installation: 'go get github.com/janua/go-sdk',
     code: `package main
 
 import (
@@ -123,20 +123,20 @@ import (
     "fmt"
     "log"
 
-    "github.com/plinto/go-sdk/plinto"
+    "github.com/janua/go-sdk/janua"
 )
 
 func main() {
     // Initialize client with context support
-    client := plinto.NewClient(
-        plinto.WithAPIKey("your_api_key"),
-        plinto.WithBaseURL("https://api.yourapp.com"),
+    client := janua.NewClient(
+        janua.WithAPIKey("your_api_key"),
+        janua.WithBaseURL("https://api.yourapp.com"),
     )
 
     ctx := context.Background()
 
     // Sign in user (implemented)
-    authResp, err := client.Auth.SignIn(ctx, &plinto.SignInRequest{
+    authResp, err := client.Auth.SignIn(ctx, &janua.SignInRequest{
         Email:    "user@example.com",
         Password: "SecurePassword123!",
     })
@@ -154,7 +154,7 @@ func main() {
 
     if mfaStatus.Enabled {
         // Verify MFA code
-        verified, err := client.MFA.Verify(ctx, &plinto.MFAVerifyRequest{
+        verified, err := client.MFA.Verify(ctx, &janua.MFAVerifyRequest{
             UserID: authResp.User.ID,
             Code:   "123456",
         })
@@ -165,7 +165,7 @@ func main() {
     }
 
     // List organizations (implemented)
-    orgs, err := client.Organizations.List(ctx, &plinto.ListOptions{
+    orgs, err := client.Organizations.List(ctx, &janua.ListOptions{
         Limit: 10,
     })
     if err != nil {
@@ -183,20 +183,20 @@ Organization: Acme Corp (org_123)`
   {
     language: 'react',
     label: 'React',
-    packageName: '@plinto/react-sdk',
+    packageName: '@janua/react-sdk',
     version: '1.0.0',
-    installation: 'npm install @plinto/react-sdk',
-    code: `import { PlintoProvider, useAuth, useOrganization } from '@plinto/react-sdk';
+    installation: 'npm install @janua/react-sdk',
+    code: `import { JanuaProvider, useAuth, useOrganization } from '@janua/react-sdk';
 
-// Wrap your app with PlintoProvider
+// Wrap your app with JanuaProvider
 function App() {
   return (
-    <PlintoProvider
+    <JanuaProvider
       apiKey="your_api_key"
       baseURL="https://api.yourapp.com"
     >
       <AuthComponent />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
@@ -475,7 +475,7 @@ export function RealSDKExamples() {
                 Try in CodeSandbox
               </Button>
               <Button variant="outline" asChild>
-                <a href={`https://github.com/plinto/${currentExample.language}-sdk`} target="_blank" rel="noopener">
+                <a href={`https://github.com/janua/${currentExample.language}-sdk`} target="_blank" rel="noopener">
                   View Full Documentation
                 </a>
               </Button>

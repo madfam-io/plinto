@@ -18,7 +18,7 @@ export interface SAMLConfigFormProps {
   onSubmit?: (config: any) => Promise<void>
   onCancel?: () => void
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
 }
 
@@ -28,7 +28,7 @@ export function SAMLConfigForm({
   onSubmit,
   onCancel,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: SAMLConfigFormProps) {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -67,8 +67,8 @@ export function SAMLConfigForm({
     try {
       let metadata: string
 
-      if (plintoClient) {
-        metadata = await plintoClient.sso.generateSPMetadata(organizationId)
+      if (januaClient) {
+        metadata = await januaClient.sso.generateSPMetadata(organizationId)
       } else {
         const res = await fetch(`${apiUrl}/api/v1/sso/metadata/${organizationId}`, {
           credentials: 'include',
@@ -202,8 +202,8 @@ export function SAMLConfigForm({
         name_id_format: nameIdFormat,
       }
 
-      if (plintoClient) {
-        await plintoClient.sso.updateConfiguration(organizationId, configData)
+      if (januaClient) {
+        await januaClient.sso.updateConfiguration(organizationId, configData)
       } else if (onSubmit) {
         await onSubmit(configData)
       } else {

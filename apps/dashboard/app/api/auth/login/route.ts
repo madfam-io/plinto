@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Forward the login request to the Railway API
-    const apiResponse = await fetch('https://plinto-api.railway.app/api/auth/login', {
+    const apiResponse = await fetch('https://janua-api.railway.app/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

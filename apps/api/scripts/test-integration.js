@@ -95,9 +95,9 @@ async function testExampleApp() {
   const pkg = JSON.parse(content);
   
   const requiredDeps = [
-    '@plinto/nextjs-sdk',
-    '@plinto/react-sdk', 
-    '@plinto/typescript-sdk',
+    '@janua/nextjs-sdk',
+    '@janua/react-sdk', 
+    '@janua/typescript-sdk',
     'next',
     'react'
   ];
@@ -161,7 +161,7 @@ async function testSecurityPolicy() {
   // Check for essential sections
   const requiredContent = [
     'Vulnerability Disclosure',
-    'security@plinto.dev',
+    'security@janua.dev',
     'Security Best Practices'
   ];
   
@@ -207,7 +207,7 @@ async function testPublishingInfrastructure() {
 }
 
 async function main() {
-  log('\n📦 Plinto Platform - Integration Tests\n', 'cyan');
+  log('\n📦 Janua Platform - Integration Tests\n', 'cyan');
   
   const tests = [
     { name: 'TypeScript SDK Build', fn: testTypeScriptSDKBuild },

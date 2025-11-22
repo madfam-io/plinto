@@ -26,7 +26,7 @@ This is an informational alert. No immediate action is required.
 
 UNDERSTANDING COMPLIANCE ALERTS
 --------------------------------
-Plinto monitors your organization's compliance with data protection regulations
+Janua monitors your organization's compliance with data protection regulations
 including GDPR, CCPA, and other privacy laws. We send these alerts to help you
 maintain compliance and protect your users' data rights.
 
@@ -37,5 +37,5 @@ trail for regulatory reporting and review.
 Questions about this alert? Contact our compliance team at {{ support_email }}
 
 ---
-Plinto by Aureo Labs
+Janua by Aureo Labs
 {{ base_url }}

@@ -47,7 +47,7 @@ evidence/
 ### 1. Automated Evidence Collection
 
 #### System Audit Logs
-**Source**: Plinto application and infrastructure
+**Source**: Janua application and infrastructure
 **Collection Method**: Automated log aggregation and retention
 **Frequency**: Real-time
 **Retention**: 7 years (per SOC2 requirements)

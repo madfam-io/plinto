@@ -10,11 +10,11 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/plinto/go-sdk/auth"
-	"github.com/plinto/go-sdk/models"
+	"github.com/janua/go-sdk/auth"
+	"github.com/janua/go-sdk/models"
 )
 
-// Client represents the Plinto API client
+// Client represents the Janua API client
 type Client struct {
 	baseURL    string
 	apiKey     string
@@ -30,10 +30,10 @@ type Config struct {
 	Timeout    time.Duration
 }
 
-// New creates a new Plinto client
+// New creates a new Janua client
 func New(config Config) *Client {
 	if config.BaseURL == "" {
-		config.BaseURL = "https://api.plinto.dev"
+		config.BaseURL = "https://api.janua.dev"
 	}
 
 	if config.HTTPClient == nil {

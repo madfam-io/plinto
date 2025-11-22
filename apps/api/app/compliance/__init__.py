@@ -1,5 +1,5 @@
 """
-Plinto Compliance Infrastructure
+Janua Compliance Infrastructure
 Enterprise compliance, monitoring, and audit trail system for SOC2 and enterprise requirements.
 """
 

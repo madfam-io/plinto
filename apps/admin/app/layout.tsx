@@ -4,13 +4,13 @@ import type { Metadata } from 'next'
 // import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/lib/auth'
-import { FeatureFlagProvider } from '@plinto/feature-flags'
+import { FeatureFlagProvider } from '@janua/feature-flags'
 
 // const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Plinto Admin - Internal Tools',
-  description: 'Internal superadmin tools for Plinto platform management',
+  title: 'Janua Admin - Internal Tools',
+  description: 'Internal superadmin tools for Janua platform management',
 }
 
 export default function RootLayout({

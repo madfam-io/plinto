@@ -279,14 +279,14 @@ jobs:
 
 ```bash
 # Build and test in container
-docker build -t plinto-api .
-docker run -d --name plinto-test -p 8000:8000 plinto-api
+docker build -t janua-api .
+docker run -d --name janua-test -p 8000:8000 janua-api
 
 # Run validations against container
 API_URL=http://localhost:8000 ./scripts/run-all-validations.sh
 
 # Cleanup
-docker stop plinto-test && docker rm plinto-test
+docker stop janua-test && docker rm janua-test
 ```
 
 ## Customization

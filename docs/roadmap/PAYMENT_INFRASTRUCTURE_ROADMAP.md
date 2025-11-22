@@ -13,8 +13,8 @@
 1. **Polar as Merchant of Record**: Global payment infrastructure with tax/compliance handling
 2. **Conekta for Mexico**: Optimized local payment processing for Mexican customers
 3. **Stripe as Fallback**: Universal backup for edge cases and unsupported regions
-4. **Plinto Polar Plugin**: Easy-to-implement plugin (like Better-Auth) for customers
-5. **Dogfooding**: Use Plinto's own auth + payment features internally
+4. **Janua Polar Plugin**: Easy-to-implement plugin (like Better-Auth) for customers
+5. **Dogfooding**: Use Janua's own auth + payment features internally
 
 ### Success Criteria
 - ✅ 100% payment coverage (Polar global + Conekta MX + Stripe fallback)
@@ -31,7 +31,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│           Plinto Billing Service                     │
+│           Janua Billing Service                     │
 │                                                      │
 │  ┌──────────────────────────────────────────────┐  │
 │  │  Payment Provider Router                      │  │
@@ -340,19 +340,19 @@ async def get_customer_portal(
 
 ---
 
-### Phase 2: Plinto Polar Plugin (Weeks 3-4)
+### Phase 2: Janua Polar Plugin (Weeks 3-4)
 
-**Objective**: Create easy-to-integrate plugin for Plinto customers (similar to Better-Auth)
+**Objective**: Create easy-to-integrate plugin for Janua customers (similar to Better-Auth)
 
 #### Week 3: TypeScript SDK Plugin
 
 **Plugin Architecture** (`packages/typescript-sdk/src/plugins/polar.ts`):
 ```typescript
-// Plinto Polar Plugin - Easy integration for customers
+// Janua Polar Plugin - Easy integration for customers
 
 export interface PolarPluginConfig {
   /**
-   * Plinto API URL (defaults to production)
+   * Janua API URL (defaults to production)
    */
   apiUrl?: string
   
@@ -374,13 +374,13 @@ export interface PolarPluginConfig {
 }
 
 export class PolarPlugin {
-  private client: PlintoClient
+  private client: JanuaClient
   private config: PolarPluginConfig
   
-  constructor(client: PlintoClient, config: PolarPluginConfig = {}) {
+  constructor(client: JanuaClient, config: PolarPluginConfig = {}) {
     this.client = client
     this.config = {
-      apiUrl: config.apiUrl || 'https://api.plinto.dev',
+      apiUrl: config.apiUrl || 'https://api.janua.dev',
       ...config
     }
   }
@@ -390,7 +390,7 @@ export class PolarPlugin {
    * 
    * @example
    * ```typescript
-   * await plintoClient.polar.subscribe({
+   * await januaClient.polar.subscribe({
    *   plan: 'pro',
    *   organizationId: 'org_123',
    *   successUrl: '/dashboard',
@@ -473,8 +473,8 @@ export interface Subscription {
 }
 
 // Plugin registration
-declare module '@plinto/typescript-sdk' {
-  interface PlintoClient {
+declare module '@janua/typescript-sdk' {
+  interface JanuaClient {
     polar: PolarPlugin
   }
 }
@@ -484,10 +484,10 @@ declare module '@plinto/typescript-sdk' {
 ```typescript
 import { PolarPlugin, PolarPluginConfig } from './plugins/polar'
 
-export class PlintoClient {
+export class JanuaClient {
   public polar: PolarPlugin
   
-  constructor(config: PlintoClientConfig & { polar?: PolarPluginConfig } = {}) {
+  constructor(config: JanuaClientConfig & { polar?: PolarPluginConfig } = {}) {
     // ... existing client initialization
     
     // Initialize Polar plugin
@@ -500,14 +500,14 @@ export class PlintoClient {
 - ✅ PolarPlugin TypeScript SDK class
 - ✅ Type-safe API with full TypeScript support
 - ✅ Simple subscribe(), getPortal(), cancelSubscription() methods
-- ✅ Plugin registration in PlintoClient
+- ✅ Plugin registration in JanuaClient
 
 #### Week 4: React UI Components
 
 **Polar Checkout Button** (`packages/ui/src/components/billing/polar-checkout-button.tsx`):
 ```typescript
 import { useState } from 'react'
-import { usePlintoClient } from '../../hooks/use-plinto-client'
+import { useJanuaClient } from '../../hooks/use-janua-client'
 
 export interface PolarCheckoutButtonProps {
   /**
@@ -573,7 +573,7 @@ export function PolarCheckoutButton({
   onCheckoutStart,
   onError,
 }: PolarCheckoutButtonProps) {
-  const client = usePlintoClient()
+  const client = useJanuaClient()
   const [loading, setLoading] = useState(false)
   
   const handleSubscribe = async () => {
@@ -633,7 +633,7 @@ export function PolarCheckoutButton({
 **Customer Portal Button** (`packages/ui/src/components/billing/polar-customer-portal.tsx`):
 ```typescript
 import { useState } from 'react'
-import { usePlintoClient } from '../../hooks/use-plinto-client'
+import { useJanuaClient } from '../../hooks/use-janua-client'
 
 export interface PolarCustomerPortalProps {
   /**
@@ -663,7 +663,7 @@ export function PolarCustomerPortal({
   className = '',
   onError,
 }: PolarCustomerPortalProps) {
-  const client = usePlintoClient()
+  const client = useJanuaClient()
   const [loading, setLoading] = useState(false)
   
   const handlePortal = async () => {
@@ -692,8 +692,8 @@ export function PolarCustomerPortal({
 **Subscription Status Component** (`packages/ui/src/components/billing/subscription-status.tsx`):
 ```typescript
 import { useEffect, useState } from 'react'
-import { usePlintoClient } from '../../hooks/use-plinto-client'
-import type { Subscription } from '@plinto/typescript-sdk'
+import { useJanuaClient } from '../../hooks/use-janua-client'
+import type { Subscription } from '@janua/typescript-sdk'
 
 export interface SubscriptionStatusProps {
   organizationId: string
@@ -708,7 +708,7 @@ export function SubscriptionStatus({
   showCancelButton = false,
   onCancel,
 }: SubscriptionStatusProps) {
-  const client = usePlintoClient()
+  const client = useJanuaClient()
   const [subscription, setSubscription] = useState<Subscription | null>(null)
   const [loading, setLoading] = useState(true)
   
@@ -795,15 +795,15 @@ export function SubscriptionStatus({
 
 ### Phase 3: Dogfooding & Documentation (Weeks 5-6)
 
-**Objective**: Use Plinto's own features internally and create comprehensive documentation
+**Objective**: Use Janua's own features internally and create comprehensive documentation
 
 #### Week 5: Dogfooding Implementation
 
-**Plinto Platform Billing** (apps/demo integration):
+**Janua Platform Billing** (apps/demo integration):
 ```typescript
 // apps/demo/app/pricing/page.tsx
-import { PolarCheckoutButton } from '@plinto/ui'
-import { useAuth } from '@plinto/ui'
+import { PolarCheckoutButton } from '@janua/ui'
+import { useAuth } from '@janua/ui'
 
 export default function PricingPage() {
   const { user, organization } = useAuth()
@@ -852,8 +852,8 @@ export default function PricingPage() {
 **Settings Page Integration**:
 ```typescript
 // apps/demo/app/settings/billing/page.tsx
-import { SubscriptionStatus, PolarCustomerPortal } from '@plinto/ui'
-import { useAuth } from '@plinto/ui'
+import { SubscriptionStatus, PolarCustomerPortal } from '@janua/ui'
+import { useAuth } from '@janua/ui'
 
 export default function BillingSettingsPage() {
   const { organization } = useAuth()
@@ -885,7 +885,7 @@ export default function BillingSettingsPage() {
 ```
 
 **Deliverables**:
-- ✅ Plinto demo app using own auth features
+- ✅ Janua demo app using own auth features
 - ✅ Polar plugin integrated for billing
 - ✅ Real-world validation and testing
 - ✅ Performance and UX metrics collection
@@ -895,27 +895,27 @@ export default function BillingSettingsPage() {
 
 **Plugin Documentation** (`docs/plugins/POLAR_PLUGIN.md`):
 ````markdown
-# Plinto Polar Plugin
+# Janua Polar Plugin
 
-Easy payment integration for your Plinto-powered app. Accept subscriptions in <5 minutes.
+Easy payment integration for your Janua-powered app. Accept subscriptions in <5 minutes.
 
 ## Quick Start
 
 ### 1. Install (1 min)
 
 ```bash
-npm install @plinto/ui @plinto/typescript-sdk
+npm install @janua/ui @janua/typescript-sdk
 ```
 
-### 2. Configure Plinto Client (1 min)
+### 2. Configure Janua Client (1 min)
 
 ```typescript
-// lib/plinto-client.ts
-import { PlintoClient } from '@plinto/typescript-sdk'
+// lib/janua-client.ts
+import { JanuaClient } from '@janua/typescript-sdk'
 
-export const plintoClient = new PlintoClient({
-  apiUrl: process.env.NEXT_PUBLIC_PLINTO_API_URL,
-  publishableKey: process.env.NEXT_PUBLIC_PLINTO_PUBLISHABLE_KEY,
+export const januaClient = new JanuaClient({
+  apiUrl: process.env.NEXT_PUBLIC_JANUA_API_URL,
+  publishableKey: process.env.NEXT_PUBLIC_JANUA_PUBLISHABLE_KEY,
   
   // Configure Polar plugin
   polar: {
@@ -937,7 +937,7 @@ export const plintoClient = new PlintoClient({
 
 ```typescript
 // app/pricing/page.tsx
-import { PolarCheckoutButton } from '@plinto/ui'
+import { PolarCheckoutButton } from '@janua/ui'
 
 export default function PricingPage() {
   return (
@@ -956,7 +956,7 @@ export default function PricingPage() {
 
 ```typescript
 // app/settings/billing/page.tsx
-import { PolarCustomerPortal, SubscriptionStatus } from '@plinto/ui'
+import { PolarCustomerPortal, SubscriptionStatus } from '@janua/ui'
 
 export default function BillingPage() {
   return (
@@ -970,7 +970,7 @@ export default function BillingPage() {
 
 ## Complete Example
 
-See our [demo app](https://demo.plinto.dev) for a full working example.
+See our [demo app](https://demo.janua.dev) for a full working example.
 
 ## API Reference
 
@@ -1009,7 +1009,7 @@ Display current subscription status and details.
 ### Subscribe
 
 ```typescript
-await plintoClient.polar.subscribe({
+await januaClient.polar.subscribe({
   plan: 'pro',
   organizationId: 'org_123',
   successUrl: '/dashboard',
@@ -1019,19 +1019,19 @@ await plintoClient.polar.subscribe({
 ### Get Portal URL
 
 ```typescript
-const portalUrl = await plintoClient.polar.getPortal('org_123')
+const portalUrl = await januaClient.polar.getPortal('org_123')
 ```
 
 ### Get Subscription
 
 ```typescript
-const subscription = await plintoClient.polar.getSubscription('org_123')
+const subscription = await januaClient.polar.getSubscription('org_123')
 ```
 
 ### Cancel Subscription
 
 ```typescript
-await plintoClient.polar.cancelSubscription('org_123')
+await januaClient.polar.cancelSubscription('org_123')
 ```
 
 ## Styling
@@ -1046,7 +1046,7 @@ Full TypeScript support with type definitions included.
 
 ### Checkout redirects to wrong URL
 - Verify `successUrl` includes full path
-- Check `NEXT_PUBLIC_PLINTO_API_URL` environment variable
+- Check `NEXT_PUBLIC_JANUA_API_URL` environment variable
 
 ### "Product ID not configured" error
 - Configure product IDs in Polar plugin config
@@ -1090,7 +1090,7 @@ def verify_stripe_webhook(payload: bytes, signature: str) -> bool:
 
 **PCI Compliance**:
 - All card data handled by payment providers (PCI DSS Level 1)
-- No card data stored in Plinto database
+- No card data stored in Janua database
 - Tokenization via provider APIs
 
 **Data Privacy**:
@@ -1220,7 +1220,7 @@ test('Mexican customer uses Conekta', async ({ page }) => {
 - [ ] View subscription status
 
 **Phase 3 - Dogfooding**:
-- [ ] Plinto demo app pricing page
+- [ ] Janua demo app pricing page
 - [ ] Subscribe to Pro plan via plugin
 - [ ] Manage subscription via portal
 - [ ] Cancel and verify access retention
@@ -1316,7 +1316,7 @@ uvicorn main:app --reload
 ### Phase 3 Deployment (Weeks 5-6)
 
 **Week 5: Internal Dogfooding**
-- Deploy Plinto demo app with plugin
+- Deploy Janua demo app with plugin
 - Internal team testing
 - Real transaction processing
 - Performance monitoring
@@ -1348,7 +1348,7 @@ uvicorn main:app --reload
 
 ### For Marketing
 - [ ] Dogfooding case study blog post
-- [ ] Comparison: Plinto vs Clerk vs Auth0 (pricing + features)
+- [ ] Comparison: Janua vs Clerk vs Auth0 (pricing + features)
 - [ ] Plugin announcement post
 - [ ] Social media content
 - [ ] Product Hunt launch materials
@@ -1418,9 +1418,9 @@ uvicorn main:app --reload
 - [ ] Integration tests for all providers
 - [ ] Staging deployment and validation
 
-### Phase 2: Plinto Polar Plugin ✅
+### Phase 2: Janua Polar Plugin ✅
 - [ ] PolarPlugin TypeScript SDK class
-- [ ] SDK integration in PlintoClient
+- [ ] SDK integration in JanuaClient
 - [ ] PolarCheckoutButton React component
 - [ ] PolarCustomerPortal React component
 - [ ] SubscriptionStatus React component
@@ -1430,7 +1430,7 @@ uvicorn main:app --reload
 - [ ] NPM package publication
 
 ### Phase 3: Dogfooding & Launch ✅
-- [ ] Integrate plugin in Plinto demo app
+- [ ] Integrate plugin in Janua demo app
 - [ ] Pricing page with checkout buttons
 - [ ] Settings page with subscription management
 - [ ] Real transaction processing
@@ -1476,4 +1476,4 @@ uvicorn main:app --reload
 
 ---
 
-*Plinto Payment Infrastructure Roadmap | November 16, 2025*
+*Janua Payment Infrastructure Roadmap | November 16, 2025*

@@ -1,6 +1,6 @@
 # Production Monitoring Setup Guide
 
-This guide helps you set up free monitoring services for Plinto's alpha launch.
+This guide helps you set up free monitoring services for Janua's alpha launch.
 
 ## 1. Uptime Monitoring (UptimeRobot - Free)
 
@@ -11,26 +11,26 @@ This guide helps you set up free monitoring services for Plinto's alpha launch.
 ```
 Monitor 1: API Health
 - Monitor Type: HTTP(s)
-- Friendly Name: Plinto API
-- URL: https://api.plinto.dev/health
+- Friendly Name: Janua API
+- URL: https://api.janua.dev/health
 - Monitoring Interval: 5 minutes
 
 Monitor 2: Main App
 - Monitor Type: HTTP(s)
-- Friendly Name: Plinto App
-- URL: https://app.plinto.dev
+- Friendly Name: Janua App
+- URL: https://app.janua.dev
 - Monitoring Interval: 5 minutes
 
 Monitor 3: Marketing Site
 - Monitor Type: HTTP(s)
-- Friendly Name: Plinto Website
-- URL: https://www.plinto.dev
+- Friendly Name: Janua Website
+- URL: https://www.janua.dev
 - Monitoring Interval: 5 minutes
 
 Monitor 4: Documentation
 - Monitor Type: HTTP(s)
-- Friendly Name: Plinto Docs
-- URL: https://docs.plinto.dev
+- Friendly Name: Janua Docs
+- URL: https://docs.janua.dev
 - Monitoring Interval: 5 minutes
 ```
 
@@ -45,7 +45,7 @@ Monitor 4: Documentation
 1. **Create Account**: Go to https://sentry.io and sign up
 2. **Create Project**:
    - Platform: Python (FastAPI)
-   - Project Name: plinto-api
+   - Project Name: janua-api
 3. **Get DSN**: Copy your DSN from project settings
 4. **Add to Environment**:
 
@@ -66,19 +66,19 @@ SENTRY_DSN=https://YOUR_KEY@sentry.io/YOUR_PROJECT_ID
 Create a simple status page using GitHub Pages:
 
 ```html
-<!-- Create repo: plinto-status -->
+<!-- Create repo: janua-status -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Plinto Status</title>
+    <title>Janua Status</title>
     <meta http-equiv="refresh" content="60">
 </head>
 <body>
-    <h1>Plinto Platform Status</h1>
+    <h1>Janua Platform Status</h1>
     <div id="status"></div>
     <script>
         // Check API health
-        fetch('https://api.plinto.dev/health')
+        fetch('https://api.janua.dev/health')
             .then(r => r.json())
             .then(data => {
                 document.getElementById('status').innerHTML = 
@@ -103,8 +103,8 @@ Create a simple status page using GitHub Pages:
 Monitor frontend performance:
 ```bash
 # Check weekly
-https://pagespeed.web.dev/?url=https://www.plinto.dev
-https://pagespeed.web.dev/?url=https://app.plinto.dev
+https://pagespeed.web.dev/?url=https://www.janua.dev
+https://pagespeed.web.dev/?url=https://app.janua.dev
 ```
 
 ### GTmetrix (Free Tier)
@@ -119,7 +119,7 @@ Create a local monitoring script:
 #!/bin/bash
 # scripts/monitor-production.sh
 
-echo "🔍 Checking Plinto Production Status..."
+echo "🔍 Checking Janua Production Status..."
 
 # Colors
 GREEN='\033[0;32m'
@@ -141,15 +141,15 @@ check_service() {
 }
 
 # Check all services
-check_service "API Health" "https://api.plinto.dev/health"
-check_service "Main App" "https://app.plinto.dev"
-check_service "Marketing" "https://www.plinto.dev"
-check_service "Documentation" "https://docs.plinto.dev"
-check_service "Admin Panel" "https://admin.plinto.dev"
-check_service "Demo App" "https://demo.plinto.dev"
+check_service "API Health" "https://api.janua.dev/health"
+check_service "Main App" "https://app.janua.dev"
+check_service "Marketing" "https://www.janua.dev"
+check_service "Documentation" "https://docs.janua.dev"
+check_service "Admin Panel" "https://admin.janua.dev"
+check_service "Demo App" "https://demo.janua.dev"
 
 # Check API response time
-response_time=$(curl -o /dev/null -s -w '%{time_total}' https://api.plinto.dev/health)
+response_time=$(curl -o /dev/null -s -w '%{time_total}' https://api.janua.dev/health)
 echo "API Response Time: ${response_time}s"
 
 # Run every 5 minutes via cron
@@ -261,7 +261,7 @@ SENTRY_DSN=https://your-key@sentry.io/project-id
 ALERT_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
 
 # Optional: Status page
-STATUS_PAGE_URL=https://status.plinto.dev
+STATUS_PAGE_URL=https://status.janua.dev
 ```
 
 ## Verification
@@ -270,7 +270,7 @@ After setup, verify monitoring works:
 
 ```bash
 # 1. Trigger a test error
-curl -X POST https://api.plinto.dev/test-error
+curl -X POST https://api.janua.dev/test-error
 
 # 2. Check Sentry received it
 # Go to Sentry dashboard
@@ -279,7 +279,7 @@ curl -X POST https://api.plinto.dev/test-error
 # Check UptimeRobot sends alert
 
 # 4. Check metrics
-curl https://api.plinto.dev/metrics
+curl https://api.janua.dev/metrics
 ```
 
 ---

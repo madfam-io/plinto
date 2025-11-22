@@ -13,7 +13,7 @@ async function main() {
     create: {
       name: "Demo Company",
       slug: "demo",
-      domain: "demo.plinto.dev",
+      domain: "demo.janua.dev",
       subdomain: "demo",
       billing_plan: "professional",
       isolation_level: "shared",
@@ -48,14 +48,14 @@ async function main() {
     create: {
       name: "Enterprise Corp",
       slug: "enterprise",
-      domain: "enterprise.plinto.dev",
+      domain: "enterprise.janua.dev",
       subdomain: "enterprise",
       billing_plan: "enterprise",
       isolation_level: "fully-isolated",
-      database_host: "enterprise-db.plinto.dev",
+      database_host: "enterprise-db.janua.dev",
       database_port: 5432,
-      database_name: "enterprise_plinto",
-      storage_bucket: "enterprise-plinto-storage",
+      database_name: "enterprise_janua",
+      storage_bucket: "enterprise-janua-storage",
       storage_prefix: "enterprise/",
       features: {
         multi_tenancy: true,
@@ -81,11 +81,11 @@ async function main() {
   // Create admin user for demo tenant
   const hashedPassword = await bcrypt.hash("demo123!", 12);
   const adminUser = await prisma.user.upsert({
-    where: { email: "admin@demo.plinto.dev" },
+    where: { email: "admin@demo.janua.dev" },
     update: {},
     create: {
       tenant_id: demoTenant.id,
-      email: "admin@demo.plinto.dev",
+      email: "admin@demo.janua.dev",
       first_name: "Demo",
       last_name: "Admin",
       password_hash: hashedPassword,
@@ -373,7 +373,7 @@ async function main() {
   console.log("🎉 Database seeding completed successfully!");
   console.log("\n📊 Seeded data summary:");
   console.log("- 2 tenants (demo, enterprise)");
-  console.log("- 1 admin user (admin@demo.plinto.dev / demo123!)");
+  console.log("- 1 admin user (admin@demo.janua.dev / demo123!)");
   console.log("- 3 system roles (admin, user, team_lead)");
   console.log("- 1 demo team (Engineering)");
   console.log("- 1 active subscription");

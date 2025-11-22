@@ -1,4 +1,4 @@
-# Comprehensive Code Analysis - Plinto Platform
+# Comprehensive Code Analysis - Janua Platform
 **Analysis Date**: November 15, 2025  
 **Analyzer**: Claude Code `/sc:analyze`  
 **Scope**: Full platform (apps + packages)
@@ -127,7 +127,7 @@
    - Consider: Fail fast if not set in prod
 
 2. **CORS Configuration** (🟢 LOW)
-   - Default: `http://localhost:3000,https://plinto.dev`
+   - Default: `http://localhost:3000,https://janua.dev`
    - Proper parsing from env vars
    - Recommendation: Document CORS setup clearly
 
@@ -352,7 +352,7 @@ npm run test:integration  # Integration tests
 
 ### vs Auth0/Clerk/Supabase
 
-| Criterion | Enterprise Std | Plinto | Gap |
+| Criterion | Enterprise Std | Janua | Gap |
 |-----------|---------------|--------|-----|
 | **Code Quality** | A | B+ | Minor linting, cleanup needed |
 | **Security** | A+ | A- | Good, improve secret mgmt |
@@ -398,7 +398,7 @@ npm run test:integration  # Integration tests
 3. Complete SCIM/SAML (4-6 weeks)
 4. Performance optimization (ongoing)
 
-The platform is **solid and well-engineered**. With focused effort on the identified gaps, Plinto can reach enterprise-competitive status within 3-4 months.
+The platform is **solid and well-engineered**. With focused effort on the identified gaps, Janua can reach enterprise-competitive status within 3-4 months.
 
 ---
 

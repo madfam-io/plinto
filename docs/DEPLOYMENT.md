@@ -4,7 +4,7 @@
 **Time to Deploy**: 30-60 minutes (basic) | 2-4 hours (production-ready)
 **Difficulty**: Intermediate to Advanced
 
-This guide covers deploying Plinto authentication platform to production environments with Docker, Kubernetes, and cloud providers.
+This guide covers deploying Janua authentication platform to production environments with Docker, Kubernetes, and cloud providers.
 
 ---
 
@@ -32,8 +32,8 @@ For a quick production deployment with Docker Compose:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/plinto/plinto.git
-cd plinto
+git clone https://github.com/janua/janua.git
+cd janua
 
 # 2. Copy production environment template
 cp .env.production.example .env.production
@@ -120,11 +120,11 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: plinto-postgres-prod
+    container_name: janua-postgres-prod
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: plinto_production
+      POSTGRES_DB: janua_production
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backups:/backups
@@ -135,7 +135,7 @@ services:
       retries: 5
     restart: always
     networks:
-      - plinto-network
+      - janua-network
     deploy:
       resources:
         limits:
@@ -148,7 +148,7 @@ services:
   # Redis Cache & Sessions
   redis:
     image: redis:7-alpine
-    container_name: plinto-redis-prod
+    container_name: janua-redis-prod
     command: >
       redis-server
       --appendonly yes
@@ -164,22 +164,22 @@ services:
       retries: 5
     restart: always
     networks:
-      - plinto-network
+      - janua-network
     deploy:
       resources:
         limits:
           cpus: '1'
           memory: 2G
 
-  # Plinto API Service
+  # Janua API Service
   api:
     build:
       context: ./apps/api
       dockerfile: Dockerfile.production
-    container_name: plinto-api-prod
+    container_name: janua-api-prod
     env_file: .env.production
     environment:
-      DATABASE_URL: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@postgres:5432/plinto_production
+      DATABASE_URL: postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@postgres:5432/janua_production
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
     ports:
       - "8000:8000"
@@ -196,7 +196,7 @@ services:
       start_period: 40s
     restart: always
     networks:
-      - plinto-network
+      - janua-network
     deploy:
       resources:
         limits:
@@ -209,7 +209,7 @@ services:
   # Nginx Reverse Proxy with SSL
   nginx:
     image: nginx:alpine
-    container_name: plinto-nginx-prod
+    container_name: janua-nginx-prod
     volumes:
       - ./deployment/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./deployment/ssl:/etc/nginx/ssl:ro
@@ -221,10 +221,10 @@ services:
       - api
     restart: always
     networks:
-      - plinto-network
+      - janua-network
 
 networks:
-  plinto-network:
+  janua-network:
     driver: bridge
 
 volumes:
@@ -277,11 +277,11 @@ COPY --from=builder /root/.local /root/.local
 COPY . .
 
 # Create non-root user
-RUN useradd -m -u 1000 plinto && \
-    chown -R plinto:plinto /app && \
+RUN useradd -m -u 1000 janua && \
+    chown -R janua:janua /app && \
     chmod +x /app/scripts/*.sh
 
-USER plinto
+USER janua
 
 # Add Python packages to PATH
 ENV PATH=/root/.local/bin:$PATH
@@ -326,17 +326,17 @@ docker-compose -f docker-compose.production.yml logs -f --tail=100
 ```bash
 # Build optimized production image
 cd apps/api
-docker build -f Dockerfile.production -t plinto/api:latest .
+docker build -f Dockerfile.production -t janua/api:latest .
 
 # Tag for version
-docker tag plinto/api:latest plinto/api:1.0.0
+docker tag janua/api:latest janua/api:1.0.0
 
 # Test image locally
 docker run --rm -p 8000:8000 \
   -e DATABASE_URL=postgresql://user:pass@host:5432/db \
   -e REDIS_URL=redis://host:6379/0 \
   -e SECRET_KEY=your-secret-key \
-  plinto/api:latest
+  janua/api:latest
 ```
 
 #### Running Production Container
@@ -344,7 +344,7 @@ docker run --rm -p 8000:8000 \
 ```bash
 # Run with production settings
 docker run -d \
-  --name plinto-api \
+  --name janua-api \
   --restart always \
   -p 8000:8000 \
   -e DATABASE_URL=${DATABASE_URL} \
@@ -359,16 +359,16 @@ docker run -d \
   --health-retries=3 \
   --cpus=4 \
   --memory=8g \
-  plinto/api:1.0.0
+  janua/api:1.0.0
 
 # View logs
-docker logs -f plinto-api
+docker logs -f janua-api
 
 # Execute commands in container
-docker exec -it plinto-api /bin/bash
+docker exec -it janua-api /bin/bash
 
 # Run database migrations
-docker exec plinto-api alembic upgrade head
+docker exec janua-api alembic upgrade head
 ```
 
 ---
@@ -385,9 +385,9 @@ docker exec plinto-api alembic upgrade head
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: plinto
+  name: janua
   labels:
-    name: plinto
+    name: janua
     environment: production
 ```
 
@@ -397,14 +397,14 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: plinto-config
-  namespace: plinto
+  name: janua-config
+  namespace: janua
 data:
   ENVIRONMENT: "production"
   LOG_LEVEL: "info"
   API_VERSION: "v1"
   ENABLE_DOCS: "false"
-  CORS_ORIGINS: "https://plinto.dev,https://app.plinto.dev"
+  CORS_ORIGINS: "https://janua.dev,https://app.janua.dev"
 ```
 
 **3. Secret** (`k8s/secret.yaml`):
@@ -413,11 +413,11 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: plinto-secrets
-  namespace: plinto
+  name: janua-secrets
+  namespace: janua
 type: Opaque
 stringData:
-  DATABASE_URL: "postgresql://user:password@postgres-service:5432/plinto"
+  DATABASE_URL: "postgresql://user:password@postgres-service:5432/janua"
   REDIS_URL: "redis://:password@redis-service:6379/0"
   SECRET_KEY: "your-secret-key-here"
   JWT_PRIVATE_KEY: |
@@ -432,10 +432,10 @@ stringData:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: plinto-api
-  namespace: plinto
+  name: janua-api
+  namespace: janua
   labels:
-    app: plinto-api
+    app: janua-api
     version: v1
 spec:
   replicas: 3
@@ -446,25 +446,25 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: plinto-api
+      app: janua-api
   template:
     metadata:
       labels:
-        app: plinto-api
+        app: janua-api
         version: v1
     spec:
       containers:
       - name: api
-        image: plinto/api:1.0.0
+        image: janua/api:1.0.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
           protocol: TCP
         envFrom:
         - configMapRef:
-            name: plinto-config
+            name: janua-config
         - secretRef:
-            name: plinto-secrets
+            name: janua-secrets
         resources:
           requests:
             cpu: 500m
@@ -501,12 +501,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: plinto-api-service
-  namespace: plinto
+  name: janua-api-service
+  namespace: janua
 spec:
   type: ClusterIP
   selector:
-    app: plinto-api
+    app: janua-api
   ports:
   - protocol: TCP
     port: 8000
@@ -519,8 +519,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: plinto-ingress
-  namespace: plinto
+  name: janua-ingress
+  namespace: janua
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -529,17 +529,17 @@ metadata:
 spec:
   tls:
   - hosts:
-    - api.plinto.dev
-    secretName: plinto-tls
+    - api.janua.dev
+    secretName: janua-tls
   rules:
-  - host: api.plinto.dev
+  - host: api.janua.dev
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: plinto-api-service
+            name: janua-api-service
             port:
               number: 8000
 ```
@@ -550,13 +550,13 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: plinto-api-hpa
-  namespace: plinto
+  name: janua-api-hpa
+  namespace: janua
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: plinto-api
+    name: janua-api
   minReplicas: 3
   maxReplicas: 20
   metrics:
@@ -604,18 +604,18 @@ kubectl apply -f k8s/ingress.yaml
 kubectl apply -f k8s/hpa.yaml
 
 # Check deployment status
-kubectl get pods -n plinto
-kubectl get svc -n plinto
-kubectl describe deployment plinto-api -n plinto
+kubectl get pods -n janua
+kubectl get svc -n janua
+kubectl describe deployment janua-api -n janua
 
 # View logs
-kubectl logs -f -l app=plinto-api -n plinto
+kubectl logs -f -l app=janua-api -n janua
 
 # Scale manually if needed
-kubectl scale deployment plinto-api --replicas=5 -n plinto
+kubectl scale deployment janua-api --replicas=5 -n janua
 
 # Run database migrations
-kubectl exec -it $(kubectl get pod -l app=plinto-api -n plinto -o jsonpath='{.items[0].metadata.name}') -n plinto -- alembic upgrade head
+kubectl exec -it $(kubectl get pod -l app=janua-api -n janua -o jsonpath='{.items[0].metadata.name}') -n janua -- alembic upgrade head
 ```
 
 ---
@@ -681,7 +681,7 @@ railway logs
 ```yaml
 services:
   - type: web
-    name: plinto-api
+    name: janua-api
     env: python
     region: oregon
     plan: standard
@@ -693,11 +693,11 @@ services:
         value: 3.11
       - key: DATABASE_URL
         fromDatabase:
-          name: plinto-postgres
+          name: janua-postgres
           property: connectionString
       - key: REDIS_URL
         fromDatabase:
-          name: plinto-redis
+          name: janua-redis
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
@@ -705,11 +705,11 @@ services:
         value: production
 
 databases:
-  - name: plinto-postgres
-    databaseName: plinto
+  - name: janua-postgres
+    databaseName: janua
     plan: standard
 
-  - name: plinto-redis
+  - name: janua-redis
     plan: standard
 ```
 
@@ -725,11 +725,11 @@ See [AWS Deployment Guide](./deployment/aws/README.md) for detailed ECS/Fargate 
 
 ```bash
 # Build and push to GCR
-gcloud builds submit --tag gcr.io/PROJECT_ID/plinto-api
+gcloud builds submit --tag gcr.io/PROJECT_ID/janua-api
 
 # Deploy to Cloud Run
-gcloud run deploy plinto-api \
-  --image gcr.io/PROJECT_ID/plinto-api \
+gcloud run deploy janua-api \
+  --image gcr.io/PROJECT_ID/janua-api \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \
@@ -749,7 +749,7 @@ SECRET_KEY=<min-32-char-random-string>
 LOG_LEVEL=info
 
 # Database
-DATABASE_URL=postgresql://user:pass@host:5432/plinto
+DATABASE_URL=postgresql://user:pass@host:5432/janua
 DATABASE_POOL_SIZE=50
 
 # Redis
@@ -810,17 +810,17 @@ See [`.env.production.example`](../.env.production.example) for complete configu
 psql postgres
 
 -- Create database
-CREATE DATABASE plinto_production;
+CREATE DATABASE janua_production;
 
 -- Create user with strong password
-CREATE USER plinto_user WITH ENCRYPTED PASSWORD 'strong-random-password';
+CREATE USER janua_user WITH ENCRYPTED PASSWORD 'strong-random-password';
 
 -- Grant privileges
-GRANT ALL PRIVILEGES ON DATABASE plinto_production TO plinto_user;
-ALTER DATABASE plinto_production OWNER TO plinto_user;
+GRANT ALL PRIVILEGES ON DATABASE janua_production TO janua_user;
+ALTER DATABASE janua_production OWNER TO janua_user;
 
 -- Enable required extensions
-\c plinto_production
+\c janua_production
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 ```
@@ -829,7 +829,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 ```bash
 # With Docker
-docker exec plinto-api alembic upgrade head
+docker exec janua-api alembic upgrade head
 
 # With local alembic
 cd apps/api
@@ -847,7 +847,7 @@ Use [PgBouncer](https://www.pgbouncer.org/) or managed connection pooling:
 ```bash
 # PgBouncer configuration
 [databases]
-plinto = host=postgres port=5432 dbname=plinto_production
+janua = host=postgres port=5432 dbname=janua_production
 
 [pgbouncer]
 listen_addr = 0.0.0.0
@@ -902,7 +902,7 @@ http {
 
     server {
         listen 443 ssl http2;
-        server_name api.plinto.dev;
+        server_name api.janua.dev;
 
         # SSL configuration
         ssl_certificate /etc/nginx/ssl/fullchain.pem;
@@ -918,7 +918,7 @@ http {
 
         location /api/v1/auth {
             limit_req zone=auth_limit burst=10 nodelay;
-            proxy_pass http://plinto-api:8000;
+            proxy_pass http://janua-api:8000;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -927,7 +927,7 @@ http {
 
         location / {
             limit_req zone=api_limit burst=20 nodelay;
-            proxy_pass http://plinto-api:8000;
+            proxy_pass http://janua-api:8000;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -945,16 +945,16 @@ http {
 
 ```bash
 # Application health
-curl https://api.plinto.dev/health
+curl https://api.janua.dev/health
 
 # Database health
-curl https://api.plinto.dev/health/db
+curl https://api.janua.dev/health/db
 
 # Redis health
-curl https://api.plinto.dev/health/redis
+curl https://api.janua.dev/health/redis
 
 # System metrics
-curl https://api.plinto.dev/metrics
+curl https://api.janua.dev/metrics
 ```
 
 ### Prometheus Metrics
@@ -962,7 +962,7 @@ curl https://api.plinto.dev/metrics
 ```yaml
 # prometheus.yml
 scrape_configs:
-  - job_name: 'plinto-api'
+  - job_name: 'janua-api'
     static_configs:
       - targets: ['api:8000']
     metrics_path: '/metrics'
@@ -971,13 +971,13 @@ scrape_configs:
 
 ### Logging
 
-**Structured JSON logging** (already configured in Plinto):
+**Structured JSON logging** (already configured in Janua):
 
 ```json
 {
   "timestamp": "2025-11-16T10:30:00Z",
   "level": "info",
-  "service": "plinto-api",
+  "service": "janua-api",
   "event": "user_login",
   "user_id": "uuid",
   "ip": "1.2.3.4",
@@ -1004,22 +1004,22 @@ scrape_configs:
 
 DATE=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR="/backups"
-DB_NAME="plinto_production"
+DB_NAME="janua_production"
 
 # Create backup
-pg_dump -h postgres -U plinto_user -Fc $DB_NAME > $BACKUP_DIR/plinto_$DATE.dump
+pg_dump -h postgres -U janua_user -Fc $DB_NAME > $BACKUP_DIR/janua_$DATE.dump
 
 # Encrypt backup
-openssl enc -aes-256-cbc -salt -in $BACKUP_DIR/plinto_$DATE.dump -out $BACKUP_DIR/plinto_$DATE.dump.enc -pass pass:$BACKUP_PASSWORD
+openssl enc -aes-256-cbc -salt -in $BACKUP_DIR/janua_$DATE.dump -out $BACKUP_DIR/janua_$DATE.dump.enc -pass pass:$BACKUP_PASSWORD
 
 # Upload to S3/R2
-aws s3 cp $BACKUP_DIR/plinto_$DATE.dump.enc s3://plinto-backups-prod/
+aws s3 cp $BACKUP_DIR/janua_$DATE.dump.enc s3://janua-backups-prod/
 
 # Delete local backup
-rm $BACKUP_DIR/plinto_$DATE.dump $BACKUP_DIR/plinto_$DATE.dump.enc
+rm $BACKUP_DIR/janua_$DATE.dump $BACKUP_DIR/janua_$DATE.dump.enc
 
 # Keep only last 30 days on S3
-aws s3 ls s3://plinto-backups-prod/ | awk '{print $4}' | sort | head -n -30 | xargs -I {} aws s3 rm s3://plinto-backups-prod/{}
+aws s3 ls s3://janua-backups-prod/ | awk '{print $4}' | sort | head -n -30 | xargs -I {} aws s3 rm s3://janua-backups-prod/{}
 ```
 
 **Cron schedule**:
@@ -1033,13 +1033,13 @@ aws s3 ls s3://plinto-backups-prod/ | awk '{print $4}' | sort | head -n -30 | xa
 
 ```bash
 # Download from S3
-aws s3 cp s3://plinto-backups-prod/plinto_20251116_020000.dump.enc .
+aws s3 cp s3://janua-backups-prod/janua_20251116_020000.dump.enc .
 
 # Decrypt
-openssl enc -aes-256-cbc -d -in plinto_20251116_020000.dump.enc -out plinto_20251116_020000.dump -pass pass:$BACKUP_PASSWORD
+openssl enc -aes-256-cbc -d -in janua_20251116_020000.dump.enc -out janua_20251116_020000.dump -pass pass:$BACKUP_PASSWORD
 
 # Restore (WARNING: drops existing database)
-pg_restore -h postgres -U plinto_user -d plinto_production --clean plinto_20251116_020000.dump
+pg_restore -h postgres -U janua_user -d janua_production --clean janua_20251116_020000.dump
 ```
 
 ### Redis Backups
@@ -1064,21 +1064,21 @@ auto-aof-rewrite-min-size 64mb
 
 ```bash
 # Check database is accessible
-docker exec plinto-api pg_isready -h postgres -U plinto_user
+docker exec janua-api pg_isready -h postgres -U janua_user
 
 # Check DATABASE_URL format
 echo $DATABASE_URL
 # Should be: postgresql://user:pass@host:5432/dbname
 
 # Test connection
-docker exec plinto-api psql $DATABASE_URL -c "SELECT 1"
+docker exec janua-api psql $DATABASE_URL -c "SELECT 1"
 ```
 
 **2. Redis connection failed**
 
 ```bash
 # Check Redis is accessible
-docker exec plinto-api redis-cli -h redis -a $REDIS_PASSWORD ping
+docker exec janua-api redis-cli -h redis -a $REDIS_PASSWORD ping
 
 # Check REDIS_URL format
 echo $REDIS_URL
@@ -1089,45 +1089,45 @@ echo $REDIS_URL
 
 ```bash
 # Check API is running
-docker ps | grep plinto-api
+docker ps | grep janua-api
 
 # Check API logs
-docker logs plinto-api --tail=100
+docker logs janua-api --tail=100
 
 # Check API health endpoint
 curl http://localhost:8000/health
 
 # Restart API container
-docker restart plinto-api
+docker restart janua-api
 ```
 
 **4. Migrations fail**
 
 ```bash
 # Check current migration status
-docker exec plinto-api alembic current
+docker exec janua-api alembic current
 
 # Check migration history
-docker exec plinto-api alembic history
+docker exec janua-api alembic history
 
 # Manually run specific migration
-docker exec plinto-api alembic upgrade <revision>
+docker exec janua-api alembic upgrade <revision>
 
 # Rollback to previous version
-docker exec plinto-api alembic downgrade -1
+docker exec janua-api alembic downgrade -1
 ```
 
 **5. High memory usage**
 
 ```bash
 # Check container stats
-docker stats plinto-api
+docker stats janua-api
 
 # Reduce worker count in uvicorn
 # Edit: CMD ["uvicorn", "main:app", "--workers", "2"]
 
 # Check for memory leaks in logs
-docker logs plinto-api | grep -i "memory\|oom"
+docker logs janua-api | grep -i "memory\|oom"
 ```
 
 ### Debug Mode
@@ -1136,10 +1136,10 @@ docker logs plinto-api | grep -i "memory\|oom"
 
 ```bash
 # Restart with debug logging
-docker exec plinto-api sh -c "LOG_LEVEL=debug uvicorn main:app --reload"
+docker exec janua-api sh -c "LOG_LEVEL=debug uvicorn main:app --reload"
 
 # View debug logs
-docker logs -f plinto-api
+docker logs -f janua-api
 ```
 
 **⚠️ Important**: Never enable `DEBUG=true` in production. Use `LOG_LEVEL=debug` only.
@@ -1194,18 +1194,18 @@ appendfsync everysec
 
 ## Support & Resources
 
-- **Documentation**: https://docs.plinto.dev
-- **API Reference**: https://api.plinto.dev/docs
-- **GitHub Issues**: https://github.com/plinto/plinto/issues
-- **Discord Community**: https://discord.gg/plinto
-- **Email Support**: support@plinto.dev
-- **Security Issues**: security@plinto.dev
+- **Documentation**: https://docs.janua.dev
+- **API Reference**: https://api.janua.dev/docs
+- **GitHub Issues**: https://github.com/janua/janua/issues
+- **Discord Community**: https://discord.gg/janua
+- **Email Support**: support@janua.dev
+- **Security Issues**: security@janua.dev
 
 ---
 
 ## License
 
-Plinto is open-core:
+Janua is open-core:
 - **MIT License** (Core features): Self-host freely
 - **Commercial License** (Enterprise features): SSO, SCIM, Advanced compliance
 
@@ -1221,4 +1221,4 @@ See [LICENSE](../LICENSE) for details.
 3. Configure [Backups](#backup--disaster-recovery)
 4. Test with [Troubleshooting Guide](#troubleshooting)
 
-**Questions?** Join our [Discord](https://discord.gg/plinto) or email support@plinto.dev
+**Questions?** Join our [Discord](https://discord.gg/janua) or email support@janua.dev

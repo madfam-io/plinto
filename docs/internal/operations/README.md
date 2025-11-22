@@ -1,6 +1,6 @@
 # Operations Documentation
 
-This directory contains operational documentation for Plinto deployment, monitoring, and production readiness.
+This directory contains operational documentation for Janua deployment, monitoring, and production readiness.
 
 ## 📋 Available Documents
 
@@ -8,7 +8,7 @@ This directory contains operational documentation for Plinto deployment, monitor
 - **[Production Readiness Report](./PRODUCTION_READINESS_REPORT.md)** - Complete assessment of current production status with detailed analysis of all 5 systems and readiness evaluation
 
 ### Deployment Guides
-- **[Railway Deployment Guide](./RAILWAY_DEPLOYMENT.md)** - Complete guide for deploying Plinto to Railway with configuration, environment setup, and troubleshooting
+- **[Railway Deployment Guide](./RAILWAY_DEPLOYMENT.md)** - Complete guide for deploying Janua to Railway with configuration, environment setup, and troubleshooting
 
 ## 📊 Current Status
 

@@ -1,7 +1,7 @@
 {
-  "name": "@plinto/react-native",
+  "name": "@janua/react-native",
   "version": "1.0.0",
-  "description": "React Native SDK for Plinto authentication platform",
+  "description": "React Native SDK for Janua authentication platform",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
@@ -28,7 +28,7 @@
     "typescript": "^5.3.0"
   },
   "keywords": [
-    "plinto",
+    "janua",
     "auth",
     "authentication",
     "react-native",
@@ -36,6 +36,6 @@
     "passkeys",
     "webauthn"
   ],
-  "author": "Plinto Team",
+  "author": "Janua Team",
   "license": "MIT"
 }

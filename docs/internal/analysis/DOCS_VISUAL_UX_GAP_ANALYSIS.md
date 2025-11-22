@@ -1,14 +1,14 @@
 # Documentation Visual Design & UX Gap Analysis
 
-**Comparison**: Plinto Docs vs. Dodo Payments Documentation  
+**Comparison**: Janua Docs vs. Dodo Payments Documentation  
 **Date**: January 2025  
-**Purpose**: Identify visual design and UX improvements needed for docs.plinto.dev
+**Purpose**: Identify visual design and UX improvements needed for docs.janua.dev
 
 ---
 
 ## Executive Summary
 
-Dodo Payments documentation represents best-in-class documentation design with superior visual polish, information architecture, and developer experience. Our Plinto documentation, while functional, lacks the visual sophistication and UX refinements that make Dodo's documentation exceptional. This analysis identifies specific gaps and provides actionable recommendations for improvement.
+Dodo Payments documentation represents best-in-class documentation design with superior visual polish, information architecture, and developer experience. Our Janua documentation, while functional, lacks the visual sophistication and UX refinements that make Dodo's documentation exceptional. This analysis identifies specific gaps and provides actionable recommendations for improvement.
 
 ---
 
@@ -16,7 +16,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 1. Color Scheme & Branding
 
-| Aspect | Dodo Payments | Plinto (Current) | Gap |
+| Aspect | Dodo Payments | Janua (Current) | Gap |
 |--------|---------------|------------------|-----|
 | **Primary Colors** | Sophisticated green accent (#4ade80) with professional neutrals | Basic default colors | ⚠️ **High** |
 | **Color Coding** | HTTP methods color-coded (GET=green, POST=blue, DELETE=red) | No systematic color coding | ⚠️ **High** |
@@ -25,7 +25,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 2. Typography & Hierarchy
 
-| Aspect | Dodo Payments | Plinto (Current) | Gap |
+| Aspect | Dodo Payments | Janua (Current) | Gap |
 |--------|---------------|------------------|-----|
 | **Font Selection** | Professional, readable font stack | Default system fonts | ⚠️ **Medium** |
 | **Heading Hierarchy** | Clear visual differentiation | Insufficient contrast | ⚠️ **High** |
@@ -34,7 +34,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 3. Layout & Spacing
 
-| Aspect | Dodo Payments | Plinto (Current) | Gap |
+| Aspect | Dodo Payments | Janua (Current) | Gap |
 |--------|---------------|------------------|-----|
 | **Layout Structure** | Three-column layout (nav, content, context) | Two-column or single | 🔴 **Critical** |
 | **White Space** | Generous, purposeful spacing | Cramped or inconsistent | ⚠️ **High** |
@@ -47,7 +47,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 1. Navigation Structure
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Sidebar Navigation** | Persistent, collapsible sections | Basic or missing | 🔴 **Critical** |
 | **Active State** | Clear visual indicators | Weak or missing | ⚠️ **High** |
@@ -56,7 +56,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 2. Search Experience
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Search Access** | Prominent with ⌘K shortcut | Basic or hidden | 🔴 **Critical** |
 | **Search Modal** | Overlay with instant results | Page-based search | ⚠️ **High** |
@@ -65,7 +65,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 3. Content Discovery
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Table of Contents** | Right-side TOC for long pages | Missing or basic | 🔴 **Critical** |
 | **Breadcrumbs** | Clear navigation path | Missing | ⚠️ **High** |
@@ -78,7 +78,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 1. Code Presentation
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Syntax Highlighting** | Rich, themed highlighting | Basic or none | 🔴 **Critical** |
 | **Language Tabs** | Multi-language examples | Single language | 🔴 **Critical** |
@@ -87,7 +87,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 2. API Documentation
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Response Examples** | Multiple status codes shown | Single example | ⚠️ **High** |
 | **Try It Feature** | Interactive API testing | None | 🔴 **Critical** |
@@ -96,7 +96,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 3. Interactive Elements
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Expandable Sections** | Smooth expand/collapse | Static content | ⚠️ **High** |
 | **Code Playground** | Live code editing | None | ⚠️ **Medium** |
@@ -108,7 +108,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 1. Mobile Experience
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Mobile Navigation** | Elegant hamburger menu | Basic or broken | 🔴 **Critical** |
 | **Touch Targets** | Properly sized (44x44px) | Too small | ⚠️ **High** |
@@ -117,7 +117,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ### 2. Accessibility
 
-| Feature | Dodo Payments | Plinto (Current) | Gap |
+| Feature | Dodo Payments | Janua (Current) | Gap |
 |---------|---------------|------------------|-----|
 | **Keyboard Navigation** | Full keyboard support | Limited | ⚠️ **High** |
 | **ARIA Labels** | Comprehensive | Missing | ⚠️ **High** |
@@ -128,7 +128,7 @@ Dodo Payments documentation represents best-in-class documentation design with s
 
 ## 🚀 Performance & Technical Gaps
 
-| Aspect | Dodo Payments | Plinto (Current) | Gap |
+| Aspect | Dodo Payments | Janua (Current) | Gap |
 |--------|---------------|------------------|-----|
 | **Page Load Speed** | <1s with prefetching | Unknown/slow | ⚠️ **High** |
 | **Search Speed** | Instant (<100ms) | Slow or server-side | ⚠️ **High** |
@@ -294,14 +294,14 @@ $info: #3b82f6;       // Blue
 
 ## 🎬 Conclusion
 
-The gap between Plinto's current documentation and Dodo Payments' documentation is significant but bridgeable. The primary differences lie in:
+The gap between Janua's current documentation and Dodo Payments' documentation is significant but bridgeable. The primary differences lie in:
 
 1. **Visual Polish**: Dodo has a refined, professional design system
 2. **Information Architecture**: Better organization and navigation
 3. **Developer Experience**: Interactive features and better code presentation
 4. **Mobile Experience**: Fully responsive and touch-optimized
 
-By following the phased approach outlined above, Plinto can achieve documentation parity within 4-6 weeks of focused development. The investment in documentation UX will significantly improve developer adoption and reduce support burden.
+By following the phased approach outlined above, Janua can achieve documentation parity within 4-6 weeks of focused development. The investment in documentation UX will significantly improve developer adoption and reduce support burden.
 
 ### Success Metrics
 - **Time to First API Call**: Reduce from >30min to <5min
@@ -312,4 +312,4 @@ By following the phased approach outlined above, Plinto can achieve documentatio
 
 ---
 
-*This analysis should guide the transformation of docs.plinto.dev into a world-class documentation experience that matches or exceeds industry leaders like Dodo Payments.*
+*This analysis should guide the transformation of docs.janua.dev into a world-class documentation experience that matches or exceeds industry leaders like Dodo Payments.*

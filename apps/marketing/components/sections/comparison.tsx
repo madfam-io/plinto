@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 export function ComparisonSection() {
   const competitors = [
-    { name: 'Plinto', highlight: true },
+    { name: 'Janua', highlight: true },
     { name: 'Clerk' },
     { name: 'Auth0' },
     { name: 'Supabase' }
@@ -18,21 +18,21 @@ export function ComparisonSection() {
       items: [
         {
           metric: 'Edge Verification',
-          plinto: '<30ms',
+          janua: '<30ms',
           clerk: '50-100ms',
           auth0: '80-150ms',
           supabase: '60-120ms'
         },
         {
           metric: 'Global Edge PoPs',
-          plinto: '150+',
+          janua: '150+',
           clerk: '~30',
           auth0: '~20',
           supabase: '~15'
         },
         {
           metric: 'Time to First Auth',
-          plinto: '5 min',
+          janua: '5 min',
           clerk: '30 min',
           auth0: '45 min',
           supabase: '20 min'
@@ -44,28 +44,28 @@ export function ComparisonSection() {
       items: [
         {
           metric: 'Passkey Support',
-          plinto: 'Native',
+          janua: 'Native',
           clerk: 'Add-on',
           auth0: 'Beta',
           supabase: 'Planned'
         },
         {
           metric: 'Multi-Region Data',
-          plinto: true,
+          janua: true,
           clerk: false,
           auth0: true,
           supabase: false
         },
         {
           metric: 'Event Sourcing',
-          plinto: true,
+          janua: true,
           clerk: false,
           auth0: false,
           supabase: false
         },
         {
           metric: 'Plugin Architecture',
-          plinto: true,
+          janua: true,
           clerk: false,
           auth0: 'Limited',
           supabase: false
@@ -77,21 +77,21 @@ export function ComparisonSection() {
       items: [
         {
           metric: 'Free Tier MAU',
-          plinto: '10,000',
+          janua: '10,000',
           clerk: '5,000',
           auth0: '7,000',
           supabase: '50,000'
         },
         {
           metric: 'Pro Tier Price',
-          plinto: '$69/mo',
+          janua: '$69/mo',
           clerk: '$99/mo',
           auth0: '$240/mo',
           supabase: '$25/mo'
         },
         {
           metric: 'Overage Cost/1k MAU',
-          plinto: '$10',
+          janua: '$10',
           clerk: '$20',
           auth0: '$28',
           supabase: '$0.00325'
@@ -103,21 +103,21 @@ export function ComparisonSection() {
       items: [
         {
           metric: 'SDK Languages',
-          plinto: '6+',
+          janua: '6+',
           clerk: '4',
           auth0: '10+',
           supabase: '8'
         },
         {
           metric: 'Local Development',
-          plinto: true,
+          janua: true,
           clerk: 'Limited',
           auth0: true,
           supabase: true
         },
         {
           metric: 'Self-Hosting',
-          plinto: 'Coming',
+          janua: 'Coming',
           clerk: false,
           auth0: false,
           supabase: true
@@ -126,10 +126,10 @@ export function ComparisonSection() {
     }
   ]
 
-  const renderValue = (value: any, isPlinto: boolean = false) => {
+  const renderValue = (value: any, isJanua: boolean = false) => {
     if (typeof value === 'boolean') {
       return value ? (
-        <Check className={cn("h-5 w-5", isPlinto ? "text-green-500" : "text-gray-400")} />
+        <Check className={cn("h-5 w-5", isJanua ? "text-green-500" : "text-gray-400")} />
       ) : (
         <X className="h-5 w-5 text-gray-300 dark:text-gray-600" />
       )
@@ -139,7 +139,7 @@ export function ComparisonSection() {
       return <span className="text-yellow-600 dark:text-yellow-400">{value}</span>
     }
     
-    return <span className={cn(isPlinto && "font-semibold text-blue-600 dark:text-blue-400")}>{value}</span>
+    return <span className={cn(isJanua && "font-semibold text-blue-600 dark:text-blue-400")}>{value}</span>
   }
 
   return (
@@ -155,7 +155,7 @@ export function ComparisonSection() {
             Built different. Performs better.
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            See how Plinto compares to other identity platforms. 
+            See how Janua compares to other identity platforms. 
             Spoiler: we're faster, more flexible, and actually care about your data sovereignty.
           </p>
         </motion.div>
@@ -221,7 +221,7 @@ export function ComparisonSection() {
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       {item.metric}
                     </div>
-                    <div className="text-center">{renderValue(item.plinto, true)}</div>
+                    <div className="text-center">{renderValue(item.janua, true)}</div>
                     <div className="text-center">{renderValue(item.clerk)}</div>
                     <div className="text-center">{renderValue(item.auth0)}</div>
                     <div className="text-center">{renderValue(item.supabase)}</div>
@@ -246,19 +246,19 @@ export function ComparisonSection() {
         </p>
         <div className="flex gap-4 justify-center">
           <a
-            href="https://docs.plinto.dev/migration/clerk"
+            href="https://docs.janua.dev/migration/clerk"
             className="text-blue-600 dark:text-blue-400 hover:underline"
           >
             Migrate from Clerk →
           </a>
           <a
-            href="https://docs.plinto.dev/migration/auth0"
+            href="https://docs.janua.dev/migration/auth0"
             className="text-blue-600 dark:text-blue-400 hover:underline"
           >
             Migrate from Auth0 →
           </a>
           <a
-            href="https://docs.plinto.dev/migration/supabase"
+            href="https://docs.janua.dev/migration/supabase"
             className="text-blue-600 dark:text-blue-400 hover:underline"
           >
             Migrate from Supabase →

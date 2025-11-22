@@ -1,7 +1,7 @@
-# Plinto Codebase Statistical Analysis Report
+# Janua Codebase Statistical Analysis Report
 
 ## Executive Summary
-Comprehensive statistical analysis of the Plinto Identity Platform codebase performed on September 12, 2024.
+Comprehensive statistical analysis of the Janua Identity Platform codebase performed on September 12, 2024.
 
 ---
 

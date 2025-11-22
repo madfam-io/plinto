@@ -1,10 +1,10 @@
 # Enterprise Integration Guide
 
-Comprehensive guide for integrating Plinto with enterprise systems and third-party services.
+Comprehensive guide for integrating Janua with enterprise systems and third-party services.
 
 ## 🎯 Overview
 
-This guide covers enterprise-grade integrations for organizations deploying Plinto as their identity infrastructure. It includes SSO providers, SCIM 2.0 provisioning, enterprise directories, and third-party system integrations.
+This guide covers enterprise-grade integrations for organizations deploying Janua as their identity infrastructure. It includes SSO providers, SCIM 2.0 provisioning, enterprise directories, and third-party system integrations.
 
 ## 🏢 Enterprise SSO Integration
 
@@ -13,7 +13,7 @@ This guide covers enterprise-grade integrations for organizations deploying Plin
 #### SAML 2.0 Configuration
 ```xml
 <!-- Azure AD SAML Configuration -->
-<EntityDescriptor entityID="https://api.plinto.dev/sso/saml/metadata">
+<EntityDescriptor entityID="https://api.janua.dev/sso/saml/metadata">
   <SPSSODescriptor
     AuthnRequestsSigned="true"
     protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
@@ -28,7 +28,7 @@ This guide covers enterprise-grade integrations for organizations deploying Plin
 
     <AssertionConsumerService
       Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
-      Location="https://api.plinto.dev/sso/saml/acs"
+      Location="https://api.janua.dev/sso/saml/acs"
       index="0" />
   </SPSSODescriptor>
 </EntityDescriptor>
@@ -49,15 +49,15 @@ This guide covers enterprise-grade integrations for organizations deploying Plin
 
 #### API Integration Example
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const plinto = new PlintoClient({
-  baseURL: 'https://api.plinto.dev',
+const janua = new JanuaClient({
+  baseURL: 'https://api.janua.dev',
   apiKey: 'your-api-key'
 });
 
 // Configure Azure AD SSO
-await plinto.admin.sso.create({
+await janua.admin.sso.create({
   provider: 'azure_ad',
   oidc_issuer: 'https://login.microsoftonline.com/{tenant-id}/v2.0',
   oidc_client_id: 'your-client-id',
@@ -81,7 +81,7 @@ await plinto.admin.sso.create({
 // Okta SAML Configuration
 const oktaConfig = {
   provider: 'okta_saml',
-  saml_sso_url: 'https://company.okta.com/app/company_plinto_1/exk123456789/sso/saml',
+  saml_sso_url: 'https://company.okta.com/app/company_janua_1/exk123456789/sso/saml',
   saml_entity_id: 'http://www.okta.com/exk123456789',
   saml_certificate: '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----',
   attribute_mapping: {
@@ -92,7 +92,7 @@ const oktaConfig = {
   }
 };
 
-await plinto.admin.sso.create(oktaConfig);
+await janua.admin.sso.create(oktaConfig);
 ```
 
 ### Google Workspace
@@ -122,7 +122,7 @@ SCIM (System for Cross-domain Identity Management) 2.0 enables automatic user pr
 
 ### SCIM Endpoint Configuration
 ```http
-Base URL: https://api.plinto.dev/scim/v2
+Base URL: https://api.janua.dev/scim/v2
 Authentication: Bearer {scim_token}
 Content-Type: application/scim+json
 ```
@@ -177,7 +177,7 @@ ldap:
   host: ldap.company.com
   port: 636
   use_ssl: true
-  bind_dn: "CN=plinto-service,OU=Service Accounts,DC=company,DC=com"
+  bind_dn: "CN=janua-service,OU=Service Accounts,DC=company,DC=com"
   bind_password: "service-account-password"
   base_dn: "OU=Users,DC=company,DC=com"
   user_filter: "(&(objectClass=user)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
@@ -192,26 +192,26 @@ ldap:
 #### API Integration
 ```python
 import asyncio
-from plinto import PlintoClient
+from janua import JanuaClient
 
 async def sync_ldap_users():
-    plinto = PlintoClient(
-        base_url="https://api.plinto.dev",
+    janua = JanuaClient(
+        base_url="https://api.janua.dev",
         api_key="your-api-key"
     )
 
     # Configure LDAP connection
-    await plinto.admin.ldap.configure({
+    await janua.admin.ldap.configure({
         "host": "ldap.company.com",
         "port": 636,
         "use_ssl": True,
-        "bind_dn": "CN=plinto-service,OU=Service Accounts,DC=company,DC=com",
+        "bind_dn": "CN=janua-service,OU=Service Accounts,DC=company,DC=com",
         "bind_password": "service-account-password",
         "base_dn": "OU=Users,DC=company,DC=com"
     })
 
     # Sync users
-    sync_result = await plinto.admin.ldap.sync_users()
+    sync_result = await janua.admin.ldap.sync_users()
     print(f"Synced {sync_result['users_created']} users")
 ```
 
@@ -224,12 +224,12 @@ async def sync_ldap_users():
 const salesforceConfig = {
   client_id: 'your-salesforce-connected-app-id',
   client_secret: 'your-salesforce-client-secret',
-  redirect_uri: 'https://api.plinto.dev/oauth/salesforce/callback',
+  redirect_uri: 'https://api.janua.dev/oauth/salesforce/callback',
   sandbox: false // Set to true for sandbox environments
 };
 
 // Configure Salesforce integration
-await plinto.admin.integrations.create({
+await janua.admin.integrations.create({
   provider: 'salesforce',
   config: salesforceConfig,
   field_mapping: {
@@ -244,7 +244,7 @@ await plinto.admin.integrations.create({
 #### User Sync Example
 ```typescript
 // Sync user data with Salesforce
-await plinto.admin.integrations.sync('salesforce', {
+await janua.admin.integrations.sync('salesforce', {
   direction: 'bidirectional',
   entities: ['users', 'organizations'],
   dry_run: false
@@ -259,12 +259,12 @@ const hubspotConfig = {
   portal_id: 'your-portal-id'
 };
 
-await plinto.admin.integrations.create({
+await janua.admin.integrations.create({
   provider: 'hubspot',
   config: hubspotConfig,
   webhooks: {
-    contact_created: 'https://api.plinto.dev/webhooks/hubspot/contact-created',
-    contact_updated: 'https://api.plinto.dev/webhooks/hubspot/contact-updated'
+    contact_created: 'https://api.janua.dev/webhooks/hubspot/contact-created',
+    contact_updated: 'https://api.janua.dev/webhooks/hubspot/contact-updated'
   }
 });
 ```
@@ -278,7 +278,7 @@ const slackConfig = {
   signing_secret: 'your-slack-signing-secret'
 };
 
-await plinto.admin.integrations.create({
+await janua.admin.integrations.create({
   provider: 'slack',
   config: slackConfig,
   scopes: ['users:read', 'users:read.email', 'team:read'],
@@ -322,16 +322,16 @@ await plinto.admin.integrations.create({
 ```typescript
 const cyberarkConfig = {
   base_url: 'https://cyberark.company.com',
-  application_id: 'Plinto_Identity_Platform',
-  safe: 'Plinto_Secrets',
+  application_id: 'Janua_Identity_Platform',
+  safe: 'Janua_Secrets',
   client_certificate: 'path/to/client.crt',
   client_key: 'path/to/client.key'
 };
 
 // Retrieve secrets from CyberArk
-const secrets = await plinto.admin.secrets.retrieve('cyberark', {
+const secrets = await janua.admin.secrets.retrieve('cyberark', {
   object: 'Database_Password',
-  safe: 'Plinto_Secrets'
+  safe: 'Janua_Secrets'
 });
 ```
 
@@ -339,15 +339,15 @@ const secrets = await plinto.admin.secrets.retrieve('cyberark', {
 
 ```yaml
 # Splunk Universal Forwarder Configuration
-[monitor:///var/log/plinto/audit.log]
+[monitor:///var/log/janua/audit.log]
 index = security
-sourcetype = plinto_audit
-host = plinto-api
+sourcetype = janua_audit
+host = janua-api
 
-[monitor:///var/log/plinto/auth.log]
+[monitor:///var/log/janua/auth.log]
 index = security
-sourcetype = plinto_auth
-host = plinto-api
+sourcetype = janua_auth
+host = janua-api
 ```
 
 ## 🚀 Deployment Automation
@@ -355,8 +355,8 @@ host = plinto-api
 ### Terraform Enterprise Integration
 
 ```hcl
-# Configure Plinto SSO for Terraform Enterprise
-resource "plinto_sso_configuration" "terraform_enterprise" {
+# Configure Janua SSO for Terraform Enterprise
+resource "janua_sso_configuration" "terraform_enterprise" {
   provider = "terraform_enterprise"
 
   saml_metadata_url = "https://terraform.company.com/saml/metadata"
@@ -380,7 +380,7 @@ pipeline {
     agent any
 
     environment {
-        PLINTO_API_KEY = credentials('plinto-api-key')
+        JANUA_API_KEY = credentials('janua-api-key')
     }
 
     stages {
@@ -388,7 +388,7 @@ pipeline {
             steps {
                 script {
                     def auth = sh(
-                        script: "curl -H 'Authorization: Bearer ${PLINTO_API_KEY}' https://api.plinto.dev/auth/validate",
+                        script: "curl -H 'Authorization: Bearer ${JANUA_API_KEY}' https://api.janua.dev/auth/validate",
                         returnStdout: true
                     ).trim()
 
@@ -418,7 +418,7 @@ const intuneConfig = {
   ]
 };
 
-await plinto.admin.mdm.configure('intune', intuneConfig);
+await janua.admin.mdm.configure('intune', intuneConfig);
 ```
 
 ### VMware Workspace ONE
@@ -439,7 +439,7 @@ await plinto.admin.mdm.configure('intune', intuneConfig);
 
 ```typescript
 // Configure real-time user synchronization
-await plinto.admin.sync.configure({
+await janua.admin.sync.configure({
   providers: ['azure_ad', 'okta', 'salesforce'],
   frequency: 'real-time',
   conflict_resolution: 'source_priority',
@@ -452,13 +452,13 @@ await plinto.admin.sync.configure({
 
 ```python
 import asyncio
-from plinto import PlintoClient
+from janua import JanuaClient
 
 async def daily_sync():
-    plinto = PlintoClient(api_key="your-api-key")
+    janua = JanuaClient(api_key="your-api-key")
 
     # Sync users from all connected providers
-    sync_results = await plinto.admin.sync.run_batch({
+    sync_results = await janua.admin.sync.run_batch({
         "providers": ["azure_ad", "okta", "ldap"],
         "entities": ["users", "groups"],
         "dry_run": False,
@@ -478,12 +478,12 @@ if __name__ == "__main__":
 
 ```typescript
 // Custom webhook handler
-app.post('/webhooks/plinto/user-created', async (req, res) => {
+app.post('/webhooks/janua/user-created', async (req, res) => {
   const { user, organization, event_type } = req.body;
 
   // Verify webhook signature
-  const signature = req.headers['x-plinto-signature'];
-  const isValid = plinto.webhooks.verify(req.body, signature);
+  const signature = req.headers['x-janua-signature'];
+  const isValid = janua.webhooks.verify(req.body, signature);
 
   if (!isValid) {
     return res.status(401).json({ error: 'Invalid signature' });
@@ -509,7 +509,7 @@ app.post('/webhooks/plinto/user-created', async (req, res) => {
 ### Custom SCIM Connector
 
 ```python
-from plinto.connectors import SCIMConnector
+from janua.connectors import SCIMConnector
 
 class CustomSystemConnector(SCIMConnector):
     def __init__(self, base_url, api_key):
@@ -568,11 +568,11 @@ class CustomSystemConnector(SCIMConnector):
 4. **Data Mapping Errors**: Validate attribute mappings and data formats
 
 ### Getting Help
-- **Documentation**: [https://docs.plinto.dev/integrations](https://docs.plinto.dev/integrations)
-- **Support Portal**: [https://support.plinto.dev](https://support.plinto.dev)
-- **Community Forum**: [https://community.plinto.dev](https://community.plinto.dev)
-- **Enterprise Support**: [enterprise@plinto.dev](mailto:enterprise@plinto.dev)
+- **Documentation**: [https://docs.janua.dev/integrations](https://docs.janua.dev/integrations)
+- **Support Portal**: [https://support.janua.dev](https://support.janua.dev)
+- **Community Forum**: [https://community.janua.dev](https://community.janua.dev)
+- **Enterprise Support**: [enterprise@janua.dev](mailto:enterprise@janua.dev)
 
 ---
 
-*For custom integration development or enterprise support, contact our integration team at [integrations@plinto.dev](mailto:integrations@plinto.dev)*
+*For custom integration development or enterprise support, contact our integration team at [integrations@janua.dev](mailto:integrations@janua.dev)*

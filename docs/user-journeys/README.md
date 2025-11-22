@@ -1,6 +1,6 @@
 # User Journey Validation Framework
 
-This directory contains user journey maps, validation tests, and alignment verification for the Plinto Identity Platform.
+This directory contains user journey maps, validation tests, and alignment verification for the Janua Identity Platform.
 
 ## Purpose
 
@@ -10,10 +10,10 @@ Ensure the codebase (marketing, documentation, and functionality) accurately ref
 
 ### Core Personas
 
-1. **[Developer Integrator](./developer-integrator.md)** - Technical users integrating Plinto authentication
+1. **[Developer Integrator](./developer-integrator.md)** - Technical users integrating Janua authentication
 2. **[End User](./end-user.md)** - Application users authenticating and managing their identity
 3. **[Security Admin](./security-admin.md)** - Security professionals configuring and monitoring the platform
-4. **[Business Decision Maker](./business-decision-maker.md)** - Stakeholders evaluating and purchasing Plinto
+4. **[Business Decision Maker](./business-decision-maker.md)** - Stakeholders evaluating and purchasing Janua
 
 ## Validation Approach
 

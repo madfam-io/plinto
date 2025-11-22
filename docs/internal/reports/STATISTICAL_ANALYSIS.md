@@ -1,12 +1,12 @@
-# Plinto Codebase Statistical Analysis
+# Janua Codebase Statistical Analysis
 
 **Analysis Date:** September 12, 2025  
-**Repository:** https://github.com/aureolabs/plinto  
+**Repository:** https://github.com/aureolabs/janua  
 **Analysis Scope:** Complete codebase excluding node_modules, .git, and .serena directories
 
 ## Executive Summary
 
-The Plinto codebase is a comprehensive monorepo containing **18,877 files** across **1,458 directories**, totaling **289.66 MB** of source code. It implements a multi-language platform with strong TypeScript/JavaScript dominance (97.8%) and extensive documentation coverage (66.8% doc-to-code ratio).
+The Janua codebase is a comprehensive monorepo containing **18,877 files** across **1,458 directories**, totaling **289.66 MB** of source code. It implements a multi-language platform with strong TypeScript/JavaScript dominance (97.8%) and extensive documentation coverage (66.8% doc-to-code ratio).
 
 ---
 

@@ -1,5 +1,5 @@
 /**
- * Test setup for Plinto TypeScript SDK
+ * Test setup for Janua TypeScript SDK
  */
 
 // Mock localStorage for Node.js test environment

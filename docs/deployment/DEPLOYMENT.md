@@ -1,4 +1,4 @@
-# Plinto Deployment Guide
+# Janua Deployment Guide
 
 ## 🚀 Quick Deploy to Vercel
 
@@ -15,8 +15,8 @@ This project is configured for easy deployment to Vercel with our mock API for d
 #### 1. Fork & Clone Repository
 
 ```bash
-git clone https://github.com/aureolabs/plinto.git
-cd plinto
+git clone https://github.com/aureolabs/janua.git
+cd janua
 yarn install
 ```
 
@@ -32,7 +32,7 @@ When prompted:
 - Set up and deploy: Y
 - Which scope: Select your Vercel account
 - Link to existing project: N
-- Project name: `plinto-marketing`
+- Project name: `janua-marketing`
 - Directory: `./`
 - Override settings: N
 
@@ -45,7 +45,7 @@ vercel --prod
 ```
 
 When prompted:
-- Project name: `plinto-auth`
+- Project name: `janua-auth`
 - Follow same steps as marketing
 
 #### 4. Deploy Mock API (Vercel Functions)
@@ -67,20 +67,20 @@ vercel --prod
 
 In Vercel Dashboard:
 
-1. **Marketing Site** (`plinto-marketing`):
-   - Add domain: `plinto.dev`
-   - Add domain: `www.plinto.dev` (redirect to plinto.dev)
+1. **Marketing Site** (`janua-marketing`):
+   - Add domain: `janua.dev`
+   - Add domain: `www.janua.dev` (redirect to janua.dev)
 
-2. **Auth App** (`plinto-auth`):
-   - Add domain: `app.plinto.dev`
+2. **Auth App** (`janua-auth`):
+   - Add domain: `app.janua.dev`
 
 #### 6. Set Environment Variables
 
 In Vercel Dashboard for both projects:
 
 ```env
-NEXT_PUBLIC_API_URL=https://app.plinto.dev/api
-NEXT_PUBLIC_APP_URL=https://app.plinto.dev
+NEXT_PUBLIC_API_URL=https://app.janua.dev/api
+NEXT_PUBLIC_APP_URL=https://app.janua.dev
 ```
 
 ### Local Development
@@ -107,17 +107,17 @@ yarn dev
 #### Test Credentials
 
 ```
-Email: demo@plinto.dev
+Email: demo@janua.dev
 Password: DemoPassword123!
 ```
 
 ### Project Structure
 
 ```
-plinto/
+janua/
 ├── apps/
-│   ├── marketing/        # Public website (plinto.dev)
-│   └── auth/            # Auth app (app.plinto.dev)
+│   ├── marketing/        # Public website (janua.dev)
+│   └── auth/            # Auth app (app.janua.dev)
 ├── packages/
 │   ├── sdk/             # JavaScript SDK
 │   ├── ui/              # Shared UI components
@@ -129,12 +129,12 @@ plinto/
 
 After deployment:
 
-- **Marketing**: https://plinto.dev
-- **Auth App**: https://app.plinto.dev
-  - Sign In: https://app.plinto.dev/signin
-  - Sign Up: https://app.plinto.dev/signup
-  - Dashboard: https://app.plinto.dev/dashboard
-- **API**: https://app.plinto.dev/api
+- **Marketing**: https://janua.dev
+- **Auth App**: https://app.janua.dev
+  - Sign In: https://app.janua.dev/signin
+  - Sign Up: https://app.janua.dev/signup
+  - Dashboard: https://app.janua.dev/dashboard
+- **API**: https://app.janua.dev/api
 
 ### Features Included
 
@@ -194,9 +194,9 @@ cp .env.example apps/auth/.env.local
 
 ### Support
 
-- Documentation: https://docs.plinto.dev
-- GitHub Issues: https://github.com/aureolabs/plinto/issues
-- Email: support@plinto.dev
+- Documentation: https://docs.janua.dev
+- GitHub Issues: https://github.com/aureolabs/janua/issues
+- Email: support@janua.dev
 
 ---
 

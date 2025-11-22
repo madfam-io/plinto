@@ -23,8 +23,8 @@ export interface PhoneVerificationProps {
   onComplete?: () => void
   /** Custom logo URL */
   logoUrl?: string
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -38,7 +38,7 @@ export function PhoneVerification({
   onError,
   onComplete,
   logoUrl,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: PhoneVerificationProps) {
   const [step, setStep] = React.useState(initialStep)
@@ -71,9 +71,9 @@ export function PhoneVerification({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for phone verification
-        await plintoClient.auth.sendPhoneVerification({ phoneNumber })
+      if (januaClient) {
+        // Use Janua SDK for phone verification
+        await januaClient.auth.sendPhoneVerification({ phoneNumber })
       } else if (onSendCode) {
         // Use custom callback if provided
         await onSendCode(phoneNumber)
@@ -113,9 +113,9 @@ export function PhoneVerification({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for phone verification
-        await plintoClient.auth.verifyPhone({ code: verificationCode })
+      if (januaClient) {
+        // Use Janua SDK for phone verification
+        await januaClient.auth.verifyPhone({ code: verificationCode })
       } else if (onVerifyCode) {
         // Use custom callback if provided
         await onVerifyCode(verificationCode)
@@ -157,9 +157,9 @@ export function PhoneVerification({
     setError(null)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for phone verification
-        await plintoClient.auth.sendPhoneVerification({ phoneNumber })
+      if (januaClient) {
+        // Use Janua SDK for phone verification
+        await januaClient.auth.sendPhoneVerification({ phoneNumber })
       } else if (onSendCode) {
         // Use custom callback if provided
         await onSendCode(phoneNumber)

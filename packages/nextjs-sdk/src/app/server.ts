@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 import { SignJWT, jwtVerify } from 'jose';
-import { PlintoClient } from '@plinto/typescript-sdk';
-import type { User, Session } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
+import type { User, Session } from '@janua/typescript-sdk';
 
-const COOKIE_NAME = 'plinto-session';
+const COOKIE_NAME = 'janua-session';
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
@@ -20,12 +20,12 @@ interface SessionData {
   refreshToken: string;
 }
 
-export class PlintoServerClient {
-  private client: PlintoClient;
+export class JanuaServerClient {
+  private client: JanuaClient;
   private secret: Uint8Array;
 
   constructor(config: { appId: string; apiKey: string; jwtSecret: string }) {
-    this.client = new PlintoClient({
+    this.client = new JanuaClient({
       baseURL: process.env.NEXT_PUBLIC_API_URL!,
     });
     
@@ -192,7 +192,7 @@ export class PlintoServerClient {
     return updatedUser;
   }
 
-  getClient(): PlintoClient {
+  getClient(): JanuaClient {
     return this.client;
   }
 }
@@ -203,7 +203,7 @@ export async function getSession(
   apiKey: string,
   jwtSecret: string
 ): Promise<{ user: User; session: Session } | null> {
-  const client = new PlintoServerClient({ appId, apiKey, jwtSecret });
+  const client = new JanuaServerClient({ appId, apiKey, jwtSecret });
   return client.getSession();
 }
 
@@ -212,7 +212,7 @@ export async function requireAuth(
   apiKey: string,
   jwtSecret: string
 ): Promise<{ user: User; session: Session }> {
-  const client = new PlintoServerClient({ appId, apiKey, jwtSecret });
+  const client = new JanuaServerClient({ appId, apiKey, jwtSecret });
   return client.requireAuth();
 }
 

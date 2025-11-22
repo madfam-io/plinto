@@ -48,9 +48,9 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: plinto
-          POSTGRES_PASSWORD: plinto
-          POSTGRES_DB: plinto_test
+          POSTGRES_USER: janua
+          POSTGRES_PASSWORD: janua
+          POSTGRES_DB: janua_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -94,9 +94,9 @@ jobs:
           python -m pytest tests/ --cov=app --cov-report=xml || true
         continue-on-error: true
         env:
-          DATABASE_URL: postgresql://plinto:plinto@localhost:5432/plinto_test
+          DATABASE_URL: postgresql://janua:janua@localhost:5432/janua_test
           REDIS_URL: redis://localhost:6379/0
-          PLINTO_ENV: test
+          JANUA_ENV: test
           JWT_SECRET_KEY: test-secret-key-for-testing-only
           JWT_ALGORITHM: HS256
       
@@ -129,8 +129,8 @@ jobs:
         run: npm run test:integration || true
         continue-on-error: true
         env:
-          PLINTO_ISSUER: http://localhost:8000
-          PLINTO_CLIENT_ID: test-client
+          JANUA_ISSUER: http://localhost:8000
+          JANUA_CLIENT_ID: test-client
 
   e2e-tests:
     name: E2E Tests

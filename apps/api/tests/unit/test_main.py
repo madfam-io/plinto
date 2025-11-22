@@ -20,7 +20,7 @@ class TestApplicationSetup:
     
     def test_app_instance(self):
         """Test that app instance is properly configured."""
-        assert app.title == "Plinto API"
+        assert app.title == "Janua API"
         assert app.description == "Secure identity platform API"
         # FastAPI apps have a state attribute for application state management
         assert hasattr(app, 'state')

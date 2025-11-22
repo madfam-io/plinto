@@ -1,13 +1,13 @@
-# Plinto React Native SDK
+# Janua React Native SDK
 
-Official React Native SDK for the Plinto Identity Platform with full support for biometric authentication and secure storage.
+Official React Native SDK for the Janua Identity Platform with full support for biometric authentication and secure storage.
 
 ## Installation
 
 ```bash
-npm install @plinto/react-native-sdk
+npm install @janua/react-native-sdk
 # or
-yarn add @plinto/react-native-sdk
+yarn add @janua/react-native-sdk
 
 # iOS additional setup
 cd ios && pod install
@@ -34,27 +34,27 @@ Add to your `AndroidManifest.xml`:
 ## Quick Start
 
 ```javascript
-import Plinto from '@plinto/react-native-sdk';
+import Janua from '@janua/react-native-sdk';
 
 // Initialize the SDK
-const plinto = new Plinto({
-  baseURL: 'https://api.plinto.dev',
+const janua = new Janua({
+  baseURL: 'https://api.janua.dev',
   apiKey: 'your-api-key',
   enableBiometrics: true,
   secureStorage: true
 });
 
 // Sign in
-const { user, session } = await plinto.signIn({
+const { user, session } = await janua.signIn({
   email: 'user@example.com',
   password: 'password'
 });
 
 // Enable biometric authentication
-await plinto.enableBiometricAuth();
+await janua.enableBiometricAuth();
 
 // Sign in with biometrics next time
-const { user } = await plinto.signInWithBiometrics();
+const { user } = await janua.signInWithBiometrics();
 ```
 
 ## Features
@@ -73,96 +73,96 @@ const { user } = await plinto.signInWithBiometrics();
 
 ```javascript
 // Sign up
-const { user, session } = await plinto.signUp({
+const { user, session } = await janua.signUp({
   email: 'user@example.com',
   password: 'password',
   name: 'John Doe'
 });
 
 // Sign in
-const { user, session } = await plinto.signIn({
+const { user, session } = await janua.signIn({
   email: 'user@example.com',
   password: 'password'
 });
 
 // Sign in with biometrics
-const { user, session } = await plinto.signInWithBiometrics();
+const { user, session } = await janua.signInWithBiometrics();
 
 // Sign in with social provider
-const { user, session } = await plinto.signInWithProvider('google');
+const { user, session } = await janua.signInWithProvider('google');
 
 // Sign out
-await plinto.signOut();
+await janua.signOut();
 ```
 
 ### Biometric Authentication
 
 ```javascript
 // Check biometric availability
-const isAvailable = await plinto.isBiometricAvailable();
+const isAvailable = await janua.isBiometricAvailable();
 
 // Get biometric type
-const type = await plinto.getBiometricType(); // 'FaceID', 'TouchID', 'Fingerprint'
+const type = await janua.getBiometricType(); // 'FaceID', 'TouchID', 'Fingerprint'
 
 // Enable biometric authentication
-await plinto.enableBiometricAuth({
+await janua.enableBiometricAuth({
   title: 'Enable Biometric Login',
   subtitle: 'Use your fingerprint or face to sign in'
 });
 
 // Disable biometric authentication
-await plinto.disableBiometricAuth();
+await janua.disableBiometricAuth();
 ```
 
 ### User Management
 
 ```javascript
 // Get current user
-const user = await plinto.getUser();
+const user = await janua.getUser();
 
 // Update user profile
-await plinto.updateUser({
+await janua.updateUser({
   name: 'Jane Doe',
   avatar: 'https://example.com/avatar.jpg'
 });
 
 // Change password
-await plinto.changePassword({
+await janua.changePassword({
   currentPassword: 'old-password',
   newPassword: 'new-password'
 });
 
 // Upload avatar
-const avatarUrl = await plinto.uploadAvatar(imageUri);
+const avatarUrl = await janua.uploadAvatar(imageUri);
 ```
 
 ### Session Management
 
 ```javascript
 // Get current session
-const session = plinto.getSession();
+const session = janua.getSession();
 
 // List all sessions
-const sessions = await plinto.listSessions();
+const sessions = await janua.listSessions();
 
 // Revoke a session
-await plinto.revokeSession(sessionId);
+await janua.revokeSession(sessionId);
 
 // Revoke all other sessions
-await plinto.revokeOtherSessions();
+await janua.revokeOtherSessions();
 ```
 
 ### Multi-Factor Authentication
 
 ```javascript
 // Enable MFA
-const { secret, qrCode, recoveryCodes } = await plinto.enableMFA();
+const { secret, qrCode, recoveryCodes } = await janua.enableMFA();
 
 // Verify MFA code
-await plinto.verifyMFA('123456');
+await janua.verifyMFA('123456');
 
 // Disable MFA
-await plinto.disableMFA('123456');
+await janua.disableMFA('123456');
 ```
 
 ## UI Components
@@ -170,7 +170,7 @@ await plinto.disableMFA('123456');
 Pre-built authentication screens with customizable themes:
 
 ```javascript
-import { SignInScreen, SignUpScreen, ProfileScreen } from '@plinto/react-native-sdk/ui';
+import { SignInScreen, SignUpScreen, ProfileScreen } from '@janua/react-native-sdk/ui';
 
 // Use pre-built sign in screen
 <SignInScreen
@@ -189,7 +189,7 @@ import { SignInScreen, SignUpScreen, ProfileScreen } from '@plinto/react-native-
 <ProfileScreen
   user={currentUser}
   onSignOut={() => navigation.navigate('Login')}
-  onUpdateProfile={(data) => plinto.updateUser(data)}
+  onUpdateProfile={(data) => janua.updateUser(data)}
 />
 ```
 
@@ -198,7 +198,7 @@ import { SignInScreen, SignUpScreen, ProfileScreen } from '@plinto/react-native-
 Encrypted storage for sensitive data:
 
 ```javascript
-import { SecureStorage } from '@plinto/react-native-sdk';
+import { SecureStorage } from '@janua/react-native-sdk';
 
 // Store encrypted data
 await SecureStorage.setItem('api_key', 'secret-key');
@@ -219,19 +219,19 @@ Queue operations when offline and sync when connected:
 
 ```javascript
 // Enable offline mode
-plinto.enableOfflineMode({
+janua.enableOfflineMode({
   syncOnReconnect: true,
   maxQueueSize: 100,
   persistQueue: true
 });
 
 // Operations are automatically queued when offline
-await plinto.updateUser({ name: 'Jane' }); // Queued if offline
+await janua.updateUser({ name: 'Jane' }); // Queued if offline
 
 // Listen for sync events
-plinto.on('sync:start', () => console.log('Syncing...'));
-plinto.on('sync:complete', () => console.log('Sync complete'));
-plinto.on('sync:error', (error) => console.error('Sync failed:', error));
+janua.on('sync:start', () => console.log('Syncing...'));
+janua.on('sync:complete', () => console.log('Sync complete'));
+janua.on('sync:error', (error) => console.error('Sync failed:', error));
 ```
 
 ## Deep Linking
@@ -242,22 +242,22 @@ Handle authentication callbacks from external providers:
 import { Linking } from 'react-native';
 
 // Configure deep linking
-plinto.configureDeepLinking({
-  scheme: 'plinto',
-  universalLinks: ['https://app.plinto.dev']
+janua.configureDeepLinking({
+  scheme: 'janua',
+  universalLinks: ['https://app.janua.dev']
 });
 
 // Handle deep links
 Linking.addEventListener('url', (event) => {
-  plinto.handleDeepLink(event.url);
+  janua.handleDeepLink(event.url);
 });
 
 // In your app.json
 {
   "expo": {
-    "scheme": "plinto",
+    "scheme": "janua",
     "ios": {
-      "associatedDomains": ["applinks:app.plinto.dev"]
+      "associatedDomains": ["applinks:app.janua.dev"]
     }
   }
 }
@@ -269,24 +269,24 @@ Security alerts and authentication notifications:
 
 ```javascript
 // Register for push notifications
-const token = await plinto.registerPushNotifications();
+const token = await janua.registerPushNotifications();
 
 // Handle push notifications
-plinto.on('notification', (notification) => {
+janua.on('notification', (notification) => {
   if (notification.type === 'security_alert') {
     // Handle security alert
   }
 });
 
 // Update push token
-await plinto.updatePushToken(newToken);
+await janua.updatePushToken(newToken);
 ```
 
 ## Error Handling
 
 ```javascript
 try {
-  await plinto.signIn({ email, password });
+  await janua.signIn({ email, password });
 } catch (error) {
   if (error.code === 'invalid_credentials') {
     // Handle invalid credentials

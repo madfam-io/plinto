@@ -1,8 +1,8 @@
-# Plinto Documentation Index
+# Janua Documentation Index
 
 **Last Updated**: November 17, 2025
 
-This index provides a navigable structure for all Plinto documentation. Organized by purpose and audience.
+This index provides a navigable structure for all Janua documentation. Organized by purpose and audience.
 
 ## 📚 Primary Documentation
 

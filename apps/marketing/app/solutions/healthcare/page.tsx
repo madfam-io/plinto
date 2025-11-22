@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { ArrowRight, Heart, Shield, FileText, Users, Lock, Database, Award, Stethoscope } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Healthcare Authentication | Plinto',
+  title: 'Healthcare Authentication | Janua',
   description: 'HIPAA-compliant authentication for healthcare applications. Secure patient data with enterprise-grade security and audit compliance.',
 }
 
@@ -36,14 +36,14 @@ export default function HealthcarePage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="group" asChild>
-                <Link href="https://app.plinto.dev/auth/signup">
+                <Link href="https://app.janua.dev/auth/signup">
                   Get HIPAA Compliant
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
 
               <Button size="lg" variant="outline" asChild>
-                <Link href="https://docs.plinto.dev/solutions/healthcare">
+                <Link href="https://docs.janua.dev/solutions/healthcare">
                   HIPAA Documentation
                 </Link>
               </Button>
@@ -164,13 +164,13 @@ export default function HealthcarePage() {
                 </p>
                 <div className="space-y-4">
                   <Button size="lg" className="w-full group" asChild>
-                    <Link href="https://app.plinto.dev/auth/signup">
+                    <Link href="https://app.janua.dev/auth/signup">
                       Start HIPAA Compliant
                       <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </Button>
                   <Button size="lg" variant="outline" className="w-full" asChild>
-                    <Link href="mailto:healthcare@plinto.dev">
+                    <Link href="mailto:healthcare@janua.dev">
                       Request BAA
                     </Link>
                   </Button>
@@ -234,20 +234,20 @@ export default function HealthcarePage() {
             Ready to Secure Healthcare Data?
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-300 mb-10">
-            Join healthcare organizations using Plinto to protect patient privacy
+            Join healthcare organizations using Janua to protect patient privacy
             and meet regulatory compliance requirements.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="group" asChild>
-              <Link href="https://app.plinto.dev/auth/signup">
+              <Link href="https://app.janua.dev/auth/signup">
                 Get HIPAA Compliant
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
 
             <Button size="lg" variant="outline" asChild>
-              <Link href="mailto:healthcare@plinto.dev">
+              <Link href="mailto:healthcare@janua.dev">
                 Request Healthcare Demo
               </Link>
             </Button>

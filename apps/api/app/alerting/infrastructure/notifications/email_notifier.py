@@ -64,7 +64,7 @@ class EmailNotificationStrategy(AbstractNotificationStrategy):
             username = config["username"]
             password = config["password"]
             to_addresses = config["to_addresses"]
-            from_name = config.get("from_name", "Plinto Alert System")
+            from_name = config.get("from_name", "Janua Alert System")
             use_tls = config.get("use_tls", True)
             
             self._log_attempt(request, "sending email")
@@ -104,7 +104,7 @@ class EmailNotificationStrategy(AbstractNotificationStrategy):
         msg['To'] = ', '.join(to_addresses)
         
         # Add message ID for tracking
-        msg['Message-ID'] = f"<{request.request_id}@plinto-alerts>"
+        msg['Message-ID'] = f"<{request.request_id}@janua-alerts>"
         
         # Add custom headers
         msg['X-Alert-ID'] = request.alert.alert_id
@@ -171,7 +171,7 @@ class EmailNotificationStrategy(AbstractNotificationStrategy):
             f"  Status: {request.alert.status.value}",
             "",
             "--",
-            "Plinto Alert System"
+            "Janua Alert System"
         ])
         
         return "\n".join(lines)
@@ -376,7 +376,7 @@ class EmailNotificationStrategy(AbstractNotificationStrategy):
     </div>
     
     <div class="footer">
-        <p>Plinto Alert System</p>
+        <p>Janua Alert System</p>
         <p>This is an automated alert notification. Please do not reply to this email.</p>
     </div>
 </body>

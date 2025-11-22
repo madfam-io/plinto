@@ -20,9 +20,9 @@ jobs:
       postgres:
         image: postgres:15-alpine
         env:
-          POSTGRES_USER: plinto
-          POSTGRES_PASSWORD: plinto_test
-          POSTGRES_DB: plinto_test
+          POSTGRES_USER: janua
+          POSTGRES_PASSWORD: janua_test
+          POSTGRES_DB: janua_test
         ports:
           - 5432:5432
         options: >-
@@ -72,7 +72,7 @@ jobs:
         working-directory: ./apps/api
         env:
           ENVIRONMENT: test
-          DATABASE_URL: postgresql+asyncpg://plinto:plinto_test@localhost:5432/plinto_test
+          DATABASE_URL: postgresql+asyncpg://janua:janua_test@localhost:5432/janua_test
           REDIS_URL: redis://localhost:6379/0
           SECRET_KEY: test-secret-key-do-not-use-in-production
         run: |

@@ -19,10 +19,10 @@ Passkeys provide a phishing-resistant, passwordless authentication method using 
 ### 1. Register a Passkey
 
 ```typescript
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 // Start passkey registration
-const { options } = await plinto.auth.passkey.beginRegistration({
+const { options } = await janua.auth.passkey.beginRegistration({
   userId: currentUser.id,
   userName: currentUser.email,
   displayName: currentUser.name
@@ -34,7 +34,7 @@ const credential = await navigator.credentials.create({
 })
 
 // Complete registration
-const { passkey } = await plinto.auth.passkey.completeRegistration({
+const { passkey } = await janua.auth.passkey.completeRegistration({
   userId: currentUser.id,
   credential
 })
@@ -46,7 +46,7 @@ console.log('Passkey registered:', passkey.id)
 
 ```typescript
 // Start authentication
-const { options } = await plinto.auth.passkey.beginAuthentication({
+const { options } = await janua.auth.passkey.beginAuthentication({
   // Optional: provide email for conditional UI
   email: 'user@example.com'
 })
@@ -58,7 +58,7 @@ const credential = await navigator.credentials.get({
 })
 
 // Complete authentication
-const { user, session } = await plinto.auth.passkey.completeAuthentication({
+const { user, session } = await janua.auth.passkey.completeAuthentication({
   credential
 })
 
@@ -73,11 +73,11 @@ console.log('Authenticated as:', user.email)
 
 ```javascript
 const express = require('express')
-const { Plinto } = require('@plinto/typescript-sdk')
+const { Janua } = require('@janua/typescript-sdk')
 
 const app = express()
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY,
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY,
   rpId: 'example.com', // Relying Party ID
   rpName: 'Example App', // Display name
   rpOrigin: 'https://example.com' // Expected origin
@@ -92,9 +92,9 @@ app.post('/auth/passkey/register/begin', async (req, res) => {
   }
 
   try {
-    const user = await plinto.users.get(userId)
+    const user = await janua.users.get(userId)
 
-    const { options, challenge } = await plinto.auth.passkey.beginRegistration({
+    const { options, challenge } = await janua.auth.passkey.beginRegistration({
       userId,
       userName: user.email,
       displayName: user.name,
@@ -126,7 +126,7 @@ app.post('/auth/passkey/register/complete', async (req, res) => {
   }
 
   try {
-    const { passkey } = await plinto.auth.passkey.completeRegistration({
+    const { passkey } = await janua.auth.passkey.completeRegistration({
       userId,
       credential,
       challenge,
@@ -135,7 +135,7 @@ app.post('/auth/passkey/register/complete', async (req, res) => {
     })
 
     // Log passkey registration
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'passkey.registered',
       userId,
       passkeyId: passkey.id,
@@ -161,7 +161,7 @@ app.post('/auth/passkey/authenticate/begin', async (req, res) => {
   const { email } = req.body // Optional for conditional UI
 
   try {
-    const { options, challenge } = await plinto.auth.passkey.beginAuthentication({
+    const { options, challenge } = await janua.auth.passkey.beginAuthentication({
       email,
       userVerification: 'preferred',
       // For conditional UI (autofill)
@@ -186,7 +186,7 @@ app.post('/auth/passkey/authenticate/complete', async (req, res) => {
   }
 
   try {
-    const { user, session, passkey } = await plinto.auth.passkey.completeAuthentication({
+    const { user, session, passkey } = await janua.auth.passkey.completeAuthentication({
       credential,
       challenge,
       origin: 'https://example.com',
@@ -198,7 +198,7 @@ app.post('/auth/passkey/authenticate/complete', async (req, res) => {
     })
 
     // Update passkey last used
-    await plinto.auth.passkey.updateLastUsed(passkey.id)
+    await janua.auth.passkey.updateLastUsed(passkey.id)
 
     // Set session cookie
     res.cookie('session', session.token, {
@@ -214,7 +214,7 @@ app.post('/auth/passkey/authenticate/complete', async (req, res) => {
     })
   } catch (error) {
     // Log failed attempt
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'passkey.failed',
       reason: error.message,
       ip: req.ip
@@ -233,7 +233,7 @@ app.get('/auth/passkeys', async (req, res) => {
   }
 
   try {
-    const passkeys = await plinto.auth.passkey.list(userId)
+    const passkeys = await janua.auth.passkey.list(userId)
 
     res.json({
       passkeys: passkeys.map(pk => ({
@@ -257,7 +257,7 @@ app.delete('/auth/passkeys/:passkeyId', async (req, res) => {
   const { passkeyId } = req.params
 
   try {
-    await plinto.auth.passkey.delete({
+    await janua.auth.passkey.delete({
       userId,
       passkeyId
     })
@@ -273,13 +273,13 @@ app.delete('/auth/passkeys/:passkeyId', async (req, res) => {
 
 ```python
 from fastapi import FastAPI, HTTPException, Depends, Request
-from plinto import Plinto
+from janua import Janua
 import os
 import json
 
 app = FastAPI()
-plinto = Plinto(
-    api_key=os.getenv("PLINTO_API_KEY"),
+janua = Janua(
+    api_key=os.getenv("JANUA_API_KEY"),
     rp_id="example.com",
     rp_name="Example App",
     rp_origin="https://example.com"
@@ -292,9 +292,9 @@ async def begin_registration(request: Request):
     if not user_id:
         raise HTTPException(401, "Must be logged in")
 
-    user = await plinto.users.get(user_id)
+    user = await janua.users.get(user_id)
 
-    result = await plinto.auth.passkey.begin_registration(
+    result = await janua.auth.passkey.begin_registration(
         user_id=user_id,
         user_name=user.email,
         display_name=user.name,
@@ -322,7 +322,7 @@ async def complete_registration(
         raise HTTPException(401, "Invalid session")
 
     try:
-        result = await plinto.auth.passkey.complete_registration(
+        result = await janua.auth.passkey.complete_registration(
             user_id=user_id,
             credential=credential,
             challenge=challenge,
@@ -330,7 +330,7 @@ async def complete_registration(
         )
 
         # Log registration
-        await plinto.audit.log(
+        await janua.audit.log(
             event="passkey.registered",
             user_id=user_id,
             passkey_id=result.passkey.id
@@ -352,7 +352,7 @@ async def begin_authentication(
     email: str = None,
     request: Request = None
 ):
-    result = await plinto.auth.passkey.begin_authentication(
+    result = await janua.auth.passkey.begin_authentication(
         email=email,
         user_verification="preferred"
     )
@@ -372,7 +372,7 @@ async def complete_authentication(
         raise HTTPException(401, "Invalid session")
 
     try:
-        result = await plinto.auth.passkey.complete_authentication(
+        result = await janua.auth.passkey.complete_authentication(
             credential=credential,
             challenge=challenge,
             origin="https://example.com",
@@ -391,7 +391,7 @@ async def complete_authentication(
         }
     except Exception as e:
         # Log failed attempt
-        await plinto.audit.log(
+        await janua.audit.log(
             event="passkey.failed",
             reason=str(e),
             ip=request.client.host
@@ -405,11 +405,11 @@ async def complete_authentication(
 
 ```jsx
 import React, { useState, useEffect } from 'react'
-import { usePlinto } from '@plinto/react-sdk'
+import { useJanua } from '@janua/react-sdk'
 import { startRegistration, startAuthentication } from '@simplewebauthn/browser'
 
 function PasskeyAuth() {
-  const { passkey } = usePlinto()
+  const { passkey } = useJanua()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -899,7 +899,7 @@ Support authentication from phones using QR codes:
 
 ```typescript
 // Generate QR code for cross-device auth
-const { qrCode, sessionId } = await plinto.auth.passkey.generateCrossDeviceQR({
+const { qrCode, sessionId } = await janua.auth.passkey.generateCrossDeviceQR({
   returnUrl: 'https://example.com/auth/complete'
 })
 
@@ -908,7 +908,7 @@ const { qrCode, sessionId } = await plinto.auth.passkey.generateCrossDeviceQR({
 
 // Poll for completion
 const interval = setInterval(async () => {
-  const result = await plinto.auth.passkey.checkCrossDeviceStatus(sessionId)
+  const result = await janua.auth.passkey.checkCrossDeviceStatus(sessionId)
 
   if (result.completed) {
     clearInterval(interval)
@@ -924,7 +924,7 @@ Handle synced passkeys across devices:
 
 ```typescript
 // Check if passkey is backed up
-const passkey = await plinto.auth.passkey.get(passkeyId)
+const passkey = await janua.auth.passkey.get(passkeyId)
 
 if (passkey.backupEligible && passkey.backupState) {
   console.log('This passkey is synced across devices')
@@ -942,7 +942,7 @@ Verify authenticator authenticity for enterprise:
 
 ```typescript
 // Configure attestation requirements
-const options = await plinto.auth.passkey.beginRegistration({
+const options = await janua.auth.passkey.beginRegistration({
   userId,
   attestation: 'direct', // Request attestation
   authenticatorSelection: {
@@ -953,7 +953,7 @@ const options = await plinto.auth.passkey.beginRegistration({
 })
 
 // Verify attestation on server
-const { passkey, attestation } = await plinto.auth.passkey.completeRegistration({
+const { passkey, attestation } = await janua.auth.passkey.completeRegistration({
   credential,
   verifyAttestation: true,
   allowedAuthenticators: ['Yubico', 'Google Titan'] // Whitelist
@@ -966,7 +966,7 @@ const { passkey, attestation } = await plinto.auth.passkey.completeRegistration(
 
 ```typescript
 // Always verify origin
-plinto.configure({
+janua.configure({
   passkey: {
     rpId: 'example.com',
     rpOrigins: [
@@ -1063,7 +1063,7 @@ const checkPasskeySupport = () => {
 ```typescript
 describe('Passkey Authentication', () => {
   it('should generate valid registration options', async () => {
-    const options = await plinto.auth.passkey.beginRegistration({
+    const options = await janua.auth.passkey.beginRegistration({
       userId: 'test-user',
       userName: 'test@example.com'
     })
@@ -1077,7 +1077,7 @@ describe('Passkey Authentication', () => {
     const credential = mockCredential()
 
     await expect(
-      plinto.auth.passkey.completeAuthentication({
+      janua.auth.passkey.completeAuthentication({
         credential,
         challenge: 'test-challenge',
         origin: 'https://evil.com' // Wrong origin
@@ -1088,7 +1088,7 @@ describe('Passkey Authentication', () => {
   it('should handle attestation verification', async () => {
     const credential = mockCredentialWithAttestation()
 
-    const result = await plinto.auth.passkey.completeRegistration({
+    const result = await janua.auth.passkey.completeRegistration({
       credential,
       verifyAttestation: true
     })
@@ -1183,7 +1183,7 @@ test.describe('Passkey Flow', () => {
 
 ```javascript
 // Enable verbose logging
-plinto.configure({
+janua.configure({
   passkey: {
     debug: true,
     logLevel: 'verbose'
@@ -1198,7 +1198,7 @@ navigator.credentials.create = function(...args) {
 }
 
 // Check authenticator info
-const info = await plinto.auth.passkey.getAuthenticatorInfo()
+const info = await janua.auth.passkey.getAuthenticatorInfo()
 console.log('Authenticator capabilities:', info)
 ```
 
@@ -1210,7 +1210,7 @@ console.log('Authenticator capabilities:', info)
 // Progressive enhancement approach
 async function migrateToPasskey(email, password) {
   // First, authenticate with password
-  const { user, session } = await plinto.auth.signIn({
+  const { user, session } = await janua.auth.signIn({
     email,
     password
   })
@@ -1220,7 +1220,7 @@ async function migrateToPasskey(email, password) {
 
   if (addPasskey) {
     // Register passkey while authenticated
-    const { options } = await plinto.auth.passkey.beginRegistration({
+    const { options } = await janua.auth.passkey.beginRegistration({
       userId: user.id,
       userName: user.email
     })
@@ -1229,14 +1229,14 @@ async function migrateToPasskey(email, password) {
       publicKey: options
     })
 
-    await plinto.auth.passkey.completeRegistration({
+    await janua.auth.passkey.completeRegistration({
       userId: user.id,
       credential
     })
 
     // Optionally remove password
     if (confirm('Remove password and use passkey only?')) {
-      await plinto.auth.removePassword(user.id)
+      await janua.auth.removePassword(user.id)
     }
   }
 }
@@ -1249,7 +1249,7 @@ async function migrateToPasskey(email, password) {
 const auth0Credentials = await getAuth0Credentials()
 
 for (const cred of auth0Credentials) {
-  await plinto.auth.passkey.import({
+  await janua.auth.passkey.import({
     credentialId: cred.id,
     publicKey: cred.publicKey,
     userId: cred.userId,

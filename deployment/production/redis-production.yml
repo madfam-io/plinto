@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redis-config
-  namespace: plinto-production
+  namespace: janua-production
 data:
   redis.conf: |
     # Network Configuration
@@ -56,7 +56,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: redis-secret
-  namespace: plinto-production
+  namespace: janua-production
 type: Opaque
 stringData:
   REDIS_PASSWORD: "REPLACE_WITH_SECURE_REDIS_PASSWORD"
@@ -69,7 +69,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: redis
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: redis
     component: cache
@@ -184,7 +184,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-service
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: redis
     component: cache
@@ -204,7 +204,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-exporter
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: redis-exporter
     component: monitoring
@@ -258,7 +258,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-exporter-service
-  namespace: plinto-production
+  namespace: janua-production
   labels:
     app: redis-exporter
     component: monitoring

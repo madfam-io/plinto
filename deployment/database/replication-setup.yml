@@ -7,11 +7,11 @@ services:
   # Primary PostgreSQL Database
   postgres-primary:
     image: postgres:15-alpine
-    container_name: plinto-postgres-primary
+    container_name: janua-postgres-primary
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-plinto}
-      POSTGRES_USER: ${POSTGRES_USER:-plinto}
+      POSTGRES_DB: ${POSTGRES_DB:-janua}
+      POSTGRES_USER: ${POSTGRES_USER:-janua}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_REPLICATION_USER: ${POSTGRES_REPLICATION_USER:-replicator}
       POSTGRES_REPLICATION_PASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
@@ -27,9 +27,9 @@ services:
       -c config_file=/etc/postgresql/postgresql.conf
       -c hba_file=/etc/postgresql/pg_hba.conf
     networks:
-      - plinto-db-network
+      - janua-db-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-plinto}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-janua}"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -37,11 +37,11 @@ services:
   # Read Replica 1
   postgres-replica-1:
     image: postgres:15-alpine
-    container_name: plinto-postgres-replica-1
+    container_name: janua-postgres-replica-1
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-plinto}
-      POSTGRES_USER: ${POSTGRES_USER:-plinto}
+      POSTGRES_DB: ${POSTGRES_DB:-janua}
+      POSTGRES_USER: ${POSTGRES_USER:-janua}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_REPLICATION_USER: ${POSTGRES_REPLICATION_USER:-replicator}
       POSTGRES_REPLICATION_PASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
@@ -66,9 +66,9 @@ services:
     depends_on:
       - postgres-primary
     networks:
-      - plinto-db-network
+      - janua-db-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-plinto}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-janua}"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -76,11 +76,11 @@ services:
   # Read Replica 2 (for load distribution)
   postgres-replica-2:
     image: postgres:15-alpine
-    container_name: plinto-postgres-replica-2
+    container_name: janua-postgres-replica-2
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-plinto}
-      POSTGRES_USER: ${POSTGRES_USER:-plinto}
+      POSTGRES_DB: ${POSTGRES_DB:-janua}
+      POSTGRES_USER: ${POSTGRES_USER:-janua}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_REPLICATION_USER: ${POSTGRES_REPLICATION_USER:-replicator}
       POSTGRES_REPLICATION_PASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
@@ -105,9 +105,9 @@ services:
     depends_on:
       - postgres-primary
     networks:
-      - plinto-db-network
+      - janua-db-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-plinto}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-janua}"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -115,14 +115,14 @@ services:
   # PgBouncer Connection Pooler
   pgbouncer:
     image: pgbouncer/pgbouncer:latest
-    container_name: plinto-pgbouncer
+    container_name: janua-pgbouncer
     restart: unless-stopped
     environment:
       DATABASES_HOST: postgres-primary
       DATABASES_PORT: 5432
-      DATABASES_USER: ${POSTGRES_USER:-plinto}
+      DATABASES_USER: ${POSTGRES_USER:-janua}
       DATABASES_PASSWORD: ${POSTGRES_PASSWORD}
-      DATABASES_DBNAME: ${POSTGRES_DB:-plinto}
+      DATABASES_DBNAME: ${POSTGRES_DB:-janua}
       POOL_MODE: transaction
       SERVER_RESET_QUERY: DISCARD ALL
       MAX_CLIENT_CONN: 1000
@@ -136,12 +136,12 @@ services:
     depends_on:
       - postgres-primary
     networks:
-      - plinto-db-network
+      - janua-db-network
 
   # HAProxy Load Balancer for Read Replicas
   haproxy:
     image: haproxy:2.8-alpine
-    container_name: plinto-haproxy-db
+    container_name: janua-haproxy-db
     restart: unless-stopped
     ports:
       - "5435:5432"  # Read replicas load balancer
@@ -152,7 +152,7 @@ services:
       - postgres-replica-1
       - postgres-replica-2
     networks:
-      - plinto-db-network
+      - janua-db-network
 
 volumes:
   postgres_primary_data:
@@ -163,7 +163,7 @@ volumes:
     driver: local
 
 networks:
-  plinto-db-network:
+  janua-db-network:
     driver: bridge
     ipam:
       config:

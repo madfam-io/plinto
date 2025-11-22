@@ -40,7 +40,7 @@ export function AboutSection() {
 
   const team = [
     {
-      name: 'The Plinto Team',
+      name: 'The Janua Team',
       role: 'Building the future of identity',
       bio: 'A distributed team of security engineers, systems architects, and developer advocates from companies like Cloudflare, Auth0, and Okta.'
     }
@@ -134,7 +134,7 @@ export function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-              Why We Built Plinto
+              Why We Built Janua
             </h2>
             <div className="space-y-4 text-gray-600 dark:text-gray-400">
               <p>
@@ -148,7 +148,7 @@ export function AboutSection() {
                 and affordability. We rejected these false choices.
               </p>
               <p>
-                Plinto is our answer: authentication infrastructure that's fast 
+                Janua is our answer: authentication infrastructure that's fast 
                 everywhere, secure by default, and priced fairly. Built on modern 
                 edge computing, embracing standards like WebAuthn, and designed 
                 for the way applications are built today.
@@ -185,7 +185,7 @@ export function AboutSection() {
                 Headquarters
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Plinto by Aureo Labs<br />
+                Janua by Aureo Labs<br />
                 A MADFAM Company<br />
                 Distributed Team<br />
                 San Francisco, CA / Remote

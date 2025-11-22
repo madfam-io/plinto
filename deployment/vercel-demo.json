@@ -1,19 +1,19 @@
 {
-  "name": "plinto-demo",
+  "name": "janua-demo",
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && yarn build --filter=@plinto/demo",
+  "buildCommand": "cd ../.. && yarn build --filter=@janua/demo",
   "outputDirectory": "apps/demo/.next",
   "installCommand": "yarn install",
   "env": {
-    "NEXT_PUBLIC_PLINTO_ISSUER": "https://demo.plinto.dev",
-    "NEXT_PUBLIC_PLINTO_API_URL": "https://demo-api.plinto.dev",
+    "NEXT_PUBLIC_JANUA_ISSUER": "https://demo.janua.dev",
+    "NEXT_PUBLIC_JANUA_API_URL": "https://demo-api.janua.dev",
     "NEXT_PUBLIC_ENVIRONMENT": "demo"
   },
   "rewrites": [
     {
       "source": "/api/v1/(.*)",
-      "destination": "https://demo-api.plinto.dev/api/v1/$1"
+      "destination": "https://demo-api.janua.dev/api/v1/$1"
     }
   ],
   "headers": [

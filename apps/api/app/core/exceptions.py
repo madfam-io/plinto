@@ -1,12 +1,12 @@
 """
-Unified Exception System for Plinto
+Unified Exception System for Janua
 
 This module provides a hierarchical exception system that unifies:
 1. API/HTTP exceptions (app/exceptions.py)
 2. SSO-specific exceptions (app/sso/exceptions.py)
 3. Internal service exceptions
 
-All exceptions inherit from a common base (PlintoException) for consistent
+All exceptions inherit from a common base (JanuaException) for consistent
 error handling and logging across the application.
 """
 
@@ -17,11 +17,11 @@ from typing import Optional, Dict, Any
 # Base Exception
 # ============================================================================
 
-class PlintoException(Exception):
+class JanuaException(Exception):
     """
-    Base exception for all Plinto errors.
+    Base exception for all Janua errors.
 
-    All custom exceptions in the Plinto codebase should inherit from this class
+    All custom exceptions in the Janua codebase should inherit from this class
     to enable consistent error handling and logging.
     """
 
@@ -47,7 +47,7 @@ class PlintoException(Exception):
 # API/HTTP Exceptions
 # ============================================================================
 
-class PlintoAPIException(PlintoException):
+class JanuaAPIException(JanuaException):
     """
     Base exception for HTTP/API errors.
 
@@ -75,7 +75,7 @@ class PlintoAPIException(PlintoException):
         }
 
 
-class AuthenticationError(PlintoAPIException):
+class AuthenticationError(JanuaAPIException):
     """Raised when authentication fails (401)"""
 
     def __init__(
@@ -91,7 +91,7 @@ class AuthenticationError(PlintoAPIException):
         )
 
 
-class TokenError(PlintoAPIException):
+class TokenError(JanuaAPIException):
     """Raised when token operations fail (401)"""
 
     def __init__(
@@ -107,7 +107,7 @@ class TokenError(PlintoAPIException):
         )
 
 
-class AuthorizationError(PlintoAPIException):
+class AuthorizationError(JanuaAPIException):
     """Raised when authorization/permission check fails (403)"""
 
     def __init__(
@@ -123,7 +123,7 @@ class AuthorizationError(PlintoAPIException):
         )
 
 
-class ValidationError(PlintoAPIException):
+class ValidationError(JanuaAPIException):
     """Raised when input validation fails (422)"""
 
     def __init__(
@@ -139,7 +139,7 @@ class ValidationError(PlintoAPIException):
         )
 
 
-class NotFoundError(PlintoAPIException):
+class NotFoundError(JanuaAPIException):
     """Raised when a resource is not found (404)"""
 
     def __init__(
@@ -155,7 +155,7 @@ class NotFoundError(PlintoAPIException):
         )
 
 
-class ConflictError(PlintoAPIException):
+class ConflictError(JanuaAPIException):
     """Raised when a resource conflict occurs (409)"""
 
     def __init__(
@@ -171,7 +171,7 @@ class ConflictError(PlintoAPIException):
         )
 
 
-class RateLimitError(PlintoAPIException):
+class RateLimitError(JanuaAPIException):
     """Raised when rate limit is exceeded (429)"""
 
     def __init__(
@@ -187,7 +187,7 @@ class RateLimitError(PlintoAPIException):
         )
 
 
-class ExternalServiceError(PlintoAPIException):
+class ExternalServiceError(JanuaAPIException):
     """Raised when external service calls fail (502)"""
 
     def __init__(
@@ -207,11 +207,11 @@ class ExternalServiceError(PlintoAPIException):
 # SSO-Specific Exceptions
 # ============================================================================
 
-class PlintoSSOException(PlintoAPIException):
+class JanuaSSOException(JanuaAPIException):
     """
     Base exception for SSO-related errors.
 
-    Extends PlintoAPIException to include HTTP status codes while maintaining
+    Extends JanuaAPIException to include HTTP status codes while maintaining
     SSO-specific attributes like provider and metadata.
     """
 
@@ -230,7 +230,7 @@ class PlintoSSOException(PlintoAPIException):
         )
 
 
-class SSOAuthenticationError(PlintoSSOException):
+class SSOAuthenticationError(JanuaSSOException):
     """Raised when SSO authentication fails"""
 
     def __init__(
@@ -252,7 +252,7 @@ class SSOAuthenticationError(PlintoSSOException):
         self.provider = provider
 
 
-class SSOValidationError(PlintoSSOException):
+class SSOValidationError(JanuaSSOException):
     """Raised when SSO configuration or data validation fails"""
 
     def __init__(
@@ -274,7 +274,7 @@ class SSOValidationError(PlintoSSOException):
         self.field = field
 
 
-class SSOConfigurationError(PlintoSSOException):
+class SSOConfigurationError(JanuaSSOException):
     """Raised when SSO provider configuration is invalid or incomplete"""
 
     def __init__(
@@ -300,7 +300,7 @@ class SSOConfigurationError(PlintoSSOException):
         self.missing_fields = missing_fields or []
 
 
-class SSOMetadataError(PlintoSSOException):
+class SSOMetadataError(JanuaSSOException):
     """Raised when SAML metadata parsing or validation fails"""
 
     def __init__(
@@ -322,7 +322,7 @@ class SSOMetadataError(PlintoSSOException):
         self.metadata_source = metadata_source
 
 
-class SSOCertificateError(PlintoSSOException):
+class SSOCertificateError(JanuaSSOException):
     """Raised when certificate validation or operations fail"""
 
     def __init__(
@@ -344,7 +344,7 @@ class SSOCertificateError(PlintoSSOException):
         self.certificate_id = certificate_id
 
 
-class SSOProvisioningError(PlintoSSOException):
+class SSOProvisioningError(JanuaSSOException):
     """Raised when user provisioning (JIT - Just In Time) fails"""
 
     def __init__(
@@ -370,7 +370,7 @@ class SSOProvisioningError(PlintoSSOException):
 # Internal Service Exceptions
 # ============================================================================
 
-class PlintoServiceException(PlintoException):
+class JanuaServiceException(JanuaException):
     """
     Base exception for internal service errors.
 
@@ -380,7 +380,7 @@ class PlintoServiceException(PlintoException):
     pass
 
 
-class DatabaseError(PlintoServiceException):
+class DatabaseError(JanuaServiceException):
     """Raised when database operations fail"""
 
     def __init__(
@@ -391,7 +391,7 @@ class DatabaseError(PlintoServiceException):
         super().__init__(message, details)
 
 
-class CacheError(PlintoServiceException):
+class CacheError(JanuaServiceException):
     """Raised when cache operations fail"""
 
     def __init__(
@@ -402,7 +402,7 @@ class CacheError(PlintoServiceException):
         super().__init__(message, details)
 
 
-class ConfigurationError(PlintoServiceException):
+class ConfigurationError(JanuaServiceException):
     """Raised when configuration is invalid or missing"""
 
     def __init__(
@@ -419,10 +419,10 @@ class ConfigurationError(PlintoServiceException):
 
 __all__ = [
     # Base
-    "PlintoException",
-    "PlintoAPIException",
-    "PlintoSSOException",
-    "PlintoServiceException",
+    "JanuaException",
+    "JanuaAPIException",
+    "JanuaSSOException",
+    "JanuaServiceException",
 
     # API Exceptions
     "AuthenticationError",

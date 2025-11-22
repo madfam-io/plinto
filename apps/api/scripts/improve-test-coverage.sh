@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Test Coverage Improvement Script for Plinto Platform
+# Test Coverage Improvement Script for Janua Platform
 # Goal: Achieve 100% test coverage and 100% passing tests
 
 set -euo pipefail
@@ -64,8 +64,8 @@ describe('config', () => {
       process.env = originalEnv
     })
 
-    it('should return demo environment when NEXT_PUBLIC_PLINTO_ENV is demo', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+    it('should return demo environment when NEXT_PUBLIC_JANUA_ENV is demo', () => {
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'demo'
       const env = getEnvironment()
       
       expect(env.name).toBe('demo')
@@ -74,8 +74,8 @@ describe('config', () => {
       expect(env.features.sampleData).toBe(true)
     })
 
-    it('should return staging environment when NEXT_PUBLIC_PLINTO_ENV is staging', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'staging'
+    it('should return staging environment when NEXT_PUBLIC_JANUA_ENV is staging', () => {
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'staging'
       const env = getEnvironment()
       
       expect(env.name).toBe('staging')
@@ -83,33 +83,33 @@ describe('config', () => {
       expect(env.features.debugMode).toBe(true)
     })
 
-    it('should return production environment when NEXT_PUBLIC_PLINTO_ENV is production', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'production'
+    it('should return production environment when NEXT_PUBLIC_JANUA_ENV is production', () => {
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'production'
       const env = getEnvironment()
       
       expect(env.name).toBe('production')
       expect(env.displayName).toBe('Production')
-      expect(env.apiUrl).toBe('https://api.plinto.dev')
+      expect(env.apiUrl).toBe('https://api.janua.dev')
       expect(env.features.sampleData).toBe(false)
     })
 
-    it('should default to production when NEXT_PUBLIC_PLINTO_ENV is not set', () => {
-      delete process.env.NEXT_PUBLIC_PLINTO_ENV
+    it('should default to production when NEXT_PUBLIC_JANUA_ENV is not set', () => {
+      delete process.env.NEXT_PUBLIC_JANUA_ENV
       const env = getEnvironment()
       
       expect(env.name).toBe('production')
-      expect(env.apiUrl).toBe('https://api.plinto.dev')
+      expect(env.apiUrl).toBe('https://api.janua.dev')
     })
 
     it('should fallback to production for unknown environment', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'unknown'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'unknown'
       const env = getEnvironment()
       
       expect(env.name).toBe('production')
     })
 
     it('should use environment-specific API URLs', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'demo'
       process.env.NEXT_PUBLIC_API_URL = 'https://custom-api.example.com'
       const env = getEnvironment()
       
@@ -117,53 +117,53 @@ describe('config', () => {
     })
 
     it('should use default API URLs when env vars are not set', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'production'
       delete process.env.NEXT_PUBLIC_API_URL
       const env = getEnvironment()
       
-      expect(env.apiUrl).toBe('https://api.plinto.dev')
+      expect(env.apiUrl).toBe('https://api.janua.dev')
     })
   })
 
   describe('isDemo', () => {
     it('should return true when environment is demo', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'demo'
       expect(isDemo()).toBe(true)
     })
 
     it('should return false when environment is not demo', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'production'
       expect(isDemo()).toBe(false)
     })
   })
 
   describe('isProduction', () => {
     it('should return true when environment is production', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'production'
       expect(isProduction()).toBe(true)
     })
 
     it('should return false when environment is not production', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'demo'
       expect(isProduction()).toBe(false)
     })
   })
 
   describe('getFeature', () => {
     it('should return feature flag value for demo environment', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'demo'
       expect(getFeature('sampleData')).toBe(true)
       expect(getFeature('performanceMonitoring')).toBe(true)
     })
 
     it('should return feature flag value for production environment', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'production'
       expect(getFeature('sampleData')).toBe(false)
       expect(getFeature('debugMode')).toBe(false)
     })
 
     it('should handle all feature flags', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'demo'
       const env = getEnvironment()
       Object.keys(env.features).forEach(feature => {
         expect(getFeature(feature as any)).toBe(env.features[feature as keyof typeof env.features])
@@ -212,7 +212,7 @@ describe('config', () => {
 
   describe('Environment interface compliance', () => {
     it('should have all required properties in demo environment', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'demo'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'demo'
       const env = getEnvironment()
       
       expect(env).toHaveProperty('name')
@@ -224,7 +224,7 @@ describe('config', () => {
     })
 
     it('should have all required properties in production environment', () => {
-      process.env.NEXT_PUBLIC_PLINTO_ENV = 'production'
+      process.env.NEXT_PUBLIC_JANUA_ENV = 'production'
       const env = getEnvironment()
       
       expect(env).toHaveProperty('name')

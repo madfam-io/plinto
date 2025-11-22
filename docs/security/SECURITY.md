@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-We provide security updates for the following versions of Plinto:
+We provide security updates for the following versions of Janua:
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -13,7 +13,7 @@ We provide security updates for the following versions of Plinto:
 
 ### Reporting a Vulnerability
 
-The Plinto team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings and will make every effort to acknowledge your contributions.
+The Janua team takes security vulnerabilities seriously. We appreciate your efforts to responsibly disclose your findings and will make every effort to acknowledge your contributions.
 
 ### How to Report
 
@@ -23,12 +23,12 @@ Instead, please report them using one of the following methods:
 
 #### 1. GitHub Security Advisory (Preferred)
 Report directly through GitHub's Security Advisory feature:
-- Go to https://github.com/madfam-io/plinto/security/advisories
+- Go to https://github.com/madfam-io/janua/security/advisories
 - Click "Report a vulnerability"
 - Provide detailed information about the vulnerability
 
 #### 2. Email Disclosure
-Send an email to **security@plinto.dev** with:
+Send an email to **security@janua.dev** with:
 - Type of vulnerability
 - Full paths of source files related to the vulnerability
 - Location of affected source code (tag/branch/commit or direct URL)
@@ -87,7 +87,7 @@ The following are **not** considered vulnerabilities:
 
 ### For SDK Users
 
-1. **Keep SDKs Updated**: Always use the latest version of Plinto SDKs
+1. **Keep SDKs Updated**: Always use the latest version of Janua SDKs
 2. **Secure Token Storage**: Never store tokens in localStorage for production
 3. **Use HTTPS**: Always use HTTPS in production environments
 4. **Environment Variables**: Store API keys in environment variables, never in code
@@ -99,18 +99,18 @@ The following are **not** considered vulnerabilities:
 
 ```typescript
 // ✅ Good: Secure token storage
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  baseURL: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY,
+const client = new JanuaClient({
+  baseURL: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY,
   // Use secure storage for tokens
   tokenStorage: 'secure', // Uses httpOnly cookies or secure mobile storage
 });
 
 // ❌ Bad: Insecure token storage
-const client = new PlintoClient({
-  baseURL: 'https://api.plinto.dev',
+const client = new JanuaClient({
+  baseURL: 'https://api.janua.dev',
   apiKey: 'pk_live_abc123', // Never hardcode keys
   tokenStorage: 'localStorage', // Vulnerable to XSS
 });
@@ -154,7 +154,7 @@ We maintain a Hall of Fame for security researchers who have responsibly disclos
 
 ## Security Audits
 
-Plinto undergoes regular security audits:
+Janua undergoes regular security audits:
 
 - **Latest Audit**: Pending Q1 2025
 - **Audit Firm**: TBD
@@ -162,16 +162,16 @@ Plinto undergoes regular security audits:
 
 ## Contact
 
-- **Security Team**: security@plinto.dev
+- **Security Team**: security@janua.dev
 - **Bug Bounty Program**: Coming Q2 2025
-- **Status Page**: https://status.plinto.dev
+- **Status Page**: https://status.janua.dev
 
 ## Resources
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [Security Best Practices](https://docs.plinto.dev/security/best-practices)
-- [Secure Development Guide](https://docs.plinto.dev/security/development)
-- [Penetration Testing Reports](https://security.plinto.dev/reports) (authenticated)
+- [Security Best Practices](https://docs.janua.dev/security/best-practices)
+- [Secure Development Guide](https://docs.janua.dev/security/development)
+- [Penetration Testing Reports](https://security.janua.dev/reports) (authenticated)
 
 ---
 

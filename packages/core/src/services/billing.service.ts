@@ -876,7 +876,7 @@ export class BillingService extends EventEmitter {
         id: 'free',
         name: 'free',
         display_name: 'Free',
-        description: 'Perfect for trying out Plinto',
+        description: 'Perfect for trying out Janua',
         price: {
           amount: 0,
           currency: 'USD',

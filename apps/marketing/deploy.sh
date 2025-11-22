@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Plinto Marketing Website Deployment Script
+# Janua Marketing Website Deployment Script
 # Usage: ./deploy.sh [staging|production]
 
 set -e
@@ -16,7 +16,7 @@ ENVIRONMENT=${1:-staging}
 BUILD_DIR=".next"
 PUBLIC_DIR="public"
 
-echo -e "${GREEN}🚀 Plinto Marketing Website Deployment${NC}"
+echo -e "${GREEN}🚀 Janua Marketing Website Deployment${NC}"
 echo -e "${YELLOW}Environment: ${ENVIRONMENT}${NC}"
 echo ""
 
@@ -147,15 +147,15 @@ CMD ["node", "server.js"]
 EOF
     fi
 
-    docker build -t plinto-marketing:$ENVIRONMENT .
+    docker build -t janua-marketing:$ENVIRONMENT .
     echo -e "${GREEN}✅ Docker image built${NC}"
 
     # Run container
     docker run -d \
-        --name plinto-marketing-$ENVIRONMENT \
+        --name janua-marketing-$ENVIRONMENT \
         -p 3000:3000 \
         --restart unless-stopped \
-        plinto-marketing:$ENVIRONMENT
+        janua-marketing:$ENVIRONMENT
 
     echo -e "${GREEN}✅ Docker container started${NC}"
 }
@@ -166,7 +166,7 @@ validate_deployment() {
 
     # Check if site is accessible
     if [ "$ENVIRONMENT" = "production" ]; then
-        URL="https://plinto.io"
+        URL="https://janua.io"
     else
         URL="http://localhost:3000"
     fi

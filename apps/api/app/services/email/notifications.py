@@ -20,7 +20,7 @@ from .resend_service import get_resend_service
 logger = logging.getLogger(__name__)
 
 # Frontend URL for links
-FRONTEND_URL = os.getenv("FRONTEND_URL", "https://app.plinto.dev")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://app.janua.dev")
 
 
 # ============================================================================

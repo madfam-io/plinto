@@ -142,7 +142,7 @@ test.describe('MFA Setup and Verification', () => {
     await page.goto('/auth/signin-showcase')
     
     // Sign in with credentials
-    await fillByLabel(page, /email/i, 'mfa-enabled@plinto.dev')
+    await fillByLabel(page, /email/i, 'mfa-enabled@janua.dev')
     await fillByLabel(page, /password/i, 'MfaUser123!')
     await clickButton(page, /sign in/i)
     

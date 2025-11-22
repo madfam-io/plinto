@@ -139,7 +139,7 @@ import { TokenManager, EnvUtils, EventEmitter, type TokenStorage } from './utils
 4. Add build validation to CI/CD
 
 ### Medium Term (2-3 weeks)
-1. Setup NPM organization (@plinto)
+1. Setup NPM organization (@janua)
 2. Configure publish scripts
 3. Implement semantic versioning
 4. Create release workflow

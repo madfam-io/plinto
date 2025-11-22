@@ -1,6 +1,6 @@
 # API Reference Documentation
 
-Complete API reference for Plinto's authentication and authorization platform.
+Complete API reference for Janua's authentication and authorization platform.
 
 ## Table of Contents
 
@@ -18,8 +18,8 @@ Complete API reference for Plinto's authentication and authorization platform.
 ## Base URLs
 
 ```
-Production: https://api.plinto.dev
-Staging: https://api-staging.plinto.dev
+Production: https://api.janua.dev
+Staging: https://api-staging.janua.dev
 Development: http://localhost:3000
 ```
 
@@ -229,8 +229,8 @@ Start passkey registration process.
   "data": {
     "challenge": "Y2hhbGxlbmdl...",
     "rp": {
-      "id": "plinto.dev",
-      "name": "Plinto"
+      "id": "janua.dev",
+      "name": "Janua"
     },
     "user": {
       "id": "dXNyXzEyMzQ1Njc4OTA=",
@@ -294,7 +294,7 @@ Start passkey authentication.
   "success": true,
   "data": {
     "challenge": "Y2hhbGxlbmdl...",
-    "rpId": "plinto.dev",
+    "rpId": "janua.dev",
     "allowCredentials": [
       {
         "id": "Y3JlZF9hYmMxMjM=",
@@ -405,7 +405,7 @@ Get current user profile.
     "emailVerified": true,
     "phoneNumber": "+1234567890",
     "phoneVerified": false,
-    "avatar": "https://cdn.plinto.dev/avatars/usr_1234567890.jpg",
+    "avatar": "https://cdn.janua.dev/avatars/usr_1234567890.jpg",
     "mfaEnabled": true,
     "createdAt": "2025-01-15T10:30:00Z",
     "lastActiveAt": "2025-01-15T10:30:00Z",
@@ -549,7 +549,7 @@ List user's organizations.
         "id": "org_abc123",
         "name": "Acme Corp",
         "slug": "acme-corp",
-        "logo": "https://cdn.plinto.dev/logos/org_abc123.jpg",
+        "logo": "https://cdn.janua.dev/logos/org_abc123.jpg",
         "plan": "enterprise",
         "userRole": "admin",
         "userPermissions": ["users:read", "users:write", "billing:read"],
@@ -609,7 +609,7 @@ Get organization details.
     "name": "Acme Corp",
     "slug": "acme-corp",
     "domain": "acme.com",
-    "logo": "https://cdn.plinto.dev/logos/org_abc123.jpg",
+    "logo": "https://cdn.janua.dev/logos/org_abc123.jpg",
     "plan": "enterprise",
     "settings": {
       "allowedDomains": ["acme.com", "acme.org"],
@@ -662,7 +662,7 @@ List organization members.
         "email": "john@acme.com",
         "firstName": "John",
         "lastName": "Doe",
-        "avatar": "https://cdn.plinto.dev/avatars/usr_1234567890.jpg",
+        "avatar": "https://cdn.janua.dev/avatars/usr_1234567890.jpg",
         "role": "admin",
         "permissions": ["users:read", "users:write"],
         "status": "active",
@@ -958,19 +958,19 @@ List available OAuth providers.
         "id": "google",
         "name": "Google",
         "enabled": true,
-        "icon": "https://cdn.plinto.dev/icons/google.svg"
+        "icon": "https://cdn.janua.dev/icons/google.svg"
       },
       {
         "id": "github",
         "name": "GitHub",
         "enabled": true,
-        "icon": "https://cdn.plinto.dev/icons/github.svg"
+        "icon": "https://cdn.janua.dev/icons/github.svg"
       },
       {
         "id": "microsoft",
         "name": "Microsoft",
         "enabled": false,
-        "icon": "https://cdn.plinto.dev/icons/microsoft.svg"
+        "icon": "https://cdn.janua.dev/icons/microsoft.svg"
       }
     ]
   }
@@ -1122,7 +1122,7 @@ SCIM 2.0 user provisioning.
     "resourceType": "User",
     "created": "2025-01-15T10:30:00Z",
     "lastModified": "2025-01-15T10:30:00Z",
-    "location": "https://api.plinto.dev/scim/v2/Users/usr_1234567890"
+    "location": "https://api.janua.dev/scim/v2/Users/usr_1234567890"
   }
 }
 ```
@@ -1134,7 +1134,7 @@ Create webhook endpoint.
 **Request:**
 ```json
 {
-  "url": "https://api.example.com/webhooks/plinto",
+  "url": "https://api.example.com/webhooks/janua",
   "events": ["user.created", "user.updated", "user.deleted"],
   "secret": "whsec_abc123...",
   "active": true
@@ -1147,7 +1147,7 @@ Create webhook endpoint.
   "success": true,
   "data": {
     "id": "wh_abc123",
-    "url": "https://api.example.com/webhooks/plinto",
+    "url": "https://api.example.com/webhooks/janua",
     "events": ["user.created", "user.updated", "user.deleted"],
     "active": true,
     "createdAt": "2025-01-15T10:30:00Z"
@@ -1203,8 +1203,8 @@ All webhook events follow this structure:
 ### Webhook Security
 
 All webhook requests include:
-- `X-Plinto-Signature` header with HMAC-SHA256 signature
-- `X-Plinto-Timestamp` header with Unix timestamp
+- `X-Janua-Signature` header with HMAC-SHA256 signature
+- `X-Janua-Timestamp` header with Unix timestamp
 - Request body signed with webhook secret
 
 Example verification:
@@ -1319,15 +1319,15 @@ X-RateLimit-Bucket: auth
 ### JavaScript/TypeScript SDK
 
 ```javascript
-import { PlintoClient } from '@plinto/sdk';
+import { JanuaClient } from '@janua/sdk';
 
-const plinto = new PlintoClient({
+const janua = new JanuaClient({
   apiKey: 'your-api-key',
-  baseUrl: 'https://api.plinto.dev'
+  baseUrl: 'https://api.janua.dev'
 });
 
 // Register user
-const user = await plinto.auth.register({
+const user = await janua.auth.register({
   email: 'user@example.com',
   password: 'SecurePassword123!',
   firstName: 'John',
@@ -1335,7 +1335,7 @@ const user = await plinto.auth.register({
 });
 
 // Login
-const session = await plinto.auth.login({
+const session = await janua.auth.login({
   email: 'user@example.com',
   password: 'SecurePassword123!'
 });
@@ -1344,15 +1344,15 @@ const session = await plinto.auth.login({
 ### Python SDK
 
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-plinto = PlintoClient(
+janua = JanuaClient(
     api_key="your-api-key",
-    base_url="https://api.plinto.dev"
+    base_url="https://api.janua.dev"
 )
 
 # Register user
-user = plinto.auth.register(
+user = janua.auth.register(
     email="user@example.com",
     password="SecurePassword123!",
     first_name="John",
@@ -1360,7 +1360,7 @@ user = plinto.auth.register(
 )
 
 # Login
-session = plinto.auth.login(
+session = janua.auth.login(
     email="user@example.com",
     password="SecurePassword123!"
 )
@@ -1370,7 +1370,7 @@ session = plinto.auth.login(
 
 ```bash
 # Register user
-curl -X POST https://api.plinto.dev/auth/register \
+curl -X POST https://api.janua.dev/auth/register \
   -H "Content-Type: application/json" \
   -H "X-API-Key: your-api-key" \
   -d '{
@@ -1381,7 +1381,7 @@ curl -X POST https://api.plinto.dev/auth/register \
   }'
 
 # Login
-curl -X POST https://api.plinto.dev/auth/login \
+curl -X POST https://api.janua.dev/auth/login \
   -H "Content-Type: application/json" \
   -H "X-API-Key: your-api-key" \
   -d '{
@@ -1399,13 +1399,13 @@ Import our comprehensive Postman collection for API testing:
 ```json
 {
   "info": {
-    "name": "Plinto API",
+    "name": "Janua API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://api.plinto.dev"
+      "value": "https://api.janua.dev"
     },
     {
       "key": "apiKey",
@@ -1415,25 +1415,25 @@ Import our comprehensive Postman collection for API testing:
 }
 ```
 
-Download: [https://api.plinto.dev/postman/collection.json](https://api.plinto.dev/postman/collection.json)
+Download: [https://api.janua.dev/postman/collection.json](https://api.janua.dev/postman/collection.json)
 
 ---
 
 ## OpenAPI Specification
 
 Full OpenAPI 3.0 specification available at:
-- Interactive docs: [https://api.plinto.dev/docs](https://api.plinto.dev/docs)
-- JSON spec: [https://api.plinto.dev/openapi.json](https://api.plinto.dev/openapi.json)
-- YAML spec: [https://api.plinto.dev/openapi.yaml](https://api.plinto.dev/openapi.yaml)
+- Interactive docs: [https://api.janua.dev/docs](https://api.janua.dev/docs)
+- JSON spec: [https://api.janua.dev/openapi.json](https://api.janua.dev/openapi.json)
+- YAML spec: [https://api.janua.dev/openapi.yaml](https://api.janua.dev/openapi.yaml)
 
 ---
 
 ## Support and Resources
 
-- **Documentation**: [https://docs.plinto.dev](https://docs.plinto.dev)
-- **API Status**: [https://status.plinto.dev](https://status.plinto.dev)
-- **Support**: [support@plinto.dev](mailto:support@plinto.dev)
-- **GitHub**: [https://github.com/plinto-dev](https://github.com/plinto-dev)
+- **Documentation**: [https://docs.janua.dev](https://docs.janua.dev)
+- **API Status**: [https://status.janua.dev](https://status.janua.dev)
+- **Support**: [support@janua.dev](mailto:support@janua.dev)
+- **GitHub**: [https://github.com/janua-dev](https://github.com/janua-dev)
 
 ---
 

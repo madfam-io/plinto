@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance Validation Script for Plinto Platform
+Performance Validation Script for Janua Platform
 Automated validation of Phase 2 performance optimizations
 
 Runs comprehensive tests to validate:
@@ -389,7 +389,7 @@ class PerformanceValidator:
 
 async def main():
     """Main validation execution"""
-    parser = argparse.ArgumentParser(description="Plinto Performance Validation")
+    parser = argparse.ArgumentParser(description="Janua Performance Validation")
     parser.add_argument("--url", default="http://localhost:8000", help="API base URL")
     parser.add_argument("--quick", action="store_true", help="Run quick validation (skip load tests)")
     

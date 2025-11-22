@@ -2,7 +2,7 @@
 
 # Default target
 help:
-	@echo "Plinto Development Commands"
+	@echo "Janua Development Commands"
 	@echo ""
 	@echo "Setup:"
 	@echo "  make install       Install all dependencies"

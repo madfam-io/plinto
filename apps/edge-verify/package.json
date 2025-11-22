@@ -1,5 +1,5 @@
 {
-  "name": "@plinto/edge-verify",
+  "name": "@janua/edge-verify",
   "version": "1.0.0",
   "private": true,
   "description": "Cloudflare Worker for JWT verification at the edge",

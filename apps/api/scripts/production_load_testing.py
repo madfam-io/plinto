@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Production Load Testing Suite for Plinto Platform
+Production Load Testing Suite for Janua Platform
 Phase 3: End-to-end Production Validation
 
 Comprehensive production-ready load testing covering:
@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class LoadTestConfig:
     """Production load test configuration"""
-    base_url: str = "https://api.plinto.dev"
+    base_url: str = "https://api.janua.dev"
     max_concurrent_users: int = 500
     test_duration_minutes: int = 30
     ramp_up_minutes: int = 5
@@ -182,7 +182,7 @@ class ProductionLoadTestRunner:
             
             for i in range(count):
                 user_data = {
-                    'email': f'loadtest.prod.{secrets.token_hex(6)}@plinto.test',
+                    'email': f'loadtest.prod.{secrets.token_hex(6)}@janua.test',
                     'password': f'ProdTest123!{secrets.token_hex(4)}',
                     'name': f'Production Test User {i+1:04d}'
                 }
@@ -347,7 +347,7 @@ class ProductionLoadTestRunner:
         async with aiohttp.ClientSession(
             connector=connector,
             timeout=timeout,
-            headers={'User-Agent': f'Plinto-LoadTest-{user_id}'}
+            headers={'User-Agent': f'Janua-LoadTest-{user_id}'}
         ) as session:
             
             session_start = time.time()
@@ -704,8 +704,8 @@ class ProductionLoadTestRunner:
 
 async def main():
     """Main production load testing execution"""
-    parser = argparse.ArgumentParser(description="Plinto Production Load Testing Suite")
-    parser.add_argument("--url", default="https://api.plinto.dev", help="Base URL for testing")
+    parser = argparse.ArgumentParser(description="Janua Production Load Testing Suite")
+    parser.add_argument("--url", default="https://api.janua.dev", help="Base URL for testing")
     parser.add_argument("--users", type=int, default=500, help="Max concurrent users")
     parser.add_argument("--duration", type=int, default=30, help="Test duration in minutes")
     parser.add_argument("--target-ms", type=float, default=100.0, help="Target response time in ms")

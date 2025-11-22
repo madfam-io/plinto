@@ -66,12 +66,12 @@ class EmailService:
             "user_name": user_name or email.split("@")[0],
             "verification_url": verification_url,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev"
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev"
         }
         
         # Render email template
-        subject = "Verify your Plinto account"
+        subject = "Verify your Janua account"
         html_content = self._render_template("verification.html", template_data)
         text_content = self._render_template("verification.txt", template_data)
         
@@ -149,12 +149,12 @@ class EmailService:
             "user_name": user_name or email.split("@")[0],
             "reset_url": reset_url,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev"
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev"
         }
         
         # Render email template
-        subject = "Reset your Plinto password"
+        subject = "Reset your Janua password"
         html_content = self._render_template("password_reset.html", template_data)
         text_content = self._render_template("password_reset.txt", template_data)
         
@@ -184,12 +184,12 @@ class EmailService:
             "user_name": user_name or email.split("@")[0],
             "dashboard_url": f"{settings.BASE_URL}/dashboard",
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev"
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev"
         }
         
         # Render email template
-        subject = "Welcome to Plinto!"
+        subject = "Welcome to Janua!"
         html_content = self._render_template("welcome.html", template_data)
         text_content = self._render_template("welcome.txt", template_data)
         
@@ -229,7 +229,7 @@ class EmailService:
             elif "password_reset" in template_name:
                 return f"Reset your password by clicking: {data.get('reset_url', '')}"
             elif "welcome" in template_name:
-                return f"Welcome to Plinto, {data.get('user_name', 'there')}!"
+                return f"Welcome to Janua, {data.get('user_name', 'there')}!"
             return "Email content unavailable"
     
     async def _send_email(
@@ -257,7 +257,7 @@ class EmailService:
             # Create message
             msg = MIMEMultipart('alternative')
             msg['Subject'] = subject
-            msg['From'] = formataddr((settings.FROM_NAME or "Plinto", settings.FROM_EMAIL))
+            msg['From'] = formataddr((settings.FROM_NAME or "Janua", settings.FROM_EMAIL))
             msg['To'] = to_email
             
             # Add text and HTML parts

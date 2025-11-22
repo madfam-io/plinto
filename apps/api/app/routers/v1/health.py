@@ -34,7 +34,7 @@ async def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
-        "service": "plinto-api",
+        "service": "janua-api",
         "version": "1.0.0"
     }
 

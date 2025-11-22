@@ -1,10 +1,10 @@
-# Plinto API Comprehensive Reference
+# Janua API Comprehensive Reference
 
-Complete reference documentation for the Plinto Identity Platform API with enterprise features, authentication methods, and integration patterns.
+Complete reference documentation for the Janua Identity Platform API with enterprise features, authentication methods, and integration patterns.
 
 ## 🎯 API Overview
 
-**Base URL**: `https://api.plinto.dev`
+**Base URL**: `https://api.janua.dev`
 **Version**: `v1`
 **Authentication**: Bearer Token, API Key, OAuth 2.0
 **Rate Limiting**: Adaptive rate limiting based on user tier and reputation
@@ -13,7 +13,7 @@ Complete reference documentation for the Plinto Identity Platform API with enter
 ```bash
 curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
      -H "Content-Type: application/json" \
-     https://api.plinto.dev/v1/auth/me
+     https://api.janua.dev/v1/auth/me
 ```
 
 ## 🔐 Authentication
@@ -225,7 +225,7 @@ Authorization: Bearer ACCESS_TOKEN
   "firstName": "John",
   "lastName": "Doe",
   "username": "johndoe",
-  "profileImageUrl": "https://cdn.plinto.dev/avatars/usr_1234567890.jpg",
+  "profileImageUrl": "https://cdn.janua.dev/avatars/usr_1234567890.jpg",
   "emailVerified": true,
   "phoneVerified": false,
   "mfaEnabled": true,
@@ -479,7 +479,7 @@ Authorization: Bearer ACCESS_TOKEN
 Content-Type: application/json
 
 {
-  "url": "https://yourapp.com/webhooks/plinto",
+  "url": "https://yourapp.com/webhooks/janua",
   "events": [
     "user.created",
     "user.updated",
@@ -849,7 +849,7 @@ mutation CreateUser($input: CreateUserInput!) {
 
 ### Connection
 ```javascript
-const ws = new WebSocket('wss://api.plinto.dev/v1/ws?token=ACCESS_TOKEN');
+const ws = new WebSocket('wss://api.janua.dev/v1/ws?token=ACCESS_TOKEN');
 
 ws.onopen = function() {
   // Subscribe to user events
@@ -885,24 +885,24 @@ ws.onmessage = function(event) {
 
 ### JavaScript/TypeScript
 ```javascript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const plinto = new PlintoClient({
-  baseURL: 'https://api.plinto.dev',
+const janua = new JanuaClient({
+  baseURL: 'https://api.janua.dev',
   apiKey: 'your-api-key'
 });
 
 // Authenticate user
-const result = await plinto.auth.signIn({
+const result = await janua.auth.signIn({
   email: 'user@company.com',
   password: 'password'
 });
 
 // Get current user
-const user = await plinto.auth.getCurrentUser();
+const user = await janua.auth.getCurrentUser();
 
 // Create organization
-const org = await plinto.organizations.create({
+const org = await janua.organizations.create({
   name: 'My Company',
   slug: 'my-company'
 });
@@ -910,24 +910,24 @@ const org = await plinto.organizations.create({
 
 ### Python
 ```python
-from plinto import PlintoClient
+from janua import JanuaClient
 
-plinto = PlintoClient(
+janua = JanuaClient(
     api_key="your-api-key",
-    base_url="https://api.plinto.dev"
+    base_url="https://api.janua.dev"
 )
 
 # Authenticate user
-result = await plinto.auth.sign_in(
+result = await janua.auth.sign_in(
     email="user@company.com",
     password="password"
 )
 
 # Get current user
-user = await plinto.auth.get_current_user()
+user = await janua.auth.get_current_user()
 
 # Create organization
-org = await plinto.organizations.create(
+org = await janua.organizations.create(
     name="My Company",
     slug="my-company"
 )
@@ -939,17 +939,17 @@ package main
 
 import (
     "context"
-    "github.com/plinto/go-sdk"
+    "github.com/janua/go-sdk"
 )
 
 func main() {
-    client := plinto.NewClient(&plinto.Config{
+    client := janua.NewClient(&janua.Config{
         APIKey:  "your-api-key",
-        BaseURL: "https://api.plinto.dev",
+        BaseURL: "https://api.janua.dev",
     })
 
     // Authenticate user
-    result, err := client.Auth.SignIn(context.Background(), &plinto.SignInRequest{
+    result, err := client.Auth.SignIn(context.Background(), &janua.SignInRequest{
         Email:    "user@company.com",
         Password: "password",
     })
@@ -958,7 +958,7 @@ func main() {
     user, err := client.Auth.GetCurrentUser(context.Background())
 
     // Create organization
-    org, err := client.Organizations.Create(context.Background(), &plinto.CreateOrgRequest{
+    org, err := client.Organizations.Create(context.Background(), &janua.CreateOrgRequest{
         Name: "My Company",
         Slug: "my-company",
     })
@@ -1001,33 +1001,33 @@ func main() {
 ### Postman Collection
 Import our comprehensive Postman collection:
 ```
-https://api.plinto.dev/postman/collection.json
+https://api.janua.dev/postman/collection.json
 ```
 
 ### OpenAPI Specification
 Download the complete OpenAPI 3.0 specification:
 ```
-https://api.plinto.dev/openapi.json
+https://api.janua.dev/openapi.json
 ```
 
 ### Interactive API Explorer
 Test APIs directly in your browser:
 ```
-https://docs.plinto.dev/api-explorer
+https://docs.janua.dev/api-explorer
 ```
 
 ### SDK Documentation
-- [TypeScript SDK](https://docs.plinto.dev/sdks/typescript)
-- [Python SDK](https://docs.plinto.dev/sdks/python)
-- [Go SDK](https://docs.plinto.dev/sdks/go)
-- [React SDK](https://docs.plinto.dev/sdks/react)
-- [Vue SDK](https://docs.plinto.dev/sdks/vue)
-- [Flutter SDK](https://docs.plinto.dev/sdks/flutter)
+- [TypeScript SDK](https://docs.janua.dev/sdks/typescript)
+- [Python SDK](https://docs.janua.dev/sdks/python)
+- [Go SDK](https://docs.janua.dev/sdks/go)
+- [React SDK](https://docs.janua.dev/sdks/react)
+- [Vue SDK](https://docs.janua.dev/sdks/vue)
+- [Flutter SDK](https://docs.janua.dev/sdks/flutter)
 
 ### Support
-- **API Support**: [api-support@plinto.dev](mailto:api-support@plinto.dev)
-- **Discord Community**: [https://discord.gg/plinto](https://discord.gg/plinto)
-- **GitHub Issues**: [https://github.com/plinto/api-issues](https://github.com/plinto/api-issues)
+- **API Support**: [api-support@janua.dev](mailto:api-support@janua.dev)
+- **Discord Community**: [https://discord.gg/janua](https://discord.gg/janua)
+- **GitHub Issues**: [https://github.com/janua/api-issues](https://github.com/janua/api-issues)
 
 ---
 

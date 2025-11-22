@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}"
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║                                                            ║"
-echo "║              PLINTO DEMO TEST SUITE                        ║"
+echo "║              JANUA DEMO TEST SUITE                        ║"
 echo "║                                                            ║"
 echo "║  Comprehensive validation of all features                  ║"
 echo "║                                                            ║"
@@ -137,7 +137,7 @@ if curl -s http://localhost:3000 > /dev/null 2>&1; then
     echo -e "\n${BLUE}Testing: Key Pages${NC}"
 
     # Test homepage
-    if curl -s http://localhost:3000 | grep -q "Plinto"; then
+    if curl -s http://localhost:3000 | grep -q "Janua"; then
         echo -e "${GREEN}✓ Homepage loads${NC}"
     else
         echo -e "${RED}✗ Homepage issue${NC}"

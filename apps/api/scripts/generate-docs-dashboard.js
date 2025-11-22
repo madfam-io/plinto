@@ -206,7 +206,7 @@ function generateDashboard() {
 
   const dashboard = `# 📊 Documentation Health Dashboard
 
-> Auto-generated health metrics for Plinto documentation
+> Auto-generated health metrics for Janua documentation
 > Last updated: ${lastUpdated}
 
 ## 🏥 Overall Health Score: ${healthScore}/100 ${healthEmoji}

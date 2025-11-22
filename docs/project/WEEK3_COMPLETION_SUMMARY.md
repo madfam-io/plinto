@@ -10,7 +10,7 @@ Week 3 goal was to complete the user journey validation framework with comprehen
 
 ## ✅ Deliverables
 
-### 1. Test Application (Express + Plinto SDK)
+### 1. Test Application (Express + Janua SDK)
 
 **Complete Express server with authentication flows:**
 
@@ -25,7 +25,7 @@ Week 3 goal was to complete the user journey validation framework with comprehen
 **Tech Stack:**
 - Express.js with TypeScript
 - EJS templating engine
-- @plinto/typescript-sdk integration
+- @janua/typescript-sdk integration
 - Cookie-based session management
 - WebAuthn API for passkeys
 

@@ -1,5 +1,5 @@
 """
-Example usage of the Plinto Python SDK
+Example usage of the Janua Python SDK
 
 This file demonstrates various SDK features and usage patterns.
 """
@@ -8,8 +8,8 @@ import asyncio
 import os
 from typing import Optional
 
-from plinto import (
-    PlintoClient,
+from janua import (
+    JanuaClient,
     SignUpRequest,
     SignInRequest,
     UserUpdateRequest,
@@ -28,7 +28,7 @@ async def authentication_examples():
     """Examples of authentication operations"""
     
     # Initialize client
-    async with PlintoClient(base_url="https://api.plinto.com") as client:
+    async with JanuaClient(base_url="https://api.janua.com") as client:
         
         # Sign up a new user
         try:
@@ -82,7 +82,7 @@ async def authentication_examples():
 async def user_management_examples():
     """Examples of user management operations"""
     
-    async with PlintoClient.from_environment() as client:
+    async with JanuaClient.from_environment() as client:
         # Assumes user is already authenticated
         
         try:
@@ -130,7 +130,7 @@ async def user_management_examples():
 async def organization_examples():
     """Examples of organization management"""
     
-    async with PlintoClient.from_environment() as client:
+    async with JanuaClient.from_environment() as client:
         
         try:
             # Create organization
@@ -177,7 +177,7 @@ async def organization_examples():
 async def mfa_examples():
     """Examples of MFA operations"""
     
-    async with PlintoClient.from_environment() as client:
+    async with JanuaClient.from_environment() as client:
         
         try:
             # Check MFA status
@@ -215,13 +215,13 @@ async def mfa_examples():
 async def webhook_examples():
     """Examples of webhook management"""
     
-    async with PlintoClient.from_environment() as client:
+    async with JanuaClient.from_environment() as client:
         
         try:
             # Create webhook endpoint
             webhook = await client.webhooks.create_endpoint(
                 WebhookEndpointCreateRequest(
-                    url="https://myapp.com/webhooks/plinto",
+                    url="https://myapp.com/webhooks/janua",
                     events=[
                         WebhookEventType.USER_CREATED,
                         WebhookEventType.USER_SIGNED_IN,
@@ -258,7 +258,7 @@ async def webhook_examples():
 async def admin_examples():
     """Examples of admin operations (requires admin privileges)"""
     
-    async with PlintoClient.from_environment() as client:
+    async with JanuaClient.from_environment() as client:
         
         try:
             # Get system stats
@@ -294,23 +294,23 @@ async def admin_examples():
 
 
 def webhook_handler_example():
-    """Example webhook handler for receiving Plinto events"""
+    """Example webhook handler for receiving Janua events"""
     
     from flask import Flask, request, jsonify
-    from plinto import validate_webhook_signature
+    from janua import validate_webhook_signature
     
     app = Flask(__name__)
     
-    # Your webhook endpoint secret from Plinto dashboard
-    WEBHOOK_SECRET = os.getenv("PLINTO_WEBHOOK_SECRET")
+    # Your webhook endpoint secret from Janua dashboard
+    WEBHOOK_SECRET = os.getenv("JANUA_WEBHOOK_SECRET")
     
-    @app.route("/webhooks/plinto", methods=["POST"])
-    def handle_plinto_webhook():
-        """Handle incoming Plinto webhook"""
+    @app.route("/webhooks/janua", methods=["POST"])
+    def handle_janua_webhook():
+        """Handle incoming Janua webhook"""
         
         # Get headers
-        signature = request.headers.get("X-Plinto-Signature")
-        timestamp = request.headers.get("X-Plinto-Timestamp")
+        signature = request.headers.get("X-Janua-Signature")
+        timestamp = request.headers.get("X-Janua-Timestamp")
         
         if not signature or not WEBHOOK_SECRET:
             return jsonify({"error": "Missing signature or secret"}), 400
@@ -356,7 +356,7 @@ def webhook_handler_example():
 
 async def main():
     """Run all examples"""
-    print("🚀 Plinto Python SDK Examples\n")
+    print("🚀 Janua Python SDK Examples\n")
     
     print("=" * 50)
     print("Authentication Examples")
@@ -393,8 +393,8 @@ async def main():
 
 if __name__ == "__main__":
     # Set environment variables for examples
-    os.environ.setdefault("PLINTO_BASE_URL", "https://api.plinto.com")
-    # os.environ.setdefault("PLINTO_API_KEY", "your-api-key-here")
+    os.environ.setdefault("JANUA_BASE_URL", "https://api.janua.com")
+    # os.environ.setdefault("JANUA_API_KEY", "your-api-key-here")
     
     # Run examples
     asyncio.run(main())

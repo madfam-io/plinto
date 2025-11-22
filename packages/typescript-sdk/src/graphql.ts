@@ -1,5 +1,5 @@
 /**
- * GraphQL client module for Plinto SDK
+ * GraphQL client module for Janua SDK
  * Provides type-safe GraphQL query, mutation, and subscription support
  */
 
@@ -49,7 +49,7 @@ export interface GraphQLSubscriptionOptions<TVariables = OperationVariables> {
 }
 
 /**
- * GraphQL client for Plinto SDK
+ * GraphQL client for Janua SDK
  */
 export class GraphQL {
   private client: ApolloClient<NormalizedCacheObject>

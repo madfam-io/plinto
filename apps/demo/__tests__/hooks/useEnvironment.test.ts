@@ -19,7 +19,7 @@ jest.mock('@/lib/config', () => ({
   isDemo: jest.fn(() => true),
   isProduction: jest.fn(() => false),
   DEMO_CREDENTIALS: {
-    email: 'demo@plinto.dev',
+    email: 'demo@janua.dev',
     password: 'DemoPassword123!'
   },
   DEMO_PERFORMANCE_METRICS: {

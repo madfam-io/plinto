@@ -1,11 +1,11 @@
 /**
- * Plinto TypeScript SDK
+ * Janua TypeScript SDK
  *
  * Enterprise-grade authentication and user management for modern applications.
  */
 
 // Main client export
-export { PlintoClient } from './client/plinto-client';
+export { JanuaClient } from './client/janua-client';
 export { BaseAPIClient } from './client/base-client';
 
 // Authentication exports
@@ -55,13 +55,13 @@ export type {
   MFASetupResponse,
   MFAVerifyRequest,
   Session
-} from './client/plinto-client';
+} from './client/janua-client';
 
 // Utility function to create a client with sensible defaults
 export { createClient } from './utils/factory';
 
 // Version info
 export const VERSION = '0.1.0';
-export const USER_AGENT = `plinto-typescript-sdk/${VERSION}`;
+export const USER_AGENT = `janua-typescript-sdk/${VERSION}`;
 
-// Note: Default export available via named export: import { PlintoClient } from '@plinto/typescript-sdk'
+// Note: Default export available via named export: import { JanuaClient } from '@janua/typescript-sdk'

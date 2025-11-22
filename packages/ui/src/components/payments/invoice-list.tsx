@@ -16,11 +16,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Invoice, PaymentStatus } from '@plinto/typescript-sdk';
+import type { Invoice, PaymentStatus } from '@janua/typescript-sdk';
 
 export interface InvoiceListProps {
   /**
-   * Plinto client instance
+   * Janua client instance
    */
   client: any;
 

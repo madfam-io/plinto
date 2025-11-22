@@ -1,6 +1,6 @@
 # API Deployment Status Report
 **Generated:** 2025-09-09 23:34 UTC  
-**Endpoint:** https://api.plinto.dev  
+**Endpoint:** https://api.janua.dev  
 **Platform:** Railway  
 
 ## 🎉 Overall Status: **SUCCESSFUL DEPLOYMENT**

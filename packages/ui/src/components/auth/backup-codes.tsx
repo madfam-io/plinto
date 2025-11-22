@@ -76,7 +76,7 @@ export function BackupCodes({
     const unusedCodes = backupCodes.filter((c) => !c.used).map((c) => c.code)
     const usedCodes = backupCodes.filter((c) => c.used).map((c) => c.code)
 
-    const content = `Plinto Backup Codes
+    const content = `Janua Backup Codes
 Generated: ${new Date().toISOString()}
 
 UNUSED CODES (${unusedCodes.length}):
@@ -94,7 +94,7 @@ ${usedCodes.length > 0 ? `USED CODES (${usedCodes.length}):\n${usedCodes.join('\
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `plinto-backup-codes-${Date.now()}.txt`
+    a.download = `janua-backup-codes-${Date.now()}.txt`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)

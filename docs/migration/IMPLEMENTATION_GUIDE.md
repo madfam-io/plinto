@@ -116,7 +116,7 @@ python -m uvicorn app.main:app --reload
 ### Environment Variables
 ```env
 # apps/api/.env
-DATABASE_URL=postgresql://user:pass@localhost/plinto
+DATABASE_URL=postgresql://user:pass@localhost/janua
 REDIS_URL=redis://localhost:6379
 JWT_SECRET=your-secret-key
 ENVIRONMENT=development

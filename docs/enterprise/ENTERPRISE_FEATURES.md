@@ -1,8 +1,8 @@
-# Plinto Enterprise Features Documentation
+# Janua Enterprise Features Documentation
 
 ## Overview
 
-Plinto's enterprise features provide comprehensive multi-tenant architecture, advanced security, compliance, and integration capabilities designed for large-scale deployments.
+Janua's enterprise features provide comprehensive multi-tenant architecture, advanced security, compliance, and integration capabilities designed for large-scale deployments.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ Plinto's enterprise features provide comprehensive multi-tenant architecture, ad
 
 ### Overview
 
-Plinto implements complete tenant isolation with automatic context propagation throughout the application stack.
+Janua implements complete tenant isolation with automatic context propagation throughout the application stack.
 
 ### Key Features
 
@@ -50,7 +50,7 @@ org_id = TenantContext.get_organization_id()
 
 The `TenantMiddleware` automatically extracts tenant context from:
 
-1. **Subdomain**: `acme.plinto.dev` → Organization: acme
+1. **Subdomain**: `acme.janua.dev` → Organization: acme
 2. **JWT Token**: Claims include `tid` (tenant_id) and `oid` (organization_id)
 3. **Headers**: `X-Tenant-ID` and `X-Organization-ID` for service-to-service
 4. **Query Parameters**: `?tenant_id=xxx&organization_id=yyy`
@@ -191,7 +191,7 @@ scim_token = generate_scim_token(organization_id)
 ### Example: Provision User via SCIM
 
 ```bash
-curl -X POST https://api.plinto.dev/scim/v2/Users \
+curl -X POST https://api.janua.dev/scim/v2/Users \
   -H "Authorization: Bearer ${SCIM_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -555,7 +555,7 @@ print(f"Last error: {endpoint.last_failure_at}")
 
 ## Compliance Certifications
 
-Plinto's enterprise features support compliance with:
+Janua's enterprise features support compliance with:
 
 - **SOC 2 Type II**: Comprehensive audit logging and access controls
 - **HIPAA**: Healthcare data protection and audit requirements
@@ -567,6 +567,6 @@ Plinto's enterprise features support compliance with:
 
 For enterprise support and custom implementations:
 
-- Email: enterprise@plinto.dev
-- Documentation: https://plinto.dev/docs/enterprise
-- Enterprise Portal: https://enterprise.plinto.dev
+- Email: enterprise@janua.dev
+- Documentation: https://janua.dev/docs/enterprise
+- Enterprise Portal: https://enterprise.janua.dev

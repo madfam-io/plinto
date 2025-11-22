@@ -1,35 +1,35 @@
-# Plinto React SDK Quick Start
+# Janua React SDK Quick Start
 
 > **Add authentication to your React app in minutes with pre-built components and hooks**
 
 ## Installation
 
 ```bash
-npm install @plinto/react-sdk @plinto/typescript-sdk
+npm install @janua/react-sdk @janua/typescript-sdk
 # or
-yarn add @plinto/react-sdk @plinto/typescript-sdk
+yarn add @janua/react-sdk @janua/typescript-sdk
 # or
-pnpm add @plinto/react-sdk @plinto/typescript-sdk
+pnpm add @janua/react-sdk @janua/typescript-sdk
 ```
 
 ## Quick Setup
 
-### 1. Wrap Your App with PlintoProvider
+### 1. Wrap Your App with JanuaProvider
 
 ```tsx
 // App.tsx or index.tsx
-import { PlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 
 function App() {
   return (
-    <PlintoProvider
+    <JanuaProvider
       config={{
-        baseUrl: 'https://plinto.dev',
-        tenantId: 'your-tenant-id', // Get from Plinto Dashboard
+        baseUrl: 'https://janua.dev',
+        tenantId: 'your-tenant-id', // Get from Janua Dashboard
       }}
     >
       <YourApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 ```
@@ -37,7 +37,7 @@ function App() {
 ### 2. Add Pre-built Auth Components
 
 ```tsx
-import { SignIn, SignUp, UserButton } from '@plinto/react-sdk';
+import { SignIn, SignUp, UserButton } from '@janua/react-sdk';
 
 // Sign In Page
 export function SignInPage() {
@@ -89,7 +89,7 @@ export function Header() {
 ### useAuth Hook
 
 ```tsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function Dashboard() {
   const { 
@@ -130,7 +130,7 @@ function Dashboard() {
 ### useUser Hook
 
 ```tsx
-import { useUser } from '@plinto/react-sdk';
+import { useUser } from '@janua/react-sdk';
 
 function Profile() {
   const { user, isLoaded, update } = useUser();
@@ -154,7 +154,7 @@ function Profile() {
 ### useSession Hook
 
 ```tsx
-import { useSession } from '@plinto/react-sdk';
+import { useSession } from '@janua/react-sdk';
 
 function SessionInfo() {
   const { session, refresh, revoke } = useSession();
@@ -176,7 +176,7 @@ function SessionInfo() {
 ### useOrganization Hook
 
 ```tsx
-import { useOrganization } from '@plinto/react-sdk';
+import { useOrganization } from '@janua/react-sdk';
 
 function OrgSwitcher() {
   const {
@@ -228,7 +228,7 @@ function OrgSwitcher() {
 ### Theming
 
 ```tsx
-import { SignIn } from '@plinto/react-sdk';
+import { SignIn } from '@janua/react-sdk';
 
 <SignIn
   appearance={{
@@ -251,7 +251,7 @@ import { SignIn } from '@plinto/react-sdk';
 ### Custom Fields
 
 ```tsx
-import { SignUp } from '@plinto/react-sdk';
+import { SignUp } from '@janua/react-sdk';
 
 <SignUp
   additionalFields={[
@@ -289,7 +289,7 @@ import { SignUp } from '@plinto/react-sdk';
 ### Custom Components
 
 ```tsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function CustomSignIn() {
   const { signIn } = useAuth();
@@ -347,7 +347,7 @@ function CustomSignIn() {
 
 ```tsx
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -375,7 +375,7 @@ function ProtectedRoute() {
 ### Custom Guard Component
 
 ```tsx
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -420,7 +420,7 @@ function AuthGuard({
 ## Social Login
 
 ```tsx
-import { SignIn } from '@plinto/react-sdk';
+import { SignIn } from '@janua/react-sdk';
 
 <SignIn
   providers={['google', 'github', 'microsoft']}
@@ -433,7 +433,7 @@ import { SignIn } from '@plinto/react-sdk';
 />
 
 // Or with custom social buttons
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function SocialAuth() {
   const { signInWithProvider } = useAuth();
@@ -457,7 +457,7 @@ function SocialAuth() {
 ## Passkeys (WebAuthn)
 
 ```tsx
-import { usePasskeys } from '@plinto/react-sdk';
+import { usePasskeys } from '@janua/react-sdk';
 
 function PasskeySetup() {
   const { 
@@ -515,7 +515,7 @@ function PasskeySetup() {
 ## Multi-Factor Authentication
 
 ```tsx
-import { useMFA } from '@plinto/react-sdk';
+import { useMFA } from '@janua/react-sdk';
 
 function MFASettings() {
   const {
@@ -597,7 +597,7 @@ import type {
   SignUpProps,
   UserButtonProps,
   Appearance,
-} from '@plinto/react-sdk';
+} from '@janua/react-sdk';
 
 // Type-safe component props
 const signInProps: SignInProps = {
@@ -615,7 +615,7 @@ const { user }: { user: User | null } = useUser();
 ## Error Handling
 
 ```tsx
-import { ErrorBoundary } from '@plinto/react-sdk';
+import { ErrorBoundary } from '@janua/react-sdk';
 
 <ErrorBoundary
   fallback={({ error, retry }) => (
@@ -634,7 +634,7 @@ import { ErrorBoundary } from '@plinto/react-sdk';
 
 ```tsx
 import { render, screen, waitFor } from '@testing-library/react';
-import { PlintoProvider, MockPlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider, MockJanuaProvider } from '@janua/react-sdk';
 import { Dashboard } from './Dashboard';
 
 // Mock provider for testing
@@ -647,9 +647,9 @@ test('renders dashboard for authenticated user', async () => {
   };
 
   render(
-    <MockPlintoProvider user={mockUser} isAuthenticated={true}>
+    <MockJanuaProvider user={mockUser} isAuthenticated={true}>
       <Dashboard />
-    </MockPlintoProvider>
+    </MockJanuaProvider>
   );
 
   await waitFor(() => {
@@ -660,21 +660,21 @@ test('renders dashboard for authenticated user', async () => {
 
 ## Best Practices
 
-1. **Always wrap your app with PlintoProvider** at the root level
+1. **Always wrap your app with JanuaProvider** at the root level
 2. **Use built-in components** when possible for consistency
 3. **Handle loading states** appropriately in your UI
 4. **Implement error boundaries** for graceful error handling
 5. **Use TypeScript** for better type safety and IDE support
-6. **Test with MockPlintoProvider** for unit tests
+6. **Test with MockJanuaProvider** for unit tests
 7. **Secure sensitive routes** with authentication guards
 8. **Implement proper logout** to clear all session data
 
 ## Support
 
-- **Documentation**: [docs.plinto.dev](https://docs.plinto.dev)
-- **Examples**: [github.com/plinto/examples](https://github.com/plinto/examples)
-- **Discord**: [discord.gg/plinto](https://discord.gg/plinto)
-- **Email**: react-support@plinto.dev
+- **Documentation**: [docs.janua.dev](https://docs.janua.dev)
+- **Examples**: [github.com/janua/examples](https://github.com/janua/examples)
+- **Discord**: [discord.gg/janua](https://discord.gg/janua)
+- **Email**: react-support@janua.dev
 
 ## License
 

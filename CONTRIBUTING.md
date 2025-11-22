@@ -1,6 +1,6 @@
-# Contributing to Plinto
+# Contributing to Janua
 
-Thanks for considering contributing to Plinto! We need your help to make self-hosted authentication accessible to everyone.
+Thanks for considering contributing to Janua! We need your help to make self-hosted authentication accessible to everyone.
 
 **First time contributing to open source?** No problem. We're here to help.
 
@@ -10,7 +10,7 @@ Thanks for considering contributing to Plinto! We need your help to make self-ho
 
 **The fastest way to contribute:**
 
-1. **Find an issue** - Check [Issues](https://github.com/madfam-io/plinto/issues) for `good-first-issue` label
+1. **Find an issue** - Check [Issues](https://github.com/madfam-io/janua/issues) for `good-first-issue` label
 2. **Comment** - Say "I'd like to work on this"
 3. **Fork & Code** - Make your changes
 4. **Submit PR** - We'll review within 48 hours
@@ -25,8 +25,8 @@ You don't need to be a coding expert. Here's how you can help:
 
 ### 🐛 Report Bugs
 Found something broken?
-1. Check if it's [already reported](https://github.com/madfam-io/plinto/issues)
-2. If not, [create a new issue](https://github.com/madfam-io/plinto/issues/new)
+1. Check if it's [already reported](https://github.com/madfam-io/janua/issues)
+2. If not, [create a new issue](https://github.com/madfam-io/janua/issues/new)
 3. Include: What happened, what you expected, steps to reproduce
 
 **Good bug report:**
@@ -66,11 +66,11 @@ Make the components better:
 
 **Check out:**
 - [UI Components](packages/ui/src/components/auth/)
-- [Existing issues labeled "ui"](https://github.com/madfam-io/plinto/labels/ui)
+- [Existing issues labeled "ui"](https://github.com/madfam-io/janua/labels/ui)
 
 ### 🔧 Fix Bugs
 Pick an issue, fix it, submit a PR:
-1. Look for [`bug` label](https://github.com/madfam-io/plinto/labels/bug)
+1. Look for [`bug` label](https://github.com/madfam-io/janua/labels/bug)
 2. Comment that you're working on it
 3. Fork, fix, test, PR
 
@@ -110,8 +110,8 @@ We need more test coverage:
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR-USERNAME/plinto.git
-cd plinto
+git clone https://github.com/YOUR-USERNAME/janua.git
+cd janua
 
 # Backend setup
 cd apps/api
@@ -331,17 +331,17 @@ chore: update dependencies
 
 **Before asking:**
 1. Check the [documentation](docs/)
-2. Search [existing issues](https://github.com/madfam-io/plinto/issues)
+2. Search [existing issues](https://github.com/madfam-io/janua/issues)
 3. Read this guide again
 
 **Still stuck?**
-- Open a [GitHub Discussion](https://github.com/madfam-io/plinto/discussions)
+- Open a [GitHub Discussion](https://github.com/madfam-io/janua/discussions)
 - Tag your question with `question` label
 - We'll respond within 24-48 hours
 
 **For security issues:**
 - **DO NOT** open a public issue
-- Email: security@plinto.dev
+- Email: security@janua.dev
 - We'll respond within 24 hours
 
 ---
@@ -349,7 +349,7 @@ chore: update dependencies
 ## 🎖️ Recognition
 
 All contributors get:
-- ✅ Listed in our [Contributors](https://github.com/madfam-io/plinto/graphs/contributors) page
+- ✅ Listed in our [Contributors](https://github.com/madfam-io/janua/graphs/contributors) page
 - ✅ Mentioned in release notes (for significant contributions)
 - ✅ Our eternal gratitude
 
@@ -404,7 +404,7 @@ New to the project? Start here:
 - [ ] Add integration tests for SAML
 - [ ] Test mobile responsiveness
 
-[**See all good first issues →**](https://github.com/madfam-io/plinto/labels/good-first-issue)
+[**See all good first issues →**](https://github.com/madfam-io/janua/labels/good-first-issue)
 
 ---
 
@@ -429,6 +429,6 @@ New to the project? Start here:
 
 **Ready to contribute?**
 
-🎉 [**Pick a good first issue →**](https://github.com/madfam-io/plinto/labels/good-first-issue)
+🎉 [**Pick a good first issue →**](https://github.com/madfam-io/janua/labels/good-first-issue)
 
-Thank you for making Plinto better! 🙏
+Thank you for making Janua better! 🙏

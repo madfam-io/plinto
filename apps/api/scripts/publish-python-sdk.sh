@@ -43,7 +43,7 @@ fi
 # Get package info
 PACKAGE_VERSION=$(grep '^version = ' "$SDK_PATH/pyproject.toml" | cut -d'"' -f2)
 
-echo -e "${BLUE}📦 Publishing plinto@$PACKAGE_VERSION to PyPI${NC}"
+echo -e "${BLUE}📦 Publishing janua@$PACKAGE_VERSION to PyPI${NC}"
 echo ""
 
 # Pre-publish checks
@@ -107,7 +107,7 @@ echo -e "${GREEN}  ✓ Twine check passed${NC}"
 
 # 8. Check if version exists on PyPI
 echo -e "${YELLOW}  → Checking if version exists on PyPI...${NC}"
-if pip index versions plinto 2>/dev/null | grep -q "$PACKAGE_VERSION"; then
+if pip index versions janua 2>/dev/null | grep -q "$PACKAGE_VERSION"; then
     echo -e "${RED}❌ Version $PACKAGE_VERSION already published${NC}"
     echo -e "${YELLOW}   Bump version in pyproject.toml before publishing${NC}"
     exit 1
@@ -163,15 +163,15 @@ else
     
     # Upload to PyPI
     if twine upload $REPOSITORY_ARG "$SDK_PATH/dist/*"; then
-        echo -e "${GREEN}✅ Successfully published plinto@$PACKAGE_VERSION${NC}"
+        echo -e "${GREEN}✅ Successfully published janua@$PACKAGE_VERSION${NC}"
         echo ""
         echo -e "${BLUE}📋 Post-publish:${NC}"
         if [ "$TEST_PYPI" = true ]; then
-            echo -e "  1. Verify: pip index versions plinto --index-url https://test.pypi.org/simple/"
-            echo -e "  2. Test install: pip install --index-url https://test.pypi.org/simple/ plinto==$PACKAGE_VERSION"
+            echo -e "  1. Verify: pip index versions janua --index-url https://test.pypi.org/simple/"
+            echo -e "  2. Test install: pip install --index-url https://test.pypi.org/simple/ janua==$PACKAGE_VERSION"
         else
-            echo -e "  1. Verify: pip index versions plinto"
-            echo -e "  2. Test install: pip install plinto==$PACKAGE_VERSION"
+            echo -e "  1. Verify: pip index versions janua"
+            echo -e "  2. Test install: pip install janua==$PACKAGE_VERSION"
         fi
         echo -e "  3. Create git tag: git tag -a python-sdk-v$PACKAGE_VERSION -m 'Release $PACKAGE_VERSION'"
         echo -e "  4. Push tag: git push origin python-sdk-v$PACKAGE_VERSION"

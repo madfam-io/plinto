@@ -27,7 +27,7 @@ The three critical issues identified in the documentation audit have been system
 
 ## 📋 Detailed Fix Report
 
-### Fix #1: PlintoClient Parameter Mismatch ✅
+### Fix #1: JanuaClient Parameter Mismatch ✅
 
 **Problem**: Documentation used `apiUrl`, SDK uses `baseURL`  
 **Scope**: 4 occurrences in 3 files  
@@ -41,15 +41,15 @@ The three critical issues identified in the documentation audit have been system
 **Change Applied**:
 ```typescript
 // BEFORE (broken):
-const plinto = new PlintoClient({
-  apiUrl: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  apiUrl: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 
 // AFTER (working):
-const plinto = new PlintoClient({
-  baseURL: process.env.PLINTO_API_URL,
-  apiKey: process.env.PLINTO_API_KEY
+const janua = new JanuaClient({
+  baseURL: process.env.JANUA_API_URL,
+  apiKey: process.env.JANUA_API_KEY
 });
 ```
 
@@ -59,7 +59,7 @@ const plinto = new PlintoClient({
 
 ### Fix #2: verifyToken Method Replacement ✅
 
-**Problem**: `plinto.auth.verifyToken()` doesn't exist  
+**Problem**: `janua.auth.verifyToken()` doesn't exist  
 **Scope**: 3 occurrences in 1 file  
 **Solution**: Replace with `getCurrentUser()` which validates token AND returns user
 
@@ -72,36 +72,36 @@ const plinto = new PlintoClient({
 ```typescript
 // BEFORE (broken):
 // Verify token
-const user = await plinto.auth.verifyToken(accessToken);
+const user = await janua.auth.verifyToken(accessToken);
 
 // AFTER (working):
 // Get current user (verifies token)
-const user = await plinto.auth.getCurrentUser();
+const user = await janua.auth.getCurrentUser();
 ```
 
 **Location 2** (line 226):
 ```typescript
 // BEFORE (broken):
 // Verify new token
-const user = await plinto.auth.verifyToken(result.access_token);
+const user = await janua.auth.verifyToken(result.access_token);
 
 // AFTER (working):
 // Get current user (verifies new token)
-const user = await plinto.auth.getCurrentUser();
+const user = await janua.auth.getCurrentUser();
 ```
 
 **Location 3** (line 345):
 ```typescript
 // BEFORE (broken):
 try {
-  const user = await plinto.auth.verifyToken(token);
+  const user = await janua.auth.verifyToken(token);
   req.user = user;
   next();
 }
 
 // AFTER (working):
 try {
-  const user = await plinto.auth.getCurrentUser();
+  const user = await janua.auth.getCurrentUser();
   req.user = user;
   next();
 }
@@ -113,7 +113,7 @@ try {
 
 ### Fix #3: MFA API Namespace Structure ✅
 
-**Problem**: Entire MFA guide used non-existent `plinto.auth.mfa.*` nested namespace  
+**Problem**: Entire MFA guide used non-existent `janua.auth.mfa.*` nested namespace  
 **Scope**: 50+ occurrences in 2,750-line guide  
 **Solution**: Systematic replacement of namespace and method renames
 
@@ -125,7 +125,7 @@ try {
 #### Change 1: mfa.setup() → enableMFA()
 ```typescript
 // BEFORE (broken):
-const mfaSetup = await plinto.auth.mfa.setup({
+const mfaSetup = await janua.auth.mfa.setup({
   userId: user.id,
   method: 'totp',
   phoneNumber: '+1234567890',
@@ -133,21 +133,21 @@ const mfaSetup = await plinto.auth.mfa.setup({
 });
 
 // AFTER (working):
-const mfaSetup = await plinto.auth.enableMFA('totp');
+const mfaSetup = await janua.auth.enableMFA('totp');
 // Returns: { qr_code, secret, backup_codes }
 ```
 
 #### Change 2: mfa.verify() → verifyMFA()
 ```typescript
 // BEFORE (broken):
-const result = await plinto.auth.mfa.verify({
+const result = await janua.auth.mfa.verify({
   sessionId: session.id,
   method: 'totp',
   code: '123456'
 });
 
 // AFTER (working):
-const result = await plinto.auth.verifyMFA({
+const result = await janua.auth.verifyMFA({
   code: '123456'
 });
 ```
@@ -155,61 +155,61 @@ const result = await plinto.auth.verifyMFA({
 #### Change 3: mfa.getStatus() → getMFAStatus()
 ```typescript
 // BEFORE (broken):
-const status = await plinto.auth.mfa.getStatus({
+const status = await janua.auth.mfa.getStatus({
   userId: user.id
 });
 
 // AFTER (working):
-const status = await plinto.auth.getMFAStatus();
+const status = await janua.auth.getMFAStatus();
 // No parameters needed (uses authenticated user)
 ```
 
 #### Change 4: mfa.disable() → disableMFA()
 ```typescript
 // BEFORE (broken):
-await plinto.auth.mfa.disable({
+await janua.auth.mfa.disable({
   userId: user.id,
   password: 'userPassword',
   confirmationCode: '123456'
 });
 
 // AFTER (working):
-await plinto.auth.disableMFA('userPassword');
+await janua.auth.disableMFA('userPassword');
 // Only password needed for confirmation
 ```
 
 #### Change 5: mfa.generateBackupCodes() → regenerateMFABackupCodes()
 ```typescript
 // BEFORE (broken):
-const backupCodes = await plinto.auth.mfa.generateBackupCodes({
+const backupCodes = await janua.auth.mfa.generateBackupCodes({
   userId: user.id,
   count: 10
 });
 
 // AFTER (working):
-const backupCodes = await plinto.auth.regenerateMFABackupCodes('userPassword');
+const backupCodes = await janua.auth.regenerateMFABackupCodes('userPassword');
 // Returns fixed number of codes
 ```
 
 #### Change 6: mfa.webauthn.* → Passkey Methods
 ```typescript
 // BEFORE (broken):
-const challenge = await plinto.auth.mfa.webauthn.generateChallenge({
+const challenge = await janua.auth.mfa.webauthn.generateChallenge({
   userId: user.id,
   type: 'platform'
 });
 
-const verification = await plinto.auth.mfa.webauthn.verify({
+const verification = await janua.auth.mfa.webauthn.verify({
   challengeId: challenge.id,
   credential: publicKeyCredential
 });
 
 // AFTER (working):
-const options = await plinto.auth.getPasskeyRegistrationOptions({
+const options = await janua.auth.getPasskeyRegistrationOptions({
   authenticator_attachment: 'platform'
 });
 
-const verified = await plinto.auth.verifyPasskeyRegistration(
+const verified = await janua.auth.verifyPasskeyRegistration(
   credential,
   'My Passkey'
 );

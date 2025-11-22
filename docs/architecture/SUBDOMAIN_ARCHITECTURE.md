@@ -1,4 +1,4 @@
-# Plinto Subdomain Architecture
+# Janua Subdomain Architecture
 
 ## Domain & Folder Mapping
 
@@ -8,24 +8,24 @@ Clear separation of concerns with dedicated subdomains and corresponding folder 
 
 | Subdomain | Folder | Purpose | Deployment |
 |-----------|--------|---------|------------|
-| `plinto.dev` / `www.plinto.dev` | `/apps/marketing` | Marketing & public website | Vercel |
-| `app.plinto.dev` | `/apps/dashboard` | Customer dashboard (tenant admins) | Vercel |
-| `admin.plinto.dev` | `/apps/admin` | Internal superadmin tools | Vercel (restricted) |
-| `api.plinto.dev` | `/apps/api` | Core API (FastAPI/Python) | Railway |
-| `docs.plinto.dev` | `/apps/docs` | Documentation (future) | Mintlify/Vercel |
-| `status.plinto.dev` | External | Status page | Better Stack |
+| `janua.dev` / `www.janua.dev` | `/apps/marketing` | Marketing & public website | Vercel |
+| `app.janua.dev` | `/apps/dashboard` | Customer dashboard (tenant admins) | Vercel |
+| `admin.janua.dev` | `/apps/admin` | Internal superadmin tools | Vercel (restricted) |
+| `api.janua.dev` | `/apps/api` | Core API (FastAPI/Python) | Railway |
+| `docs.janua.dev` | `/apps/docs` | Documentation (future) | Mintlify/Vercel |
+| `status.janua.dev` | External | Status page | Better Stack |
 
 ### Local Development Ports
 
 ```bash
 # Frontend Applications
-http://localhost:3003  # Marketing (plinto.dev)
-http://localhost:3001  # Dashboard (app.plinto.dev)
-http://localhost:3002  # Admin (admin.plinto.dev)
-http://localhost:3004  # Docs (docs.plinto.dev) - future
+http://localhost:3003  # Marketing (janua.dev)
+http://localhost:3001  # Dashboard (app.janua.dev)
+http://localhost:3002  # Admin (admin.janua.dev)
+http://localhost:3004  # Docs (docs.janua.dev) - future
 
 # Backend Services
-http://localhost:8000  # API (api.plinto.dev)
+http://localhost:8000  # API (api.janua.dev)
 http://localhost:5432  # PostgreSQL
 http://localhost:6379  # Redis
 ```
@@ -33,16 +33,16 @@ http://localhost:6379  # Redis
 ## Folder Structure
 
 ```
-plinto/
+janua/
 ├── apps/
 │   ├── marketing/        # Public marketing site
-│   │   └── package.json  # @plinto/marketing
+│   │   └── package.json  # @janua/marketing
 │   │
 │   ├── dashboard/        # Customer dashboard (was: admin)
-│   │   └── package.json  # @plinto/dashboard
+│   │   └── package.json  # @janua/dashboard
 │   │
 │   ├── admin/            # Internal superadmin tools (new)
-│   │   └── package.json  # @plinto/admin
+│   │   └── package.json  # @janua/admin
 │   │
 │   └── api/              # Core API (Python/FastAPI)
 │       └── README.md     # API documentation
@@ -59,15 +59,15 @@ plinto/
 
 ## Application Responsibilities
 
-### 🌐 Marketing (`plinto.dev`)
+### 🌐 Marketing (`janua.dev`)
 **Public-facing website and product information**
 - Landing pages and product features
 - Pricing and comparison tables
 - Company information and blog
-- Sign up/Sign in CTAs → redirect to `app.plinto.dev`
-- Documentation links → redirect to `docs.plinto.dev`
+- Sign up/Sign in CTAs → redirect to `app.janua.dev`
+- Documentation links → redirect to `docs.janua.dev`
 
-### 📊 Customer Dashboard (`app.plinto.dev`)
+### 📊 Customer Dashboard (`app.janua.dev`)
 **Where paying customers manage their authentication**
 - Tenant configuration and settings
 - User management for their organization
@@ -78,8 +78,8 @@ plinto/
 - Webhook configuration
 - Audit logs for their tenant
 
-### 🔧 Internal Admin (`admin.plinto.dev`)
-**Plinto team superadmin access only**
+### 🔧 Internal Admin (`admin.janua.dev`)
+**Janua team superadmin access only**
 - Platform-wide tenant management
 - Customer support tools
 - System health monitoring
@@ -89,7 +89,7 @@ plinto/
 - Billing overrides and adjustments
 - Platform analytics and metrics
 
-### 🚀 API (`api.plinto.dev`)
+### 🚀 API (`api.janua.dev`)
 **Core authentication and identity services**
 - Authentication endpoints (`/auth/*`)
 - Session management (`/sessions/*`)
@@ -103,38 +103,38 @@ plinto/
 ## Security & Access Control
 
 ### Public Access
-- `plinto.dev` - Fully public
-- `docs.plinto.dev` - Fully public
-- `status.plinto.dev` - Fully public
+- `janua.dev` - Fully public
+- `docs.janua.dev` - Fully public
+- `status.janua.dev` - Fully public
 
 ### Authenticated Access
-- `app.plinto.dev` - Requires tenant user authentication
-- `api.plinto.dev` - Requires valid API key or JWT
+- `app.janua.dev` - Requires tenant user authentication
+- `api.janua.dev` - Requires valid API key or JWT
 
 ### Restricted Access
-- `admin.plinto.dev` - Plinto team only (separate auth)
+- `admin.janua.dev` - Janua team only (separate auth)
 
 ## Environment Variables
 
 ### Marketing App
 ```env
-NEXT_PUBLIC_APP_URL=https://app.plinto.dev
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
-NEXT_PUBLIC_DOCS_URL=https://docs.plinto.dev
+NEXT_PUBLIC_APP_URL=https://app.janua.dev
+NEXT_PUBLIC_API_URL=https://api.janua.dev
+NEXT_PUBLIC_DOCS_URL=https://docs.janua.dev
 ```
 
 ### Dashboard App
 ```env
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
-NEXT_PUBLIC_MARKETING_URL=https://plinto.dev
-PLINTO_API_KEY=<api_key>
+NEXT_PUBLIC_API_URL=https://api.janua.dev
+NEXT_PUBLIC_MARKETING_URL=https://janua.dev
+JANUA_API_KEY=<api_key>
 ```
 
 ### Admin App
 ```env
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
+NEXT_PUBLIC_API_URL=https://api.janua.dev
 ADMIN_AUTH_SECRET=<secret>
-ADMIN_ALLOWED_EMAILS=team@plinto.dev
+ADMIN_ALLOWED_EMAILS=team@janua.dev
 ```
 
 ### API Service
@@ -142,38 +142,38 @@ ADMIN_ALLOWED_EMAILS=team@plinto.dev
 DATABASE_URL=postgresql://...
 REDIS_URL=redis://...
 JWT_SECRET=<secret>
-CORS_ORIGINS=https://app.plinto.dev,https://admin.plinto.dev
+CORS_ORIGINS=https://app.janua.dev,https://admin.janua.dev
 ```
 
 ## Deployment Commands
 
 ```bash
-# Deploy marketing to plinto.dev
+# Deploy marketing to janua.dev
 cd apps/marketing && vercel --prod
 
-# Deploy dashboard to app.plinto.dev
-cd apps/dashboard && vercel --prod --scope plinto
+# Deploy dashboard to app.janua.dev
+cd apps/dashboard && vercel --prod --scope janua
 
-# Deploy admin to admin.plinto.dev
-cd apps/admin && vercel --prod --scope plinto
+# Deploy admin to admin.janua.dev
+cd apps/admin && vercel --prod --scope janua
 
 # Deploy API to Railway
-railway up -p plinto-api
+railway up -p janua-api
 ```
 
 ## DNS Configuration
 
 ```dns
 # Root domain
-plinto.dev          A     76.76.21.21 (Vercel)
-www.plinto.dev      CNAME cname.vercel-dns.com
+janua.dev          A     76.76.21.21 (Vercel)
+www.janua.dev      CNAME cname.vercel-dns.com
 
 # Subdomains
-app.plinto.dev      CNAME cname.vercel-dns.com
-admin.plinto.dev    CNAME cname.vercel-dns.com
-api.plinto.dev      CNAME plinto-api.up.railway.app
-docs.plinto.dev     CNAME cname.vercel-dns.com
-status.plinto.dev   CNAME status.betterstack.com
+app.janua.dev      CNAME cname.vercel-dns.com
+admin.janua.dev    CNAME cname.vercel-dns.com
+api.janua.dev      CNAME janua-api.up.railway.app
+docs.janua.dev     CNAME cname.vercel-dns.com
+status.janua.dev   CNAME status.betterstack.com
 ```
 
 ## Migration Status
@@ -182,8 +182,8 @@ status.plinto.dev   CNAME status.betterstack.com
 - [x] Create new `apps/admin` for internal tools
 - [x] Update package.json names
 - [x] Configure development ports
-- [ ] Deploy dashboard to `app.plinto.dev`
-- [ ] Deploy admin to `admin.plinto.dev`
+- [ ] Deploy dashboard to `app.janua.dev`
+- [ ] Deploy admin to `admin.janua.dev`
 - [ ] Update environment variables
 - [ ] Configure DNS records
 - [ ] Update CORS policies

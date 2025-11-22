@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto provides comprehensive white-label capabilities allowing complete customization of the authentication experience to match your brand identity, including visual design, user experience flows, email communications, and domain configuration.
+Janua provides comprehensive white-label capabilities allowing complete customization of the authentication experience to match your brand identity, including visual design, user experience flows, email communications, and domain configuration.
 
 ## Branding Configuration
 
@@ -211,7 +211,7 @@ class BrandingService {
 
 ```tsx
 // Customizable Auth Components
-import { AuthUI } from '@plinto/ui';
+import { AuthUI } from '@janua/ui';
 
 export function CustomLoginPage({ branding }: { branding: BrandConfiguration }) {
   return (
@@ -367,27 +367,27 @@ class WidgetCustomizer {
     return {
       // Script tag
       script: `
-        <script src="https://cdn.plinto.dev/widget/v2/plinto-widget.min.js"></script>
+        <script src="https://cdn.janua.dev/widget/v2/janua-widget.min.js"></script>
         <script>
-          PlintoWidget.init(${JSON.stringify(config)});
+          JanuaWidget.init(${JSON.stringify(config)});
         </script>
       `,
       
       // NPM package
       npm: `
-        import { PlintoWidget } from '@plinto/widget';
+        import { JanuaWidget } from '@janua/widget';
         
-        const widget = new PlintoWidget(${JSON.stringify(config)});
+        const widget = new JanuaWidget(${JSON.stringify(config)});
         widget.mount('#${options.containerId}');
       `,
       
       // React component
       react: `
-        import { PlintoAuthWidget } from '@plinto/react-sdk-widget';
+        import { JanuaAuthWidget } from '@janua/react-sdk-widget';
         
         export function AuthWidget() {
           return (
-            <PlintoAuthWidget
+            <JanuaAuthWidget
               widgetId="${widget.id}"
               apiKey="${options.apiKey}"
               onSuccess={handleSuccess}
@@ -597,7 +597,7 @@ class DynamicEmailService {
     // Send email
     await this.emailProvider.send({
       to: recipient.email,
-      from: branding.sender || 'noreply@plinto.dev',
+      from: branding.sender || 'noreply@janua.dev',
       subject: this.renderSubject(template.subject, data),
       html: tracked.html,
       text: tracked.text,
@@ -693,7 +693,7 @@ class DomainWhiteLabel {
         records.push({
           type: 'CNAME',
           name: subdomain.replace(`.${config.domain}`, ''),
-          value: `${type}.whitelabel.plinto.dev`,
+          value: `${type}.whitelabel.janua.dev`,
           ttl: 3600
         });
       }
@@ -715,7 +715,7 @@ class DomainWhiteLabel {
         },
         {
           type: 'TXT',
-          name: `plinto._domainkey`,
+          name: `janua._domainkey`,
           value: config.email.dkim,
           ttl: 3600
         },
@@ -759,7 +759,7 @@ class CustomCSSService {
     
     // Scope CSS if needed
     const scoped = scope === 'global' ? sanitized : 
-      this.scopeCSS(sanitized, `.plinto-${scope}`);
+      this.scopeCSS(sanitized, `.janua-${scope}`);
     
     // Minify for production
     const minified = await this.minifyCSS(scoped);
@@ -834,7 +834,7 @@ class SDKCustomization {
       
       // Branding
       branding: {
-        namespace: config.namespace || 'Plinto',
+        namespace: config.namespace || 'Janua',
         
         // Method prefixes
         methodPrefix: config.methodPrefix,
@@ -854,17 +854,17 @@ class SDKCustomization {
     return {
       // CDN URLs
       cdn: {
-        production: `https://cdn.plinto.dev/sdk/${bundle.version}/plinto.min.js`,
-        development: `https://cdn.plinto.dev/sdk/${bundle.version}/plinto.js`
+        production: `https://cdn.janua.dev/sdk/${bundle.version}/janua.min.js`,
+        development: `https://cdn.janua.dev/sdk/${bundle.version}/janua.js`
       },
       
       // NPM package
       npm: {
-        name: config.npmPackage || '@plinto/sdk',
+        name: config.npmPackage || '@janua/sdk',
         version: bundle.version,
         
         // Installation
-        install: `npm install ${config.npmPackage || '@plinto/sdk'}`
+        install: `npm install ${config.npmPackage || '@janua/sdk'}`
       },
       
       // Usage examples
@@ -986,7 +986,7 @@ class ThemeAPI {
 
 ## Support & Resources
 
-- Branding Guide: https://docs.plinto.dev/branding
-- Theme Gallery: https://themes.plinto.dev
-- Design System: https://design.plinto.dev
-- Support: design@plinto.dev
+- Branding Guide: https://docs.janua.dev/branding
+- Theme Gallery: https://themes.janua.dev
+- Design System: https://design.janua.dev
+- Support: design@janua.dev

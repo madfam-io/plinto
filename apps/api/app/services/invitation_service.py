@@ -384,14 +384,14 @@ class InvitationService:
             invitation.email_send_attempts += 1
             
             # Create email content
-            subject = f"You're invited to join {organization.name} on Plinto"
+            subject = f"You're invited to join {organization.name} on Janua"
             
             html_content = f"""
             <html>
                 <body style="font-family: Arial, sans-serif; line-height: 1.6;">
                     <h2>You're invited to {organization.name}!</h2>
                     
-                    <p>{inviter.name or inviter.email} has invited you to join {organization.name} on Plinto.</p>
+                    <p>{inviter.name or inviter.email} has invited you to join {organization.name} on Janua.</p>
                     
                     {f'<p><em>"{invitation.message}"</em></p>' if invitation.message else ''}
                     
@@ -426,7 +426,7 @@ class InvitationService:
             text_content = f"""
             You're invited to {organization.name}!
             
-            {inviter.name or inviter.email} has invited you to join {organization.name} on Plinto.
+            {inviter.name or inviter.email} has invited you to join {organization.name} on Janua.
             
             {invitation.message if invitation.message else ''}
             

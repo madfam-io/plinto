@@ -71,7 +71,7 @@ jobs:
             
             ## Installation
             ```bash
-            npm install @plinto/${{ steps.extract.outputs.sdk_name }}@${{ steps.extract.outputs.version }}
+            npm install @janua/${{ steps.extract.outputs.sdk_name }}@${{ steps.extract.outputs.version }}
             ```
             
             See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/packages/${{ steps.extract.outputs.sdk_name }}/CHANGELOG.md) for details.
@@ -134,7 +134,7 @@ jobs:
             
             ## Installation
             ```bash
-            pip install plinto==${{ steps.extract.outputs.version }}
+            pip install janua==${{ steps.extract.outputs.version }}
             ```
             
             See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/packages/python-sdk/CHANGELOG.md) for details.

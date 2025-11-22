@@ -450,7 +450,7 @@ class AuditLogger:
         for log in logs:
             # CEF format: CEF:Version|Device Vendor|Device Product|Device Version|Device Event Class ID|Name|Severity|[Extension]
             cef_log = (
-                f"CEF:0|Plinto|AuditLog|1.0|{log.event_type.value}|{log.event_name}|3|"
+                f"CEF:0|Janua|AuditLog|1.0|{log.event_type.value}|{log.event_name}|3|"
                 f"duid={log.user_id if log.user_id else 'system'} "
                 f"src={log.ip_address or 'unknown'} "
                 f"act={log.event_name} "

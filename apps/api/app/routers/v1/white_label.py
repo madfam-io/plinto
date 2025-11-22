@@ -379,9 +379,9 @@ async def create_custom_domain(
             domain=domain_request.domain,
             subdomain=domain_request.subdomain,
             verification_token=verification_token,
-            cname_target=f"custom-{branding_config_id}.plinto.dev",  # Example CNAME target
+            cname_target=f"custom-{branding_config_id}.janua.dev",  # Example CNAME target
             a_record_ips=["203.0.113.1", "203.0.113.2"],  # Example IPs
-            txt_records=[f"plinto-verification={verification_token}"]
+            txt_records=[f"janua-verification={verification_token}"]
         )
         
         db.add(custom_domain)

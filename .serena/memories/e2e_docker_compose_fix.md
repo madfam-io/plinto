@@ -95,16 +95,16 @@ Instead of building services that don't have proper Dockerfiles, use the **Phase
 - name: Wait for databases to be healthy
   run: |
     echo "Waiting for PostgreSQL..."
-    timeout 120s bash -c 'until docker exec plinto-postgres-test pg_isready -U test_user -d plinto_test; do sleep 2; done'
+    timeout 120s bash -c 'until docker exec janua-postgres-test pg_isready -U test_user -d janua_test; do sleep 2; done'
     
     echo "Waiting for Redis..."
-    timeout 60s bash -c 'until docker exec plinto-redis-test redis-cli ping | grep -q PONG; do sleep 2; done'
+    timeout 60s bash -c 'until docker exec janua-redis-test redis-cli ping | grep -q PONG; do sleep 2; done'
 
 - name: Start API server
   run: |
     cd apps/api
     ENVIRONMENT=test \
-    DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/plinto_test" \
+    DATABASE_URL="postgresql://test_user:test_pass@localhost:5432/janua_test" \
     REDIS_URL="redis://localhost:6379/0" \
     JWT_SECRET_KEY="test_jwt_secret_github_actions" \
     python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 &

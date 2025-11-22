@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { usePlinto } from '../provider'
+import { useJanua } from '../provider'
 
 interface UserProfileProps {
   className?: string
@@ -16,7 +16,7 @@ export function UserProfile({
   showSessions = false,
   allowEdit = true
 }: UserProfileProps) {
-  const { user, session, signOut, isLoading, client } = usePlinto()
+  const { user, session, signOut, isLoading, client } = useJanua()
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     firstName: user?.given_name || '',
@@ -33,7 +33,7 @@ export function UserProfile({
 
   const handleSave = async () => {
     try {
-      // Update user profile using the Plinto SDK
+      // Update user profile using the Janua SDK
       await client.updateUser({
         given_name: formData.firstName,
         family_name: formData.lastName
@@ -57,14 +57,14 @@ export function UserProfile({
 
   if (!user) {
     return (
-      <div className={`plinto-user-profile ${className}`}>
+      <div className={`janua-user-profile ${className}`}>
         <p className="text-gray-500">Not authenticated</p>
       </div>
     )
   }
 
   return (
-    <div className={`plinto-user-profile ${className}`}>
+    <div className={`janua-user-profile ${className}`}>
       <div className="bg-white shadow rounded-lg p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-gray-900">User Profile</h2>

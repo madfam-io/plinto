@@ -4,7 +4,7 @@
 **Date**: November 17, 2025  
 **Auditor**: Strategic Analysis Team  
 **Methodology**: Evidence-Based Codebase Audit + Market Competitive Analysis  
-**Objective**: Validate Plinto's "blue-ocean" positioning vs Better-Auth, Clerk, Auth0, SuperTokens
+**Objective**: Validate Janua's "blue-ocean" positioning vs Better-Auth, Clerk, Auth0, SuperTokens
 
 ---
 
@@ -12,13 +12,13 @@
 
 **Overall Strategic Grade: A (92/100) - Strong Blue-Ocean Position with Clear Differentiation**
 
-Plinto successfully combines:
+Janua successfully combines:
 - ✅ **Better-Auth's architectural integrity** (synchronous database writes, data ownership)
 - ✅ **Clerk's developer experience** (production-ready UI components, 10-minute setup)
 - ✅ **Anti-trap business model** (enterprise features free in OSS)
 - ✅ **Anti-lock-in guarantees** (documented cloud→self-hosted migration)
 
-**Key Finding**: Plinto delivers on its strategic positioning claims with **evidence-based validation** across all four pillars.
+**Key Finding**: Janua delivers on its strategic positioning claims with **evidence-based validation** across all four pillars.
 
 ### Strategic Positioning Summary
 
@@ -38,7 +38,7 @@ Plinto successfully combines:
 
 ### 1.1 Audit: Synchronous Database Integration
 
-**Success Metric**: *"Plinto writes directly to your database. No asynchronous webhooks, no data sync failures."*
+**Success Metric**: *"Janua writes directly to your database. No asynchronous webhooks, no data sync failures."*
 
 #### Evidence
 
@@ -67,7 +67,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 **Key Differentiators vs Competitors**:
 
-| Feature | Plinto | Clerk | Auth0 | Better-Auth |
+| Feature | Janua | Clerk | Auth0 | Better-Auth |
 |---------|--------|-------|-------|-------------|
 | **Direct DB writes** | ✅ Synchronous | ❌ Webhooks only | ❌ Webhooks only | ✅ Synchronous |
 | **Transaction safety** | ✅ ACID guarantees | ⚠️ Eventually consistent | ⚠️ Eventually consistent | ✅ ACID guarantees |
@@ -77,7 +77,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 **Competitive Advantage**:
 ```
-Marketing Claim: "Plinto writes directly to your database. No asynchronous webhooks, 
+Marketing Claim: "Janua writes directly to your database. No asynchronous webhooks, 
                   no data sync failures."
 
 Validation: ✅ 100% ACCURATE
@@ -93,7 +93,7 @@ Evidence: Zero webhook-based sync patterns found in codebase
 **✅ CONFIRMED**: Prisma schema ready for production use.
 
 **Prisma Schema** (`prisma/schema.prisma`):
-- ✅ **Complete schema**: 40+ models covering all Plinto features
+- ✅ **Complete schema**: 40+ models covering all Janua features
 - ✅ **Production-ready**: Multi-tenancy, RBAC, SSO, billing, compliance
 - ✅ **PostgreSQL-optimized**: Composite indexes, naming conventions
 - ✅ **Schema includes**:
@@ -109,7 +109,7 @@ Evidence: Zero webhook-based sync patterns found in codebase
 
 **Competitive Analysis**:
 
-| Database Adapters | Plinto | Better-Auth | Clerk | Auth0 |
+| Database Adapters | Janua | Better-Auth | Clerk | Auth0 |
 |------------------|--------|-------------|-------|-------|
 | **Prisma** | ✅ Production schema | ✅ Native support | ❌ Not supported | ❌ Not supported |
 | **Drizzle** | 🔜 Q1 2026 | ✅ Native support | ❌ Not supported | ❌ Not supported |
@@ -131,31 +131,31 @@ Evidence: Zero webhook-based sync patterns found in codebase
 
 **Implemented SDKs** (from `packages/` directory):
 
-1. **React SDK** (`@plinto/react-sdk` v0.1.0-beta.1)
+1. **React SDK** (`@janua/react-sdk` v0.1.0-beta.1)
    - ✅ React 18+ support
    - ✅ Hooks-based API
    - ✅ TypeScript types
-   - Keywords: `plinto, react, authentication, auth, hooks, components`
+   - Keywords: `janua, react, authentication, auth, hooks, components`
 
-2. **Vue SDK** (`@plinto/vue-sdk` v0.1.0-beta.1)
+2. **Vue SDK** (`@janua/vue-sdk` v0.1.0-beta.1)
    - ✅ Vue 3 support
    - ✅ Composition API
    - ✅ TypeScript types
-   - Keywords: `plinto, vue, vue3, authentication, auth, composables, plugin`
+   - Keywords: `janua, vue, vue3, authentication, auth, composables, plugin`
 
-3. **Next.js SDK** (`@plinto/nextjs` v0.1.0-beta.1)
+3. **Next.js SDK** (`@janua/nextjs` v0.1.0-beta.1)
    - ✅ App Router support
    - ✅ Pages Router support
    - ✅ Middleware integration
    - ✅ Server-side + client-side
    - Exports: `.`, `./app`, `./pages`, `./middleware`
 
-4. **React Native SDK** (`@plinto/react-native-sdk` v0.1.0-beta.1)
+4. **React Native SDK** (`@janua/react-native-sdk` v0.1.0-beta.1)
    - ✅ Mobile authentication
    - ✅ Biometric support
    - ✅ Example app included
 
-5. **TypeScript SDK** (`@plinto/typescript-sdk`)
+5. **TypeScript SDK** (`@janua/typescript-sdk`)
    - ✅ Vanilla JS/TS support
    - ✅ Framework-agnostic core
    - ✅ Used as base for all other SDKs
@@ -167,7 +167,7 @@ Evidence: Zero webhook-based sync patterns found in codebase
 
 **Competitive Framework Support**:
 
-| Framework | Plinto | Clerk | Auth0 | Better-Auth | SuperTokens |
+| Framework | Janua | Clerk | Auth0 | Better-Auth | SuperTokens |
 |-----------|--------|-------|-------|-------------|-------------|
 | **React** | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Next.js** | ✅ App Router + Pages | ✅ | ✅ | ✅ | ✅ |
@@ -181,7 +181,7 @@ Evidence: Zero webhook-based sync patterns found in codebase
 
 **Strategic Assessment**:
 
-✅ **Validated**: Plinto matches Better-Auth on framework agnosticism
+✅ **Validated**: Janua matches Better-Auth on framework agnosticism
 ✅ **Competitive advantage**: More frameworks than Clerk (React-only focus)
 ⚠️ **Gap**: Svelte/Astro/Solid not yet shipped (vs Better-Auth has them)
 ✅ **Mitigation**: Planned for Q1 2026, TypeScript SDK base makes it feasible
@@ -288,7 +288,7 @@ export interface SignInProps {
   }
   logoUrl?: string
   showRememberMe?: boolean
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
 }
 ```
@@ -302,7 +302,7 @@ export interface SignInProps {
 
 **Competitive Component Comparison**:
 
-| Component Category | Plinto | Clerk | Auth0 Universal Login | Better-Auth |
+| Component Category | Janua | Clerk | Auth0 Universal Login | Better-Auth |
 |-------------------|--------|-------|----------------------|-------------|
 | **Auth Components** | 15 | 12+ | 8 (limited) | 0 (headless only) |
 | **Enterprise Components** | 8 SSO/SCIM | 6 (paid) | 10 (paid) | 0 |
@@ -317,25 +317,25 @@ export interface SignInProps {
 **10-Minute Setup Test**:
 ```tsx
 // 1. Install package (1 minute)
-npm install @plinto/react-sdk @plinto/ui
+npm install @janua/react-sdk @janua/ui
 
 // 2. Add provider (1 minute)
-import { PlintoProvider } from '@plinto/react-sdk'
-<PlintoProvider apiUrl="http://localhost:8000">
+import { JanuaProvider } from '@janua/react-sdk'
+<JanuaProvider apiUrl="http://localhost:8000">
   <App />
-</PlintoProvider>
+</JanuaProvider>
 
 // 3. Add sign-in component (2 minutes)
-import { SignIn } from '@plinto/ui'
+import { SignIn } from '@janua/ui'
 <SignIn redirectUrl="/dashboard" />
 
 // 4. Add protected route (2 minutes)
-import { useAuth } from '@plinto/react-sdk'
+import { useAuth } from '@janua/react-sdk'
 const { user, loading } = useAuth()
 if (!user) return <SignIn />
 
 // 5. Add user profile (2 minutes)
-import { UserProfile } from '@plinto/ui'
+import { UserProfile } from '@janua/ui'
 <UserProfile />
 
 // 6. Test in browser (2 minutes)
@@ -357,7 +357,7 @@ import { UserProfile } from '@plinto/ui'
 
 **✅ CONFIRMED**: Dual API strategy fully implemented.
 
-**Headless API** (`@plinto/react-sdk`):
+**Headless API** (`@janua/react-sdk`):
 ```typescript
 // Headless hooks for full control
 import { 
@@ -367,7 +367,7 @@ import {
   useSession,        // Session management
   useMFA,            // MFA flows
   usePasskeys        // Passkey management
-} from '@plinto/react-sdk'
+} from '@janua/react-sdk'
 
 // Example: Custom sign-in with full control
 const { signIn, loading, error } = useAuth()
@@ -381,7 +381,7 @@ const handleSignIn = async () => {
 }
 ```
 
-**Pre-built UI** (`@plinto/ui`):
+**Pre-built UI** (`@janua/ui`):
 ```typescript
 // Drop-in components for rapid development
 import { 
@@ -390,7 +390,7 @@ import {
   UserProfile,
   MFASetup,
   OrganizationSwitcher 
-} from '@plinto/ui'
+} from '@janua/ui'
 
 // Single-line integration
 <SignIn redirectUrl="/dashboard" />
@@ -398,7 +398,7 @@ import {
 
 **Flexibility Matrix**:
 
-| Use Case | Plinto Approach | Better-Auth | Clerk |
+| Use Case | Janua Approach | Better-Auth | Clerk |
 |----------|----------------|-------------|-------|
 | **Rapid prototyping** | Pre-built UI ✅ | Build from scratch ❌ | Pre-built UI ✅ |
 | **Custom design system** | Headless hooks ✅ | Headless hooks ✅ | Limited customization ⚠️ |
@@ -408,7 +408,7 @@ import {
 **Strategic Differentiation**:
 
 ```
-Plinto = Better-Auth (headless flexibility) + Clerk (pre-built speed)
+Janua = Better-Auth (headless flexibility) + Clerk (pre-built speed)
 
 Use Case Examples:
 1. Startup MVP → Use pre-built UI, launch in hours
@@ -456,7 +456,7 @@ Use Case Examples:
 
 | Provider | MFA Availability | Cost |
 |----------|-----------------|------|
-| **Plinto** | ✅ Free (OSS) | **$0/month** |
+| **Janua** | ✅ Free (OSS) | **$0/month** |
 | **Auth0** | ❌ Excludes free tier | **$2,000-5,000/month** (Professional+) |
 | **Clerk** | ❌ Add-on | **$100/month** |
 | **SuperTokens** | ❌ Paid self-hosted | **$100/month minimum** |
@@ -464,14 +464,14 @@ Use Case Examples:
 
 **Strategic Advantage**:
 ```
-Plinto MFA savings vs competitors:
+Janua MFA savings vs competitors:
 - vs Auth0: $24,000-60,000/year
 - vs Clerk: $1,200/year
 - vs SuperTokens: $1,200/year
 - vs Better-Auth: $0/year (parity)
 
 Marketing Claim: "Auth0's free tier excludes it. Clerk charges $100/month. 
-                  Plinto? Free forever."
+                  Janua? Free forever."
 Validation: ✅ 100% ACCURATE
 ```
 
@@ -534,7 +534,7 @@ model OrganizationMember {
 
 | Provider | Organizations Availability | Cost |
 |----------|---------------------------|------|
-| **Plinto** | ✅ Free (OSS) | **$0/month** |
+| **Janua** | ✅ Free (OSS) | **$0/month** |
 | **SuperTokens** | ❌ "See pricing" | **Hidden (likely $500+/month)** |
 | **Clerk** | ⚠️ Pro plan | **$25/month minimum** |
 | **Auth0** | ⚠️ B2B Identity | **$5,000-10,000/month** |
@@ -542,14 +542,14 @@ model OrganizationMember {
 
 **Strategic Advantage**:
 ```
-Plinto multi-tenancy savings vs competitors:
+Janua multi-tenancy savings vs competitors:
 - vs Auth0 B2B: $60,000-120,000/year
 - vs SuperTokens: $6,000+/year (estimated)
 - vs Clerk Pro: $300/year
 - vs Better-Auth: $0/year but saves 40+ hours implementation time
 
 Marketing Claim: "SuperTokens gates this behind 'See pricing'. Clerk includes it 
-                  in Pro plans. Plinto? Free in OSS."
+                  in Pro plans. Janua? Free in OSS."
 Validation: ✅ 100% ACCURATE
 ```
 
@@ -610,7 +610,7 @@ model Passkey {
 
 | Provider | Passkeys/WebAuthn | Cost |
 |----------|------------------|------|
-| **Plinto** | ✅ Free (OSS) | **$0/month** |
+| **Janua** | ✅ Free (OSS) | **$0/month** |
 | **Auth0** | ⚠️ Professional+ | **$2,000+/month** |
 | **Clerk** | ❌ Not available | N/A |
 | **SuperTokens** | ⚠️ Custom pricing | **Unknown** |
@@ -619,13 +619,13 @@ model Passkey {
 **Strategic Advantage**:
 ```
 Passkey support comparison:
-- Plinto: ✅ Free, production-ready
+- Janua: ✅ Free, production-ready
 - Auth0: $24,000+/year
 - Clerk: Not offered
 - SuperTokens: Hidden pricing
 - Better-Auth: Free (parity)
 
-Marketing Claim: "Passkeys & Biometrics - modern 'table stakes' feature, free in Plinto"
+Marketing Claim: "Passkeys & Biometrics - modern 'table stakes' feature, free in Janua"
 Validation: ✅ 100% ACCURATE
 ```
 
@@ -635,7 +635,7 @@ Validation: ✅ 100% ACCURATE
 
 **Feature Availability Matrix**:
 
-| Feature | Plinto Free (OSS) | Auth0 Free | Clerk Free | SuperTokens Free | Better-Auth |
+| Feature | Janua Free (OSS) | Auth0 Free | Clerk Free | SuperTokens Free | Better-Auth |
 |---------|------------------|------------|------------|------------------|-------------|
 | **Multi-Factor Authentication** | ✅ TOTP, SMS, Email | ❌ Excluded | ❌ $100/mo add-on | ❌ $100/mo minimum | ✅ DIY |
 | **Multi-Tenancy (Organizations)** | ✅ Full featured | ❌ B2B add-on | ⚠️ $25/mo Pro | ❌ "See pricing" | ✅ DIY |
@@ -654,7 +654,7 @@ Validation: ✅ 100% ACCURATE
 
 ### 3.2 Audit: Paid Tier Feature Differentiation
 
-**Success Metric**: *"The value of 'Plinto Cloud' is not just 'hosting', but a seamless, zero-configuration, Git-integrated deployment and management experience."*
+**Success Metric**: *"The value of 'Janua Cloud' is not just 'hosting', but a seamless, zero-configuration, Git-integrated deployment and management experience."*
 
 #### Evidence
 
@@ -679,7 +679,7 @@ Free Tier (Self-Hosted OSS):
     - Self-managed email provider
     - Manual updates/patches
 
-Professional Tier (Plinto Cloud):
+Professional Tier (Janua Cloud):
   Cost: $99/month (up to 10,000 MAU)
   Features:
     - Everything in Free Tier
@@ -713,16 +713,16 @@ Enterprise Tier:
 
 ```
 What competitors paywall: Features (MFA, SSO, SCIM)
-What Plinto paywalls: Managed hosting convenience
+What Janua paywalls: Managed hosting convenience
 
 Value Proposition:
 - DIY self-hosted: Free but requires DevOps effort
-- Plinto Cloud: Pay for convenience, not capabilities
+- Janua Cloud: Pay for convenience, not capabilities
 ```
 
 **Paid Tier Differentiation**:
 
-| Differentiation Factor | Plinto Approach | Competitor Approach |
+| Differentiation Factor | Janua Approach | Competitor Approach |
 |------------------------|----------------|---------------------|
 | **Feature Access** | ✅ All free in OSS | ❌ Enterprise features paywalled |
 | **Managed Hosting** | ✅ Paid tier value | ⚠️ Only option (Auth0, Clerk) |
@@ -732,7 +732,7 @@ Value Proposition:
 
 **Vercel-Style DX** (`docs/deployment/VERCEL_SETUP.md`):
 
-**Planned Plinto Cloud Features**:
+**Planned Janua Cloud Features**:
 - ✅ **Git integration**: Auto-deploy from GitHub/GitLab
 - ✅ **Preview deployments**: Branch previews for testing
 - ✅ **Environment variables**: Secure config management
@@ -743,7 +743,7 @@ Value Proposition:
 
 **Competitive Analysis**:
 
-| Managed Hosting Feature | Plinto Cloud | Clerk | Auth0 | Vercel (for reference) |
+| Managed Hosting Feature | Janua Cloud | Clerk | Auth0 | Vercel (for reference) |
 |-------------------------|-------------|-------|-------|----------------------|
 | **Git integration** | ✅ Planned | ✅ | ❌ | ✅ |
 | **Preview deployments** | ✅ Planned | ❌ | ❌ | ✅ |
@@ -752,7 +752,7 @@ Value Proposition:
 | **Custom domains** | ✅ Free tier | ❌ $25/mo | ❌ Paid | ✅ Free |
 
 **Score**: 88/100  
-**Deduction**: -12 points for Plinto Cloud not yet launched (planned Q1 2026)
+**Deduction**: -12 points for Janua Cloud not yet launched (planned Q1 2026)
 
 ---
 
@@ -793,7 +793,7 @@ Phase 1: Export Data (30 minutes)
   - Create encrypted archive
 
 Phase 2: Deploy Self-Hosted (60 minutes)
-  - Clone Plinto repository
+  - Clone Janua repository
   - Configure environment (.env.production)
   - Deploy with Docker Compose
   - Run database migrations
@@ -819,30 +819,30 @@ Phase 4: Cutover & Verification (60 minutes)
 **Export API** (documented):
 ```bash
 # Export all users with credentials
-curl -X POST https://api.plinto.cloud/v1/export/users \
-  -H "Authorization: Bearer plinto_export_YOUR_KEY" \
+curl -X POST https://api.janua.cloud/v1/export/users \
+  -H "Authorization: Bearer janua_export_YOUR_KEY" \
   -d '{"include_credentials": true, "include_sessions": true}' \
-  -o plinto_users_export.json
+  -o janua_users_export.json
 
 # Export all organizations
-curl -X POST https://api.plinto.cloud/v1/export/organizations \
-  -H "Authorization: Bearer plinto_export_YOUR_KEY" \
+curl -X POST https://api.janua.cloud/v1/export/organizations \
+  -H "Authorization: Bearer janua_export_YOUR_KEY" \
   -d '{"include_members": true, "include_sso_configs": true}' \
-  -o plinto_organizations_export.json
+  -o janua_organizations_export.json
 
 # Export configuration
-curl -X POST https://api.plinto.cloud/v1/export/config \
-  -H "Authorization: Bearer plinto_export_YOUR_KEY" \
-  -o plinto_config_export.json
+curl -X POST https://api.janua.cloud/v1/export/config \
+  -H "Authorization: Bearer janua_export_YOUR_KEY" \
+  -o janua_config_export.json
 ```
 
 **Import Script** (documented):
 ```bash
 # Run import with integrity verification
 docker-compose exec api python scripts/import_from_cloud.py \
-  --users plinto_users_export.json \
-  --organizations plinto_organizations_export.json \
-  --config plinto_config_export.json \
+  --users janua_users_export.json \
+  --organizations janua_organizations_export.json \
+  --config janua_config_export.json \
   --verify-integrity
 
 # Expected output:
@@ -855,7 +855,7 @@ docker-compose exec api python scripts/import_from_cloud.py \
 
 **Competitive Migration Comparison**:
 
-| Migration Feature | Plinto | Clerk | Auth0 | SuperTokens | Better-Auth |
+| Migration Feature | Janua | Clerk | Auth0 | SuperTokens | Better-Auth |
 |------------------|--------|-------|-------|-------------|-------------|
 | **Data export API** | ✅ Full export | ❌ No export | ⚠️ Limited | ⚠️ Basic | N/A (self-hosted) |
 | **Credentials export** | ✅ Encrypted | ❌ Blocked | ❌ Blocked | ⚠️ Hash only | N/A |
@@ -868,7 +868,7 @@ docker-compose exec api python scripts/import_from_cloud.py \
 **Strategic Differentiation**:
 
 ```
-Plinto "Eject Button" vs Competitors:
+Janua "Eject Button" vs Competitors:
 
 Auth0:
 - Migration: Rebuild from scratch (100+ hours)
@@ -885,7 +885,7 @@ SuperTokens:
 - Data export: Basic
 - Vendor lock-in: MODERATE
 
-Plinto:
+Janua:
 - Migration: 2-4 hours with docs
 - Data export: Full API with credentials
 - Vendor lock-in: ZERO
@@ -901,8 +901,8 @@ Auth0 Enterprise (forced pricing):
 - Annual: $60,000/year
 - No migration path → locked in
 
-Plinto Migration Path:
-- Year 1: Plinto Cloud ($2,000/month = $24,000/year)
+Janua Migration Path:
+- Year 1: Janua Cloud ($2,000/month = $24,000/year)
 - Year 2: Migrate to self-hosted ($350/month = $4,200/year)
 - Savings: $55,800/year (93% cost reduction)
 - Migration effort: 2-4 hours
@@ -933,7 +933,7 @@ Plinto Migration Path:
 - [ ] No errors in logs
 
 **Score**: 88/100  
-**Deduction**: -12 points for migration not yet battle-tested (Plinto Cloud not launched)
+**Deduction**: -12 points for migration not yet battle-tested (Janua Cloud not launched)
 
 ---
 
@@ -954,14 +954,14 @@ Plinto Migration Path:
 
 **Blue-Ocean Strategy: ✅ VALIDATED**
 
-Plinto successfully occupies a unique market position:
+Janua successfully occupies a unique market position:
 
 ```
 Competitive Landscape Quadrants:
 
                 High Control (Self-Hosted)
                         |
-        Better-Auth     |     Plinto
+        Better-Auth     |     Janua
         (DIY only)      |  (OSS + Cloud)
                         |
 Low Features ————————————————————————— High Features
@@ -988,7 +988,7 @@ Low Features ——————————————————————�
 
 ### Marketing Claims Verification
 
-**Claim 1**: *"Plinto writes directly to your database. No asynchronous webhooks, no data sync failures."*  
+**Claim 1**: *"Janua writes directly to your database. No asynchronous webhooks, no data sync failures."*  
 **Validation**: ✅ **100% ACCURATE** - Zero webhook-based sync patterns in codebase
 
 **Claim 2**: *"All authentication features free forever—including enterprise SSO, SCIM 2.0, MFA, and multi-tenancy."*  
@@ -1011,14 +1011,14 @@ Low Features ——————————————————————�
 ### Risk Assessment
 
 **High Risks** (Immediate Attention Required):
-- ⚠️ **Plinto Cloud Not Launched**: Paid tier value proposition untested (Q1 2026 launch critical)
+- ⚠️ **Janua Cloud Not Launched**: Paid tier value proposition untested (Q1 2026 launch critical)
 - ⚠️ **Migration Path Untested**: Import script needs production validation before Cloud launch
 - ⚠️ **Svelte/Astro/Solid SDKs Missing**: Framework agnosticism claim incomplete until Q1 2026
 
 **Medium Risks** (Monitor):
 - ⚠️ **Documentation Gaps**: Some features not yet in public docs (e.g., SCIM endpoints)
 - ⚠️ **Drizzle Adapter Missing**: Prisma-only limits TypeScript ORM choice
-- ⚠️ **Custom Fields UI**: Clerk has this, Plinto doesn't (enterprise feature gap)
+- ⚠️ **Custom Fields UI**: Clerk has this, Janua doesn't (enterprise feature gap)
 
 **Low Risks** (Long-term):
 - ✅ **Competitive Moat Strong**: Unique positioning defensible
@@ -1031,7 +1031,7 @@ Low Features ——————————————————————�
 
 **Q1 2026 Priorities** (Critical for Market Position):
 
-1. **Launch Plinto Cloud** (Highest Priority)
+1. **Launch Janua Cloud** (Highest Priority)
    - Validate managed hosting value proposition
    - Test pricing model with real customers
    - Prove migration path works in production
@@ -1080,7 +1080,7 @@ Low Features ——————————————————————�
 
 **Grade: A (92/100)**
 
-Plinto successfully delivers on its blue-ocean market positioning:
+Janua successfully delivers on its blue-ocean market positioning:
 
 **✅ Better-Auth Foundation**: Synchronous database writes, data ownership, Prisma schema (98/100)  
 **✅ Clerk Developer Experience**: 40+ UI components, 10-minute setup, dual API (90/100)  
@@ -1092,7 +1092,7 @@ Plinto successfully delivers on its blue-ocean market positioning:
 1. **Only OSS authentication with free enterprise SSO and SCIM 2.0**
    - Auth0: $24,000-60,000/year
    - Clerk: $12,000+/year
-   - Plinto: $0/year (MIT license)
+   - Janua: $0/year (MIT license)
 
 2. **Better-Auth control + Clerk DX**
    - Unique combination in market
@@ -1122,7 +1122,7 @@ Plinto successfully delivers on its blue-ocean market positioning:
 
 ### Final Assessment
 
-**Plinto is production-ready and strategically differentiated.**
+**Janua is production-ready and strategically differentiated.**
 
 The platform successfully attacks the weaknesses of every major competitor:
 - **vs Auth0**: Free enterprise features, no vendor lock-in
@@ -1133,14 +1133,14 @@ The platform successfully attacks the weaknesses of every major competitor:
 **Critical Success Factors**:
 1. ✅ **Technical Implementation**: A+ (production-ready)
 2. ✅ **Strategic Positioning**: A (unique market position)
-3. ⚠️ **Go-to-Market Execution**: TBD (Plinto Cloud launch Q1 2026)
+3. ⚠️ **Go-to-Market Execution**: TBD (Janua Cloud launch Q1 2026)
 
 **Recommendation**: **PROCEED WITH PRODUCTION LAUNCH**
 
-Plinto has the technical foundation, strategic positioning, and market opportunity to become a category leader in the authentication/identity space. The Q1 2026 Plinto Cloud launch will validate the business model and complete the blue-ocean strategy.
+Janua has the technical foundation, strategic positioning, and market opportunity to become a category leader in the authentication/identity space. The Q1 2026 Janua Cloud launch will validate the business model and complete the blue-ocean strategy.
 
 ---
 
 **Report prepared by**: Strategic Analysis Team  
 **Audit date**: November 17, 2025  
-**Next review**: Post-Plinto Cloud launch (Q1 2026)
+**Next review**: Post-Janua Cloud launch (Q1 2026)

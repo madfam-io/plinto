@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@plinto/ui', '@plinto/react-sdk-sdk'],
+  transpilePackages: ['@janua/ui', '@janua/react-sdk-sdk'],
   async headers() {
     return [
       {

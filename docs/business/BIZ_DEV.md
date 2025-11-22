@@ -1,6 +1,6 @@
-# Plinto — BIZ\_DEV.md
+# Janua — BIZ\_DEV.md
 
-**Company:** Plinto (plinto.dev) by **Aureo Labs** (aureolabs.dev), a **MADFAM** company (madfam.io)
+**Company:** Janua (janua.dev) by **Aureo Labs** (aureolabs.dev), a **MADFAM** company (madfam.io)
 **Doc status:** Draft v1.0 (Monetization & Internal Adoption)
 **Owners:** BizOps, Product, Finance, Legal, Platform Eng
 **Scope:** Pricing & packaging, payments architecture (Conekta MX + Fungies.io MoR INTL), GTM, revenue ops, and internal rollout across MADFAM products.
@@ -9,7 +9,7 @@
 
 ## 0) Executive Summary
 
-Plinto is the **secure substrate for identity**. Our business strategy is **product‑led with an enterprise overlay**. We will monetize via tiered subscriptions with usage‑based overages, sell enterprise add‑ons (SSO/SCIM, residency, audit), and leverage **Conekta** for **Mexico‑based customers** (MXN) and **Fungies.io** as **Merchant of Record** (MoR) for international customers (multi‑currency, tax handling).
+Janua is the **secure substrate for identity**. Our business strategy is **product‑led with an enterprise overlay**. We will monetize via tiered subscriptions with usage‑based overages, sell enterprise add‑ons (SSO/SCIM, residency, audit), and leverage **Conekta** for **Mexico‑based customers** (MXN) and **Fungies.io** as **Merchant of Record** (MoR) for international customers (multi‑currency, tax handling).
 
 **Why this wins:** developer‑fast integration, edge‑level performance, and a strong **“own your identity”** story—in both LATAM and global markets.
 
@@ -79,7 +79,7 @@ Plinto is the **secure substrate for identity**. Our business strategy is **prod
 
 ## 3) Payments & Billing Architecture
 
-**Single domain:** `plinto.dev`
+**Single domain:** `janua.dev`
 **Checkout Rule:** detect customer region and legal entity to route payments stack.
 
 ### 3.1 Routing logic
@@ -101,9 +101,9 @@ Plinto is the **secure substrate for identity**. Our business strategy is **prod
 
 ### 3.4 Subscription model & entitlements
 
-* **Source of truth**: Plinto **Billing Service** maintains **Subscriptions**, **Plans**, **Entitlements**.
+* **Source of truth**: Janua **Billing Service** maintains **Subscriptions**, **Plans**, **Entitlements**.
 * **External providers** (Conekta/Fungies) emit events → we reconcile to **active\_until**, **plan\_id**, **add\_ons\[]**.
-* **App gating**: each product calls Plinto’s **Entitlements API** to determine access/features.
+* **App gating**: each product calls Janua’s **Entitlements API** to determine access/features.
 
 ### 3.5 Dunning & recovery
 
@@ -135,8 +135,8 @@ Plinto is the **secure substrate for identity**. Our business strategy is **prod
 ### 4.2 Standards & invariants
 
 * **AuthAdapter** as the integration seam; reversible switch.
-* **Single MADFAM Account** backed by Plinto; cross‑product SSO.
-* **Entitlements API** centralizes **plans/add‑ons**; each product reads features from Plinto.
+* **Single MADFAM Account** backed by Janua; cross‑product SSO.
+* **Entitlements API** centralizes **plans/add‑ons**; each product reads features from Janua.
 * **Telemetry**: instrument signup→activation, MAU, and conversion per product.
 
 ### 4.3 Internal chargeback (transfer pricing)
@@ -160,7 +160,7 @@ Plinto is the **secure substrate for identity**. Our business strategy is **prod
 
 ### 5.2 Channels
 
-* **Dev content**: blog, examples, “Why we built Plinto” case study (Forge Sight).
+* **Dev content**: blog, examples, “Why we built Janua” case study (Forge Sight).
 * **Communities**: HN, Reddit r/webdev/r/devops, Product Hunt.
 * **Partners**: Vercel ecosystem, Cloudflare community, Railway users.
 * **LATAM focus**: Spanish docs, local talks/webinars, founder rounds with Mexico dev communities.
@@ -246,9 +246,9 @@ base_price(tier) + add_ons + overage_price_per_1k * ceil(max(0, (MAU - tier_cap)
 
 | SKU             | Includes                            | Notes                          |
 | --------------- | ----------------------------------- | ------------------------------ |
-| PLINTO-COMM     | Core features, 1 region, 2k MAU cap | Free; community support        |
-| PLINTO-PRO      | +Orgs/RBAC, 2 regions, 10k cap      | Overage billed                 |
-| PLINTO-SCALE    | Higher caps/limits, 3 regions       | Overage billed                 |
+| JANUA-COMM     | Core features, 1 region, 2k MAU cap | Free; community support        |
+| JANUA-PRO      | +Orgs/RBAC, 2 regions, 10k cap      | Overage billed                 |
+| JANUA-SCALE    | Higher caps/limits, 3 regions       | Overage billed                 |
 | ADDON-SSO       | SAML/OIDC, SCIM                     | Enterprise or Pro/Scale add‑on |
 | ADDON-AUDIT     | Advanced audit, retention           |                                |
 | ADDON-RESIDENCY | Region pinning per region           |                                |

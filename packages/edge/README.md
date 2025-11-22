@@ -1,11 +1,11 @@
-# @plinto/edge
+# @janua/edge
 
 Edge-fast JWT verification for Cloudflare Workers and Edge environments. Sub-50ms verification latency guaranteed.
 
 ## Installation
 
 ```bash
-npm install @plinto/edge
+npm install @janua/edge
 ```
 
 ## Usage
@@ -13,15 +13,15 @@ npm install @plinto/edge
 ### Basic Verification
 
 ```javascript
-import { verify } from '@plinto/edge';
+import { verify } from '@janua/edge';
 
 export default {
   async fetch(request, env) {
     const token = request.headers.get('Authorization')?.substring(7);
     
     const result = await verify(token, {
-      publicKey: env.PLINTO_PUBLIC_KEY,
-      issuer: 'https://api.plinto.dev',
+      publicKey: env.JANUA_PUBLIC_KEY,
+      issuer: 'https://api.janua.dev',
       audience: 'your-app-id',
     });
 
@@ -37,11 +37,11 @@ export default {
 ### Cloudflare Worker Handler
 
 ```javascript
-import { createWorkerHandler } from '@plinto/edge';
+import { createWorkerHandler } from '@janua/edge';
 
 export default createWorkerHandler({
-  publicKey: PLINTO_PUBLIC_KEY,
-  issuer: 'https://api.plinto.dev',
+  publicKey: JANUA_PUBLIC_KEY,
+  issuer: 'https://api.janua.dev',
   audience: 'your-app-id',
 });
 ```
@@ -49,11 +49,11 @@ export default createWorkerHandler({
 ### Middleware Pattern
 
 ```javascript
-import { middleware } from '@plinto/edge';
+import { middleware } from '@janua/edge';
 
 const authMiddleware = middleware({
-  jwksUrl: 'https://api.plinto.dev/.well-known/jwks.json',
-  issuer: 'https://api.plinto.dev',
+  jwksUrl: 'https://api.janua.dev/.well-known/jwks.json',
+  issuer: 'https://api.janua.dev',
 });
 
 export default {
@@ -72,7 +72,7 @@ export default {
 ### Performance Monitoring
 
 ```javascript
-import { verifyWithMetrics, VerificationMetrics } from '@plinto/edge';
+import { verifyWithMetrics, VerificationMetrics } from '@janua/edge';
 
 // Use verifyWithMetrics instead of verify
 const result = await verifyWithMetrics(token, config);

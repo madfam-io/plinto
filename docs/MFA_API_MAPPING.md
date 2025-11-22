@@ -10,12 +10,12 @@
 
 **DOCUMENTED** (WRONG):
 ```typescript
-plinto.auth.mfa.*  // Nested namespace - DOES NOT EXIST
+janua.auth.mfa.*  // Nested namespace - DOES NOT EXIST
 ```
 
 **ACTUAL** (CORRECT):
 ```typescript
-plinto.auth.*  // Flat namespace - ALL MFA methods are directly on auth
+janua.auth.*  // Flat namespace - ALL MFA methods are directly on auth
 ```
 
 ---
@@ -24,15 +24,15 @@ plinto.auth.*  // Flat namespace - ALL MFA methods are directly on auth
 
 | Documented Method | Actual Method | Parameter Changes | Notes |
 |-------------------|---------------|-------------------|-------|
-| `plinto.auth.mfa.setup()` | `plinto.auth.enableMFA()` | method param required | Renamed: setup → enableMFA |
-| `plinto.auth.mfa.verify()` | `plinto.auth.verifyMFA()` | code param required | Renamed: verify → verifyMFA |
-| `plinto.auth.mfa.getStatus()` | `plinto.auth.getMFAStatus()` | No userId param | No parameters needed |
-| `plinto.auth.mfa.disable()` | `plinto.auth.disableMFA()` | password param required | No confirmationCode |
-| `plinto.auth.mfa.generateBackupCodes()` | `plinto.auth.regenerateMFABackupCodes()` | password param required | Renamed: generate → regenerate |
-| `plinto.auth.mfa.challenge()` | NOT EXISTS | - | Remove from documentation |
-| `plinto.auth.mfa.verifySetup()` | USE `verifyMFA()` | - | Combined into verifyMFA |
-| `plinto.auth.mfa.requestNewCode()` | NOT EXISTS | - | Remove from documentation |
-| `plinto.auth.mfa.webauthn.*` | USE passkey methods | See below | Wrong namespace |
+| `janua.auth.mfa.setup()` | `janua.auth.enableMFA()` | method param required | Renamed: setup → enableMFA |
+| `janua.auth.mfa.verify()` | `janua.auth.verifyMFA()` | code param required | Renamed: verify → verifyMFA |
+| `janua.auth.mfa.getStatus()` | `janua.auth.getMFAStatus()` | No userId param | No parameters needed |
+| `janua.auth.mfa.disable()` | `janua.auth.disableMFA()` | password param required | No confirmationCode |
+| `janua.auth.mfa.generateBackupCodes()` | `janua.auth.regenerateMFABackupCodes()` | password param required | Renamed: generate → regenerate |
+| `janua.auth.mfa.challenge()` | NOT EXISTS | - | Remove from documentation |
+| `janua.auth.mfa.verifySetup()` | USE `verifyMFA()` | - | Combined into verifyMFA |
+| `janua.auth.mfa.requestNewCode()` | NOT EXISTS | - | Remove from documentation |
+| `janua.auth.mfa.webauthn.*` | USE passkey methods | See below | Wrong namespace |
 
 ---
 
@@ -42,7 +42,7 @@ plinto.auth.*  // Flat namespace - ALL MFA methods are directly on auth
 
 **DOCUMENTED**:
 ```typescript
-const mfaSetup = await plinto.auth.mfa.setup({
+const mfaSetup = await janua.auth.mfa.setup({
   userId: user.id,
   method: 'totp',
   phoneNumber: '+1234567890',  // For SMS
@@ -52,7 +52,7 @@ const mfaSetup = await plinto.auth.mfa.setup({
 
 **ACTUAL**:
 ```typescript
-const mfaSetup = await plinto.auth.enableMFA('totp');
+const mfaSetup = await janua.auth.enableMFA('totp');
 // Returns: { qr_code, secret, backup_codes }
 // No userId needed (uses authenticated user)
 // No phoneNumber support yet
@@ -63,7 +63,7 @@ const mfaSetup = await plinto.auth.enableMFA('totp');
 
 **DOCUMENTED**:
 ```typescript
-const result = await plinto.auth.mfa.verify({
+const result = await janua.auth.mfa.verify({
   sessionId: session.id,
   method: 'totp',
   code: '123456'
@@ -72,7 +72,7 @@ const result = await plinto.auth.mfa.verify({
 
 **ACTUAL**:
 ```typescript
-const result = await plinto.auth.verifyMFA({
+const result = await janua.auth.verifyMFA({
   code: '123456'
 });
 // Returns: AuthResponse with tokens
@@ -84,14 +84,14 @@ const result = await plinto.auth.verifyMFA({
 
 **DOCUMENTED**:
 ```typescript
-const status = await plinto.auth.mfa.getStatus({
+const status = await janua.auth.mfa.getStatus({
   userId: user.id
 });
 ```
 
 **ACTUAL**:
 ```typescript
-const status = await plinto.auth.getMFAStatus();
+const status = await janua.auth.getMFAStatus();
 // No parameters needed (uses authenticated user)
 // Returns: { enabled, method, backup_codes_remaining }
 ```
@@ -100,7 +100,7 @@ const status = await plinto.auth.getMFAStatus();
 
 **DOCUMENTED**:
 ```typescript
-await plinto.auth.mfa.disable({
+await janua.auth.mfa.disable({
   userId: user.id,
   password: 'userPassword',
   confirmationCode: '123456'
@@ -109,7 +109,7 @@ await plinto.auth.mfa.disable({
 
 **ACTUAL**:
 ```typescript
-await plinto.auth.disableMFA('userPassword');
+await janua.auth.disableMFA('userPassword');
 // Only password needed for confirmation
 // No userId or confirmationCode parameters
 ```
@@ -118,7 +118,7 @@ await plinto.auth.disableMFA('userPassword');
 
 **DOCUMENTED**:
 ```typescript
-const backupCodes = await plinto.auth.mfa.generateBackupCodes({
+const backupCodes = await janua.auth.mfa.generateBackupCodes({
   userId: user.id,
   count: 10
 });
@@ -126,7 +126,7 @@ const backupCodes = await plinto.auth.mfa.generateBackupCodes({
 
 **ACTUAL**:
 ```typescript
-const backupCodes = await plinto.auth.regenerateMFABackupCodes('userPassword');
+const backupCodes = await janua.auth.regenerateMFABackupCodes('userPassword');
 // Returns fixed number of codes (usually 8-10)
 // Requires password for security
 // No count parameter
@@ -137,12 +137,12 @@ const backupCodes = await plinto.auth.regenerateMFABackupCodes('userPassword');
 **DOCUMENTED** (WRONG):
 ```typescript
 // Documented as nested under mfa.webauthn:
-const challenge = await plinto.auth.mfa.webauthn.generateChallenge({
+const challenge = await janua.auth.mfa.webauthn.generateChallenge({
   userId: user.id,
   type: 'platform'
 });
 
-const verification = await plinto.auth.mfa.webauthn.verify({
+const verification = await janua.auth.mfa.webauthn.verify({
   challengeId: challenge.id,
   credential: publicKeyCredential
 });
@@ -151,18 +151,18 @@ const verification = await plinto.auth.mfa.webauthn.verify({
 **ACTUAL** (CORRECT):
 ```typescript
 // Passkey methods are directly on auth:
-const options = await plinto.auth.getPasskeyRegistrationOptions({
+const options = await janua.auth.getPasskeyRegistrationOptions({
   authenticator_attachment: 'platform'  // optional
 });
 
-const verified = await plinto.auth.verifyPasskeyRegistration(
+const verified = await janua.auth.verifyPasskeyRegistration(
   credential,
   'My Passkey'  // optional name
 );
 
 // For authentication:
-const authOptions = await plinto.auth.getPasskeyAuthenticationOptions(email);
-const authResult = await plinto.auth.verifyPasskeyAuthentication(
+const authOptions = await janua.auth.getPasskeyAuthenticationOptions(email);
+const authResult = await janua.auth.verifyPasskeyAuthentication(
   credential,
   challenge,
   email
@@ -177,16 +177,16 @@ These bonus methods exist in the SDK but aren't documented:
 
 ```typescript
 // MFA Recovery
-await plinto.auth.validateMFACode(code);
-await plinto.auth.getMFARecoveryOptions(email);
-await plinto.auth.initiateMFARecovery(email);
+await janua.auth.validateMFACode(code);
+await janua.auth.getMFARecoveryOptions(email);
+await janua.auth.initiateMFARecovery(email);
 
 // Passkey Management
-await plinto.auth.checkPasskeyAvailability();
-await plinto.auth.listPasskeys();
-await plinto.auth.updatePasskey(passkeyId, newName);
-await plinto.auth.deletePasskey(passkeyId, password);
-await plinto.auth.regeneratePasskeySecret(passkeyId);
+await janua.auth.checkPasskeyAvailability();
+await janua.auth.listPasskeys();
+await janua.auth.updatePasskey(passkeyId, newName);
+await janua.auth.deletePasskey(passkeyId, password);
+await janua.auth.regeneratePasskeySecret(passkeyId);
 ```
 
 ---
@@ -197,32 +197,32 @@ For updating the MFA guide, use these regex patterns:
 
 ### Pattern 1: Basic namespace change
 ```regex
-plinto\.auth\.mfa\.
+janua\.auth\.mfa\.
 →
-plinto.auth.
+janua.auth.
 ```
 
 ### Pattern 2: Method renames
 ```regex
-plinto\.auth\.mfa\.setup\(
+janua\.auth\.mfa\.setup\(
 →
-plinto.auth.enableMFA(
+janua.auth.enableMFA(
 
-plinto\.auth\.mfa\.verify\(
+janua\.auth\.mfa\.verify\(
 →
-plinto.auth.verifyMFA(
+janua.auth.verifyMFA(
 
-plinto\.auth\.mfa\.getStatus\(
+janua\.auth\.mfa\.getStatus\(
 →
-plinto.auth.getMFAStatus(
+janua.auth.getMFAStatus(
 
-plinto\.auth\.mfa\.disable\(
+janua\.auth\.mfa\.disable\(
 →
-plinto.auth.disableMFA(
+janua.auth.disableMFA(
 
-plinto\.auth\.mfa\.generateBackupCodes\(
+janua\.auth\.mfa\.generateBackupCodes\(
 →
-plinto.auth.regenerateMFABackupCodes(
+janua.auth.regenerateMFABackupCodes(
 ```
 
 ### Pattern 3: Remove userId parameters
@@ -238,9 +238,9 @@ plinto.auth.regenerateMFABackupCodes(
 
 ### Pattern 4: WebAuthn namespace
 ```regex
-plinto\.auth\.mfa\.webauthn\.
+janua\.auth\.mfa\.webauthn\.
 →
-plinto.auth.
+janua.auth.
 ```
 
 ---

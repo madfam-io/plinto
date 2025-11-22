@@ -484,7 +484,7 @@ async def passkey_register_options(
     # Generate WebAuthn registration options
     options = webauthn_generate(
         rp_id=settings.WEBAUTHN_RP_ID or "localhost",
-        rp_name=settings.WEBAUTHN_RP_NAME or "Plinto",
+        rp_name=settings.WEBAUTHN_RP_NAME or "Janua",
         user_id=str(current_user.id).encode(),
         user_name=current_user.email,
         user_display_name=current_user.full_name or current_user.email,

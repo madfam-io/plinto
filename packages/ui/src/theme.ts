@@ -1,5 +1,5 @@
 /**
- * Plinto Unified Design System
+ * Janua Unified Design System
  * Shared across all applications: marketing, dashboard, admin, docs
  */
 

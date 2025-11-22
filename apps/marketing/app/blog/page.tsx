@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@plinto/ui'
+import { Button } from '@janua/ui'
 import { ArrowRight, Calendar, User, Clock } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Blog | Plinto',
-  description: 'Stay updated with the latest in authentication, security, and developer insights from the Plinto team.',
+  title: 'Blog | Janua',
+  description: 'Stay updated with the latest in authentication, security, and developer insights from the Janua team.',
 }
 
 export default function BlogPage() {
@@ -41,7 +41,7 @@ export default function BlogPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <User className="w-4 h-4" />
-                    <span>Plinto Team</span>
+                    <span>Janua Team</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <Clock className="w-4 h-4" />
@@ -66,7 +66,7 @@ export default function BlogPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <User className="w-4 h-4" />
-                    <span>Plinto Team</span>
+                    <span>Janua Team</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <Clock className="w-4 h-4" />
@@ -91,7 +91,7 @@ export default function BlogPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <User className="w-4 h-4" />
-                    <span>Plinto Team</span>
+                    <span>Janua Team</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <Clock className="w-4 h-4" />

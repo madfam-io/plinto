@@ -122,7 +122,7 @@ class EnhancedEmailService:
             )
 
         # Generate unique message ID for tracking
-        message_id = f"plinto-{secrets.token_hex(12)}"
+        message_id = f"janua-{secrets.token_hex(12)}"
 
         # Try each provider in order until one succeeds
         last_error = None
@@ -279,11 +279,11 @@ class EnhancedEmailService:
             message = MIMEMultipart("alternative")
             message["Subject"] = subject
             message["From"] = formataddr((
-                settings.FROM_NAME or settings.EMAIL_FROM_NAME or "Plinto",
+                settings.FROM_NAME or settings.EMAIL_FROM_NAME or "Janua",
                 settings.FROM_EMAIL or settings.EMAIL_FROM_ADDRESS
             ))
             message["To"] = to_email
-            message["Message-ID"] = f"<{message_id}@plinto.dev>"
+            message["Message-ID"] = f"<{message_id}@janua.dev>"
 
             # Add text content
             if text_content:
@@ -415,7 +415,7 @@ class EnhancedEmailService:
             'request_time': request_info.get('timestamp', datetime.utcnow().isoformat()),
             'ip_address': request_info.get('ip_address', 'Unknown'),
             'user_agent': request_info.get('user_agent', 'Unknown'),
-            'support_email': settings.SUPPORT_EMAIL or 'support@plinto.dev'
+            'support_email': settings.SUPPORT_EMAIL or 'support@janua.dev'
         }
 
         html_template = self.jinja_env.get_template('mfa_recovery.html')
@@ -457,7 +457,7 @@ class EnhancedEmailService:
             'was_you': alert_type in ['Suspicious Login Attempt', 'New Device Login'],
             'confirm_url': f"{settings.FRONTEND_URL}/security/confirm/{event_details.get('event_id', '')}",
             'secure_account_url': f"{settings.FRONTEND_URL}/security/alert",
-            'support_email': settings.SUPPORT_EMAIL or 'support@plinto.dev'
+            'support_email': settings.SUPPORT_EMAIL or 'support@janua.dev'
         }
 
         html_template = self.jinja_env.get_template('security_alert.html')

@@ -14,16 +14,16 @@ export const searchData: SearchResult[] = [
   {
     id: 'getting-started',
     title: 'Getting Started',
-    description: 'Complete guide to integrating Plinto into your application',
+    description: 'Complete guide to integrating Janua into your application',
     url: '/getting-started',
     type: 'guide',
     section: 'Getting Started',
-    content: 'getting started plinto integration authentication setup install configure'
+    content: 'getting started janua integration authentication setup install configure'
   },
   {
     id: 'quick-start',
     title: 'Quick Start Guide',
-    description: 'Get up and running with Plinto in under 5 minutes',
+    description: 'Get up and running with Janua in under 5 minutes',
     url: '/getting-started/quick-start',
     type: 'guide',
     section: 'Getting Started',
@@ -127,7 +127,7 @@ export const searchData: SearchResult[] = [
   },
   {
     id: 'nextjs-sdk',
-    title: '@plinto/nextjs',
+    title: '@janua/nextjs',
     description: 'Next.js SDK with App Router and Pages Router support',
     url: '/sdks/javascript/nextjs',
     type: 'sdk',
@@ -136,7 +136,7 @@ export const searchData: SearchResult[] = [
   },
   {
     id: 'react-sdk',
-    title: '@plinto/react-sdk',
+    title: '@janua/react-sdk',
     description: 'React hooks and components for authentication',
     url: '/sdks/javascript/react',
     type: 'sdk',
@@ -145,7 +145,7 @@ export const searchData: SearchResult[] = [
   },
   {
     id: 'vue-sdk',
-    title: '@plinto/vue',
+    title: '@janua/vue',
     description: 'Vue 3 composables and plugin',
     url: '/sdks/javascript/vue',
     type: 'sdk',
@@ -154,7 +154,7 @@ export const searchData: SearchResult[] = [
   },
   {
     id: 'python-sdk',
-    title: 'plinto-python',
+    title: 'janua-python',
     description: 'Python SDK with async/await support',
     url: '/sdks/python',
     type: 'sdk',
@@ -204,7 +204,7 @@ export const searchData: SearchResult[] = [
   {
     id: 'guides',
     title: 'Guides',
-    description: 'Comprehensive guides covering every aspect of Plinto',
+    description: 'Comprehensive guides covering every aspect of Janua',
     url: '/guides',
     type: 'guide',
     section: 'Guides',
@@ -260,7 +260,7 @@ export const searchData: SearchResult[] = [
   {
     id: 'react-integration',
     title: 'React Integration',
-    description: 'Integrate Plinto with React applications',
+    description: 'Integrate Janua with React applications',
     url: '/guides/frameworks/react',
     type: 'guide',
     section: 'Framework Guides',

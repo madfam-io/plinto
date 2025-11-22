@@ -1,4 +1,4 @@
-# Plinto Maintenance System Implementation
+# Janua Maintenance System Implementation
 
 **Status**: ✅ Complete  
 **Date**: 2025-11-17  

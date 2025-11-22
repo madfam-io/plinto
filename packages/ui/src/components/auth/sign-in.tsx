@@ -38,8 +38,8 @@ export interface SignInProps {
   logoUrl?: string
   /** Show "Remember me" checkbox */
   showRememberMe?: boolean
-  /** Plinto client instance for API integration */
-  plintoClient?: any
+  /** Janua client instance for API integration */
+  januaClient?: any
   /** API URL for direct fetch calls (fallback if no client provided) */
   apiUrl?: string
 }
@@ -59,7 +59,7 @@ export function SignIn({
   },
   logoUrl,
   showRememberMe = true,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 }: SignInProps) {
   const [email, setEmail] = React.useState('')
@@ -75,9 +75,9 @@ export function SignIn({
     setIsLoading(true)
 
     try {
-      if (plintoClient) {
-        // Use Plinto SDK client for real API integration
-        const response = await plintoClient.auth.signIn({
+      if (januaClient) {
+        // Use Janua SDK client for real API integration
+        const response = await januaClient.auth.signIn({
           email,
           password,
           remember,
@@ -128,9 +128,9 @@ export function SignIn({
   const handleSocialLogin = async (provider: string) => {
     setIsLoading(true)
     try {
-      if (plintoClient) {
-        // Use Plinto SDK for OAuth flow
-        const response = await plintoClient.auth.initiateOAuth(provider, {
+      if (januaClient) {
+        // Use Janua SDK for OAuth flow
+        const response = await januaClient.auth.initiateOAuth(provider, {
           redirectUrl: redirectUrl || window.location.origin,
         })
         // Redirect to OAuth provider

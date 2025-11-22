@@ -83,7 +83,7 @@ def hash_password(password: str) -> str:
 ### Network Security ✅ **GOOD ISOLATION**
 
 **Docker Network Configuration:**
-- ✅ **Isolated bridge network** (`plinto-network`)
+- ✅ **Isolated bridge network** (`janua-network`)
 - ✅ **Service-to-service communication** via internal DNS
 - ✅ **Port exposure control** - only necessary ports exposed
 - ✅ **No host networking** - containers isolated from host
@@ -348,7 +348,7 @@ app.add_middleware(
 
 ## Conclusion
 
-Plinto demonstrates **strong security architecture and enterprise-level thinking** with comprehensive authentication methods, proper JWT implementation, and extensive compliance features. The security framework is well-designed with industry-standard libraries and patterns.
+Janua demonstrates **strong security architecture and enterprise-level thinking** with comprehensive authentication methods, proper JWT implementation, and extensive compliance features. The security framework is well-designed with industry-standard libraries and patterns.
 
 **Critical Security Issues:**
 1. **Weak password hashing** - immediate security vulnerability

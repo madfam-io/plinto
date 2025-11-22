@@ -39,7 +39,7 @@ graph LR
 - Compliance gaps
 
 **Solution Awareness**:
-- Discover Plinto through search, referrals, or comparisons
+- Discover Janua through search, referrals, or comparisons
 - Initial understanding of value proposition
 - Recognition of fit for needs
 
@@ -65,14 +65,14 @@ test('Problem Recognition: Landing page addresses key pain points', async ({ pag
 ## Stage 2: Research
 
 ### Touchpoints
-- Plinto website
+- Janua website
 - Product documentation
 - Blog articles
 - Case studies
 - Analyst reports
 
 ### Goals
-- Understand Plinto capabilities
+- Understand Janua capabilities
 - Assess technical fit
 - Review pricing structure
 - Evaluate vendor credibility
@@ -173,7 +173,7 @@ test('Evaluation: Pricing page shows transparent cost structure', async ({ page 
 - Analyst reports (Gartner, Forrester)
 
 ### Goals
-- Compare Plinto vs Auth0, Clerk, Supabase
+- Compare Janua vs Auth0, Clerk, Supabase
 - Validate price/performance ratio
 - Assess differentiation
 - Understand trade-offs
@@ -189,7 +189,7 @@ test('Evaluation: Pricing page shows transparent cost structure', async ({ page 
 - No misleading claims
 - Accurate competitor information
 - Balanced pros/cons
-- Clear when Plinto is NOT the right fit
+- Clear when Janua is NOT the right fit
 
 ### Validation Tests
 ```typescript
@@ -205,7 +205,7 @@ test('Comparison: Competitive comparison is accurate', async ({ page }) => {
   expect(competitors).toContain('Clerk');
   
   // Feature parity shown honestly
-  // (Some competitors may have features Plinto doesn't - should be marked clearly)
+  // (Some competitors may have features Janua doesn't - should be marked clearly)
 });
 ```
 

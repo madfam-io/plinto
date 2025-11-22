@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
 // Load environment variables
 dotenv.config();
@@ -12,10 +12,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Plinto SDK client
-const plinto = new PlintoClient({
-  apiUrl: process.env.PLINTO_API_URL || 'http://localhost:8000',
-  apiKey: process.env.PLINTO_API_KEY || 'test-api-key'
+// Janua SDK client
+const janua = new JanuaClient({
+  apiUrl: process.env.JANUA_API_URL || 'http://localhost:8000',
+  apiKey: process.env.JANUA_API_KEY || 'test-api-key'
 });
 
 // Middleware
@@ -32,13 +32,13 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 
-// Make plinto client available to routes
-app.locals.plinto = plinto;
+// Make janua client available to routes
+app.locals.janua = janua;
 
 // Routes
 app.get('/', (req, res) => {
   res.render('index', {
-    title: 'Plinto Test App',
+    title: 'Janua Test App',
     user: req.cookies.user ? JSON.parse(req.cookies.user) : null
   });
 });
@@ -51,7 +51,7 @@ app.post('/signup', async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
-    const result = await plinto.auth.signUp({
+    const result = await janua.auth.signUp({
       email,
       password,
       name
@@ -79,7 +79,7 @@ app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const result = await plinto.auth.signIn({
+    const result = await janua.auth.signIn({
       email,
       password
     });
@@ -137,7 +137,7 @@ app.post('/profile', async (req, res) => {
     const { name, email } = req.body;
     const accessToken = req.cookies.access_token;
 
-    const updatedUser = await plinto.users.updateCurrentUser(
+    const updatedUser = await janua.users.updateCurrentUser(
       { name, email },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
@@ -187,7 +187,7 @@ app.post('/security/mfa/enable', async (req, res) => {
   try {
     const accessToken = req.cookies.access_token;
 
-    const mfaSetup = await plinto.auth.enableMFA(
+    const mfaSetup = await janua.auth.enableMFA(
       'totp',
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
@@ -223,7 +223,7 @@ app.post('/security/mfa/verify', async (req, res) => {
     const { code } = req.body;
     const accessToken = req.cookies.access_token;
 
-    await plinto.auth.verifyMFA(
+    await janua.auth.verifyMFA(
       { code },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
@@ -259,7 +259,7 @@ app.post('/security/password/change', async (req, res) => {
     const { currentPassword, newPassword } = req.body;
     const accessToken = req.cookies.access_token;
 
-    await plinto.auth.changePassword(
+    await janua.auth.changePassword(
       { current_password: currentPassword, new_password: newPassword },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
@@ -303,7 +303,7 @@ app.post('/passkey/register/options', async (req, res) => {
   try {
     const accessToken = req.cookies.access_token;
 
-    const options = await plinto.auth.getPasskeyRegistrationOptions(
+    const options = await janua.auth.getPasskeyRegistrationOptions(
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
 
@@ -318,7 +318,7 @@ app.post('/passkey/register/verify', async (req, res) => {
     const { credential } = req.body;
     const accessToken = req.cookies.access_token;
 
-    await plinto.auth.verifyPasskeyRegistration(
+    await janua.auth.verifyPasskeyRegistration(
       credential,
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
@@ -348,7 +348,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 // Start server
 app.listen(PORT, () => {
   console.log(`Test app running on http://localhost:${PORT}`);
-  console.log(`Plinto API URL: ${process.env.PLINTO_API_URL || 'http://localhost:8000'}`);
+  console.log(`Janua API URL: ${process.env.JANUA_API_URL || 'http://localhost:8000'}`);
 });
 
 export default app;

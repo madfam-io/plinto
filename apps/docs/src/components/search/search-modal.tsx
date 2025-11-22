@@ -172,7 +172,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   <span>Close</span>
                 </div>
                 <div>
-                  Powered by Plinto Search
+                  Powered by Janua Search
                 </div>
               </div>
             </Dialog.Panel>

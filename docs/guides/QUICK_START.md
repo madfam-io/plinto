@@ -2,7 +2,7 @@
 
 **Time Required**: 5 minutes to start, 15-20 minutes for full demonstration
 
-Everything is ready for you to demonstrate the complete Plinto authentication platform in your browser before publishing the first SDK package.
+Everything is ready for you to demonstrate the complete Janua authentication platform in your browser before publishing the first SDK package.
 
 ---
 
@@ -10,7 +10,7 @@ Everything is ready for you to demonstrate the complete Plinto authentication pl
 
 ```bash
 # From repository root
-cd /Users/aldoruizluna/labspace/plinto
+cd /Users/aldoruizluna/labspace/janua
 ./scripts/start-local-demo.sh
 ```
 
@@ -24,7 +24,7 @@ cd /Users/aldoruizluna/labspace/plinto
 **Expected Output**:
 ```
 ╔════════════════════════════════════════════════════════════╗
-║              PLINTO LOCAL DEMO ENVIRONMENT                 ║
+║              JANUA LOCAL DEMO ENVIRONMENT                 ║
 ╚════════════════════════════════════════════════════════════╝
 
 ✓ Redis running on port 6379

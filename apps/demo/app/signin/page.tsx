@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Button, Input, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@plinto/ui'
+import { Button, Input, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@janua/ui'
 import { Mail, Lock, ArrowRight, Loader2, AlertCircle, Info } from 'lucide-react'
 import { useEnvironment, useDemoFeatures } from '@/hooks/useEnvironment'
-import { usePlinto } from '@/components/providers/plinto-provider'
+import { useJanua } from '@/components/providers/janua-provider'
 
 export default function SignInPage() {
   const router = useRouter()
-  const { client } = usePlinto()
+  const { client } = useJanua()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -88,11 +88,11 @@ export default function SignInPage() {
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <Link href="https://plinto.dev" className="inline-flex items-center space-x-2">
+          <Link href="https://janua.dev" className="inline-flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">P</span>
             </div>
-            <span className="text-2xl font-bold text-gray-900 dark:text-white">Plinto</span>
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">Janua</span>
           </Link>
         </div>
 

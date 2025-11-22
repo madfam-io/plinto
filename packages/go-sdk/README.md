@@ -1,11 +1,11 @@
-# Plinto Go SDK
+# Janua Go SDK
 
-Official Go SDK for the Plinto Identity Platform.
+Official Go SDK for the Janua Identity Platform.
 
 ## Installation
 
 ```bash
-go get github.com/plinto/go-sdk
+go get github.com/janua/go-sdk
 ```
 
 ## Quick Start
@@ -17,13 +17,13 @@ import (
     "context"
     "log"
     
-    plinto "github.com/plinto/go-sdk/client"
+    janua "github.com/janua/go-sdk/client"
 )
 
 func main() {
     // Initialize client
-    client := plinto.New(plinto.Config{
-        BaseURL: "https://api.plinto.dev",
+    client := janua.New(janua.Config{
+        BaseURL: "https://api.janua.dev",
         APIKey:  "your-api-key",
     })
     
@@ -61,8 +61,8 @@ func main() {
 ### Client Initialization
 
 ```go
-client := plinto.New(plinto.Config{
-    BaseURL:    "https://api.plinto.dev",  // Optional, defaults to production
+client := janua.New(janua.Config{
+    BaseURL:    "https://api.janua.dev",  // Optional, defaults to production
     APIKey:     "your-api-key",            // Required for API access
     HTTPClient: customHTTPClient,          // Optional custom HTTP client
     Timeout:    30 * time.Second,          // Optional request timeout

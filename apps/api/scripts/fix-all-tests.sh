@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Complete Test Fix Script for Plinto Platform
+# Complete Test Fix Script for Janua Platform
 # Goal: Fix all test failures and achieve 100% coverage
 
 set -euo pipefail
@@ -57,7 +57,7 @@ jest.mock('@/lib/config', () => ({
   isDemo: jest.fn(() => true),
   isProduction: jest.fn(() => false),
   DEMO_CREDENTIALS: {
-    email: 'demo@plinto.dev',
+    email: 'demo@janua.dev',
     password: 'DemoPassword123!'
   },
   DEMO_PERFORMANCE_METRICS: {
@@ -86,7 +86,7 @@ describe('useDemoFeatures', () => {
     
     expect(result.current.isDemo).toBe(true)
     expect(result.current.credentials).toEqual({
-      email: 'demo@plinto.dev',
+      email: 'demo@janua.dev',
       password: 'DemoPassword123!'
     })
     expect(result.current.performanceData).toBeDefined()
@@ -114,9 +114,9 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Providers } from '@/components/providers'
 
-// Mock @plinto/react
-jest.mock('@plinto/react', () => ({
-  PlintoProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+// Mock @janua/react
+jest.mock('@janua/react', () => ({
+  JanuaProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }))
 
 // Mock hooks
@@ -130,9 +130,9 @@ jest.mock('@/hooks/useEnvironment', () => ({
   })
 }))
 
-// Mock PlintoClient
-jest.mock('@plinto/sdk', () => ({
-  PlintoClient: jest.fn().mockImplementation(() => ({
+// Mock JanuaClient
+jest.mock('@janua/sdk', () => ({
+  JanuaClient: jest.fn().mockImplementation(() => ({
     initialize: jest.fn()
   }))
 }))
@@ -284,7 +284,7 @@ import { test, expect } from '@playwright/test'
 test.describe('Authentication Flow', () => {
   test('should load login page', async ({ page }) => {
     await page.goto('http://localhost:3000')
-    await expect(page).toHaveTitle(/Plinto/)
+    await expect(page).toHaveTitle(/Janua/)
   })
 })
 EOF

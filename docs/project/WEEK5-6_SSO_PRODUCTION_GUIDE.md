@@ -24,7 +24,7 @@ cert_manager = CertificateManager()
 
 # Generate self-signed certificate (for development)
 cert_pem, key_pem = cert_manager.generate_self_signed_certificate(
-    common_name="sp.plinto.dev",
+    common_name="sp.janua.dev",
     validity_days=365,
     key_size=2048
 )
@@ -59,7 +59,7 @@ pem_back = cert_manager.convert_der_to_pem(der_bytes)
 - ✅ PEM ↔ DER format conversion
 - ✅ Certificate fingerprint calculation
 
-**Storage Location**: `/var/plinto/certs/{organization_id}/{cert_id}.pem`
+**Storage Location**: `/var/janua/certs/{organization_id}/{cert_id}.pem`
 
 ### 2. SAML Metadata Exchange
 
@@ -74,11 +74,11 @@ metadata_manager = MetadataManager()
 
 # Generate SP metadata
 sp_metadata_xml = metadata_manager.generate_sp_metadata(
-    entity_id="https://sp.plinto.dev",
-    acs_url="https://sp.plinto.dev/saml/acs",
-    sls_url="https://sp.plinto.dev/saml/sls",
-    organization_name="Plinto",
-    contact_email="admin@plinto.dev",
+    entity_id="https://sp.janua.dev",
+    acs_url="https://sp.janua.dev/saml/acs",
+    sls_url="https://sp.janua.dev/saml/sls",
+    organization_name="Janua",
+    contact_email="admin@janua.dev",
     certificate_pem=cert_pem,
     want_assertions_signed=True,
     authn_requests_signed=True
@@ -118,8 +118,8 @@ validation = metadata_manager.validate_metadata(
 # Generate SP metadata
 POST /api/v1/sso/metadata/sp/generate
 {
-  "organization_name": "Plinto",
-  "contact_email": "admin@plinto.dev",
+  "organization_name": "Janua",
+  "contact_email": "admin@janua.dev",
   "certificate_id": "cert_abc123",
   "want_assertions_signed": true
 }
@@ -233,7 +233,7 @@ from app.sso.domain.services.certificate_manager import CertificateManager
 
 cert_manager = CertificateManager()
 cert_pem, key_pem = cert_manager.generate_self_signed_certificate(
-    common_name="plinto.yourcompany.com",
+    common_name="janua.yourcompany.com",
     validity_days=365
 )
 
@@ -244,7 +244,7 @@ cert_id = cert_manager.store_certificate("your_org_id", cert_pem)
 **Step 2: Generate SP Metadata**
 
 ```bash
-curl -X POST https://api.plinto.dev/api/v1/sso/metadata/sp/generate \
+curl -X POST https://api.janua.dev/api/v1/sso/metadata/sp/generate \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -264,10 +264,10 @@ curl -X POST https://api.plinto.dev/api/v1/sso/metadata/sp/generate \
    - `lastName` → `user.lastName`
 4. Download Okta metadata XML
 
-**Step 4: Configure Plinto with Okta Metadata**
+**Step 4: Configure Janua with Okta Metadata**
 
 ```bash
-curl -X POST https://api.plinto.dev/api/v1/sso/metadata/idp/upload \
+curl -X POST https://api.janua.dev/api/v1/sso/metadata/idp/upload \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -279,7 +279,7 @@ curl -X POST https://api.plinto.dev/api/v1/sso/metadata/idp/upload \
 **Step 5: Create SSO Provider**
 
 ```bash
-curl -X POST https://api.plinto.dev/api/v1/sso/config/providers \
+curl -X POST https://api.janua.dev/api/v1/sso/config/providers \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -294,7 +294,7 @@ curl -X POST https://api.plinto.dev/api/v1/sso/config/providers \
 
 ```bash
 # Initiate SAML authentication
-curl https://api.plinto.dev/api/v1/sso/saml/login?provider_id=PROVIDER_ID
+curl https://api.janua.dev/api/v1/sso/saml/login?provider_id=PROVIDER_ID
 
 # User will be redirected to Okta
 # After authentication, redirected back to ACS URL
@@ -327,7 +327,7 @@ curl https://api.plinto.dev/api/v1/sso/saml/login?provider_id=PROVIDER_ID
 
 ```bash
 # Discover provider endpoints automatically
-curl -X POST https://api.plinto.dev/api/v1/sso/oidc/discover \
+curl -X POST https://api.janua.dev/api/v1/sso/oidc/discover \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -349,7 +349,7 @@ curl -X POST https://api.plinto.dev/api/v1/sso/oidc/discover \
 
 ```bash
 # One-step setup with automatic discovery
-curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
+curl -X POST https://api.janua.dev/api/v1/sso/oidc/setup \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -366,7 +366,7 @@ curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
 
 ```bash
 # Create OIDC provider manually (without discovery)
-curl -X POST https://api.plinto.dev/api/v1/sso/config/providers \
+curl -X POST https://api.janua.dev/api/v1/sso/config/providers \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -462,7 +462,7 @@ DELETE /api/v1/sso/oidc/cache/{issuer}
 
 **Google Workspace:**
 ```bash
-curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
+curl -X POST https://api.janua.dev/api/v1/sso/oidc/setup \
   -d '{
     "issuer": "https://accounts.google.com",
     "client_id": "YOUR_CLIENT_ID",
@@ -473,7 +473,7 @@ curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
 
 **Microsoft Azure AD:**
 ```bash
-curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
+curl -X POST https://api.janua.dev/api/v1/sso/oidc/setup \
   -d '{
     "issuer": "https://login.microsoftonline.com/common/v2.0",
     "client_id": "YOUR_CLIENT_ID",
@@ -484,7 +484,7 @@ curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
 
 **Okta:**
 ```bash
-curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
+curl -X POST https://api.janua.dev/api/v1/sso/oidc/setup \
   -d '{
     "issuer": "https://your-domain.okta.com",
     "client_id": "YOUR_CLIENT_ID",
@@ -498,26 +498,26 @@ curl -X POST https://api.plinto.dev/api/v1/sso/oidc/setup \
 ### Environment Variables
 
 ```bash
-# Certificate storage directory (default: /var/plinto/certs)
-PLINTO_CERT_DIR=/var/plinto/certs
+# Certificate storage directory (default: /var/janua/certs)
+JANUA_CERT_DIR=/var/janua/certs
 
-# Base URL for SP metadata (default: https://api.plinto.dev)
-PLINTO_BASE_URL=https://api.yourcompany.com
+# Base URL for SP metadata (default: https://api.janua.dev)
+JANUA_BASE_URL=https://api.yourcompany.com
 
 # SAML assertion consumer service URL
-PLINTO_SAML_ACS_URL=https://api.yourcompany.com/api/v1/sso/saml/acs
+JANUA_SAML_ACS_URL=https://api.yourcompany.com/api/v1/sso/saml/acs
 
 # SAML single logout service URL
-PLINTO_SAML_SLS_URL=https://api.yourcompany.com/api/v1/sso/saml/sls
+JANUA_SAML_SLS_URL=https://api.yourcompany.com/api/v1/sso/saml/sls
 ```
 
 ### Certificate Storage Permissions
 
 ```bash
 # Ensure certificate directory exists with proper permissions
-sudo mkdir -p /var/plinto/certs
-sudo chown plinto:plinto /var/plinto/certs
-sudo chmod 700 /var/plinto/certs
+sudo mkdir -p /var/janua/certs
+sudo chown janua:janua /var/janua/certs
+sudo chmod 700 /var/janua/certs
 ```
 
 ## 🧪 Testing

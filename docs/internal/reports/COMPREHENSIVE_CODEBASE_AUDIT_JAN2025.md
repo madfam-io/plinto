@@ -1,11 +1,11 @@
-# Comprehensive Codebase Audit - Plinto Platform
+# Comprehensive Codebase Audit - Janua Platform
 **January 13, 2025 - Full Stack Analysis for User Deployment Readiness**
 
 ---
 
 ## Executive Summary
 
-**Product**: Plinto - Enterprise Authentication Platform
+**Product**: Janua - Enterprise Authentication Platform
 **Vision**: Compete with Auth0, Clerk, and Supabase in the enterprise authentication market
 **Current State**: 75-80% complete, NOT ready for production user deployment
 **Critical Blocker**: Testing coverage (24.1%) insufficient for enterprise users
@@ -16,7 +16,7 @@
 ## 🎯 What We're Attempting to Achieve
 
 ### Product Vision (from README.md)
-Plinto is an **enterprise-grade authentication and user management platform** designed to provide:
+Janua is an **enterprise-grade authentication and user management platform** designed to provide:
 
 - **Multiple Authentication Methods**: JWT, OAuth, SAML, WebAuthn/Passkeys
 - **Multi-tenancy**: Organization-based user management
@@ -253,7 +253,7 @@ Advanced Features:
 - ✅ Railway.app configured
 - ✅ Vercel configured (frontend)
 - ✅ Kubernetes manifests (`deployment/kubernetes/`)
-- ✅ Helm charts (`deployment/helm/plinto/`)
+- ✅ Helm charts (`deployment/helm/janua/`)
 - ✅ Production configs (`deployment/production/`)
 
 **Monitoring & Observability**:

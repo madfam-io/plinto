@@ -48,8 +48,8 @@ gather_metrics() {
 
 # Function to generate project status memory
 generate_project_status() {
-    cat > /tmp/plinto_project_status.md << EOF
-# Plinto Project Status - $(date +%Y-%m-%d)
+    cat > /tmp/janua_project_status.md << EOF
+# Janua Project Status - $(date +%Y-%m-%d)
 
 ## Overview
 Multi-tenant authentication platform with enterprise SSO/SAML/OIDC support.
@@ -118,7 +118,7 @@ Last Updated: $(date +%Y-%m-%d)
 Last Metrics Refresh: $(date +%Y-%m-%d\ %H:%M)
 EOF
 
-    echo -e "${GREEN}✓${NC} Project status memory generated: /tmp/plinto_project_status.md"
+    echo -e "${GREEN}✓${NC} Project status memory generated: /tmp/janua_project_status.md"
 }
 
 # Function to generate recent changes summary
@@ -128,8 +128,8 @@ generate_recent_changes() {
     # Get commits from last 7 days
     RECENT_COMMITS=$(git log --since="7 days ago" --oneline --no-merges | head -10)
 
-    cat > /tmp/plinto_recent_changes.md << EOF
-# Plinto Recent Changes - $(date +%Y-%m-%d)
+    cat > /tmp/janua_recent_changes.md << EOF
+# Janua Recent Changes - $(date +%Y-%m-%d)
 
 ## Last 7 Days Activity
 
@@ -147,7 +147,7 @@ $(git branch -a | grep -v "HEAD" | head -10)
 Last Updated: $(date +%Y-%m-%d\ %H:%M)
 EOF
 
-    echo -e "${GREEN}✓${NC} Recent changes memory generated: /tmp/plinto_recent_changes.md"
+    echo -e "${GREEN}✓${NC} Recent changes memory generated: /tmp/janua_recent_changes.md"
 }
 
 # Function to generate technical debt summary
@@ -160,8 +160,8 @@ generate_tech_debt() {
     # TODO/FIXME by directory
     TODO_BY_DIR=$(find apps packages -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.py" \) -exec grep -l "TODO\|FIXME" {} \; 2>/dev/null | sed 's|/[^/]*$||' | sort | uniq -c | sort -rn | head -5)
 
-    cat > /tmp/plinto_technical_debt.md << EOF
-# Plinto Technical Debt - $(date +%Y-%m-%d)
+    cat > /tmp/janua_technical_debt.md << EOF
+# Janua Technical Debt - $(date +%Y-%m-%d)
 
 ## Metrics
 - **Total TODOs/FIXMEs**: ${TODO_COUNT}
@@ -186,7 +186,7 @@ ${TODO_BY_DIR}
 Last Updated: $(date +%Y-%m-%d)
 EOF
 
-    echo -e "${GREEN}✓${NC} Technical debt memory generated: /tmp/plinto_technical_debt.md"
+    echo -e "${GREEN}✓${NC} Technical debt memory generated: /tmp/janua_technical_debt.md"
 }
 
 # Main execution
@@ -211,21 +211,21 @@ case $choice in
         echo
         echo -e "${YELLOW}To update Serena memory, run:${NC}"
         echo "write_memory('project_status', file_content)"
-        echo -e "${YELLOW}Memory file location:${NC} /tmp/plinto_project_status.md"
+        echo -e "${YELLOW}Memory file location:${NC} /tmp/janua_project_status.md"
         ;;
     2)
         generate_recent_changes
         echo
         echo -e "${YELLOW}To update Serena memory, run:${NC}"
         echo "write_memory('recent_changes', file_content)"
-        echo -e "${YELLOW}Memory file location:${NC} /tmp/plinto_recent_changes.md"
+        echo -e "${YELLOW}Memory file location:${NC} /tmp/janua_recent_changes.md"
         ;;
     3)
         generate_tech_debt
         echo
         echo -e "${YELLOW}To update Serena memory, run:${NC}"
         echo "write_memory('technical_debt', file_content)"
-        echo -e "${YELLOW}Memory file location:${NC} /tmp/plinto_technical_debt.md"
+        echo -e "${YELLOW}Memory file location:${NC} /tmp/janua_technical_debt.md"
         ;;
     4)
         generate_project_status

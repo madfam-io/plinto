@@ -11,14 +11,14 @@
 **Problem**: Package.json files have inconsistent repository URLs
 
 **Affected Packages**:
-- ❌ `@plinto/nextjs-sdk` → `github.com/plinto/plinto` (WRONG)
-- ❌ `@plinto/edge` → `github.com/plinto/plinto` (WRONG)
-- ❌ `@plinto/jwt-utils` → `github.com/plinto/plinto` (WRONG)
-- ✅ `@plinto/typescript-sdk` → `github.com/madfam-io/plinto` (CORRECT)
-- ✅ `@plinto/react-sdk` → `github.com/madfam-io/plinto` (CORRECT)
-- ✅ `@plinto/vue-sdk` → `github.com/madfam-io/plinto` (CORRECT)
+- ❌ `@janua/nextjs-sdk` → `github.com/janua/janua` (WRONG)
+- ❌ `@janua/edge` → `github.com/janua/janua` (WRONG)
+- ❌ `@janua/jwt-utils` → `github.com/janua/janua` (WRONG)
+- ✅ `@janua/typescript-sdk` → `github.com/madfam-io/janua` (CORRECT)
+- ✅ `@janua/react-sdk` → `github.com/madfam-io/janua` (CORRECT)
+- ✅ `@janua/vue-sdk` → `github.com/madfam-io/janua` (CORRECT)
 
-**Correct Repository**: `https://github.com/madfam-io/plinto.git`
+**Correct Repository**: `https://github.com/madfam-io/janua.git`
 
 **Impact**: 
 - npm registry will show wrong repository links
@@ -32,12 +32,12 @@
 **Problem**: Vue SDK has wrong package name in package.json
 
 **Issue**:
-- Package name: `@plinto/vue` 
-- Should be: `@plinto/vue-sdk` (to match docs and VERSION_GUIDE.md)
+- Package name: `@janua/vue` 
+- Should be: `@janua/vue-sdk` (to match docs and VERSION_GUIDE.md)
 
 **Impact**:
 - Installation commands in docs won't work
-- VERSION_GUIDE.md references `@plinto/vue-sdk` but package is named `@plinto/vue`
+- VERSION_GUIDE.md references `@janua/vue-sdk` but package is named `@janua/vue`
 - User confusion and support burden
 
 ### 3. TypeScript Definitions Missing
@@ -62,16 +62,16 @@
 **TypeScript SDK README Issues**:
 Line 503-506:
 ```markdown
-- Documentation: [https://docs.plinto.dev](https://docs.plinto.dev)
-- GitHub Issues: [https://github.com/plinto/plinto/issues](https://github.com/plinto/plinto/issues)
-- Discord: [https://discord.gg/plinto](https://discord.gg/plinto)
-- Email: support@plinto.dev
+- Documentation: [https://docs.janua.dev](https://docs.janua.dev)
+- GitHub Issues: [https://github.com/janua/janua/issues](https://github.com/janua/janua/issues)
+- Discord: [https://discord.gg/janua](https://discord.gg/janua)
+- Email: support@janua.dev
 ```
 
 Problems:
-- ❌ GitHub Issues URL uses wrong repository (`plinto/plinto` → should be `madfam-io/plinto`)
+- ❌ GitHub Issues URL uses wrong repository (`janua/janua` → should be `madfam-io/janua`)
 - ⚠️ Discord link not verified
-- ⚠️ docs.plinto.dev may not be live yet
+- ⚠️ docs.janua.dev may not be live yet
 
 **React SDK README Issues**:
 Lines 622-626 - Same GitHub repository URL issue
@@ -106,7 +106,7 @@ Lines 622-626 - Same GitHub repository URL issue
 ## 🔧 REQUIRED FIXES BEFORE PUBLICATION
 
 1. **Repository URLs** - Update 3 packages (nextjs-sdk, edge, jwt-utils)
-2. **Vue SDK Package Name** - Rename from `@plinto/vue` to `@plinto/vue-sdk`
+2. **Vue SDK Package Name** - Rename from `@janua/vue` to `@janua/vue-sdk`
 3. **React SDK Types** - Generate TypeScript definitions in build
 4. **README Links** - Update GitHub URLs in TypeScript and React SDK READMEs
 5. **Verify Discord/Docs Links** - Confirm these URLs are active before publication

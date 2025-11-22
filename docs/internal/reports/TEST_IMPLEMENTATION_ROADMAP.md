@@ -1,4 +1,4 @@
-# 🧪 Plinto Test Implementation Roadmap to 100% Coverage
+# 🧪 Janua Test Implementation Roadmap to 100% Coverage
 
 ## Current Status
 - **Coverage**: 31.3% (up from 2.41%)
@@ -343,4 +343,4 @@ cd packages/typescript-sdk && npm test -- --coverage
 
 ---
 
-*This roadmap provides a systematic path to achieving 100% test coverage across the entire Plinto platform. Each phase builds upon the previous, ensuring comprehensive testing while maintaining velocity.*
+*This roadmap provides a systematic path to achieving 100% test coverage across the entire Janua platform. Each phase builds upon the previous, ensuring comprehensive testing while maintaining velocity.*

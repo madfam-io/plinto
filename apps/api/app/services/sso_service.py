@@ -134,7 +134,7 @@ class SSOService:
 
         # SP configuration
         sso_config.saml_acs_url = config.get(
-            "acs_url", f"https://api.plinto.dev/v1/sso/saml/callback"
+            "acs_url", f"https://api.janua.dev/v1/sso/saml/callback"
         )
 
         # Security settings
@@ -323,7 +323,7 @@ class SSOService:
         params = {
             "client_id": sso_config.oidc_client_id,
             "response_type": "code",
-            "redirect_uri": f"https://api.plinto.dev/v1/sso/oidc/callback",
+            "redirect_uri": f"https://api.janua.dev/v1/sso/oidc/callback",
             "scope": " ".join(sso_config.oidc_scopes),
             "state": state,
             "nonce": nonce,
@@ -354,7 +354,7 @@ class SSOService:
                 data={
                     "grant_type": "authorization_code",
                     "code": code,
-                    "redirect_uri": f"https://api.plinto.dev/v1/sso/oidc/callback",
+                    "redirect_uri": f"https://api.janua.dev/v1/sso/oidc/callback",
                     "client_id": sso_config.oidc_client_id,
                     "client_secret": self._decrypt_secret(sso_config.oidc_client_secret),
                 },
@@ -536,7 +536,7 @@ class SSOService:
 
         return {
             "sp": {
-                "entityId": f"https://api.plinto.dev/saml/metadata",
+                "entityId": f"https://api.janua.dev/saml/metadata",
                 "assertionConsumerService": {
                     "url": sso_config.saml_acs_url,
                     "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",

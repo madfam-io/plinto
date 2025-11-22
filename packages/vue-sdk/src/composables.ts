@@ -1,21 +1,21 @@
 import { inject, computed, ComputedRef } from 'vue';
-import { PLINTO_KEY, PlintoVue } from './plugin';
-import type { User, Session } from '@plinto/typescript-sdk';
+import { JANUA_KEY, JanuaVue } from './plugin';
+import type { User, Session } from '@janua/typescript-sdk';
 
-export function usePlinto(): PlintoVue {
-  const plinto = inject<PlintoVue>(PLINTO_KEY);
+export function useJanua(): JanuaVue {
+  const janua = inject<JanuaVue>(JANUA_KEY);
   
-  if (!plinto) {
-    throw new Error('Plinto plugin not installed. Make sure to call app.use(createPlinto(...))');
+  if (!janua) {
+    throw new Error('Janua plugin not installed. Make sure to call app.use(createJanua(...))');
   }
 
-  return plinto;
+  return janua;
 }
 
 export function useAuth() {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
-  const state = plinto.getState();
+  const janua = useJanua();
+  const client = janua.getClient();
+  const state = janua.getState();
 
   return {
     auth: client.auth,
@@ -23,10 +23,10 @@ export function useAuth() {
     session: computed(() => state.session),
     isAuthenticated: computed(() => state.isAuthenticated),
     isLoading: computed(() => state.isLoading),
-    signIn: plinto.signIn.bind(plinto),
-    signUp: plinto.signUp.bind(plinto),
-    signOut: plinto.signOut.bind(plinto),
-    updateSession: plinto.updateSession.bind(plinto),
+    signIn: janua.signIn.bind(janua),
+    signUp: janua.signUp.bind(janua),
+    signOut: janua.signOut.bind(janua),
+    updateSession: janua.updateSession.bind(janua),
   };
 }
 
@@ -35,13 +35,13 @@ export function useUser(): {
   isLoading: ComputedRef<boolean>;
   updateUser: (data: any) => Promise<User>;
 } {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
-  const state = plinto.getState();
+  const janua = useJanua();
+  const client = janua.getClient();
+  const state = janua.getState();
 
   const updateUser = async (data: any) => {
     const updatedUser = await client.users.updateCurrentUser(data);
-    await plinto.updateSession();
+    await janua.updateSession();
     return updatedUser;
   };
 
@@ -57,18 +57,18 @@ export function useSession(): {
   refreshSession: () => Promise<void>;
   revokeSession: (sessionId: string) => Promise<void>;
 } {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
-  const state = plinto.getState();
+  const janua = useJanua();
+  const client = janua.getClient();
+  const state = janua.getState();
 
   const refreshSession = async () => {
-    await plinto.updateSession();
+    await janua.updateSession();
   };
 
   const revokeSession = async (sessionId: string) => {
     await client.users.revokeSession(sessionId);
     if (state.session?.id === sessionId) {
-      await plinto.signOut();
+      await janua.signOut();
     }
   };
 
@@ -80,43 +80,43 @@ export function useSession(): {
 }
 
 export function useOrganizations() {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
+  const janua = useJanua();
+  const client = janua.getClient();
   
   return client.organizations;
 }
 
 export function useSignIn() {
-  const plinto = usePlinto();
-  const state = plinto.getState();
+  const janua = useJanua();
+  const state = janua.getState();
 
   return {
-    signIn: plinto.signIn.bind(plinto),
+    signIn: janua.signIn.bind(janua),
     isLoading: computed(() => state.isLoading),
   };
 }
 
 export function useSignUp() {
-  const plinto = usePlinto();
-  const state = plinto.getState();
+  const janua = useJanua();
+  const state = janua.getState();
 
   return {
-    signUp: plinto.signUp.bind(plinto),
+    signUp: janua.signUp.bind(janua),
     isLoading: computed(() => state.isLoading),
   };
 }
 
 export function useSignOut() {
-  const plinto = usePlinto();
+  const janua = useJanua();
   
   return {
-    signOut: plinto.signOut.bind(plinto),
+    signOut: janua.signOut.bind(janua),
   };
 }
 
 export function useMagicLink() {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
+  const janua = useJanua();
+  const client = janua.getClient();
 
   const sendMagicLink = async (email: string, redirectUrl?: string) => {
     await client.auth.sendMagicLink({ email, redirect_url: redirectUrl });
@@ -124,7 +124,7 @@ export function useMagicLink() {
 
   const signInWithMagicLink = async (token: string) => {
     const response = await client.auth.verifyMagicLink(token);
-    await plinto.updateSession();
+    await janua.updateSession();
     return response;
   };
 
@@ -135,8 +135,8 @@ export function useMagicLink() {
 }
 
 export function useOAuth() {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
+  const janua = useJanua();
+  const client = janua.getClient();
 
   const getOAuthUrl = async (
     provider: any,
@@ -147,7 +147,7 @@ export function useOAuth() {
 
   const handleOAuthCallback = async (code: string, state: string) => {
     const response = await client.auth.handleOAuthCallback(code, state);
-    await plinto.updateSession();
+    await janua.updateSession();
     return response;
   };
 
@@ -158,8 +158,8 @@ export function useOAuth() {
 }
 
 export function usePasskeys() {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
+  const janua = useJanua();
+  const client = janua.getClient();
 
   const registerPasskey = async (options?: any) => {
     const registrationOptions = await client.auth.getPasskeyRegistrationOptions();
@@ -174,7 +174,7 @@ export function usePasskeys() {
     // In a real implementation, you would use the WebAuthn API here
     // const credential = await navigator.credentials.get(authOptions);
     // const response = await client.auth.completePasskeyAuthentication(credential);
-    // await plinto.updateSession();
+    // await janua.updateSession();
     return authOptions;
   };
 
@@ -185,8 +185,8 @@ export function usePasskeys() {
 }
 
 export function useMFA() {
-  const plinto = usePlinto();
-  const client = plinto.getClient();
+  const janua = useJanua();
+  const client = janua.getClient();
 
   const enableMFA = async (type: 'totp' | 'sms') => {
     return client.auth.enableMFA(type);
@@ -194,17 +194,17 @@ export function useMFA() {
 
   const confirmMFA = async (code: string) => {
     await client.auth.verifyMFA({ code });
-    await plinto.updateSession();
+    await janua.updateSession();
   };
 
   const disableMFA = async (password: string) => {
     await client.auth.disableMFA(password);
-    await plinto.updateSession();
+    await janua.updateSession();
   };
 
   const verifyMFA = async (code: string) => {
     const tokens = await client.auth.verifyMFA({ code });
-    await plinto.updateSession();
+    await janua.updateSession();
     return tokens;
   };
 

@@ -1,7 +1,7 @@
-# Plinto API Documentation
+# Janua API Documentation
 
 **Version**: 1.0.0
-**Base URL**: `https://api.plinto.dev` (Production) | `http://localhost:8000` (Development)
+**Base URL**: `https://api.janua.dev` (Production) | `http://localhost:8000` (Development)
 
 ---
 
@@ -22,7 +22,7 @@
 
 ## Introduction
 
-Plinto is a modern, open-core authentication platform that provides enterprise-grade identity management at 4x lower cost than competitors like Clerk ($0.005/MAU vs $0.02/MAU).
+Janua is a modern, open-core authentication platform that provides enterprise-grade identity management at 4x lower cost than competitors like Clerk ($0.005/MAU vs $0.02/MAU).
 
 ### Key Features
 
@@ -683,7 +683,7 @@ const sessions = await api.get('/sessions')
 import requests
 from typing import Dict, Any
 
-class PlintoClient:
+class JanuaClient:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
         self.access_token = None
@@ -732,7 +732,7 @@ class PlintoClient:
         return response.json()
 
 # Usage
-client = PlintoClient()
+client = JanuaClient()
 client.sign_up("user@example.com", "SecurePass123!")
 user = client.get_current_user()
 sessions = client.list_sessions()
@@ -773,38 +773,38 @@ curl -X POST http://localhost:8000/api/v1/organizations \
 ### TypeScript SDK
 
 ```bash
-npm install @plinto/typescript-sdk
+npm install @janua/typescript-sdk
 ```
 
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk'
+import { JanuaClient } from '@janua/typescript-sdk'
 
-const plinto = new PlintoClient({
+const janua = new JanuaClient({
   apiUrl: 'http://localhost:8000',
   clientId: 'your_client_id',
   clientSecret: 'your_client_secret'
 })
 
 // Sign up
-const { user, tokens } = await plinto.auth.signUp({
+const { user, tokens } = await janua.auth.signUp({
   email: 'user@example.com',
   password: 'SecurePass123!'
 })
 
 // Sign in
-const { user, tokens } = await plinto.auth.signIn({
+const { user, tokens } = await janua.auth.signIn({
   email: 'user@example.com',
   password: 'SecurePass123!'
 })
 
 // Get current user
-const user = await plinto.auth.getCurrentUser()
+const user = await janua.auth.getCurrentUser()
 
 // List sessions
-const sessions = await plinto.sessions.listSessions()
+const sessions = await janua.sessions.listSessions()
 
 // Create organization
-const org = await plinto.organizations.createOrganization({
+const org = await janua.organizations.createOrganization({
   name: 'Acme Corp',
   slug: 'acme-corp'
 })
@@ -813,20 +813,20 @@ const org = await plinto.organizations.createOrganization({
 ### React UI Components
 
 ```bash
-npm install @plinto/ui @plinto/typescript-sdk
+npm install @janua/ui @janua/typescript-sdk
 ```
 
 ```tsx
-import { PlintoProvider, SignIn, SignUp, UserButton } from '@plinto/ui'
-import { plintoClient } from './lib/plinto-client'
+import { JanuaProvider, SignIn, SignUp, UserButton } from '@janua/ui'
+import { januaClient } from './lib/janua-client'
 
 function App() {
   return (
-    <PlintoProvider client={plintoClient}>
+    <JanuaProvider client={januaClient}>
       <SignIn redirectUrl="/dashboard" />
       <SignUp redirectUrl="/dashboard" />
       <UserButton />
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 ```
@@ -925,8 +925,8 @@ setInterval(async () => {
 Always use HTTPS in production to prevent token interception:
 
 ```typescript
-const plinto = new PlintoClient({
-  apiUrl: 'https://api.plinto.dev', // HTTPS only
+const janua = new JanuaClient({
+  apiUrl: 'https://api.janua.dev', // HTTPS only
   enforceHttps: true
 })
 ```
@@ -1003,16 +1003,16 @@ async function deleteSensitiveData() {
 
 ### Documentation
 - **API Reference**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **Developer Guides**: [https://docs.plinto.dev](https://docs.plinto.dev)
-- **GitHub**: [https://github.com/plinto/plinto](https://github.com/plinto/plinto)
+- **Developer Guides**: [https://docs.janua.dev](https://docs.janua.dev)
+- **GitHub**: [https://github.com/janua/janua](https://github.com/janua/janua)
 
 ### Community
-- **Discord**: [https://discord.gg/plinto](https://discord.gg/plinto)
-- **GitHub Discussions**: [https://github.com/plinto/plinto/discussions](https://github.com/plinto/plinto/discussions)
+- **Discord**: [https://discord.gg/janua](https://discord.gg/janua)
+- **GitHub Discussions**: [https://github.com/janua/janua/discussions](https://github.com/janua/janua/discussions)
 
 ### Support
-- **Email**: support@plinto.dev
-- **Enterprise Support**: enterprise@plinto.dev
+- **Email**: support@janua.dev
+- **Enterprise Support**: enterprise@janua.dev
 
 ---
 

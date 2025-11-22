@@ -1,5 +1,5 @@
 """
-Database models for Plinto API
+Database models for Janua API
 """
 
 from sqlalchemy import Column, String, Boolean, DateTime, Text, Integer, ForeignKey, Table, JSON, Enum as SQLEnum, UniqueConstraint

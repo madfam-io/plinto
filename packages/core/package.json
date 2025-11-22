@@ -1,7 +1,7 @@
 {
-  "name": "@plinto/core",
+  "name": "@janua/core",
   "version": "1.0.0",
-  "description": "Core services and utilities for Plinto platform",
+  "description": "Core services and utilities for Janua platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

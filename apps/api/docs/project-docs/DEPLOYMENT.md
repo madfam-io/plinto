@@ -1,8 +1,8 @@
-# Plinto API - Production Deployment Guide
+# Janua API - Production Deployment Guide
 
 ## 🚀 Foundation Hardening Phase Complete
 
-This deployment guide covers the **Next Immediate Phase: Foundation Hardening** implementation, transforming the Plinto API from beta to production-ready enterprise-grade infrastructure.
+This deployment guide covers the **Next Immediate Phase: Foundation Hardening** implementation, transforming the Janua API from beta to production-ready enterprise-grade infrastructure.
 
 ## ✅ Implemented Features
 
@@ -75,8 +75,8 @@ REDIS_URL=redis://user:pass@host:6379
 # JWT Security
 JWT_SECRET_KEY=your-256-bit-secret-key
 JWT_ALGORITHM=RS256
-JWT_ISSUER=https://plinto.dev
-JWT_AUDIENCE=plinto.dev
+JWT_ISSUER=https://janua.dev
+JWT_AUDIENCE=janua.dev
 
 # Application
 ENVIRONMENT=production
@@ -88,7 +88,7 @@ SECRET_KEY=your-application-secret-key
 BCRYPT_ROUNDS=12
 
 # CORS
-CORS_ORIGINS=https://plinto.dev,https://app.plinto.dev
+CORS_ORIGINS=https://janua.dev,https://app.janua.dev
 
 # Rate Limiting
 RATE_LIMIT_ENABLED=true

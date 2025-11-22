@@ -65,7 +65,7 @@ class MonitoringValidator:
             ('/ready', None),
             ('/api/v1/health', 'healthy'),
             ('/api/v1/health/detailed', 'status'),
-            ('/metrics', 'plinto_'),
+            ('/metrics', 'janua_'),
             ('/metrics/performance', None),
             ('/metrics/scalability', None),
         ]
@@ -83,7 +83,7 @@ class MonitoringValidator:
         
         # Dashboard endpoints
         dashboard_endpoints = [
-            ('/api/metrics', 'plinto_dashboard_')
+            ('/api/metrics', 'janua_dashboard_')
         ]
         
         for endpoint, expected in dashboard_endpoints:
@@ -92,7 +92,7 @@ class MonitoringValidator:
         
         # Admin endpoints  
         admin_endpoints = [
-            ('/api/metrics', 'plinto_admin_')
+            ('/api/metrics', 'janua_admin_')
         ]
         
         for endpoint, expected in admin_endpoints:

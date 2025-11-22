@@ -6,9 +6,9 @@
 set -e
 
 ENVIRONMENT=${1:-preview}
-PROJECT_NAME="plinto"
+PROJECT_NAME="janua"
 
-echo "🚀 Deploying Plinto to Vercel ($ENVIRONMENT)..."
+echo "🚀 Deploying Janua to Vercel ($ENVIRONMENT)..."
 
 # Ensure we're in the right directory
 cd "$(dirname "$0")/.."

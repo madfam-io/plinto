@@ -108,7 +108,7 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "Publishing version: $version"
 
-  # Python SDK (plinto-python)
+  # Python SDK (janua-python)
   publish-python:
     needs: validate
     if: contains(fromJson(needs.validate.outputs.sdks_to_publish), 'python')
@@ -136,7 +136,7 @@ jobs:
       - name: Type check
         run: |
           cd packages/python
-          mypy plinto --ignore-missing-imports
+          mypy janua --ignore-missing-imports
       
       - name: Update version
         run: |
@@ -156,7 +156,7 @@ jobs:
           cd packages/python
           twine upload dist/* --skip-existing
 
-  # JavaScript/TypeScript SDK (plinto-js)
+  # JavaScript/TypeScript SDK (janua-js)
   publish-javascript:
     needs: validate
     if: contains(fromJson(needs.validate.outputs.sdks_to_publish), 'javascript') || contains(fromJson(needs.validate.outputs.sdks_to_publish), 'typescript')
@@ -202,7 +202,7 @@ jobs:
           cd packages/javascript
           npm publish --access public
 
-  # Go SDK (github.com/plinto/plinto-go)
+  # Go SDK (github.com/janua/janua-go)
   publish-go:
     needs: validate
     if: contains(fromJson(needs.validate.outputs.sdks_to_publish), 'go')
@@ -330,19 +330,19 @@ jobs:
       - name: Update version
         run: |
           cd packages/ruby
-          sed -i "s/VERSION = \".*\"/VERSION = \"${{ needs.validate.outputs.version }}\"/" lib/plinto/version.rb
+          sed -i "s/VERSION = \".*\"/VERSION = \"${{ needs.validate.outputs.version }}\"/" lib/janua/version.rb
       
       - name: Build gem
         run: |
           cd packages/ruby
-          gem build plinto.gemspec
+          gem build janua.gemspec
       
       - name: Publish to RubyGems
         env:
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
         run: |
           cd packages/ruby
-          gem push plinto-*.gem
+          gem push janua-*.gem
 
   # PHP SDK (Packagist)
   publish-php:
@@ -393,13 +393,13 @@ jobs:
           version="${{ needs.validate.outputs.version }}"
           
           # Update README.md
-          sed -i "s/plinto-python==.*/plinto-python==$version/" README.md
-          sed -i "s/plinto-js@.*/plinto-js@$version/" README.md
-          sed -i "s/plinto\/plinto-go@v.*/plinto\/plinto-go@v$version/" README.md
+          sed -i "s/janua-python==.*/janua-python==$version/" README.md
+          sed -i "s/janua-js@.*/janua-js@$version/" README.md
+          sed -i "s/janua\/janua-go@v.*/janua\/janua-go@v$version/" README.md
           sed -i "s/<version>.*<\/version>/<version>$version<\/version>/" README.md
-          sed -i "s/PackageReference Include=\"Plinto\" Version=\".*\"/PackageReference Include=\"Plinto\" Version=\"$version\"/" README.md
-          sed -i "s/gem 'plinto', '.*'/gem 'plinto', '$version'/" README.md
-          sed -i "s/\"plinto\/plinto\": \".*\"/\"plinto\/plinto\": \"$version\"/" README.md
+          sed -i "s/PackageReference Include=\"Janua\" Version=\".*\"/PackageReference Include=\"Janua\" Version=\"$version\"/" README.md
+          sed -i "s/gem 'janua', '.*'/gem 'janua', '$version'/" README.md
+          sed -i "s/\"janua\/janua\": \".*\"/\"janua\/janua\": \"$version\"/" README.md
       
       - name: Create PR for documentation updates
         uses: peter-evans/create-pull-request@v5

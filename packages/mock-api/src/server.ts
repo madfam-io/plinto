@@ -22,7 +22,7 @@ const allowedOrigins = [
   'http://localhost:3003', // docs
   'http://localhost:3004', // admin
   'http://localhost:3005', // auth (if restored)
-  'https://plinto.dev',    // production
+  'https://janua.dev',    // production
 ];
 
 app.use(cors({

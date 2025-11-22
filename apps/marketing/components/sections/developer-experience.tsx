@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Code, Terminal, FileCode, Package, CheckCircle } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@plinto/ui'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@janua/ui'
 
 export function DeveloperExperience() {
   const [selectedLanguage, setSelectedLanguage] = useState('typescript')
@@ -17,11 +17,11 @@ export function DeveloperExperience() {
 
   const codeExamples = {
     typescript: {
-      install: 'npm install @plinto/nextjs @plinto/react-sdk',
+      install: 'npm install @janua/nextjs @janua/react-sdk',
       setup: `// middleware.ts
-import { withPlinto } from '@plinto/nextjs/middleware'
+import { withJanua } from '@janua/nextjs/middleware'
 
-export default withPlinto({
+export default withJanua({
   publicRoutes: ['/'],
   afterAuth: (auth, req) => {
     if (!auth.orgId) {
@@ -30,8 +30,8 @@ export default withPlinto({
   }
 })`,
       usage: `// app/page.tsx
-import { SignIn, UserButton } from '@plinto/react-sdk'
-import { getSession } from '@plinto/nextjs'
+import { SignIn, UserButton } from '@janua/react-sdk'
+import { getSession } from '@janua/nextjs'
 
 export default async function Page() {
   const session = await getSession()
@@ -44,41 +44,41 @@ export default async function Page() {
 }`
     },
     python: {
-      install: 'pip install plinto',
+      install: 'pip install janua',
       setup: `# main.py
-from plinto import Plinto
+from janua import Janua
 import os
 
-plinto = Plinto(
-    api_key=os.environ['PLINTO_API_KEY'],
-    tenant_id=os.environ['PLINTO_TENANT_ID']
+janua = Janua(
+    api_key=os.environ['JANUA_API_KEY'],
+    tenant_id=os.environ['JANUA_TENANT_ID']
 )`,
       usage: `# Create identity
-identity = plinto.identities.create(
+identity = janua.identities.create(
     email='user@example.com',
     password='secure-password-123'
 )
 
 # Verify session
-claims = plinto.sessions.verify(token)
+claims = janua.sessions.verify(token)
 if claims:
     print(f"Authenticated: {claims.sub}")`
     },
     go: {
-      install: 'go get github.com/plinto/plinto-go',
+      install: 'go get github.com/janua/janua-go',
       setup: `// main.go
 package main
 
-import "github.com/plinto/plinto-go"
+import "github.com/janua/janua-go"
 
 func main() {
-    client := plinto.NewClient(
-        plinto.WithAPIKey(os.Getenv("PLINTO_API_KEY")),
-        plinto.WithTenant(os.Getenv("PLINTO_TENANT_ID")),
+    client := janua.NewClient(
+        janua.WithAPIKey(os.Getenv("JANUA_API_KEY")),
+        janua.WithTenant(os.Getenv("JANUA_TENANT_ID")),
     )
 }`,
       usage: `// Create session
-session, err := client.Sessions.Create(ctx, &plinto.CreateSessionRequest{
+session, err := client.Sessions.Create(ctx, &janua.CreateSessionRequest{
     Email:    "user@example.com",
     Password: "secure-password",
 })
@@ -90,20 +90,20 @@ if err == nil {
 }`
     },
     ruby: {
-      install: 'gem install plinto',
-      setup: `# config/initializers/plinto.rb
-require 'plinto'
+      install: 'gem install janua',
+      setup: `# config/initializers/janua.rb
+require 'janua'
 
-Plinto.api_key = ENV['PLINTO_API_KEY']
-Plinto.tenant = ENV['PLINTO_TENANT_ID']`,
+Janua.api_key = ENV['JANUA_API_KEY']
+Janua.tenant = ENV['JANUA_TENANT_ID']`,
       usage: `# Create identity
-identity = Plinto::Identity.create(
+identity = Janua::Identity.create(
   email: 'user@example.com',
   password: 'secure-password'
 )
 
 # Verify session
-claims = Plinto::Session.verify(token)
+claims = Janua::Session.verify(token)
 puts "Authenticated: #{claims.sub}" if claims`
     }
   }
@@ -193,7 +193,7 @@ puts "Authenticated: #{claims.sub}" if claims`
               <strong>Pro tip:</strong> Use our CLI to generate a complete auth setup:
             </p>
             <code className="block mt-2 text-xs bg-blue-100 dark:bg-blue-900/30 p-2 rounded">
-              npx create-plinto-app my-app
+              npx create-janua-app my-app
             </code>
           </div>
         </motion.div>

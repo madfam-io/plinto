@@ -1,11 +1,11 @@
 # Prometheus Configuration
-# Metrics collection configuration for Plinto monitoring
+# Metrics collection configuration for Janua monitoring
 
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    monitor: 'plinto-monitor'
+    monitor: 'janua-monitor'
     environment: 'production'
 
 # Load alert rules
@@ -27,8 +27,8 @@ scrape_configs:
       - targets: ['localhost:9090']
     scrape_interval: 30s
 
-  # Plinto API Application
-  - job_name: 'plinto-api'
+  # Janua API Application
+  - job_name: 'janua-api'
     static_configs:
       - targets: ['host.docker.internal:8000']  # Adjust for your API port
     metrics_path: '/apm/metrics'

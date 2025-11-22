@@ -11,17 +11,17 @@
 ## 1. Purpose and Scope
 
 ### 1.1 Purpose
-This Information Security Policy establishes the framework for protecting Plinto's information assets, customer data, and technology infrastructure. It ensures compliance with SOC2 Trust Services Criteria and regulatory requirements while supporting business objectives.
+This Information Security Policy establishes the framework for protecting Janua's information assets, customer data, and technology infrastructure. It ensures compliance with SOC2 Trust Services Criteria and regulatory requirements while supporting business objectives.
 
 ### 1.2 Scope
 This policy applies to:
-- All Plinto employees, contractors, and third parties
+- All Janua employees, contractors, and third parties
 - All information systems, applications, and infrastructure
-- All data processed, stored, or transmitted by Plinto
+- All data processed, stored, or transmitted by Janua
 - All business operations and customer services
 
 ### 1.3 Policy Statement
-Plinto is committed to maintaining the confidentiality, integrity, and availability of information assets through comprehensive security controls, risk management, and continuous improvement.
+Janua is committed to maintaining the confidentiality, integrity, and availability of information assets through comprehensive security controls, risk management, and continuous improvement.
 
 ## 2. Information Security Objectives
 
@@ -319,4 +319,4 @@ Chief Executive Officer
 
 ---
 
-*This Information Security Policy establishes the foundation for Plinto's security governance and SOC2 compliance framework. Regular review and updates ensure continued effectiveness and alignment with business objectives.*
+*This Information Security Policy establishes the foundation for Janua's security governance and SOC2 compliance framework. Regular review and updates ensure continued effectiveness and alignment with business objectives.*

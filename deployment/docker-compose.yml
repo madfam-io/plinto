@@ -4,11 +4,11 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: plinto-postgres
+    container_name: janua-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: plinto
+      POSTGRES_DB: janua
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"
@@ -21,12 +21,12 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - plinto-network
+      - janua-network
 
   # Redis Cache
   redis:
     image: redis:7-alpine
-    container_name: plinto-redis
+    container_name: janua-redis
     command: redis-server --appendonly yes --requirepass redis123
     ports:
       - "6379:6379"
@@ -38,16 +38,16 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - plinto-network
+      - janua-network
 
   # FastAPI Backend
   api:
     build:
       context: ./apps/api
       dockerfile: Dockerfile
-    container_name: plinto-api
+    container_name: janua-api
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/plinto
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/janua
       REDIS_URL: redis://:redis123@redis:6379/0
       SECRET_KEY: development-secret-key-change-in-production
       JWT_SECRET_KEY: development-jwt-secret-change-in-production
@@ -66,14 +66,14 @@ services:
         condition: service_healthy
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     networks:
-      - plinto-network
+      - janua-network
 
   # Next.js Admin Dashboard
   admin:
     build:
       context: ./apps/admin
       dockerfile: Dockerfile
-    container_name: plinto-admin
+    container_name: janua-admin
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8000
       NEXT_PUBLIC_APP_URL: http://localhost:3000
@@ -87,14 +87,14 @@ services:
       - api
     command: npm run dev
     networks:
-      - plinto-network
+      - janua-network
 
   # Documentation Site
   docs:
     build:
       context: ./apps/docs
       dockerfile: Dockerfile
-    container_name: plinto-docs
+    container_name: janua-docs
     ports:
       - "3001:3000"
     volumes:
@@ -103,22 +103,22 @@ services:
       - /app/.next
     command: npm run dev
     networks:
-      - plinto-network
+      - janua-network
 
   # Mailhog (Email testing)
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: plinto-mailhog
+    container_name: janua-mailhog
     ports:
       - "1025:1025"  # SMTP port
       - "8025:8025"  # Web UI
     networks:
-      - plinto-network
+      - janua-network
 
   # MinIO (S3-compatible storage for development)
   minio:
     image: minio/minio:latest
-    container_name: plinto-minio
+    container_name: janua-minio
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
@@ -134,12 +134,12 @@ services:
       timeout: 20s
       retries: 3
     networks:
-      - plinto-network
+      - janua-network
 
   # Elasticsearch (for audit logs and analytics)
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-    container_name: plinto-elasticsearch
+    container_name: janua-elasticsearch
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -154,12 +154,12 @@ services:
       timeout: 10s
       retries: 5
     networks:
-      - plinto-network
+      - janua-network
 
   # Kibana (Elasticsearch UI)
   kibana:
     image: docker.elastic.co/kibana/kibana:8.11.0
-    container_name: plinto-kibana
+    container_name: janua-kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
@@ -168,12 +168,12 @@ services:
       elasticsearch:
         condition: service_healthy
     networks:
-      - plinto-network
+      - janua-network
 
   # Prometheus (Metrics)
   prometheus:
     image: prom/prometheus:latest
-    container_name: plinto-prometheus
+    container_name: janua-prometheus
     volumes:
       - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
@@ -183,12 +183,12 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - plinto-network
+      - janua-network
 
   # Grafana (Metrics Dashboard)
   grafana:
     image: grafana/grafana:latest
-    container_name: plinto-grafana
+    container_name: janua-grafana
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
@@ -201,10 +201,10 @@ services:
     depends_on:
       - prometheus
     networks:
-      - plinto-network
+      - janua-network
 
 networks:
-  plinto-network:
+  janua-network:
     driver: bridge
 
 volumes:

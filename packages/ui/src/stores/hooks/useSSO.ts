@@ -7,7 +7,7 @@ import type { SSOProvider, SAMLConfig, SSOTestResult } from '../enterprise.store
  *
  * @example
  * ```tsx
- * const { providers, loading, error, createProvider, updateProvider } = useSSO(plintoClient)
+ * const { providers, loading, error, createProvider, updateProvider } = useSSO(januaClient)
  *
  * // Create provider with optimistic update
  * await createProvider({

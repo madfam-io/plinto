@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Successfully resolved **all critical and high-priority TypeScript errors** across the Plinto codebase through systematic troubleshooting and type system improvements.
+Successfully resolved **all critical and high-priority TypeScript errors** across the Janua codebase through systematic troubleshooting and type system improvements.
 
 ### Impact Metrics
 
@@ -24,7 +24,7 @@ Successfully resolved **all critical and high-priority TypeScript errors** acros
 
 ### Phase 1: Package Build Issues ✅
 
-**Issue**: @plinto/feature-flags package not built, causing import errors
+**Issue**: @janua/feature-flags package not built, causing import errors
 
 **Files Fixed**:
 - `packages/feature-flags/tsconfig.json`
@@ -57,7 +57,7 @@ Successfully resolved **all critical and high-priority TypeScript errors** acros
 **Files Fixed**:
 - `packages/typescript-sdk/src/types.ts` - Added event aliases
 - `packages/typescript-sdk/src/client.ts` - Fixed off() method signature
-- `apps/demo/components/providers/plinto-provider.tsx`
+- `apps/demo/components/providers/janua-provider.tsx`
 - `apps/dashboard/lib/auth.tsx`
 - `apps/admin/lib/auth.tsx`
 
@@ -111,15 +111,15 @@ const handleSignIn = ({ user: userData }: { user: User }) => {
 **Issue**: String literal 'localStorage' not recognized as const
 
 **Files Fixed**:
-- `apps/demo/lib/plinto-client.ts`
-- `apps/dashboard/lib/plinto-client.ts`
-- `apps/admin/lib/plinto-client.ts`
+- `apps/demo/lib/janua-client.ts`
+- `apps/dashboard/lib/janua-client.ts`
+- `apps/admin/lib/janua-client.ts`
 
 **Solution**:
 ```typescript
 tokenStorage: {
   type: 'localStorage' as const,  // ✅ Added const assertion
-  key: 'plinto_auth_token',
+  key: 'janua_auth_token',
 }
 ```
 
@@ -240,7 +240,7 @@ export interface User {
 **Fixes Applied**:
 1. `InvitationResponse` → `Invitation`
 2. `invitation.invitation_url` → `invitation.invite_url`
-3. `PlintoClient` class → `plintoClient` instance
+3. `JanuaClient` class → `januaClient` instance
 4. Handler signatures: sync → async, fixed parameter types
 
 **Impact**: Fixed 10 showcase-related errors
@@ -266,12 +266,12 @@ export interface User {
 #### 1. Test File Mock Types (27 errors - TS7006)
 ```typescript
 // Issue: Implicit any in mock components
-jest.mock('@plinto/ui', () => ({
+jest.mock('@janua/ui', () => ({
   Button: (props) => <button {...props} />,  // ❌ props: any
 }))
 
 // Fix needed:
-jest.mock('@plinto/ui', () => ({
+jest.mock('@janua/ui', () => ({
   Button: (props: any) => <button {...props} />,  // ✅ explicit any
 }))
 ```
@@ -346,13 +346,13 @@ cd packages/ui && npm run build
 5. `packages/ui/src/index.ts` - Type exports
 
 ### Apps (8 files)
-6. `apps/demo/lib/plinto-client.ts` - Token storage
-7. `apps/demo/components/providers/plinto-provider.tsx` - Event handlers
+6. `apps/demo/lib/janua-client.ts` - Token storage
+7. `apps/demo/components/providers/janua-provider.tsx` - Event handlers
 8. `apps/demo/app/auth/invitations-showcase/page.tsx` - Type fixes
 9. `apps/demo/app/auth/sso-showcase/page.tsx` - Type fixes
-10. `apps/dashboard/lib/plinto-client.ts` - Token storage
+10. `apps/dashboard/lib/janua-client.ts` - Token storage
 11. `apps/dashboard/lib/auth.tsx` - Event handlers
-12. `apps/admin/lib/plinto-client.ts` - Token storage
+12. `apps/admin/lib/janua-client.ts` - Token storage
 13. `apps/admin/lib/auth.tsx` - Event handlers + hasRole fix
 
 **Total**: 13 files modified

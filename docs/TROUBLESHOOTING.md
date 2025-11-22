@@ -1,4 +1,4 @@
-# Plinto Troubleshooting Guide
+# Janua Troubleshooting Guide
 
 > **Comprehensive guide for resolving common issues in development and production**
 
@@ -39,14 +39,14 @@ ls components/ui/
 
 ### TypeScript Errors in SDK
 
-**Error**: Type mismatches in `@plinto/typescript-sdk`
+**Error**: Type mismatches in `@janua/typescript-sdk`
 
 **Cause**: Outdated type definitions or version mismatches.
 
 **Solution**:
 ```bash
 # Rebuild the SDK
-yarn workspace @plinto/typescript-sdk build
+yarn workspace @janua/typescript-sdk build
 
 # Clear TypeScript cache
 rm -rf node_modules/.cache
@@ -91,18 +91,18 @@ yarn build --force
 2. **Wrong JWKS URL**:
    ```env
    # Ensure correct JWKS URL in .env.local
-   PLINTO_JWKS_URL=https://plinto.dev/.well-known/jwks.json
+   JANUA_JWKS_URL=https://janua.dev/.well-known/jwks.json
    ```
 
 3. **Incorrect Audience/Issuer**:
    ```env
-   PLINTO_ISSUER=https://plinto.dev
-   PLINTO_AUDIENCE=plinto.dev
+   JANUA_ISSUER=https://janua.dev
+   JANUA_AUDIENCE=janua.dev
    ```
 
 ### CORS Errors
 
-**Error**: `Access to fetch at 'https://plinto.dev/api' from origin 'http://localhost:3000' has been blocked by CORS policy`
+**Error**: `Access to fetch at 'https://janua.dev/api' from origin 'http://localhost:3000' has been blocked by CORS policy`
 
 **Solution**:
 ```typescript
@@ -166,11 +166,11 @@ const verified = speakeasy.totp.verify({
 **Solution**:
 ```env
 # Ensure callback URLs match provider configuration
-GOOGLE_CALLBACK_URL=https://plinto.dev/api/auth/google/callback
-GITHUB_CALLBACK_URL=https://plinto.dev/api/auth/github/callback
+GOOGLE_CALLBACK_URL=https://janua.dev/api/auth/google/callback
+GITHUB_CALLBACK_URL=https://janua.dev/api/auth/github/callback
 
 # Add to provider's authorized redirect URIs:
-# - https://plinto.dev/api/auth/[provider]/callback
+# - https://janua.dev/api/auth/[provider]/callback
 # - http://localhost:8000/api/auth/[provider]/callback (for dev)
 ```
 
@@ -190,7 +190,7 @@ pg_isready
 
 # Check connection string
 echo $DATABASE_URL
-# Should be: postgresql://user:password@localhost:5432/plinto
+# Should be: postgresql://user:password@localhost:5432/janua
 ```
 
 ### Migration Failures
@@ -200,13 +200,13 @@ echo $DATABASE_URL
 **Solution**:
 ```bash
 # Check migration status
-yarn workspace @plinto/database migrate:status
+yarn workspace @janua/database migrate:status
 
 # Reset database (CAUTION: destroys data)
-yarn workspace @plinto/database migrate:reset
+yarn workspace @janua/database migrate:reset
 
 # Run migrations fresh
-yarn workspace @plinto/database migrate:up
+yarn workspace @janua/database migrate:up
 ```
 
 ### Redis Connection Issues
@@ -267,10 +267,10 @@ redis-cli ping
 # railway.toml
 [build]
 builder = "NIXPACKS"
-buildCommand = "yarn install && yarn workspace @plinto/api build"
+buildCommand = "yarn install && yarn workspace @janua/api build"
 
 [deploy]
-startCommand = "yarn workspace @plinto/api start:prod"
+startCommand = "yarn workspace @janua/api start:prod"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 
@@ -287,7 +287,7 @@ healthcheckTimeout = 300
 **Solution**:
 ```typescript
 // Ensure JWKS is accessible
-const jwksUrl = 'https://plinto.dev/.well-known/jwks.json';
+const jwksUrl = 'https://janua.dev/.well-known/jwks.json';
 
 // Add caching headers
 export default {
@@ -325,7 +325,7 @@ export default {
 **Solution**:
 ```typescript
 // middleware.ts
-import { withPlinto } from '@plinto/nextjs/middleware';
+import { withJanua } from '@janua/nextjs/middleware';
 
 export const config = {
   matcher: [
@@ -339,11 +339,11 @@ export const config = {
   ],
 };
 
-export default withPlinto({
+export default withJanua({
   publicRoutes: ['/sign-in', '/sign-up', '/'],
-  audience: process.env.PLINTO_AUDIENCE!,
-  issuer: process.env.PLINTO_ISSUER!,
-  jwksUrl: process.env.PLINTO_JWKS_URL!,
+  audience: process.env.JANUA_AUDIENCE!,
+  issuer: process.env.JANUA_ISSUER!,
+  jwksUrl: process.env.JANUA_JWKS_URL!,
 });
 ```
 
@@ -353,20 +353,20 @@ export default withPlinto({
 
 **Solution**:
 ```tsx
-// Ensure PlintoProvider wraps your app
+// Ensure JanuaProvider wraps your app
 // app/layout.tsx or _app.tsx
-import { PlintoProvider } from '@plinto/nextjs';
+import { JanuaProvider } from '@janua/nextjs';
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <PlintoProvider
-          audience={process.env.NEXT_PUBLIC_PLINTO_AUDIENCE}
-          issuer={process.env.NEXT_PUBLIC_PLINTO_ISSUER}
+        <JanuaProvider
+          audience={process.env.NEXT_PUBLIC_JANUA_AUDIENCE}
+          issuer={process.env.NEXT_PUBLIC_JANUA_ISSUER}
         >
           {children}
-        </PlintoProvider>
+        </JanuaProvider>
       </body>
     </html>
   );
@@ -380,10 +380,10 @@ export default function RootLayout({ children }) {
 **Diagnostic Steps**:
 ```bash
 # Check API health
-curl https://plinto.dev/api/health
+curl https://janua.dev/api/health
 
 # Monitor database queries
-yarn workspace @plinto/api dev:debug
+yarn workspace @janua/api dev:debug
 
 # Check for N+1 queries in logs
 ```
@@ -441,7 +441,7 @@ PORT=3001 yarn dev
 
 ### Yarn Workspace Issues
 
-**Error**: `Cannot find module '@plinto/core'`
+**Error**: `Cannot find module '@janua/core'`
 
 **Solution**:
 ```bash
@@ -455,9 +455,9 @@ yarn cache clean
 yarn install
 
 # Build shared packages first
-yarn workspace @plinto/core build
-yarn workspace @plinto/database build
-yarn workspace @plinto/typescript-sdk build
+yarn workspace @janua/core build
+yarn workspace @janua/database build
+yarn workspace @janua/typescript-sdk build
 
 # Then build apps
 yarn build
@@ -490,10 +490,10 @@ Enable verbose logging for troubleshooting:
 
 ```bash
 # API debug mode
-DEBUG=plinto:* yarn workspace @plinto/api dev
+DEBUG=janua:* yarn workspace @janua/api dev
 
 # Next.js verbose logging
-NEXT_PUBLIC_DEBUG=true yarn workspace @plinto/admin dev
+NEXT_PUBLIC_DEBUG=true yarn workspace @janua/admin dev
 
 # Database query logging
 DATABASE_LOGGING=true yarn dev
@@ -510,7 +510,7 @@ DATABASE_LOGGING=true yarn dev
 
 1. **GitHub Issues**: For bug reports and feature requests
 2. **Discord**: Real-time help from the community
-3. **Email**: dev-support@plinto.dev for critical issues
+3. **Email**: dev-support@janua.dev for critical issues
 4. **Documentation**: Check [docs/](../docs/) for detailed guides
 
 ### Reporting Issues

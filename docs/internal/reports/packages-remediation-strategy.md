@@ -1,6 +1,6 @@
 # 🚨 Critical Issues Remediation Strategy
 
-**Project**: Plinto Platform Packages  
+**Project**: Janua Platform Packages  
 **Date**: 2025-01-17  
 **Scope**: Address critical issues identified in packages audit  
 **Timeline**: 6 weeks (3 phases)
@@ -52,7 +52,7 @@ git commit -m "Backup before packages remediation"
 
 # 2. Search for all package references
 echo "🔍 Searching for deprecated package references..."
-rg -r . "@plinto/react-sdk" --type-add 'config:*.{json,js,ts,yml,yaml}' -t config
+rg -r . "@janua/react-sdk" --type-add 'config:*.{json,js,ts,yml,yaml}' -t config
 rg -r . "packages/react-sdk" --type-add 'config:*.{json,js,ts,yml,yaml}' -t config
 rg -r . "packages/dashboard" --type-add 'config:*.{json,js,ts,yml,yaml}' -t config
 
@@ -71,11 +71,11 @@ npm run build 2>&1 | tee build-status-before.log
 ```bash
 # Step 1: Search for imports/references
 echo "🔍 Checking for react-sdk usage..."
-rg "@plinto/react-sdk" --type typescript --type javascript
+rg "@janua/react-sdk" --type typescript --type javascript
 rg "react-sdk" apps/ packages/ --type typescript --type javascript
 
 # Step 2: Check package.json dependencies
-find . -name "package.json" -exec grep -l "@plinto/react-sdk" {} \;
+find . -name "package.json" -exec grep -l "@janua/react-sdk" {} \;
 
 # Step 3: Verify no critical usage found
 if [ $? -eq 0 ]; then
@@ -121,7 +121,7 @@ fi
 ```bash
 # Step 1: Check if anything expects this package
 rg "packages/dashboard" . --type-add 'config:*.{json,js,ts,yml,yaml}' -t config
-rg "@plinto/dashboard" . --type typescript --type javascript
+rg "@janua/dashboard" . --type typescript --type javascript
 
 # Step 2: Check for actual dashboard implementation
 find . -name "*dashboard*" -type f | grep -v packages/dashboard
@@ -256,7 +256,7 @@ cat packages/ui/package.json | jq '.name, .description, .main'
 grep -r "export" packages/ui/src/ | head -5
 
 # Search for usage of packages/react
-rg "@plinto/react-sdk" . --type typescript --type javascript
+rg "@janua/react-sdk" . --type typescript --type javascript
 rg "packages/react" . --type-add 'config:*.{json,js,ts,yml,yaml}' -t config
 ```
 
@@ -277,7 +277,7 @@ echo "📋 Removing redundant packages/react..."
 diff -r packages/react packages/ui 2>/dev/null || echo "Packages differ or one doesn't exist"
 
 # Step 2: Search for dependencies
-find . -name "package.json" -exec grep -l "@plinto/react-sdk" {} \; || echo "No dependencies found"
+find . -name "package.json" -exec grep -l "@janua/react-sdk" {} \; || echo "No dependencies found"
 
 # Step 3: Safe removal
 if [ -d "packages/react" ] && [ ! -s "packages/react/package.json" ]; then
@@ -331,29 +331,29 @@ cat > claudedocs/package-manifest.md << 'EOF'
 # Package Manifest - Clear Purposes
 
 ## Production Ready Packages
-- **@plinto/core** - Shared TypeScript utilities and types
-- **@plinto/typescript-sdk** - Primary TypeScript/JavaScript SDK
-- **@plinto/python-sdk** - Primary Python SDK
-- **@plinto/ui** - React component library and design system
-- **@plinto/edge** - Edge-optimized JWT verification
-- **@plinto/monitoring** - Observability and monitoring
-- **@plinto/database** - Database abstraction layer
-- **@plinto/jwt-utils** - JWT utilities
+- **@janua/core** - Shared TypeScript utilities and types
+- **@janua/typescript-sdk** - Primary TypeScript/JavaScript SDK
+- **@janua/python-sdk** - Primary Python SDK
+- **@janua/ui** - React component library and design system
+- **@janua/edge** - Edge-optimized JWT verification
+- **@janua/monitoring** - Observability and monitoring
+- **@janua/database** - Database abstraction layer
+- **@janua/jwt-utils** - JWT utilities
 
 ## Framework SDKs
-- **@plinto/vue-sdk** - Vue.js integration
-- **@plinto/nextjs-sdk** - Next.js integration
-- **@plinto/react-native-sdk** - React Native mobile integration
-- **@plinto/go-sdk** - Go language SDK
-- **@plinto/flutter-sdk** - Flutter cross-platform SDK
+- **@janua/vue-sdk** - Vue.js integration
+- **@janua/nextjs-sdk** - Next.js integration
+- **@janua/react-native-sdk** - React Native mobile integration
+- **@janua/go-sdk** - Go language SDK
+- **@janua/flutter-sdk** - Flutter cross-platform SDK
 
 ## Development Tools
-- **@plinto/mock-api** - Development mock server (private)
+- **@janua/mock-api** - Development mock server (private)
 
 ## Archived/Removed
-- ~~@plinto/react-sdk~~ - Deprecated, removed in Phase 1
+- ~~@janua/react-sdk~~ - Deprecated, removed in Phase 1
 - ~~packages/dashboard~~ - Empty directory, removed in Phase 1
-- ~~packages/react~~ - Redundant with @plinto/ui, removed in Phase 2
+- ~~packages/react~~ - Redundant with @janua/ui, removed in Phase 2
 - ~~packages/sdk-js~~ - Empty, redundant with typescript-sdk, removed in Phase 2
 EOF
 ```
@@ -445,7 +445,7 @@ See [Contributing Guide](../../CONTRIBUTING.md) for details.
 
 ## License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.
 EOF
 ```
 
@@ -453,16 +453,16 @@ EOF
 ```bash
 # Vue SDK README
 cat > packages/vue-sdk/README.md << 'EOF'
-# Plinto Vue SDK
+# Janua Vue SDK
 
-> Official Plinto SDK for Vue 3 applications with composables and plugin support
+> Official Janua SDK for Vue 3 applications with composables and plugin support
 
 **Version:** 1.0.0 · **Framework:** Vue 3 · **Status:** Development
 
 ## Installation
 
 ```bash
-npm install @plinto/vue
+npm install @janua/vue
 ```
 
 ## Quick Start
@@ -470,15 +470,15 @@ npm install @plinto/vue
 ```typescript
 // main.ts
 import { createApp } from 'vue'
-import { createPlinto } from '@plinto/vue'
+import { createJanua } from '@janua/vue'
 
 const app = createApp(App)
 
-const plinto = createPlinto({
-  baseURL: 'https://api.plinto.dev'
+const janua = createJanua({
+  baseURL: 'https://api.janua.dev'
 })
 
-app.use(plinto)
+app.use(janua)
 app.mount('#app')
 ```
 
@@ -492,22 +492,22 @@ app.mount('#app')
 </template>
 
 <script setup>
-import { usePlinto } from '@plinto/vue'
+import { useJanua } from '@janua/vue'
 
-const { signIn, user, isLoading } = usePlinto()
+const { signIn, user, isLoading } = useJanua()
 </script>
 ```
 
 ## Features
 
-- 🔐 **Vue 3 Composables** - usePlinto, useAuth, useUser
+- 🔐 **Vue 3 Composables** - useJanua, useAuth, useUser
 - 📱 **Plugin Integration** - Easy Vue app integration
 - ⚡ **Reactive State** - Built-in reactivity with Vue refs
 - 🔄 **Auto Refresh** - Automatic token refresh handling
 
 ## API Reference
 
-### usePlinto()
+### useJanua()
 
 ```typescript
 const {
@@ -524,7 +524,7 @@ const {
   // User methods
   updateProfile,
   uploadAvatar
-} = usePlinto()
+} = useJanua()
 ```
 
 ## Examples
@@ -537,21 +537,21 @@ See [Contributing Guide](../../CONTRIBUTING.md) for details.
 
 ## License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.
 EOF
 
 # Next.js SDK README
 cat > packages/nextjs-sdk/README.md << 'EOF'
-# Plinto Next.js SDK
+# Janua Next.js SDK
 
-> Official Plinto SDK for Next.js applications with App Router and Pages Router support
+> Official Janua SDK for Next.js applications with App Router and Pages Router support
 
 **Version:** 0.1.0 · **Framework:** Next.js 12+ · **Status:** Development
 
 ## Installation
 
 ```bash
-npm install @plinto/nextjs
+npm install @janua/nextjs
 ```
 
 ## Quick Start
@@ -560,18 +560,18 @@ npm install @plinto/nextjs
 
 ```typescript
 // app/layout.tsx
-import { PlintoProvider } from '@plinto/nextjs/app'
+import { JanuaProvider } from '@janua/nextjs/app'
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <PlintoProvider
-          baseURL={process.env.NEXT_PUBLIC_PLINTO_URL}
-          publicKey={process.env.NEXT_PUBLIC_PLINTO_KEY}
+        <JanuaProvider
+          baseURL={process.env.NEXT_PUBLIC_JANUA_URL}
+          publicKey={process.env.NEXT_PUBLIC_JANUA_KEY}
         >
           {children}
-        </PlintoProvider>
+        </JanuaProvider>
       </body>
     </html>
   )
@@ -580,10 +580,10 @@ export default function RootLayout({ children }) {
 
 ```typescript
 // app/login/page.tsx
-import { usePlinto } from '@plinto/nextjs/app'
+import { useJanua } from '@janua/nextjs/app'
 
 export default function LoginPage() {
-  const { signIn, user } = usePlinto()
+  const { signIn, user } = useJanua()
   
   if (user) {
     return <div>Welcome {user.email}!</div>
@@ -601,13 +601,13 @@ export default function LoginPage() {
 
 ```typescript
 // pages/_app.tsx
-import { PlintoProvider } from '@plinto/nextjs/pages'
+import { JanuaProvider } from '@janua/nextjs/pages'
 
 export default function App({ Component, pageProps }) {
   return (
-    <PlintoProvider>
+    <JanuaProvider>
       <Component {...pageProps} />
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 ```
@@ -616,9 +616,9 @@ export default function App({ Component, pageProps }) {
 
 ```typescript
 // middleware.ts
-import { withPlinto } from '@plinto/nextjs/middleware'
+import { withJanua } from '@janua/nextjs/middleware'
 
-export default withPlinto({
+export default withJanua({
   protectedPaths: ['/dashboard', '/profile'],
   loginPath: '/login'
 })
@@ -636,7 +636,7 @@ export default withPlinto({
 ### Server Components
 
 ```typescript
-import { getUser, requireAuth } from '@plinto/nextjs/server'
+import { getUser, requireAuth } from '@janua/nextjs/server'
 
 // Get user in server component
 const user = await getUser()
@@ -648,9 +648,9 @@ const user = await requireAuth()
 ### Client Components
 
 ```typescript
-import { usePlinto } from '@plinto/nextjs/app' // or '/pages'
+import { useJanua } from '@janua/nextjs/app' // or '/pages'
 
-const { user, signIn, signOut, isLoading } = usePlinto()
+const { user, signIn, signOut, isLoading } = useJanua()
 ```
 
 ## Examples
@@ -665,20 +665,20 @@ See [Contributing Guide](../../CONTRIBUTING.md) for details.
 
 ## License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.
 EOF
 
 # Mock API README
 cat > packages/mock-api/README.md << 'EOF'
-# Plinto Mock API
+# Janua Mock API
 
-> Mock API server for Plinto development and testing
+> Mock API server for Janua development and testing
 
 **Version:** 0.1.0 · **Framework:** Express.js · **Status:** Development Tool
 
 ## Purpose
 
-Provides a mock implementation of the Plinto API for:
+Provides a mock implementation of the Janua API for:
 - Local development without backend dependencies
 - Integration testing with predictable responses
 - Demo environments and presentations
@@ -751,7 +751,7 @@ export default {
   users: {
     // Pre-configured mock users
     admin: {
-      email: 'admin@plinto.dev',
+      email: 'admin@janua.dev',
       password: 'admin123',
       role: 'admin'
     }
@@ -784,9 +784,9 @@ beforeAll(async () => {
 })
 
 test('SDK authentication', async () => {
-  const client = new PlintoClient({ baseURL: mockApiUrl })
-  const result = await client.signIn('admin@plinto.dev', 'admin123')
-  expect(result.user.email).toBe('admin@plinto.dev')
+  const client = new JanuaClient({ baseURL: mockApiUrl })
+  const result = await client.signIn('admin@janua.dev', 'admin123')
+  expect(result.user.email).toBe('admin@janua.dev')
 })
 ```
 
@@ -800,7 +800,7 @@ See [Contributing Guide](../../CONTRIBUTING.md) for details.
 
 ## License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.
 EOF
 ```
 
@@ -860,7 +860,7 @@ Use the standard template from `scripts/readme-template.md`
 
 ```json
 {
-  "name": "@plinto/[package-name]",
+  "name": "@janua/[package-name]",
   "version": "0.1.0",
   "description": "Brief description",
   "main": "./dist/index.js",
@@ -870,8 +870,8 @@ Use the standard template from `scripts/readme-template.md`
     "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["plinto", "relevant", "keywords"],
-  "author": "Plinto Team",
+  "keywords": ["janua", "relevant", "keywords"],
+  "author": "Janua Team",
   "license": "MIT"
 }
 ```

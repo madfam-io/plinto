@@ -15,29 +15,29 @@ export async function GET(request: NextRequest) {
 
   // Basic Prometheus format metrics
   const prometheusMetrics = `
-# HELP plinto_dashboard_page_views_total Total page views
-# TYPE plinto_dashboard_page_views_total counter
-plinto_dashboard_page_views_total ${metrics.pageViews}
+# HELP janua_dashboard_page_views_total Total page views
+# TYPE janua_dashboard_page_views_total counter
+janua_dashboard_page_views_total ${metrics.pageViews}
 
-# HELP plinto_dashboard_api_calls_total Total API calls
-# TYPE plinto_dashboard_api_calls_total counter
-plinto_dashboard_api_calls_total ${metrics.apiCalls}
+# HELP janua_dashboard_api_calls_total Total API calls
+# TYPE janua_dashboard_api_calls_total counter
+janua_dashboard_api_calls_total ${metrics.apiCalls}
 
-# HELP plinto_dashboard_errors_total Total client errors
-# TYPE plinto_dashboard_errors_total counter
-plinto_dashboard_errors_total ${metrics.errors}
+# HELP janua_dashboard_errors_total Total client errors
+# TYPE janua_dashboard_errors_total counter
+janua_dashboard_errors_total ${metrics.errors}
 
-# HELP plinto_dashboard_uptime_seconds Application uptime in seconds
-# TYPE plinto_dashboard_uptime_seconds gauge
-plinto_dashboard_uptime_seconds ${Math.floor(uptime / 1000)}
+# HELP janua_dashboard_uptime_seconds Application uptime in seconds
+# TYPE janua_dashboard_uptime_seconds gauge
+janua_dashboard_uptime_seconds ${Math.floor(uptime / 1000)}
 
-# HELP plinto_dashboard_build_info Build information
-# TYPE plinto_dashboard_build_info gauge
-plinto_dashboard_build_info{version="1.0.0",environment="${process.env.NODE_ENV || 'development'}"} 1
+# HELP janua_dashboard_build_info Build information
+# TYPE janua_dashboard_build_info gauge
+janua_dashboard_build_info{version="1.0.0",environment="${process.env.NODE_ENV || 'development'}"} 1
 
-# HELP plinto_dashboard_memory_usage_bytes Memory usage in bytes
-# TYPE plinto_dashboard_memory_usage_bytes gauge
-plinto_dashboard_memory_usage_bytes ${process.memoryUsage().rss}
+# HELP janua_dashboard_memory_usage_bytes Memory usage in bytes
+# TYPE janua_dashboard_memory_usage_bytes gauge
+janua_dashboard_memory_usage_bytes ${process.memoryUsage().rss}
 `.trim()
 
   return new NextResponse(prometheusMetrics, {

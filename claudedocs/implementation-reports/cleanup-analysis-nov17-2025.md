@@ -1,4 +1,4 @@
-# Plinto Codebase Cleanup Analysis
+# Janua Codebase Cleanup Analysis
 **Date**: November 17, 2025  
 **Analysis Type**: Code Quality & Technical Debt Assessment  
 **Method**: Evidence-based pattern analysis
@@ -322,7 +322,7 @@ echo "htmlcov/" >> .gitignore
 **Demo App** (Optional - Week 4):
 ```typescript
 // Replace console.log with logger
-import { logger } from '@plinto/core/utils/logger'
+import { logger } from '@janua/core/utils/logger'
 
 // Before
 console.log('User authenticated', user)
@@ -372,7 +372,7 @@ logger.info('User authenticated', { userId: user.id })
 #!/bin/bash
 # cleanup.sh - Safe cleanup of temporary files
 
-echo "🧹 Plinto Codebase Cleanup"
+echo "🧹 Janua Codebase Cleanup"
 echo "=========================="
 
 # Python cache

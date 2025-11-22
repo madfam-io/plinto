@@ -1,8 +1,8 @@
-# Plinto API Documentation
+# Janua API Documentation
 
-> **Comprehensive documentation for the Plinto Authentication Platform**
+> **Comprehensive documentation for the Janua Authentication Platform**
 
-Welcome to the Plinto API documentation. This documentation provides everything you need to understand, implement, and maintain the Plinto authentication platform.
+Welcome to the Janua API documentation. This documentation provides everything you need to understand, implement, and maintain the Janua authentication platform.
 
 ## 📚 Documentation Structure
 
@@ -140,19 +140,19 @@ We welcome documentation contributions! See our [Documentation Contributing Guid
 ## 🆘 Getting Help
 
 ### Documentation Issues
-- **Missing Content**: [Request Documentation](https://github.com/your-org/plinto/issues/new?template=documentation.md)
-- **Unclear Sections**: [Suggest Improvements](https://github.com/your-org/plinto/issues/new?template=documentation-improvement.md)
-- **Technical Errors**: [Report Issues](https://github.com/your-org/plinto/issues/new?template=bug-report.md)
+- **Missing Content**: [Request Documentation](https://github.com/your-org/janua/issues/new?template=documentation.md)
+- **Unclear Sections**: [Suggest Improvements](https://github.com/your-org/janua/issues/new?template=documentation-improvement.md)
+- **Technical Errors**: [Report Issues](https://github.com/your-org/janua/issues/new?template=bug-report.md)
 
 ### Community Support
-- **GitHub Discussions**: [Community Q&A](https://github.com/your-org/plinto/discussions)
-- **Discord**: [Developer Community](https://discord.gg/plinto-dev)
-- **Stack Overflow**: [plinto-api tag](https://stackoverflow.com/questions/tagged/plinto-api)
+- **GitHub Discussions**: [Community Q&A](https://github.com/your-org/janua/discussions)
+- **Discord**: [Developer Community](https://discord.gg/janua-dev)
+- **Stack Overflow**: [janua-api tag](https://stackoverflow.com/questions/tagged/janua-api)
 
 ### Professional Support
-- **Enterprise Support**: [support@plinto.dev](mailto:support@plinto.dev)
-- **Integration Consulting**: [consulting@plinto.dev](mailto:consulting@plinto.dev)
-- **Security Questions**: [security@plinto.dev](mailto:security@plinto.dev)
+- **Enterprise Support**: [support@janua.dev](mailto:support@janua.dev)
+- **Integration Consulting**: [consulting@janua.dev](mailto:consulting@janua.dev)
+- **Security Questions**: [security@janua.dev](mailto:security@janua.dev)
 
 ---
 

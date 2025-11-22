@@ -1,5 +1,5 @@
 /**
- * Enterprise License Management for Plinto SDK
+ * Enterprise License Management for Janua SDK
  * This module handles license validation and feature gating for enterprise features
  */
 
@@ -30,7 +30,7 @@ export class EnterpriseFeatures {
 
   constructor(config: EnterpriseConfig = {}) {
     this.licenseKey = config.licenseKey;
-    this.apiUrl = config.apiUrl || 'https://api.plinto.dev';
+    this.apiUrl = config.apiUrl || 'https://api.janua.dev';
     this.cacheTimeout = config.cacheTimeout || 3600000; // 1 hour default
   }
 
@@ -64,7 +64,7 @@ export class EnterpriseFeatures {
         },
         body: JSON.stringify({
           key: this.licenseKey,
-          sdk: '@plinto/typescript-sdk',
+          sdk: '@janua/typescript-sdk',
           version: '1.0.0'
         })
       });
@@ -114,9 +114,9 @@ export class EnterpriseFeatures {
 
     if (license.plan === 'community') {
       throw new EnterpriseError(
-        `${feature} requires an enterprise license. Visit https://plinto.dev/pricing or contact sales@plinto.dev`,
+        `${feature} requires an enterprise license. Visit https://janua.dev/pricing or contact sales@janua.dev`,
         'ENTERPRISE_REQUIRED',
-        { feature, upgradeUrl: 'https://plinto.dev/pricing' }
+        { feature, upgradeUrl: 'https://janua.dev/pricing' }
       );
     }
 
@@ -124,7 +124,7 @@ export class EnterpriseFeatures {
       throw new EnterpriseError(
         `Your ${license.plan} plan doesn't include ${feature}. Please upgrade your plan.`,
         'FEATURE_NOT_AVAILABLE',
-        { feature, currentPlan: license.plan, upgradeUrl: 'https://plinto.dev/pricing' }
+        { feature, currentPlan: license.plan, upgradeUrl: 'https://janua.dev/pricing' }
       );
     }
   }

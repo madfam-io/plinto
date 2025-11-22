@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Button, Input, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@plinto/ui'
+import { Button, Input, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@janua/ui'
 import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, CheckCircle } from 'lucide-react'
 
 export default function SignUpPage() {
@@ -37,12 +37,12 @@ export default function SignUpPage() {
     }
 
     try {
-      const plinto = (window as any).plinto
-      if (!plinto) {
-        throw new Error('Plinto SDK not initialized')
+      const janua = (window as any).janua
+      if (!janua) {
+        throw new Error('Janua SDK not initialized')
       }
 
-      const result = await plinto.signUp({
+      const result = await janua.signUp({
         email,
         password,
         name,
@@ -51,7 +51,7 @@ export default function SignUpPage() {
       if (result.user) {
         setSuccess(true)
         // Auto sign in after successful signup
-        const signInResult = await plinto.signIn({
+        const signInResult = await janua.signIn({
           email,
           password,
         })
@@ -79,11 +79,11 @@ export default function SignUpPage() {
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <Link href="https://plinto.dev" className="inline-flex items-center space-x-2">
+          <Link href="https://janua.dev" className="inline-flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">P</span>
             </div>
-            <span className="text-2xl font-bold text-gray-900 dark:text-white">Plinto</span>
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">Janua</span>
           </Link>
         </div>
 
@@ -194,11 +194,11 @@ export default function SignUpPage() {
                 />
                 <label htmlFor="terms" className="text-sm text-gray-600 dark:text-gray-400">
                   I agree to the{' '}
-                  <Link href="https://plinto.dev/terms" className="text-blue-600 hover:underline">
+                  <Link href="https://janua.dev/terms" className="text-blue-600 hover:underline">
                     Terms of Service
                   </Link>{' '}
                   and{' '}
-                  <Link href="https://plinto.dev/privacy" className="text-blue-600 hover:underline">
+                  <Link href="https://janua.dev/privacy" className="text-blue-600 hover:underline">
                     Privacy Policy
                   </Link>
                 </label>

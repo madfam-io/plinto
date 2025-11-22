@@ -1,6 +1,6 @@
 # Monitoring Stack Integration
 
-This document describes the complete monitoring integration for the Plinto platform, including Prometheus metrics collection, health checks, and frontend monitoring.
+This document describes the complete monitoring integration for the Janua platform, including Prometheus metrics collection, health checks, and frontend monitoring.
 
 ## Overview
 
@@ -115,17 +115,17 @@ The monitoring stack expects the following endpoints:
 
 ```yaml
 scrape_configs:
-  - job_name: 'plinto-api'
+  - job_name: 'janua-api'
     static_configs:
       - targets: ['localhost:8000']
     metrics_path: '/metrics'
 
-  - job_name: 'plinto-dashboard'
+  - job_name: 'janua-dashboard'
     static_configs:
       - targets: ['localhost:3001']
     metrics_path: '/api/metrics'
 
-  - job_name: 'plinto-admin'
+  - job_name: 'janua-admin'
     static_configs:
       - targets: ['localhost:3004']
     metrics_path: '/api/metrics'
@@ -160,7 +160,7 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: plinto-api
+  - name: janua-api
     livenessProbe:
       httpGet:
         path: /api/v1/health/live
@@ -289,21 +289,21 @@ Alerts are configured in:
 
 | Metric Name | Type | Description |
 |-------------|------|-------------|
-| `plinto_system_cpu_percent` | Gauge | System CPU usage percentage |
-| `plinto_system_memory_percent` | Gauge | System memory usage percentage |
-| `plinto_http_requests_total` | Counter | Total HTTP requests by method/endpoint/status |
-| `plinto_http_request_duration_seconds` | Histogram | HTTP request duration |
-| `plinto_database_connections_active` | Gauge | Active database connections |
-| `plinto_redis_connected` | Gauge | Redis connection status |
+| `janua_system_cpu_percent` | Gauge | System CPU usage percentage |
+| `janua_system_memory_percent` | Gauge | System memory usage percentage |
+| `janua_http_requests_total` | Counter | Total HTTP requests by method/endpoint/status |
+| `janua_http_request_duration_seconds` | Histogram | HTTP request duration |
+| `janua_database_connections_active` | Gauge | Active database connections |
+| `janua_redis_connected` | Gauge | Redis connection status |
 
 ### Frontend Metrics
 
 | Metric Name | Type | Description |
 |-------------|------|-------------|
-| `plinto_dashboard_page_views_total` | Counter | Dashboard page views |
-| `plinto_dashboard_api_calls_total` | Counter | Dashboard API calls |
-| `plinto_admin_actions_total` | Counter | Admin actions performed |
-| `plinto_admin_config_changes_total` | Counter | Configuration changes |
+| `janua_dashboard_page_views_total` | Counter | Dashboard page views |
+| `janua_dashboard_api_calls_total` | Counter | Dashboard API calls |
+| `janua_admin_actions_total` | Counter | Admin actions performed |
+| `janua_admin_config_changes_total` | Counter | Configuration changes |
 
 ## Troubleshooting
 
@@ -329,7 +329,7 @@ Alerts are configured in:
 npm run test:monitoring
 
 # View raw metrics
-curl -s http://localhost:8000/metrics | grep plinto_
+curl -s http://localhost:8000/metrics | grep janua_
 
 # Check health status
 curl -s http://localhost:8000/api/v1/health/detailed | jq

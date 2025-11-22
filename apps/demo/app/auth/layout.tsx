@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Authentication Components Showcase | Plinto Demo',
-  description: 'Interactive showcase of @plinto/ui authentication components',
+  title: 'Authentication Components Showcase | Janua Demo',
+  description: 'Interactive showcase of @janua/ui authentication components',
 }
 
 export default function AuthShowcaseLayout({
@@ -19,7 +19,7 @@ export default function AuthShowcaseLayout({
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                @plinto/ui Showcase
+                @janua/ui Showcase
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mt-2">
                 Production-ready authentication components
@@ -78,12 +78,12 @@ export default function AuthShowcaseLayout({
           <p>
             Built with{' '}
             <a
-              href="https://github.com/yourusername/plinto"
+              href="https://github.com/yourusername/janua"
               className="text-blue-600 dark:text-blue-400 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              @plinto/ui
+              @janua/ui
             </a>{' '}
             | Open-source authentication components
           </p>

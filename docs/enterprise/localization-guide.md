@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plinto provides comprehensive localization (L10n) and internationalization (i18n) support, enabling global deployment with region-specific authentication flows, multi-language interfaces, cultural adaptations, and compliance with local regulations.
+Janua provides comprehensive localization (L10n) and internationalization (i18n) support, enabling global deployment with region-specific authentication flows, multi-language interfaces, cultural adaptations, and compliance with local regulations.
 
 ## Language Support
 
@@ -383,7 +383,7 @@ class LocaleDetectionService {
 
 ```tsx
 // Localized React Components
-import { useLocale, useTranslation } from '@plinto/i18n';
+import { useLocale, useTranslation } from '@janua/i18n';
 
 export function LocalizedLoginForm() {
   const locale = useLocale();
@@ -1054,7 +1054,7 @@ class LocalizationTesting {
 
 ## Support & Resources
 
-- i18n Documentation: https://docs.plinto.dev/i18n
-- Translation Portal: https://translate.plinto.dev
-- Locale Testing: https://test.plinto.dev/locales
-- Support: i18n@plinto.dev
+- i18n Documentation: https://docs.janua.dev/i18n
+- Translation Portal: https://translate.janua.dev
+- Locale Testing: https://test.janua.dev/locales
+- Support: i18n@janua.dev

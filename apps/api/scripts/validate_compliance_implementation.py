@@ -197,7 +197,7 @@ def validate_dependencies():
 def main():
     """Run all validation checks"""
 
-    print("🚀 Plinto Compliance Implementation Validator")
+    print("🚀 Janua Compliance Implementation Validator")
     print("=" * 60)
 
     checks = [

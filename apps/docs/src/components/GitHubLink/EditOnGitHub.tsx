@@ -15,7 +15,7 @@ interface EditOnGitHubProps {
 
 export function EditOnGitHub({
   filePath,
-  repository = 'plinto/plinto',
+  repository = 'janua/janua',
   branch = 'main',
   variant = 'button',
   showHistory = false,
@@ -120,7 +120,7 @@ interface ContributorsProps {
 
 export function Contributors({
   filePath,
-  repository = 'plinto/plinto',
+  repository = 'janua/janua',
   branch = 'main',
   maxContributors = 5,
   className = ''
@@ -207,7 +207,7 @@ interface LastUpdatedProps {
 
 export function LastUpdated({
   filePath,
-  repository = 'plinto/plinto',
+  repository = 'janua/janua',
   branch = 'main',
   className = ''
 }: LastUpdatedProps) {

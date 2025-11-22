@@ -1,11 +1,11 @@
-# Auth0 to Plinto Migration Tool
+# Auth0 to Janua Migration Tool
 
-Migrate your users from Auth0 to self-hosted Plinto with zero downtime.
+Migrate your users from Auth0 to self-hosted Janua with zero downtime.
 
 ## What This Does
 
 1. **Exports all users** from your Auth0 tenant
-2. **Imports them** into your Plinto instance
+2. **Imports them** into your Janua instance
 3. **Generates a report** showing what succeeded/failed
 4. **Preserves user data** - email, name, phone, metadata
 
@@ -25,7 +25,7 @@ We recommend Option 1 for security and simplicity.
 ## Prerequisites
 
 1. **Auth0 Account** with admin access
-2. **Plinto instance** running (can be local)
+2. **Janua instance** running (can be local)
 3. **Python 3.11+** installed
 
 ---
@@ -45,17 +45,17 @@ In Auth0 Dashboard:
 
 1. Go to **Applications** → **Create Application**
 2. Choose **Machine to Machine Application**
-3. Name it "Plinto Migration"
+3. Name it "Janua Migration"
 4. Select **Auth0 Management API**
 5. Grant permissions:
    - `read:users`
    - `read:user_idp_tokens`
 6. Copy **Domain**, **Client ID**, **Client Secret**
 
-### 3. Get Plinto Admin Token
+### 3. Get Janua Admin Token
 
 ```bash
-# Start your Plinto instance
+# Start your Janua instance
 cd apps/api
 uvicorn app.main:app
 
@@ -85,7 +85,7 @@ nano config.json
     "client_id": "abc123...",
     "client_secret": "xyz789..."
   },
-  "plinto": {
+  "janua": {
     "api_url": "http://localhost:8000",
     "admin_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   }
@@ -119,9 +119,9 @@ python auth0_migrate.py --config config.json --import-only auth0_users.json
 ✓ Users saved to: auth0_users.json
 ```
 
-**Step 2: Import to Plinto**
+**Step 2: Import to Janua**
 ```
-✓ Importing 1,247 users to Plinto...
+✓ Importing 1,247 users to Janua...
   Importing users... 100%
 ✓ Imported: 1,245 | Failed: 2 | Skipped: 0
 ```
@@ -133,7 +133,7 @@ Migration Summary
 │ Metric              │ Count │
 ├─────────────────────┼───────┤
 │ Exported from Auth0 │ 1,247 │
-│ Imported to Plinto  │ 1,245 │
+│ Imported to Janua  │ 1,245 │
 │ Skipped (existing)  │     0 │
 │ Failed              │     2 │
 └─────────────────────┴───────┘
@@ -147,7 +147,7 @@ Report saved to: migration_report.json
 
 ### What Gets Migrated
 
-| Auth0 Field | Plinto Field | Notes |
+| Auth0 Field | Janua Field | Notes |
 |-------------|--------------|-------|
 | `email` | `email` | ✅ Exact match |
 | `email_verified` | `email_verified` | ✅ Preserved |
@@ -181,9 +181,9 @@ Create Auth0 custom rule to migrate passwords on login:
 
 ```javascript
 function (user, context, callback) {
-  // On successful login, send password to Plinto
-  // Then user can use Plinto for next login
-  // Requires webhook to Plinto
+  // On successful login, send password to Janua
+  // Then user can use Janua for next login
+  // Requires webhook to Janua
   // (Implementation left as exercise)
 }
 ```
@@ -226,7 +226,7 @@ Failed: 1 | Error: User with email already exists
 Import failed: Connection refused (localhost:8000)
 ```
 
-**Fix:** Make sure Plinto is running:
+**Fix:** Make sure Janua is running:
 ```bash
 cd apps/api
 uvicorn app.main:app
@@ -246,7 +246,7 @@ python auth0_migrate.py --config config.json --export-only
 ```bash
 # Edit auth0_users.json to only include 10 users
 python auth0_migrate.py --config config.json --import-only auth0_users.json
-# Verify in Plinto dashboard
+# Verify in Janua dashboard
 ```
 
 **3. Full migration:**
@@ -262,7 +262,7 @@ python auth0_migrate.py --config config.json
 ### Before Migration
 
 - [ ] **Backup Auth0 data** (export users as JSON)
-- [ ] **Test Plinto instance** is running and accessible
+- [ ] **Test Janua instance** is running and accessible
 - [ ] **Test migration** with 10 users first
 - [ ] **Verify user data** mapping is correct
 - [ ] **Plan password reset** communication to users
@@ -278,11 +278,11 @@ python auth0_migrate.py --config config.json
 ### After Migration
 
 - [ ] **Review migration report** (check failed count)
-- [ ] **Verify users** can sign in to Plinto
+- [ ] **Verify users** can sign in to Janua
 - [ ] **Send password reset emails** to all users
 - [ ] **Keep Auth0 active** for 30 days (rollback option)
 - [ ] **Monitor login attempts** for issues
-- [ ] **Update application** to use Plinto API
+- [ ] **Update application** to use Janua API
 
 ---
 
@@ -291,16 +291,16 @@ python auth0_migrate.py --config config.json
 **Option 1: Gradual Cutover**
 
 1. **Week 1:** Migrate users, keep Auth0 active
-2. **Week 2:** Dual-write (write to both Auth0 and Plinto)
-3. **Week 3:** Test Plinto with beta users
-4. **Week 4:** Switch all traffic to Plinto
+2. **Week 2:** Dual-write (write to both Auth0 and Janua)
+3. **Week 3:** Test Janua with beta users
+4. **Week 4:** Switch all traffic to Janua
 5. **Week 5+:** Decommission Auth0
 
 **Option 2: Big Bang (Not Recommended)**
 
 1. Schedule maintenance window
 2. Migrate all users at once
-3. Switch DNS/config to Plinto
+3. Switch DNS/config to Janua
 4. Hope nothing breaks
 
 **We recommend Option 1.**
@@ -314,7 +314,7 @@ python auth0_migrate.py --config config.json
 - SSO: +$1,000/month
 - **Total: $3,000/month = $36,000/year**
 
-**Plinto (self-hosted):**
+**Janua (self-hosted):**
 - Server: ~$100/month (DigitalOcean Droplet)
 - Database: ~$50/month
 - Redis: ~$20/month
@@ -332,11 +332,11 @@ python auth0_migrate.py --config config.json
 
 1. Check `migration_report.json` for error details
 2. Review [Troubleshooting](#troubleshooting) section
-3. Open [GitHub Issue](https://github.com/madfam-io/plinto/issues)
+3. Open [GitHub Issue](https://github.com/madfam-io/janua/issues)
 4. Include: Error message, config (redacted), migration report
 
 **Security concerns:**
-- Email: security@plinto.dev
+- Email: security@janua.dev
 
 ---
 
@@ -352,7 +352,7 @@ A: Yes, keep Auth0 active for 30 days as backup.
 
 **Q: What about social login connections (Google, GitHub)?**
 
-A: Migrated as user metadata. Users can reconnect in Plinto.
+A: Migrated as user metadata. Users can reconnect in Janua.
 
 **Q: How long does migration take?**
 
@@ -364,7 +364,7 @@ A: Yes, existing users are skipped by default.
 
 **Q: What about MFA settings?**
 
-A: Not migrated. Users must re-enable MFA in Plinto.
+A: Not migrated. Users must re-enable MFA in Janua.
 
 ---
 

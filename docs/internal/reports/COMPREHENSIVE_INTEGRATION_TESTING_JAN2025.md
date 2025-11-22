@@ -1,7 +1,7 @@
 # Comprehensive Integration Testing Report - January 2025
 
 ## Executive Summary
-Successfully completed comprehensive browser-based integration testing of the Plinto platform, validating end-to-end functionality across frontend, backend, and infrastructure layers with 100% test pass rate.
+Successfully completed comprehensive browser-based integration testing of the Janua platform, validating end-to-end functionality across frontend, backend, and infrastructure layers with 100% test pass rate.
 
 ## Test Execution Overview
 
@@ -23,9 +23,9 @@ PostgreSQL:
   image: postgres:15-alpine
   port: 5432
   status: HEALTHY
-  credentials: plinto/plinto_dev
-  database: plinto_db
-  health_check: pg_isready -U plinto
+  credentials: janua/janua_dev
+  database: janua_db
+  health_check: pg_isready -U janua
 
 Redis:
   container: api-redis-1
@@ -68,12 +68,12 @@ API Backend:
 
 #### 1. Core Functionality ✅ (3.0s)
 Validates essential marketing site features:
-- [x] Home page loads with correct title containing "Plinto"
+- [x] Home page loads with correct title containing "Janua"
 - [x] Hero section renders with "Authentication at the" heading
 - [x] Pricing links functional and visible
 - [x] Performance demo button visible and clickable
 - [x] GitHub repository links present
-- [x] App signup links configured (app.plinto.dev/auth/signup)
+- [x] App signup links configured (app.janua.dev/auth/signup)
 - [x] Get Started button accessible
 - [x] Footer links rendering correctly
 

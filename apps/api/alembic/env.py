@@ -1,4 +1,4 @@
-"""Alembic environment configuration for Plinto API"""
+"""Alembic environment configuration for Janua API"""
 
 import asyncio
 import os

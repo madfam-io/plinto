@@ -1,4 +1,4 @@
-# Plinto Platform: Enterprise Production Roadmap
+# Janua Platform: Enterprise Production Roadmap
 ## 12-Week Implementation Plan for Production-Ready Enterprise-Grade Identity Platform
 
 ---
@@ -105,8 +105,8 @@ async def sign_in(request: Request, credentials: SignInRequest):
 # nginx.conf - SSL configuration
 server {
     listen 443 ssl http2;
-    ssl_certificate /etc/ssl/certs/plinto.pem;
-    ssl_certificate_key /etc/ssl/private/plinto.key;
+    ssl_certificate /etc/ssl/certs/janua.pem;
+    ssl_certificate_key /etc/ssl/private/janua.key;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
     ssl_prefer_server_ciphers off;
@@ -856,7 +856,7 @@ Payback Period: 1.8 months
 
 ## Conclusion
 
-This 12-week Enterprise Production Roadmap transforms Plinto from a promising authentication platform into a production-ready, enterprise-grade identity solution. The structured approach prioritizes critical security fixes while building comprehensive enterprise capabilities that enable competitive positioning against established players like Auth0 and Okta.
+This 12-week Enterprise Production Roadmap transforms Janua from a promising authentication platform into a production-ready, enterprise-grade identity solution. The structured approach prioritizes critical security fixes while building comprehensive enterprise capabilities that enable competitive positioning against established players like Auth0 and Okta.
 
 ### **Key Success Factors**
 1. **Security-First Approach**: Immediate resolution of critical vulnerabilities
@@ -878,4 +878,4 @@ The investment of $399,960 over 12 weeks delivers immediate ROI through increase
 3. Engage external security audit firm
 4. Establish project governance and reporting
 
-This roadmap serves as both a technical implementation guide and strategic business transformation plan, positioning Plinto for sustained growth in the enterprise identity market.
+This roadmap serves as both a technical implementation guide and strategic business transformation plan, positioning Janua for sustained growth in the enterprise identity market.

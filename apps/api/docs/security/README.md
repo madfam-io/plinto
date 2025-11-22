@@ -1,13 +1,13 @@
 # Security Documentation
 
-> **Comprehensive security implementation and compliance for the Plinto API**
+> **Comprehensive security implementation and compliance for the Janua API**
 
-This section provides detailed security documentation covering implementation, compliance frameworks, and security best practices for the Plinto authentication platform.
+This section provides detailed security documentation covering implementation, compliance frameworks, and security best practices for the Janua authentication platform.
 
 ## 🛡️ Security Overview
 
 ### Security Mission
-Plinto is designed with security as a foundational principle, implementing defense-in-depth strategies to protect user data, ensure privacy, and maintain service integrity across all components.
+Janua is designed with security as a foundational principle, implementing defense-in-depth strategies to protect user data, ensure privacy, and maintain service integrity across all components.
 
 ### Security Objectives
 - **Confidentiality**: Protect sensitive data through encryption and access controls
@@ -107,8 +107,8 @@ JWT_SETTINGS = {
     'algorithm': 'RS256',  # Asymmetric signing
     'access_token_expire_minutes': 15,  # Short-lived access tokens
     'refresh_token_expire_days': 7,     # Medium-lived refresh tokens
-    'issuer': 'https://plinto.dev',
-    'audience': 'plinto-api',
+    'issuer': 'https://janua.dev',
+    'audience': 'janua-api',
     'key_rotation_interval': 30,       # Days
 }
 ```
@@ -478,14 +478,14 @@ class SecurityTestSuite:
 ## 🆘 Security Contact
 
 ### Security Team
-- **Security Officer**: [security@plinto.dev](mailto:security@plinto.dev)
-- **Incident Response**: [incident@plinto.dev](mailto:incident@plinto.dev)
-- **Compliance**: [compliance@plinto.dev](mailto:compliance@plinto.dev)
+- **Security Officer**: [security@janua.dev](mailto:security@janua.dev)
+- **Incident Response**: [incident@janua.dev](mailto:incident@janua.dev)
+- **Compliance**: [compliance@janua.dev](mailto:compliance@janua.dev)
 
 ### Vulnerability Reporting
-- **Responsible Disclosure**: [security@plinto.dev](mailto:security@plinto.dev)
-- **Bug Bounty**: [HackerOne Program](https://hackerone.com/plinto)
-- **PGP Key**: [Security PGP Key](https://plinto.dev/.well-known/security.txt)
+- **Responsible Disclosure**: [security@janua.dev](mailto:security@janua.dev)
+- **Bug Bounty**: [HackerOne Program](https://hackerone.com/janua)
+- **PGP Key**: [Security PGP Key](https://janua.dev/.well-known/security.txt)
 
 ---
 

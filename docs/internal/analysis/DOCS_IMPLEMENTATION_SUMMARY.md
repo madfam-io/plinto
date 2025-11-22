@@ -1,7 +1,7 @@
 # Documentation Site Priority Improvements - Implementation Summary
 
 **Date**: January 2025  
-**Scope**: Top priority improvements for docs.plinto.dev based on gap analysis
+**Scope**: Top priority improvements for docs.janua.dev based on gap analysis
 
 ---
 
@@ -101,7 +101,7 @@ npm install
 
 Add to `.env.local`:
 ```env
-NEXT_PUBLIC_SITE_URL=https://docs.plinto.dev
+NEXT_PUBLIC_SITE_URL=https://docs.janua.dev
 NEXT_PUBLIC_ALGOLIA_APP_ID=your_app_id
 NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=your_search_key
 ```

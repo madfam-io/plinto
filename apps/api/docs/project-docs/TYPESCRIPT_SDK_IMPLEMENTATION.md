@@ -1,23 +1,23 @@
 # TypeScript SDK Implementation Summary
 
-**Status**: ✅ **COMPLETED** - Production-ready TypeScript SDK for Plinto API
+**Status**: ✅ **COMPLETED** - Production-ready TypeScript SDK for Janua API
 
 ## 🎯 Implementation Overview
 
-Successfully implemented a comprehensive TypeScript SDK that transforms Plinto from an API-only service to a **developer-friendly platform** with enterprise-grade client libraries.
+Successfully implemented a comprehensive TypeScript SDK that transforms Janua from an API-only service to a **developer-friendly platform** with enterprise-grade client libraries.
 
 ## ✅ Completed Features
 
 ### 1. **Complete TypeScript SDK Structure** ✅
 - **Location**: `sdks/typescript/`
-- **Package Name**: `@plinto/typescript-sdk`
+- **Package Name**: `@janua/typescript-sdk`
 - **Version**: 0.1.0
 - **Build System**: TypeScript 5.2+ with strict mode
 - **Testing**: Jest with 13/16 tests passing (81% success rate)
 
 ### 2. **Core Architecture** ✅
 - **Base Client**: `BaseAPIClient` with retry logic, authentication, error handling
-- **Main Client**: `PlintoClient` with complete API surface (25+ methods)
+- **Main Client**: `JanuaClient` with complete API surface (25+ methods)
 - **Token Management**: Automatic refresh, secure storage (localStorage/memory)
 - **Error Handling**: Comprehensive error hierarchy with typed exceptions
 - **Type Safety**: Full TypeScript definitions for all API responses
@@ -25,7 +25,7 @@ Successfully implemented a comprehensive TypeScript SDK that transforms Plinto f
 ### 3. **Authentication System** ✅
 ```typescript
 // JWT Token Authentication
-const client = new PlintoClient({ base_url: 'https://api.plinto.dev' });
+const client = new JanuaClient({ base_url: 'https://api.janua.dev' });
 await client.login({ email: 'user@example.com', password: 'password' });
 
 // API Key Authentication
@@ -93,7 +93,7 @@ sdks/typescript/
 │   │   └── token-manager.ts       # Token management & refresh
 │   ├── client/
 │   │   ├── base-client.ts         # Base HTTP client with retries
-│   │   └── plinto-client.ts       # Main API client (25+ methods)
+│   │   └── janua-client.ts       # Main API client (25+ methods)
 │   ├── errors/
 │   │   └── index.ts               # Error hierarchy (8 error types)
 │   ├── types/
@@ -116,10 +116,10 @@ sdks/typescript/
 
 ### Basic Authentication
 ```typescript
-import { PlintoClient } from '@plinto/typescript-sdk';
+import { JanuaClient } from '@janua/typescript-sdk';
 
-const client = new PlintoClient({
-  base_url: 'https://api.plinto.dev'
+const client = new JanuaClient({
+  base_url: 'https://api.janua.dev'
 });
 
 // Login
@@ -205,13 +205,13 @@ await client.verifyMFA({ code: '123456' });
 ## 🔄 Next Steps & Roadmap
 
 ### **Immediate (Next 1-2 weeks)**
-1. **Publish to npm**: `npm publish @plinto/typescript-sdk`
+1. **Publish to npm**: `npm publish @janua/typescript-sdk`
 2. **Fix Remaining Tests**: Address 3 failing test scenarios for 100% coverage
 3. **Documentation Site**: Create interactive docs with live examples
 
 ### **Short Term (2-4 weeks)**
-1. **React Hooks Package**: `@plinto/react-hooks` for React integration
-2. **Vue Composition API**: `@plinto/vue-composables` for Vue 3 support
+1. **React Hooks Package**: `@janua/react-hooks` for React integration
+2. **Vue Composition API**: `@janua/vue-composables` for Vue 3 support
 3. **Example Applications**: Demo apps for React, Vue, Angular
 
 ### **Medium Term (1-2 months)**
@@ -234,7 +234,7 @@ await client.verifyMFA({ code: '123456' });
 
 ## 🏆 Conclusion
 
-The TypeScript SDK implementation successfully transforms Plinto from an API-only authentication service into a **developer-friendly platform** with enterprise-grade client libraries.
+The TypeScript SDK implementation successfully transforms Janua from an API-only authentication service into a **developer-friendly platform** with enterprise-grade client libraries.
 
 **Key Achievements:**
 - ✅ **Complete API Coverage**: All 114 endpoints accessible via typed methods
@@ -248,4 +248,4 @@ The TypeScript SDK implementation successfully transforms Plinto from an API-onl
 - 🔄 **SDK Ecosystem**: Foundation established for Python, Go, Java, Swift SDKs
 - 👥 **Developer Onboarding**: Complete documentation and examples available
 
-The TypeScript SDK positions Plinto as a **best-in-class authentication platform** that rivals enterprise solutions while maintaining developer-friendly simplicity.
+The TypeScript SDK positions Janua as a **best-in-class authentication platform** that rivals enterprise solutions while maintaining developer-friendly simplicity.

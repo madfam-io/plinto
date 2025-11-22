@@ -1,6 +1,6 @@
 # 📊 Documentation Health Dashboard
 
-> Auto-generated health metrics for Plinto documentation
+> Auto-generated health metrics for Janua documentation
 > Last updated: 9/14/2025, 4:55:31 PM
 
 ## 🏥 Overall Health Score: 60/100 🟠

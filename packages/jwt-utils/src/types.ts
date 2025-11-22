@@ -1,4 +1,4 @@
-export interface PlintoConfig {
+export interface JanuaConfig {
   apiKey?: string
   tenantId?: string
   baseUrl?: string
@@ -60,7 +60,7 @@ export interface TokenPair {
   token_type: string
 }
 
-export interface PlintoError {
+export interface JanuaError {
   code: string
   message: string
   status?: number

@@ -6,15 +6,15 @@ import (
 	"log"
 	"os"
 
-	plinto "github.com/plinto/go-sdk/client"
-	"github.com/plinto/go-sdk/models"
+	janua "github.com/janua/go-sdk/client"
+	"github.com/janua/go-sdk/models"
 )
 
 func main() {
-	// Initialize the Plinto client
-	client := plinto.New(plinto.Config{
-		BaseURL: getEnv("PLINTO_API_URL", "https://api.plinto.dev"),
-		APIKey:  getEnv("PLINTO_API_KEY", ""),
+	// Initialize the Janua client
+	client := janua.New(janua.Config{
+		BaseURL: getEnv("JANUA_API_URL", "https://api.janua.dev"),
+		APIKey:  getEnv("JANUA_API_KEY", ""),
 	})
 
 	ctx := context.Background()

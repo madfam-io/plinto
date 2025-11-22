@@ -1,10 +1,10 @@
-# Plinto TypeScript SDK
+# Janua TypeScript SDK
 
-[![npm version](https://badge.fury.io/js/@plinto/typescript-sdk.svg)](https://www.npmjs.com/package/@plinto/typescript-sdk)
+[![npm version](https://badge.fury.io/js/@janua/typescript-sdk.svg)](https://www.npmjs.com/package/@janua/typescript-sdk)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Official TypeScript/JavaScript SDK for the Plinto authentication API. This SDK provides a complete interface for user authentication, organization management, webhooks, and administrative operations.
+Official TypeScript/JavaScript SDK for the Janua authentication API. This SDK provides a complete interface for user authentication, organization management, webhooks, and administrative operations.
 
 ## Features
 
@@ -25,13 +25,13 @@ Official TypeScript/JavaScript SDK for the Plinto authentication API. This SDK p
 ## Installation
 
 ```bash
-npm install @plinto/typescript-sdk
+npm install @janua/typescript-sdk
 ```
 
 Or with yarn:
 
 ```bash
-yarn add @plinto/typescript-sdk
+yarn add @janua/typescript-sdk
 ```
 
 ## Quick Start
@@ -39,7 +39,7 @@ yarn add @plinto/typescript-sdk
 ### Basic Setup
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
   baseURL: 'https://api.yourapp.com'
@@ -109,7 +109,7 @@ const status = await client.auth.getMFAStatus();
 ```typescript
 // Create a webhook endpoint
 const webhook = await client.webhooks.createEndpoint({
-  url: 'https://myapp.com/webhooks/plinto',
+  url: 'https://myapp.com/webhooks/janua',
   events: ['user.created', 'user.signed_in'],
   description: 'User events webhook'
 });
@@ -163,7 +163,7 @@ if (availability.available) {
 The SDK supports various configuration options:
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
   baseURL: 'https://api.yourapp.com',
@@ -214,7 +214,7 @@ import {
   isAuthenticationError, 
   isValidationError, 
   isNetworkError 
-} from '@plinto/typescript-sdk';
+} from '@janua/typescript-sdk';
 
 try {
   await client.auth.signIn({
@@ -282,7 +282,7 @@ client.on('error', ({ error }) => {
 
 ### Client
 
-- `createClient(config)` - Create a new Plinto client
+- `createClient(config)` - Create a new Janua client
 - `client.isAuthenticated()` - Check authentication status
 - `client.getCurrentUser()` - Get current user
 - `client.setTokens(tokens)` - Set authentication tokens
@@ -417,7 +417,7 @@ client.on('error', ({ error }) => {
 ### Browser
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
   baseURL: 'https://api.yourapp.com',
@@ -428,7 +428,7 @@ const client = createClient({
 ### Node.js
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
   baseURL: 'https://api.yourapp.com',
@@ -439,25 +439,25 @@ const client = createClient({
 ### React
 
 ```typescript
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 import { createContext, useContext } from 'react';
 
-const PlintoContext = createContext(null);
+const JanuaContext = createContext(null);
 
-export function PlintoProvider({ children }) {
+export function JanuaProvider({ children }) {
   const client = createClient({
     baseURL: process.env.REACT_APP_API_URL
   });
 
   return (
-    <PlintoContext.Provider value={client}>
+    <JanuaContext.Provider value={client}>
       {children}
-    </PlintoContext.Provider>
+    </JanuaContext.Provider>
   );
 }
 
-export function usePlinto() {
-  return useContext(PlintoContext);
+export function useJanua() {
+  return useContext(JanuaContext);
 }
 ```
 
@@ -465,14 +465,14 @@ export function usePlinto() {
 
 ```typescript
 // pages/_app.tsx
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
   baseURL: process.env.NEXT_PUBLIC_API_URL
 });
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} plintoClient={client} />;
+  return <Component {...pageProps} januaClient={client} />;
 }
 ```
 
@@ -480,13 +480,13 @@ export default function App({ Component, pageProps }) {
 
 ```typescript
 // main.ts
-import { createClient } from '@plinto/typescript-sdk';
+import { createClient } from '@janua/typescript-sdk';
 
 const client = createClient({
   baseURL: process.env.VUE_APP_API_URL
 });
 
-app.provide('plinto', client);
+app.provide('janua', client);
 ```
 
 ## Contributing
@@ -499,10 +499,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- Documentation: [https://docs.plinto.dev](https://docs.plinto.dev)
-- GitHub Issues: [https://github.com/madfam-io/plinto/issues](https://github.com/madfam-io/plinto/issues)
-- Discord: [https://discord.gg/plinto](https://discord.gg/plinto)
-- Email: support@plinto.dev
+- Documentation: [https://docs.janua.dev](https://docs.janua.dev)
+- GitHub Issues: [https://github.com/madfam-io/janua/issues](https://github.com/madfam-io/janua/issues)
+- Discord: [https://discord.gg/janua](https://discord.gg/janua)
+- Email: support@janua.dev
 
 ## Changelog
 

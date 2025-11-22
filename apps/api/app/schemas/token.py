@@ -53,8 +53,8 @@ class TokenClaimsResponse(BaseModel):
                 "exp": "2025-11-17T12:00:00",
                 "iat": "2025-11-17T11:00:00",
                 "jti": "unique-token-id-123",
-                "iss": "https://api.plinto.dev",
-                "aud": "https://plinto.dev",
+                "iss": "https://api.janua.dev",
+                "aud": "https://janua.dev",
                 "type": "access",
             }
         }

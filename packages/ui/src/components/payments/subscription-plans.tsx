@@ -8,11 +8,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { SubscriptionPlan, BillingInterval } from '@plinto/typescript-sdk';
+import type { SubscriptionPlan, BillingInterval } from '@janua/typescript-sdk';
 
 export interface SubscriptionPlansProps {
   /**
-   * Plinto client instance
+   * Janua client instance
    */
   client: any;
 

@@ -1,5 +1,5 @@
 /**
- * Logger utility for Plinto SDK
+ * Logger utility for Janua SDK
  *
  * Only logs in development mode to avoid spamming production logs
  * and prevent potential sensitive data leakage.
@@ -20,7 +20,7 @@ class SDKLogger {
     this.config = {
       enabled: process.env.NODE_ENV === 'development',
       level: 'info',
-      prefix: '[Plinto SDK]',
+      prefix: '[Janua SDK]',
       ...config,
     };
   }

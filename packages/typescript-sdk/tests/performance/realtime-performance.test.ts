@@ -10,7 +10,7 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
-import { PlintoClient } from '../../src/index';
+import { JanuaClient } from '../../src/index';
 import { WebSocketClient } from '../../src/websocket';
 
 // Performance test configuration
@@ -660,11 +660,11 @@ describe('WebSocket Performance Tests', () => {
 });
 
 describe('GraphQL Subscription Performance Tests', () => {
-  let client: PlintoClient;
+  let client: JanuaClient;
   let metrics: MetricsCollector;
 
   beforeEach(() => {
-    client = new PlintoClient({
+    client = new JanuaClient({
       graphqlUrl: MOCK_GRAPHQL_URL,
       websocketUrl: MOCK_WS_URL,
       token: MOCK_AUTH_TOKEN,

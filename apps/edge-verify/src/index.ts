@@ -1,5 +1,5 @@
 /**
- * Plinto Edge Verification Worker
+ * Janua Edge Verification Worker
  * High-performance JWT verification at the edge
  */
 
@@ -82,7 +82,7 @@ export default {
       // Get JWKS (with caching)
       const jwksCache = new JWKSCache(env.JWKS_CACHE)
       const jwks = await jwksCache.get(
-        env.JWKS_URL || 'https://plinto.dev/.well-known/jwks.json'
+        env.JWKS_URL || 'https://janua.dev/.well-known/jwks.json'
       )
 
       if (!jwks) {
@@ -95,8 +95,8 @@ export default {
 
       // Verify JWT
       const payload = await verifyJWT(token, jwks, {
-        audience: env.JWT_AUDIENCE || 'plinto.dev',
-        issuer: env.JWT_ISSUER || 'https://plinto.dev',
+        audience: env.JWT_AUDIENCE || 'janua.dev',
+        issuer: env.JWT_ISSUER || 'https://janua.dev',
       })
 
       // Check if token is revoked (optional, requires additional KV lookup)

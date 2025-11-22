@@ -26,7 +26,7 @@ Week 4 goal was to build a landing site that validates actual functionality with
 - React 18.2.0
 - TypeScript 5.3.3
 - Tailwind CSS 3.4.1
-- Plinto TypeScript SDK integration
+- Janua TypeScript SDK integration
 
 ### 2. Landing Pages
 
@@ -56,7 +56,7 @@ Week 4 goal was to build a landing site that validates actual functionality with
 - Side-by-side comparison with Auth0, Clerk, Supabase
 - Feature matrix (15+ features compared)
 - Pricing comparison
-- "Why Choose Plinto" section
+- "Why Choose Janua" section
 - Data sovereignty emphasis
 
 ### 3. Documentation Hub

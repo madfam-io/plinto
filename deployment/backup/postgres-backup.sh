@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# PostgreSQL Backup Script for Plinto
+# PostgreSQL Backup Script for Janua
 # Performs automated backups with S3 upload and monitoring
 
 set -euo pipefail
@@ -8,18 +8,18 @@ set -euo pipefail
 # Configuration
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-readonly BACKUP_DIR="${BACKUP_DIR:-/tmp/plinto-backups}"
-readonly LOG_FILE="${LOG_DIR:-/var/log}/plinto-backup-${TIMESTAMP}.log"
+readonly BACKUP_DIR="${BACKUP_DIR:-/tmp/janua-backups}"
+readonly LOG_FILE="${LOG_DIR:-/var/log}/janua-backup-${TIMESTAMP}.log"
 
 # Database configuration
 readonly DB_HOST="${DB_HOST:-localhost}"
 readonly DB_PORT="${DB_PORT:-5432}"
-readonly DB_NAME="${DB_NAME:-plinto}"
-readonly DB_USER="${DB_USER:-plinto}"
+readonly DB_NAME="${DB_NAME:-janua}"
+readonly DB_USER="${DB_USER:-janua}"
 readonly DB_PASSWORD="${DB_PASSWORD}"
 
 # S3 configuration
-readonly S3_BUCKET="${S3_BUCKET:-plinto-backups}"
+readonly S3_BUCKET="${S3_BUCKET:-janua-backups}"
 readonly S3_PREFIX="${S3_PREFIX:-postgres}"
 readonly AWS_REGION="${AWS_REGION:-us-east-1}"
 
@@ -51,7 +51,7 @@ send_notification() {
     if [ -n "${SNS_TOPIC_ARN}" ]; then
         aws sns publish \
             --topic-arn "${SNS_TOPIC_ARN}" \
-            --subject "Plinto Backup ${status}" \
+            --subject "Janua Backup ${status}" \
             --message "${message}" \
             --region "${AWS_REGION}" 2>/dev/null || true
     fi
@@ -60,7 +60,7 @@ send_notification() {
     if [ -n "${SLACK_WEBHOOK}" ]; then
         curl -X POST "${SLACK_WEBHOOK}" \
             -H 'Content-Type: application/json' \
-            -d "{\"text\":\"Plinto Backup ${status}: ${message}\"}" 2>/dev/null || true
+            -d "{\"text\":\"Janua Backup ${status}: ${message}\"}" 2>/dev/null || true
     fi
 }
 
@@ -206,7 +206,7 @@ verify_backup() {
     gzip -t "${backup_file}" || error "Backup file is corrupted"
     
     # Test partial restoration to verify SQL syntax
-    local test_db="plinto_backup_test_${TIMESTAMP}"
+    local test_db="janua_backup_test_${TIMESTAMP}"
     
     PGPASSWORD="${DB_PASSWORD}" createdb \
         -h "${DB_HOST}" \
@@ -247,7 +247,7 @@ record_metrics() {
     
     # Send CloudWatch metrics
     aws cloudwatch put-metric-data \
-        --namespace "Plinto/Backups" \
+        --namespace "Janua/Backups" \
         --metric-name "BackupDuration" \
         --value ${duration} \
         --unit Seconds \
@@ -255,7 +255,7 @@ record_metrics() {
         --region "${AWS_REGION}" 2>/dev/null || true
     
     aws cloudwatch put-metric-data \
-        --namespace "Plinto/Backups" \
+        --namespace "Janua/Backups" \
         --metric-name "BackupSize" \
         --value ${backup_size} \
         --unit Bytes \
@@ -263,7 +263,7 @@ record_metrics() {
         --region "${AWS_REGION}" 2>/dev/null || true
     
     aws cloudwatch put-metric-data \
-        --namespace "Plinto/Backups" \
+        --namespace "Janua/Backups" \
         --metric-name "BackupSuccess" \
         --value 1 \
         --unit Count \
@@ -277,7 +277,7 @@ record_metrics() {
 main() {
     local start_time=$(date +%s)
     
-    log "=== Starting Plinto PostgreSQL Backup ==="
+    log "=== Starting Janua PostgreSQL Backup ==="
     log "Backup Type: ${BACKUP_TYPE}"
     log "Database: ${DB_NAME}@${DB_HOST}:${DB_PORT}"
     log "S3 Bucket: s3://${S3_BUCKET}/${S3_PREFIX}"

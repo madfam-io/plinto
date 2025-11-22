@@ -6,7 +6,7 @@ nixPkgs = ["nodejs", "yarn"]
 cmds = ["cd ../.. && yarn install --frozen-lockfile"]
 
 [phases.build]
-cmds = ["cd ../.. && yarn workspace @plinto/marketing build"]
+cmds = ["cd ../.. && yarn workspace @janua/marketing build"]
 
 [start]
 cmd = "next start"

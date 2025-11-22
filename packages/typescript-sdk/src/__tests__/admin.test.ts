@@ -70,8 +70,8 @@ describe('Admin', () => {
     it('should get system configuration', async () => {
       const mockConfig = {
         environment: 'production',
-        app_name: 'Plinto',
-        domain: 'plinto.com',
+        app_name: 'Janua',
+        domain: 'janua.com',
         version: '1.0.0',
         features: {
           mfa_enabled: true,

@@ -32,7 +32,7 @@ export interface SSOProviderListProps {
   onTest?: (configId: string) => Promise<void>
   onToggleEnabled?: (configId: string, enabled: boolean) => Promise<void>
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   showActions?: boolean
 }
@@ -47,7 +47,7 @@ export function SSOProviderList({
   onTest,
   onToggleEnabled,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   showActions = true,
 }: SSOProviderListProps) {
@@ -65,8 +65,8 @@ export function SSOProviderList({
     try {
       let configs: SSOConfiguration[]
 
-      if (plintoClient) {
-        const config = await plintoClient.sso.getConfiguration(organizationId)
+      if (januaClient) {
+        const config = await januaClient.sso.getConfiguration(organizationId)
         configs = config ? [config] : []
       } else if (onFetchConfigurations) {
         configs = await onFetchConfigurations()
@@ -93,7 +93,7 @@ export function SSOProviderList({
     } finally {
       setIsLoading(false)
     }
-  }, [organizationId, plintoClient, onFetchConfigurations, apiUrl, onError])
+  }, [organizationId, januaClient, onFetchConfigurations, apiUrl, onError])
 
   React.useEffect(() => {
     if (!initialConfigurations) {
@@ -108,8 +108,8 @@ export function SSOProviderList({
     }
 
     try {
-      if (plintoClient) {
-        await plintoClient.sso.deleteConfiguration(organizationId)
+      if (januaClient) {
+        await januaClient.sso.deleteConfiguration(organizationId)
       } else if (onDelete) {
         await onDelete(configId)
       } else {
@@ -134,8 +134,8 @@ export function SSOProviderList({
   // Handle test
   const handleTest = async (configId: string) => {
     try {
-      if (plintoClient) {
-        await plintoClient.sso.testConfiguration(configId)
+      if (januaClient) {
+        await januaClient.sso.testConfiguration(configId)
       } else if (onTest) {
         await onTest(configId)
       } else {
@@ -162,11 +162,11 @@ export function SSOProviderList({
   // Handle toggle enabled
   const handleToggleEnabled = async (configId: string, enabled: boolean) => {
     try {
-      if (plintoClient) {
+      if (januaClient) {
         if (enabled) {
-          await plintoClient.sso.enableConfiguration(organizationId)
+          await januaClient.sso.enableConfiguration(organizationId)
         } else {
-          await plintoClient.sso.disableConfiguration(organizationId)
+          await januaClient.sso.disableConfiguration(organizationId)
         }
       } else if (onToggleEnabled) {
         await onToggleEnabled(configId, enabled)

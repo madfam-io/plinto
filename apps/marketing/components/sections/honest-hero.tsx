@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Zap, Shield, Code2, GitBranch, AlertCircle, CheckCircle2, Clock } from 'lucide-react'
-import { Button } from '@plinto/ui'
-import { Badge } from '@plinto/ui'
+import { Button } from '@janua/ui'
+import { Badge } from '@janua/ui'
 import Link from 'next/link'
 import { getCoveragePercentage } from '@/lib/coverage'
 
@@ -123,7 +123,7 @@ export function HonestHeroSection() {
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Button size="lg" className="group" asChild>
-              <Link href="https://app.plinto.dev/auth/signup">
+              <Link href="https://app.janua.dev/auth/signup">
                 Get Started
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
@@ -135,7 +135,7 @@ export function HonestHeroSection() {
             </Button>
 
             <Button size="lg" variant="outline" asChild>
-              <Link href="https://github.com/plinto/plinto" target="_blank" rel="noopener">
+              <Link href="https://github.com/janua/janua" target="_blank" rel="noopener">
                 <GitBranch className="mr-2 w-4 h-4" />
                 View Source Code
               </Link>

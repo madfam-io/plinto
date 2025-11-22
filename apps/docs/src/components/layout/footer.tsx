@@ -2,10 +2,10 @@ import Link from 'next/link'
 
 const footerLinks = {
   Product: [
-    { name: 'Features', href: 'https://plinto.dev/features' },
-    { name: 'Pricing', href: 'https://plinto.dev/pricing' },
+    { name: 'Features', href: 'https://janua.dev/features' },
+    { name: 'Pricing', href: 'https://janua.dev/pricing' },
     { name: 'Changelog', href: '/changelog' },
-    { name: 'Roadmap', href: 'https://plinto.dev/roadmap' },
+    { name: 'Roadmap', href: 'https://janua.dev/roadmap' },
   ],
   Developers: [
     { name: 'Documentation', href: '/' },
@@ -14,16 +14,16 @@ const footerLinks = {
     { name: 'Examples', href: '/examples' },
   ],
   Resources: [
-    { name: 'Blog', href: 'https://plinto.dev/blog' },
-    { name: 'Support', href: 'https://plinto.dev/support' },
-    { name: 'Status', href: 'https://status.plinto.dev' },
-    { name: 'Security', href: 'https://plinto.dev/security' },
+    { name: 'Blog', href: 'https://janua.dev/blog' },
+    { name: 'Support', href: 'https://janua.dev/support' },
+    { name: 'Status', href: 'https://status.janua.dev' },
+    { name: 'Security', href: 'https://janua.dev/security' },
   ],
   Company: [
-    { name: 'About', href: 'https://plinto.dev/about' },
-    { name: 'Privacy', href: 'https://plinto.dev/privacy' },
-    { name: 'Terms', href: 'https://plinto.dev/terms' },
-    { name: 'Contact', href: 'https://plinto.dev/contact' },
+    { name: 'About', href: 'https://janua.dev/about' },
+    { name: 'Privacy', href: 'https://janua.dev/privacy' },
+    { name: 'Terms', href: 'https://janua.dev/terms' },
+    { name: 'Contact', href: 'https://janua.dev/contact' },
   ],
 }
 
@@ -60,24 +60,24 @@ export function Footer() {
                 <span className="text-white font-bold text-xs">P</span>
               </div>
               <span className="text-sm text-gray-600 dark:text-gray-400">
-                © 2024 Plinto. All rights reserved.
+                © 2024 Janua. All rights reserved.
               </span>
             </div>
             <div className="flex items-center gap-6">
               <Link
-                href="https://github.com/plinto"
+                href="https://github.com/janua"
                 className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
               >
                 GitHub
               </Link>
               <Link
-                href="https://twitter.com/plinto"
+                href="https://twitter.com/janua"
                 className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
               >
                 Twitter
               </Link>
               <Link
-                href="https://discord.gg/plinto"
+                href="https://discord.gg/janua"
                 className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
               >
                 Discord

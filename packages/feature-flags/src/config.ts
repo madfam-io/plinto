@@ -1,7 +1,7 @@
 import { FeatureFlagConfig, RolloutStrategy } from './types';
 
 /**
- * Default feature flag configurations for Plinto platform
+ * Default feature flag configurations for Janua platform
  */
 export const defaultFeatureFlags: FeatureFlagConfig[] = [
   // ============================================================================

@@ -1,5 +1,5 @@
 /**
- * User management module for the Plinto TypeScript SDK
+ * User management module for the Janua TypeScript SDK
  */
 
 import type { HttpClient } from './http-client';

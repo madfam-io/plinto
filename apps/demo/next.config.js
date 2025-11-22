@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@plinto/ui', '@plinto/typescript-sdk'],
+  transpilePackages: ['@janua/ui', '@janua/typescript-sdk'],
   async rewrites() {
     return [
       {

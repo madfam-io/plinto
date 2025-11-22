@@ -2,11 +2,11 @@
  * Frontend monitoring utilities for admin application
  */
 
-// TODO: Re-enable when @plinto/core logger is available
-// import { createLogger } from '@plinto/core/utils/logger'
+// TODO: Re-enable when @janua/core logger is available
+// import { createLogger } from '@janua/core/utils/logger'
 // const logger = createLogger('AdminMonitoring')
 
-// Temporary logger stub until @plinto/core is properly configured
+// Temporary logger stub until @janua/core is properly configured
 const logger = {
   debug: (..._args: unknown[]) => {},
   warn: (..._args: unknown[]) => {},

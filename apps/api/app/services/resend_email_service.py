@@ -116,7 +116,7 @@ class ResendEmailService:
             )
 
         # Generate unique message ID for tracking
-        message_id = f"plinto-{secrets.token_hex(12)}"
+        message_id = f"janua-{secrets.token_hex(12)}"
 
         try:
             # Development mode: console logging
@@ -307,8 +307,8 @@ class ResendEmailService:
             "user_name": user_name or to_email.split("@")[0],
             "verification_url": verification_url,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("verification.html", context)
@@ -316,7 +316,7 @@ class ResendEmailService:
 
         return await self.send_email(
             to_email=to_email,
-            subject="Verify your Plinto account",
+            subject="Verify your Janua account",
             html_content=html_content,
             text_content=text_content,
             priority=EmailPriority.HIGH,
@@ -333,8 +333,8 @@ class ResendEmailService:
             "user_name": user_name or to_email.split("@")[0],
             "reset_url": reset_url,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("password_reset.html", context)
@@ -342,7 +342,7 @@ class ResendEmailService:
 
         return await self.send_email(
             to_email=to_email,
-            subject="Reset your Plinto password",
+            subject="Reset your Janua password",
             html_content=html_content,
             text_content=text_content,
             priority=EmailPriority.HIGH,
@@ -359,8 +359,8 @@ class ResendEmailService:
             "user_name": user_name or to_email.split("@")[0],
             "dashboard_url": f"{settings.BASE_URL}/dashboard",
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("welcome.html", context)
@@ -368,7 +368,7 @@ class ResendEmailService:
 
         return await self.send_email(
             to_email=to_email,
-            subject="Welcome to Plinto!",
+            subject="Welcome to Janua!",
             html_content=html_content,
             text_content=text_content,
             priority=EmailPriority.NORMAL,
@@ -398,8 +398,8 @@ class ResendEmailService:
             "expires_at": expires_at.strftime("%B %d, %Y at %I:%M %p UTC"),
             "teams": teams or [],
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("invitation.html", context)
@@ -407,7 +407,7 @@ class ResendEmailService:
 
         return await self.send_email(
             to_email=to_email,
-            subject=f"{inviter_name} invited you to join {organization_name} on Plinto",
+            subject=f"{inviter_name} invited you to join {organization_name} on Janua",
             html_content=html_content,
             text_content=text_content,
             priority=EmailPriority.HIGH,
@@ -441,8 +441,8 @@ class ResendEmailService:
             "configuration_url": configuration_url,
             "domains": domains,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("sso_configuration.html", context)
@@ -482,8 +482,8 @@ class ResendEmailService:
             "sso_provider": sso_provider.upper(),
             "login_url": login_url,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("sso_enabled.html", context)
@@ -529,8 +529,8 @@ class ResendEmailService:
             "action_url": action_url,
             "deadline": deadline.strftime("%B %d, %Y") if deadline else None,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("compliance_alert.html", context)
@@ -574,8 +574,8 @@ class ResendEmailService:
             "download_url": download_url,
             "expires_at": expires_at.strftime("%B %d, %Y at %I:%M %p UTC"),
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("data_export_ready.html", context)
@@ -610,8 +610,8 @@ class ResendEmailService:
             "user_name": user_name,
             "backup_codes": backup_codes,
             "base_url": settings.BASE_URL,
-            "company_name": "Plinto",
-            "support_email": settings.SUPPORT_EMAIL or "support@plinto.dev",
+            "company_name": "Janua",
+            "support_email": settings.SUPPORT_EMAIL or "support@janua.dev",
         }
 
         html_content = self._render_template("mfa_recovery.html", context)
@@ -619,7 +619,7 @@ class ResendEmailService:
 
         return await self.send_email(
             to_email=to_email,
-            subject="MFA Recovery Codes - Plinto",
+            subject="MFA Recovery Codes - Janua",
             html_content=html_content,
             text_content=text_content,
             priority=EmailPriority.HIGH,

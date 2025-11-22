@@ -1,12 +1,12 @@
-# Plinto Demo
+# Janua Demo
 
-> **Live demonstration application** showcasing Plinto authentication integration
+> **Live demonstration application** showcasing Janua authentication integration
 
-**Status:** Feature Complete · **Domain:** `demo.plinto.dev` · **Port:** 3002
+**Status:** Feature Complete · **Domain:** `demo.janua.dev` · **Port:** 3002
 
 ## 📋 Overview
 
-The Plinto Demo application provides a fully functional demonstration of Plinto's authentication and identity management capabilities. It serves as both a live demo for potential customers and a reference implementation for developers.
+The Janua Demo application provides a fully functional demonstration of Janua's authentication and identity management capabilities. It serves as both a live demo for potential customers and a reference implementation for developers.
 
 ## 🚀 Quick Start
 
@@ -14,7 +14,7 @@ The Plinto Demo application provides a fully functional demonstration of Plinto'
 
 - Node.js 18+
 - Yarn workspace management
-- Plinto API access (local or remote)
+- Janua API access (local or remote)
 
 ### Installation
 
@@ -43,9 +43,9 @@ NEXT_PUBLIC_DEMO_MODE=development  # development | staging | production
 NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_SDK_URL=http://localhost:3002
 
-# Plinto SDK Configuration
-NEXT_PUBLIC_PLINTO_APP_ID=demo-app
-NEXT_PUBLIC_PLINTO_PUBLIC_KEY=your-public-key
+# Janua SDK Configuration
+NEXT_PUBLIC_JANUA_APP_ID=demo-app
+NEXT_PUBLIC_JANUA_PUBLIC_KEY=your-public-key
 
 # Demo Features
 NEXT_PUBLIC_ENABLE_PASSKEYS=true
@@ -216,16 +216,16 @@ const securityFlow = [
 // Pre-configured test accounts
 const testAccounts = {
   basic: {
-    email: 'demo@plinto.dev',
+    email: 'demo@janua.dev',
     password: 'DemoPass123!'
   },
   mfa: {
-    email: 'mfa@plinto.dev',
+    email: 'mfa@janua.dev',
     password: 'MFADemo123!',
     totpSecret: 'DEMO2FASECRET'
   },
   passkey: {
-    email: 'passkey@plinto.dev',
+    email: 'passkey@janua.dev',
     // Passkey pre-registered
   }
 };
@@ -274,12 +274,12 @@ export function generateMockUser() {
 // Real-time code examples with syntax highlighting
 <CodeViewer language="typescript">
   {`
-    const plinto = new PlintoClient({
+    const janua = new JanuaClient({
       appId: 'your-app-id',
       publicKey: 'your-public-key'
     });
     
-    await plinto.auth.signIn({
+    await janua.auth.signIn({
       email: 'user@example.com',
       password: 'secure-password'
     });
@@ -372,12 +372,12 @@ yarn build:production
 - Debug mode active
 
 #### Staging
-- URL: https://demo-staging.plinto.dev
+- URL: https://demo-staging.janua.dev
 - Real API integration
 - Limited test accounts
 
 #### Production
-- URL: https://demo.plinto.dev
+- URL: https://demo.janua.dev
 - Full features enabled
 - Analytics active
 
@@ -425,14 +425,14 @@ yarn dev:debug
 ## 📚 Resources
 
 ### Documentation
-- [Plinto SDK Docs](https://docs.plinto.dev/sdk)
-- [Authentication Guide](https://docs.plinto.dev/auth)
-- [API Reference](https://docs.plinto.dev/api)
+- [Janua SDK Docs](https://docs.janua.dev/sdk)
+- [Authentication Guide](https://docs.janua.dev/auth)
+- [API Reference](https://docs.janua.dev/api)
 
 ### Support
-- [GitHub Issues](https://github.com/plinto/demo/issues)
-- [Discord Community](https://discord.gg/plinto)
-- [Support Email](mailto:support@plinto.dev)
+- [GitHub Issues](https://github.com/janua/demo/issues)
+- [Discord Community](https://discord.gg/janua)
+- [Support Email](mailto:support@janua.dev)
 
 ## 🎯 Roadmap
 
@@ -453,4 +453,4 @@ See [Contributing Guide](../../CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

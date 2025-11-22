@@ -12,7 +12,7 @@ export function Navigation() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-primary-600">Plinto</span>
+              <span className="text-2xl font-bold text-primary-600">Janua</span>
             </Link>
             <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
               <Link href="/features" className="inline-flex items-center px-1 pt-1 text-gray-700 hover:text-primary-600 transition-colors">
@@ -31,7 +31,7 @@ export function Navigation() {
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
             <a 
-              href="https://github.com/madfam-io/plinto" 
+              href="https://github.com/madfam-io/janua" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-gray-700 hover:text-primary-600 transition-colors"
@@ -80,7 +80,7 @@ export function Navigation() {
             <Link href="/compare" className="block pl-3 pr-4 py-2 text-gray-700 hover:bg-gray-50">
               Compare
             </Link>
-            <a href="https://github.com/madfam-io/plinto" className="block pl-3 pr-4 py-2 text-gray-700 hover:bg-gray-50">
+            <a href="https://github.com/madfam-io/janua" className="block pl-3 pr-4 py-2 text-gray-700 hover:bg-gray-50">
               GitHub
             </a>
             <Link href="/docs/quickstart" className="block pl-3 pr-4 py-2 bg-primary-600 text-white hover:bg-primary-700 mx-3 rounded-md text-center">

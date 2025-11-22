@@ -1,12 +1,12 @@
-# @plinto/react-sdk
+# @janua/react-sdk
 
-> **React-specific authentication hooks and components** for Plinto integration
+> **React-specific authentication hooks and components** for Janua integration
 
 **Version:** 0.1.0 · **Framework:** React 18+ · **Status:** Production Ready
 
 ## 📋 Overview
 
-@plinto/react-sdk provides a complete set of React hooks, components, and utilities for seamless Plinto authentication integration. Built on top of @plinto/sdk with React-specific optimizations for state management, SSR support, and component lifecycle handling.
+@janua/react-sdk provides a complete set of React hooks, components, and utilities for seamless Janua authentication integration. Built on top of @janua/sdk with React-specific optimizations for state management, SSR support, and component lifecycle handling.
 
 ## 🚀 Quick Start
 
@@ -14,30 +14,30 @@
 
 ```bash
 # npm
-npm install @plinto/react-sdk @plinto/sdk
+npm install @janua/react-sdk @janua/sdk
 
 # yarn
-yarn add @plinto/react-sdk @plinto/sdk
+yarn add @janua/react-sdk @janua/sdk
 
 # pnpm
-pnpm add @plinto/react-sdk @plinto/sdk
+pnpm add @janua/react-sdk @janua/sdk
 ```
 
 ### Basic Setup
 
 ```tsx
 // app.tsx or _app.tsx
-import { PlintoProvider } from '@plinto/react-sdk';
+import { JanuaProvider } from '@janua/react-sdk';
 
 function App() {
   return (
-    <PlintoProvider
+    <JanuaProvider
       appId="your-app-id"
       publicKey="your-public-key"
-      apiUrl="https://api.plinto.dev" // Optional
+      apiUrl="https://api.janua.dev" // Optional
     >
       <YourApp />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 ```
@@ -45,7 +45,7 @@ function App() {
 ### Using Auth Hooks
 
 ```tsx
-import { useAuth, useUser } from '@plinto/react-sdk';
+import { useAuth, useUser } from '@janua/react-sdk';
 
 function Profile() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -79,7 +79,7 @@ packages/react/
 │   │   ├── usePasskey.ts   # WebAuthn hook
 │   │   └── useMFA.ts       # Multi-factor auth
 │   ├── components/         # React components
-│   │   ├── PlintoProvider.tsx # Context provider
+│   │   ├── JanuaProvider.tsx # Context provider
 │   │   ├── SignIn.tsx      # Sign in component
 │   │   ├── SignUp.tsx      # Registration
 │   │   ├── UserButton.tsx  # User menu
@@ -102,7 +102,7 @@ packages/react/
 
 ```
 ┌─────────────────────────────────────┐
-│        PlintoProvider               │
+│        JanuaProvider               │
 │  ┌─────────────────────────────┐   │
 │  │     AuthContext             │   │
 │  │  ┌───────────────────┐      │   │
@@ -254,16 +254,16 @@ await verifyCode({ method: 'totp', code: '123456' });
 ### Provider Component
 
 ```tsx
-<PlintoProvider
+<JanuaProvider
   appId="your-app-id"
   publicKey="your-public-key"
-  apiUrl="https://api.plinto.dev"
+  apiUrl="https://api.janua.dev"
   defaultAuthState={null}
   onAuthChange={(user) => console.log('Auth changed:', user)}
   storage={localStorage} // or sessionStorage
 >
   <App />
-</PlintoProvider>
+</JanuaProvider>
 ```
 
 ### Authentication Components
@@ -357,16 +357,16 @@ const customTheme = {
   borderRadius: '0.5rem'
 };
 
-<PlintoProvider theme={customTheme}>
+<JanuaProvider theme={customTheme}>
   <App />
-</PlintoProvider>
+</JanuaProvider>
 ```
 
 ### Custom Components
 
 ```tsx
 // Override default components
-<PlintoProvider
+<JanuaProvider
   components={{
     SignIn: CustomSignIn,
     SignUp: CustomSignUp,
@@ -374,7 +374,7 @@ const customTheme = {
   }}
 >
   <App />
-</PlintoProvider>
+</JanuaProvider>
 ```
 
 ## 🔄 Server-Side Rendering
@@ -383,17 +383,17 @@ const customTheme = {
 
 ```tsx
 // pages/_app.tsx
-import { PlintoProvider } from '@plinto/react-sdk';
-import { getServerSideAuth } from '@plinto/react-sdk/ssr';
+import { JanuaProvider } from '@janua/react-sdk';
+import { getServerSideAuth } from '@janua/react-sdk/ssr';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <PlintoProvider
-      appId={process.env.NEXT_PUBLIC_PLINTO_APP_ID}
+    <JanuaProvider
+      appId={process.env.NEXT_PUBLIC_JANUA_APP_ID}
       initialAuth={pageProps.auth}
     >
       <Component {...pageProps} />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 
@@ -413,8 +413,8 @@ export async function getServerSideProps(context) {
 
 ```tsx
 // root.tsx
-import { PlintoProvider } from '@plinto/react-sdk';
-import { getAuthFromRequest } from '@plinto/react-sdk/remix';
+import { JanuaProvider } from '@janua/react-sdk';
+import { getAuthFromRequest } from '@janua/react-sdk/remix';
 
 export async function loader({ request }) {
   const auth = await getAuthFromRequest(request);
@@ -425,9 +425,9 @@ export default function App() {
   const { auth } = useLoaderData();
   
   return (
-    <PlintoProvider initialAuth={auth}>
+    <JanuaProvider initialAuth={auth}>
       <Outlet />
-    </PlintoProvider>
+    </JanuaProvider>
   );
 }
 ```
@@ -438,7 +438,7 @@ export default function App() {
 
 ```tsx
 // Configure secure token storage
-<PlintoProvider
+<JanuaProvider
   storage={{
     getItem: (key) => sessionStorage.getItem(key),
     setItem: (key, value) => sessionStorage.setItem(key, value),
@@ -452,7 +452,7 @@ export default function App() {
 
 ```tsx
 // Enable CSRF protection
-<PlintoProvider
+<JanuaProvider
   security={{
     enableCSRF: true,
     csrfTokenHeader: 'X-CSRF-Token'
@@ -467,14 +467,14 @@ export default function App() {
 ```tsx
 // Test with React Testing Library
 import { render, screen } from '@testing-library/react';
-import { PlintoProvider } from '@plinto/react-sdk';
-import { mockAuth } from '@plinto/react-sdk/testing';
+import { JanuaProvider } from '@janua/react-sdk';
+import { mockAuth } from '@janua/react-sdk/testing';
 
 test('renders user profile', () => {
   render(
-    <PlintoProvider {...mockAuth({ user: { name: 'Test User' } })}>
+    <JanuaProvider {...mockAuth({ user: { name: 'Test User' } })}>
       <Profile />
-    </PlintoProvider>
+    </JanuaProvider>
   );
   
   expect(screen.getByText('Test User')).toBeInTheDocument();
@@ -486,8 +486,8 @@ test('renders user profile', () => {
 ```tsx
 // Test hooks with renderHook
 import { renderHook } from '@testing-library/react-hooks';
-import { useAuth } from '@plinto/react-sdk';
-import { createWrapper } from '@plinto/react-sdk/testing';
+import { useAuth } from '@janua/react-sdk';
+import { createWrapper } from '@janua/react-sdk/testing';
 
 test('authentication flow', async () => {
   const wrapper = createWrapper();
@@ -506,7 +506,7 @@ test('authentication flow', async () => {
 ### Type Definitions
 
 ```typescript
-import type { User, Session, Organization } from '@plinto/react-sdk';
+import type { User, Session, Organization } from '@janua/react-sdk';
 
 interface AuthState {
   user: User | null;
@@ -532,7 +532,7 @@ interface CustomUser extends User {
 ```tsx
 // Route protection with React Router
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -548,7 +548,7 @@ function ProtectedRoute({ children }) {
 
 ```tsx
 // Role-based component rendering
-import { useUser } from '@plinto/react-sdk';
+import { useUser } from '@janua/react-sdk';
 
 function AdminPanel() {
   const { user } = useUser();
@@ -565,7 +565,7 @@ function AdminPanel() {
 
 ```tsx
 // Multi-tenant organization support
-import { useOrganization } from '@plinto/react-sdk';
+import { useOrganization } from '@janua/react-sdk';
 
 function TeamDashboard() {
   const { organization, members } = useOrganization();
@@ -585,13 +585,13 @@ function TeamDashboard() {
 
 ```env
 # Public environment variables
-NEXT_PUBLIC_PLINTO_APP_ID=your-app-id
-NEXT_PUBLIC_PLINTO_PUBLIC_KEY=your-public-key
-NEXT_PUBLIC_PLINTO_API_URL=https://api.plinto.dev
+NEXT_PUBLIC_JANUA_APP_ID=your-app-id
+NEXT_PUBLIC_JANUA_PUBLIC_KEY=your-public-key
+NEXT_PUBLIC_JANUA_API_URL=https://api.janua.dev
 
 # Server-side only
-PLINTO_SECRET_KEY=your-secret-key
-PLINTO_WEBHOOK_SECRET=your-webhook-secret
+JANUA_SECRET_KEY=your-secret-key
+JANUA_WEBHOOK_SECRET=your-webhook-secret
 ```
 
 ## 🛠️ Development
@@ -600,7 +600,7 @@ PLINTO_WEBHOOK_SECRET=your-webhook-secret
 
 ```bash
 # Clone the repo
-git clone https://github.com/plinto/plinto.git
+git clone https://github.com/janua/janua.git
 
 # Navigate to React package
 cd packages/react
@@ -620,10 +620,10 @@ yarn build
 
 ## 📚 Resources
 
-- [React Hooks Documentation](https://docs.plinto.dev/react/hooks)
-- [Component Reference](https://docs.plinto.dev/react/components)
-- [SSR Guide](https://docs.plinto.dev/react/ssr)
-- [Examples](https://github.com/madfam-io/plinto/tree/main/examples/react)
+- [React Hooks Documentation](https://docs.janua.dev/react/hooks)
+- [Component Reference](https://docs.janua.dev/react/components)
+- [SSR Guide](https://docs.janua.dev/react/ssr)
+- [Examples](https://github.com/madfam-io/janua/tree/main/examples/react)
 
 ## 🎯 Roadmap
 
@@ -645,4 +645,4 @@ See [React Contributing Guide](../../docs/contributing/react.md) for development
 
 ## 📄 License
 
-Part of the Plinto platform. See [LICENSE](../../LICENSE) in the root directory.
+Part of the Janua platform. See [LICENSE](../../LICENSE) in the root directory.

@@ -1,10 +1,10 @@
-# 🎯 Plinto Local Demo - Complete Walkthrough
+# 🎯 Janua Local Demo - Complete Walkthrough
 
 **Version**: 1.0.0
 **Date**: November 14, 2025
 **Estimated Time**: 15-20 minutes
 
-This demonstration showcases all features of the Plinto authentication platform working locally in your browser.
+This demonstration showcases all features of the Janua authentication platform working locally in your browser.
 
 ---
 
@@ -14,14 +14,14 @@ This demonstration showcases all features of the Plinto authentication platform 
 
 ```bash
 # From repository root
-cd /Users/aldoruizluna/labspace/plinto
+cd /Users/aldoruizluna/labspace/janua
 ./scripts/start-local-demo.sh
 ```
 
 **Expected Output**:
 ```
 ╔════════════════════════════════════════════════════════════╗
-║              PLINTO LOCAL DEMO ENVIRONMENT                 ║
+║              JANUA LOCAL DEMO ENVIRONMENT                 ║
 ╚════════════════════════════════════════════════════════════╝
 
 ✓ Python 3 installed
@@ -117,7 +117,7 @@ Starting Landing Site...
 12. **Try**: POST /api/v1/auth/signup
     ```json
     {
-      "email": "demo@plinto.dev",
+      "email": "demo@janua.dev",
       "password": "DemoPassword123!@#",
       "name": "Demo User"
     }
@@ -131,7 +131,7 @@ Starting Landing Site...
 14. **Try**: POST /api/v1/auth/login
     ```json
     {
-      "email": "demo@plinto.dev",
+      "email": "demo@janua.dev",
       "password": "DemoPassword123!@#"
     }
     ```
@@ -172,10 +172,10 @@ Starting Landing Site...
 #### ✅ Prometheus Metrics
 22. **Open** → http://localhost:8000/metrics
 23. **Verify Metrics Present**:
-    - [  ] `plinto_request_latency_milliseconds`
-    - [  ] `plinto_db_queries_total`
-    - [  ] `plinto_cache_hit_rate_percent`
-    - [  ] `plinto_requests_total`
+    - [  ] `janua_request_latency_milliseconds`
+    - [  ] `janua_db_queries_total`
+    - [  ] `janua_cache_hit_rate_percent`
+    - [  ] `janua_requests_total`
 
 #### ✅ Performance Test
 24. **Run in new terminal**:
@@ -285,7 +285,7 @@ Starting Landing Site...
 #### ✅ TypeScript SDK
 29. **View SDK Code** → `apps/api/sdks/typescript/src/`
 30. **Verify**:
-    - [  ] `plinto-client.ts` - Main client implementation
+    - [  ] `janua-client.ts` - Main client implementation
     - [  ] `auth/token-manager.ts` - Token management
     - [  ] `types/` - TypeScript type definitions
     - [  ] `__tests__/` - Comprehensive test coverage

@@ -2,7 +2,7 @@
 
 ⚠️ **WARNING: DOCUMENTATION IN THIS DIRECTORY IS INACCURATE**
 
-These files have been archived because they contain severely incorrect assessments of the Plinto codebase that were disproven by evidence-based analysis in November 2025.
+These files have been archived because they contain severely incorrect assessments of the Janua codebase that were disproven by evidence-based analysis in November 2025.
 
 ## Why Archived
 

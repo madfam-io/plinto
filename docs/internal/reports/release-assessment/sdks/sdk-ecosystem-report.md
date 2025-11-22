@@ -16,7 +16,7 @@
 #### Package Configuration ✅ **PROFESSIONAL**
 ```json
 {
-  "name": "@plinto/js",
+  "name": "@janua/js",
   "version": "0.1.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -45,7 +45,7 @@ DTS dist/index.d.ts   13.55 KB    # ✅ TypeScript declarations
 #### Keywords & Discoverability ✅ **WELL-TAGGED**
 ```json
 "keywords": [
-  "plinto", "authentication", "auth", "identity",
+  "janua", "authentication", "auth", "identity",
   "user-management", "jwt", "passkeys", "webauthn"
 ]
 ```
@@ -58,11 +58,11 @@ DTS dist/index.d.ts   13.55 KB    # ✅ TypeScript declarations
 #### Package Metadata ✅ **COMPLETE**
 ```python
 setup(
-    name="plinto",
+    name="janua",
     version="0.1.0",
-    author="Plinto Team",
-    author_email="support@plinto.dev",
-    description="Official Python SDK for Plinto - Modern authentication and user management platform"
+    author="Janua Team",
+    author_email="support@janua.dev",
+    description="Official Python SDK for Janua - Modern authentication and user management platform"
 )
 ```
 
@@ -111,7 +111,7 @@ extras_require={
 #### Package Structure ✅ **MODERN REACT PATTERNS**
 ```json
 {
-  "name": "@plinto/react-sdk",
+  "name": "@janua/react-sdk",
   "version": "0.1.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -159,9 +159,9 @@ export { UserProfile } from './components/UserProfile' // ✅ Profile widget
 **README Documentation Example:**
 ```typescript
 // middleware.ts
-import { withPlintoAuth } from '@plinto/nextjs'
+import { withJanuaAuth } from '@janua/nextjs'
 
-export default withPlintoAuth({
+export default withJanuaAuth({
   publicRoutes: ['/'],
   protectedRoutes: ['/dashboard']
 })
@@ -187,15 +187,15 @@ export default withPlintoAuth({
 
 #### NPM/Yarn Installation ✅ **STANDARD**
 ```bash
-npm install @plinto/nextjs @plinto/react-sdk    # ✅ NPM support
-pnpm add @plinto/nextjs @plinto/react-sdk       # ✅ PNPM support  
-yarn add @plinto/nextjs @plinto/react-sdk       # ✅ Yarn support
+npm install @janua/nextjs @janua/react-sdk    # ✅ NPM support
+pnpm add @janua/nextjs @janua/react-sdk       # ✅ PNPM support  
+yarn add @janua/nextjs @janua/react-sdk       # ✅ Yarn support
 ```
 
 #### Python Installation ✅ **PIP COMPATIBLE**
 ```bash
-pip install plinto                          # ✅ Standard installation
-pip install plinto[fastapi]                 # ✅ Framework-specific extras
+pip install janua                          # ✅ Standard installation
+pip install janua[fastapi]                 # ✅ Framework-specific extras
 ```
 
 ### Documentation Quality Assessment
@@ -219,16 +219,16 @@ pip install plinto[fastapi]                 # ✅ Framework-specific extras
 #### Integration Examples ✅ **PRACTICAL**
 ```typescript
 // ✅ Working Next.js example from README
-import { PlintoProvider } from '@plinto/nextjs'
+import { JanuaProvider } from '@janua/nextjs'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <PlintoProvider
-      tenantId={process.env.PLINTO_TENANT_ID}
-      apiUrl={process.env.PLINTO_API_URL}
+    <JanuaProvider
+      tenantId={process.env.JANUA_TENANT_ID}
+      apiUrl={process.env.JANUA_API_URL}
     >
       {children}
-    </PlintoProvider>
+    </JanuaProvider>
   )
 }
 ```

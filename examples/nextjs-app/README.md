@@ -1,6 +1,6 @@
-# Plinto Next.js Example Application
+# Janua Next.js Example Application
 
-A production-ready example demonstrating Plinto authentication integration with Next.js 14 App Router.
+A production-ready example demonstrating Janua authentication integration with Next.js 14 App Router.
 
 ## Features Demonstrated
 
@@ -32,11 +32,11 @@ Create a `.env.local` file:
 
 ```env
 # Required
-NEXT_PUBLIC_PLINTO_API_URL=https://api.plinto.dev
-NEXT_PUBLIC_PLINTO_API_KEY=your_api_key_here
+NEXT_PUBLIC_JANUA_API_URL=https://api.janua.dev
+NEXT_PUBLIC_JANUA_API_KEY=your_api_key_here
 
 # Optional
-NEXT_PUBLIC_PLINTO_REDIRECT_URL=http://localhost:3000/auth/callback
+NEXT_PUBLIC_JANUA_REDIRECT_URL=http://localhost:3000/auth/callback
 ```
 
 ### 3. Run Development Server
@@ -56,7 +56,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```
 nextjs-app/
 ├── app/
-│   ├── layout.tsx          # Root layout with PlintoProvider
+│   ├── layout.tsx          # Root layout with JanuaProvider
 │   ├── page.tsx            # Home page with auth check
 │   ├── globals.css         # Global styles
 │   └── components/
@@ -73,7 +73,7 @@ nextjs-app/
 ### Basic Authentication
 
 ```typescript
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 
 function MyComponent() {
   const { isAuthenticated, user, signIn, signOut } = useAuth();
@@ -104,7 +104,7 @@ function MyComponent() {
 // app/protected/page.tsx
 'use client';
 
-import { useAuth } from '@plinto/react-sdk';
+import { useAuth } from '@janua/react-sdk';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -129,7 +129,7 @@ export default function ProtectedPage() {
 ### Organization Management
 
 ```typescript
-import { useOrganization } from '@plinto/react-sdk';
+import { useOrganization } from '@janua/react-sdk';
 
 function OrgSelector() {
   const { organization, organizations, switchOrganization } = useOrganization();
@@ -153,16 +153,16 @@ function OrgSelector() {
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `NEXT_PUBLIC_PLINTO_API_URL` | Yes | Plinto API endpoint |
-| `NEXT_PUBLIC_PLINTO_API_KEY` | Yes | Your Plinto API key |
-| `NEXT_PUBLIC_PLINTO_REDIRECT_URL` | No | OAuth callback URL |
-| `NEXT_PUBLIC_PLINTO_ENVIRONMENT` | No | 'development' or 'production' |
+| `NEXT_PUBLIC_JANUA_API_URL` | Yes | Janua API endpoint |
+| `NEXT_PUBLIC_JANUA_API_KEY` | Yes | Your Janua API key |
+| `NEXT_PUBLIC_JANUA_REDIRECT_URL` | No | OAuth callback URL |
+| `NEXT_PUBLIC_JANUA_ENVIRONMENT` | No | 'development' or 'production' |
 
 ## Deployment
 
 ### Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/madfam-io/plinto/tree/main/examples/nextjs-app)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/madfam-io/janua/tree/main/examples/nextjs-app)
 
 ### Docker
 
@@ -212,29 +212,29 @@ npm run test:e2e
 ### Common Issues
 
 **"API key is invalid"**
-- Verify your API key in Plinto dashboard
+- Verify your API key in Janua dashboard
 - Ensure environment variables are loaded correctly
 
 **"CORS error"**
-- Add your domain to allowed origins in Plinto settings
+- Add your domain to allowed origins in Janua settings
 - Check API URL configuration
 
 **"Session expired"**
-- Plinto automatically refreshes tokens
+- Janua automatically refreshes tokens
 - If persistent, check token storage configuration
 
 ## Resources
 
-- [Plinto Documentation](https://docs.plinto.dev)
-- [SDK Reference](https://docs.plinto.dev/sdk/react)
-- [API Reference](https://docs.plinto.dev/api)
-- [Security Best Practices](https://docs.plinto.dev/security)
+- [Janua Documentation](https://docs.janua.dev)
+- [SDK Reference](https://docs.janua.dev/sdk/react)
+- [API Reference](https://docs.janua.dev/api)
+- [Security Best Practices](https://docs.janua.dev/security)
 
 ## Support
 
-- **GitHub Issues**: [github.com/madfam-io/plinto/issues](https://github.com/madfam-io/plinto/issues)
-- **Discord Community**: [discord.gg/plinto](https://discord.gg/plinto)
-- **Email Support**: support@plinto.dev
+- **GitHub Issues**: [github.com/madfam-io/janua/issues](https://github.com/madfam-io/janua/issues)
+- **Discord Community**: [discord.gg/janua](https://discord.gg/janua)
+- **Email Support**: support@janua.dev
 
 ## License
 

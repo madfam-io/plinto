@@ -85,7 +85,7 @@ def get_rp_id() -> str:
 
 def get_rp_name() -> str:
     """Get Relying Party Name"""
-    return settings.APP_NAME or "Plinto"
+    return settings.APP_NAME or "Janua"
 
 
 def get_origin() -> str:

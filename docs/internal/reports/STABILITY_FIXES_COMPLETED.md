@@ -19,7 +19,7 @@ Successfully implemented critical stability fixes identified in the stability an
 
 #### Before:
 ```typescript
-const defaults: Required<PlintoConfig> = {
+const defaults: Required<JanuaConfig> = {
   apiKey: undefined,  // ❌ Type error: undefined not assignable to string
   environment: EnvUtils.isBrowser() ? 'browser' : 'node',  // ❌ Type error: wrong type
 };

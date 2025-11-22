@@ -194,7 +194,7 @@ npx playwright test --ui
 **File**: `docker-compose.test.yml`
 
 Test environment uses:
-- Isolated test database (`plinto_test`)
+- Isolated test database (`janua_test`)
 - Separate Redis instance
 - Test-specific environment variables
 - Health checks for reliability

@@ -197,7 +197,7 @@ jobs:
                     {\"title\": \"Score\", \"value\": \"${SCORE}%\", \"short\": true},
                     {\"title\": \"Status\", \"value\": \"$STATUS\", \"short\": true}
                   ],
-                  \"footer\": \"Plinto Platform\",
+                  \"footer\": \"Janua Platform\",
                   \"footer_icon\": \"https://github.com/favicon.ico\",
                   \"ts\": $(date +%s)
                 }]

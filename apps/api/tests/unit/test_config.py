@@ -22,7 +22,7 @@ class TestSettings:
             assert settings.VERSION == "0.1.0"
             assert settings.DEBUG is False
             assert settings.ENVIRONMENT == "development"
-            assert settings.BASE_URL == "https://plinto.dev"
+            assert settings.BASE_URL == "https://janua.dev"
             assert settings.DATABASE_POOL_SIZE == 20
             assert settings.REDIS_POOL_SIZE == 10
             assert settings.JWT_ALGORITHM == "RS256"
@@ -84,7 +84,7 @@ class TestSettings:
         
         # Test empty string
         settings = Settings(CORS_ORIGINS="")
-        assert settings.cors_origins_list == ["http://localhost:3000", "https://plinto.dev"]
+        assert settings.cors_origins_list == ["http://localhost:3000", "https://janua.dev"]
         
         # Test malformed JSON falls back to comma parsing
         settings = Settings(CORS_ORIGINS='["malformed json')
@@ -94,17 +94,17 @@ class TestSettings:
         """Test service URL property logic."""
         # With INTERNAL_BASE_URL set
         settings = Settings(
-            BASE_URL="https://api.plinto.dev",
+            BASE_URL="https://api.janua.dev",
             INTERNAL_BASE_URL="http://internal.railway.app"
         )
         assert settings.service_url == "http://internal.railway.app"
         
         # Without INTERNAL_BASE_URL
         settings = Settings(
-            BASE_URL="https://api.plinto.dev",
+            BASE_URL="https://api.janua.dev",
             INTERNAL_BASE_URL=None
         )
-        assert settings.service_url == "https://api.plinto.dev"
+        assert settings.service_url == "https://api.janua.dev"
     
     @patch.dict(os.environ, {
         "ENVIRONMENT": "development",  # Changed from "test" to match expected default

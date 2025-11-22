@@ -469,7 +469,7 @@ class TestTOTPLibraryIntegration:
 
         secret = "JBSWY3DPEHPK3PXP"
         email = "test@example.com"
-        issuer = "Plinto"
+        issuer = "Janua"
 
         # Create provisioning URI
         totp = pyotp.TOTP(secret)

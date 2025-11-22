@@ -1,6 +1,6 @@
 'use client'
 
-import { UserProfile } from '@plinto/ui'
+import { UserProfile } from '@janua/ui'
 import { useState } from 'react'
 
 export default function UserProfileShowcase() {
@@ -110,7 +110,7 @@ export default function UserProfileShowcase() {
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Usage</h3>
             <pre className="text-xs bg-gray-100 dark:bg-gray-900 p-2 rounded overflow-x-auto">
-{`import { UserProfile } from '@plinto/ui'
+{`import { UserProfile } from '@janua/ui'
 
 <UserProfile
   user={userData}
@@ -173,7 +173,7 @@ export default function UserProfileShowcase() {
             <h4 className="font-medium text-gray-900 dark:text-white mb-2">Basic Profile Management</h4>
             <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
 {`'use client'
-import { UserProfile } from '@plinto/ui'
+import { UserProfile } from '@janua/ui'
 
 export default function ProfilePage({ user }) {
   return (

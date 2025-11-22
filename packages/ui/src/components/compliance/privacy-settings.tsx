@@ -21,7 +21,7 @@ export interface PrivacySettingsProps {
   currentPreferences?: Partial<PrivacyPreferences>
   onSave?: (preferences: PrivacyPreferences) => Promise<void>
   onError?: (error: Error) => void
-  plintoClient?: any
+  januaClient?: any
   apiUrl?: string
   showAdvanced?: boolean
 }
@@ -32,7 +32,7 @@ export function PrivacySettings({
   currentPreferences = {},
   onSave,
   onError,
-  plintoClient,
+  januaClient,
   apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   showAdvanced = true,
 }: PrivacySettingsProps) {
@@ -67,8 +67,8 @@ export function PrivacySettings({
     setIsSubmitting(true)
 
     try {
-      if (plintoClient) {
-        await plintoClient.compliance.updatePrivacySettings(userId, preferences)
+      if (januaClient) {
+        await januaClient.compliance.updatePrivacySettings(userId, preferences)
       } else if (onSave) {
         await onSave(preferences)
       } else {

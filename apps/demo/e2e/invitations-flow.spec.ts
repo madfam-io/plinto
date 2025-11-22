@@ -155,7 +155,7 @@ test.describe('Invitation Management', () => {
       await navigateToInvitationsTab(page, 'invite')
 
       // Fill invitation details
-      await page.getByLabel(/email/i).fill('test@plinto.dev')
+      await page.getByLabel(/email/i).fill('test@janua.dev')
       await page.getByLabel(/role/i).click()
       await page.getByRole('option', { name: /member/i }).click()
 

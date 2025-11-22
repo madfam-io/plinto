@@ -10,10 +10,10 @@ import os
 def mock_env():
     """Mock environment variables for testing"""
     with patch.dict(os.environ, {
-        'DATABASE_URL': 'postgresql://test:test@localhost:5432/plinto_test',
+        'DATABASE_URL': 'postgresql://test:test@localhost:5432/janua_test',
         'JWT_SECRET': 'test-secret-key',
         'REDIS_URL': 'redis://localhost:6379/0',
-        'PLINTO_ENV': 'test'
+        'JANUA_ENV': 'test'
     }):
         yield
 

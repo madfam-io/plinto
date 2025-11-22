@@ -796,7 +796,7 @@ Retry Count: 0
 
 ### Test Coverage Summary
 
-The Plinto platform demonstrates **production-ready quality** with comprehensive test coverage:
+The Janua platform demonstrates **production-ready quality** with comprehensive test coverage:
 
 - ✅ **88% overall code coverage** (target: 80%+)
 - ✅ **100% test pass rate** (264/264 tests)

@@ -1,4 +1,4 @@
-# Plinto Release Readiness Assessment
+# Janua Release Readiness Assessment
 
 ## Executive Summary
 
@@ -7,7 +7,7 @@
 **Commit**: 03782012924bb0895e5ec1e8a44e91eaea4ae4b3  
 **Overall Readiness**: 🟡 **60% - Approaching Launch Ready**
 
-Plinto demonstrates a comprehensive identity platform with strong foundational architecture, but requires completion of testing coverage and resolution of remaining test failures before production launch.
+Janua demonstrates a comprehensive identity platform with strong foundational architecture, but requires completion of testing coverage and resolution of remaining test failures before production launch.
 
 ---
 

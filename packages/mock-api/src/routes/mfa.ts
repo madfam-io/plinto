@@ -29,7 +29,7 @@ mfaRouter.post('/enable', (req: Request, res: Response) => {
   res.json({
     method,
     secret,
-    qrCode: `otpauth://totp/Plinto:user@example.com?secret=${secret}&issuer=Plinto`,
+    qrCode: `otpauth://totp/Janua:user@example.com?secret=${secret}&issuer=Janua`,
     backupCodes: [
       'BACKUP-1234-5678',
       'BACKUP-2345-6789',

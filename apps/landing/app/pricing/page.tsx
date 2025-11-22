@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Pricing - Plinto Authentication Platform',
+  title: 'Pricing - Janua Authentication Platform',
   description: 'Transparent pricing for teams of all sizes. Start free, scale as you grow.',
 }
 
@@ -67,7 +67,7 @@ export default function PricingPage() {
         'Professional services'
       ],
       cta: 'Contact Sales',
-      ctaLink: 'mailto:sales@plinto.dev',
+      ctaLink: 'mailto:sales@janua.dev',
       highlighted: false
     }
   ]
@@ -256,10 +256,10 @@ export default function PricingPage() {
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Can I self-host Plinto?
+                Can I self-host Janua?
               </h3>
               <p className="text-gray-600">
-                Yes! Plinto is fully open-source and can be self-hosted on your infrastructure. 
+                Yes! Janua is fully open-source and can be self-hosted on your infrastructure. 
                 All tiers include self-hosting capabilities with Docker and Kubernetes support.
               </p>
             </div>

@@ -1,10 +1,10 @@
 # Production Deployment Guide
 
-Complete guide for deploying Plinto to production environments with enterprise-grade configuration.
+Complete guide for deploying Janua to production environments with enterprise-grade configuration.
 
 ## 🎯 Overview
 
-This guide covers production deployment of Plinto identity platform across major cloud providers with high availability, security, and scalability considerations.
+This guide covers production deployment of Janua identity platform across major cloud providers with high availability, security, and scalability considerations.
 
 ## 📋 Prerequisites
 
@@ -72,13 +72,13 @@ encryption: true
 ```bash
 # Deploy API using ECS Fargate
 aws ecs update-service \
-  --cluster plinto-production \
-  --service plinto-api \
+  --cluster janua-production \
+  --service janua-api \
   --desired-count 3
 
 # Deploy frontend to CloudFront + S3
 npm run build:production
-aws s3 sync dist/ s3://plinto-production-assets
+aws s3 sync dist/ s3://janua-production-assets
 aws cloudfront create-invalidation --distribution-id E123456789 --paths "/*"
 ```
 
@@ -87,7 +87,7 @@ aws cloudfront create-invalidation --distribution-id E123456789 --paths "/*"
 #### 1. Infrastructure Setup
 ```bash
 # Deploy using Cloud Deployment Manager
-gcloud deployment-manager deployments create plinto-production \
+gcloud deployment-manager deployments create janua-production \
   --config deployment/gcp/production.yaml
 ```
 
@@ -103,8 +103,8 @@ binary_log_enabled: true
 #### 3. Application Deployment
 ```bash
 # Deploy to Cloud Run
-gcloud run deploy plinto-api \
-  --image gcr.io/project-id/plinto-api:latest \
+gcloud run deploy janua-api \
+  --image gcr.io/project-id/janua-api:latest \
   --platform managed \
   --region us-central1 \
   --min-instances 2 \
@@ -117,7 +117,7 @@ gcloud run deploy plinto-api \
 ```bash
 # Deploy using ARM templates
 az deployment group create \
-  --resource-group plinto-production \
+  --resource-group janua-production \
   --template-file deployment/azure/production.json \
   --parameters @deployment/azure/production.parameters.json
 ```
@@ -136,7 +136,7 @@ geo_redundant_backup: true
 ### Environment Variables
 ```bash
 # Core API Configuration
-DATABASE_URL=postgresql://user:pass@host:5432/plinto
+DATABASE_URL=postgresql://user:pass@host:5432/janua
 REDIS_URL=redis://host:6379/0
 JWT_SECRET=your-jwt-secret-key
 ENCRYPTION_KEY=your-encryption-key
@@ -144,7 +144,7 @@ ENCRYPTION_KEY=your-encryption-key
 # Security Configuration
 RATE_LIMIT_ENABLED=true
 WAF_ENABLED=true
-CORS_ALLOWED_ORIGINS=https://app.plinto.dev,https://dashboard.plinto.dev
+CORS_ALLOWED_ORIGINS=https://app.janua.dev,https://dashboard.janua.dev
 
 # Monitoring Configuration
 PROMETHEUS_ENABLED=true
@@ -157,15 +157,15 @@ LOG_LEVEL=info
 # Nginx SSL Configuration
 server {
     listen 443 ssl http2;
-    server_name api.plinto.dev;
+    server_name api.janua.dev;
 
-    ssl_certificate /etc/ssl/certs/plinto.crt;
-    ssl_certificate_key /etc/ssl/private/plinto.key;
+    ssl_certificate /etc/ssl/certs/janua.crt;
+    ssl_certificate_key /etc/ssl/private/janua.key;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512;
 
     location / {
-        proxy_pass http://plinto-api:8000;
+        proxy_pass http://janua-api:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -184,14 +184,14 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'plinto-api'
+  - job_name: 'janua-api'
     static_configs:
-      - targets: ['plinto-api:8000']
+      - targets: ['janua-api:8000']
     metrics_path: '/metrics'
 
-  - job_name: 'plinto-frontend'
+  - job_name: 'janua-frontend'
     static_configs:
-      - targets: ['plinto-frontend:3000']
+      - targets: ['janua-frontend:3000']
 ```
 
 ### Grafana Dashboards
@@ -259,12 +259,12 @@ rules:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: plinto-api-hpa
+  name: janua-api-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: plinto-api
+    name: janua-api
   minReplicas: 3
   maxReplicas: 100
   metrics:
@@ -279,10 +279,10 @@ spec:
 ### Database Scaling
 ```sql
 -- Read Replica Configuration
-CREATE REPLICA plinto_replica_1
-FROM plinto_primary
+CREATE REPLICA janua_replica_1
+FROM janua_primary
 WITH (
-    host = 'replica1.plinto.internal',
+    host = 'replica1.janua.internal',
     port = 5432,
     synchronous_commit = 'remote_apply'
 );
@@ -306,10 +306,10 @@ jobs:
           # Run tests
           npm test
           # Build and deploy
-          docker build -t plinto-api:${{ github.sha }} .
-          docker push plinto-api:${{ github.sha }}
+          docker build -t janua-api:${{ github.sha }} .
+          docker push janua-api:${{ github.sha }}
           # Update production
-          kubectl set image deployment/plinto-api api=plinto-api:${{ github.sha }}
+          kubectl set image deployment/janua-api api=janua-api:${{ github.sha }}
 ```
 
 ## 📝 Maintenance Procedures
@@ -317,17 +317,17 @@ jobs:
 ### Database Maintenance
 ```bash
 # Weekly backup verification
-pg_dump -h production-db -U postgres plinto > backup_$(date +%Y%m%d).sql
+pg_dump -h production-db -U postgres janua > backup_$(date +%Y%m%d).sql
 
 # Monthly index optimization
-REINDEX DATABASE plinto;
+REINDEX DATABASE janua;
 VACUUM ANALYZE;
 ```
 
 ### Log Rotation
 ```yaml
 # Logrotate configuration
-/var/log/plinto/*.log {
+/var/log/janua/*.log {
     daily
     rotate 30
     compress
@@ -383,4 +383,4 @@ VACUUM ANALYZE;
 - [Performance Optimization](../performance/)
 - [Troubleshooting Runbook](../troubleshooting/)
 
-For questions or support, contact: [support@plinto.dev](mailto:support@plinto.dev)
+For questions or support, contact: [support@janua.dev](mailto:support@janua.dev)

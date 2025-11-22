@@ -30,7 +30,7 @@ Changed from in-memory to file-based SQLite:
 DATABASE_URL="sqlite+aiosqlite:///:memory:"
 
 # After (working)
-DATABASE_URL="sqlite+aiosqlite:///./plinto_dev.db"
+DATABASE_URL="sqlite+aiosqlite:///./janua_dev.db"
 ```
 
 ### 2. Enable AUTO_MIGRATE
@@ -97,7 +97,7 @@ if not database_url.startswith("sqlite"):
 ✅ Database manager initialized
 ✅ Redis cache initialized
 ✅ Enterprise scalability features initialized
-🚀 Plinto API started successfully
+🚀 Janua API started successfully
 ```
 
 ### Database Tables Created
@@ -146,9 +146,9 @@ $ curl -X POST http://localhost:8000/api/v1/auth/login \
 ## Startup Command
 
 ```bash
-cd /Users/aldoruizluna/labspace/plinto/apps/api
+cd /Users/aldoruizluna/labspace/janua/apps/api
 ENVIRONMENT=development \
-DATABASE_URL="sqlite+aiosqlite:///./plinto_dev.db" \
+DATABASE_URL="sqlite+aiosqlite:///./janua_dev.db" \
 AUTO_MIGRATE=true \
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
@@ -171,7 +171,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
      - JSON operations
 
 3. **Database File Location**
-   - Current: `./plinto_dev.db` (project root)
+   - Current: `./janua_dev.db` (project root)
    - Should be in `.gitignore`
    - Consider `/tmp` or dedicated data directory
 

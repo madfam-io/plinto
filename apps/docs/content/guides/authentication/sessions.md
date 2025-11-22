@@ -4,17 +4,17 @@ Comprehensive user session handling with JWT tokens, refresh tokens, and device 
 
 ## Overview
 
-Plinto provides robust session management with JWT-based authentication, automatic token refresh, device tracking, and comprehensive security controls. Sessions can be managed across multiple devices with granular control over timeout policies and security constraints.
+Janua provides robust session management with JWT-based authentication, automatic token refresh, device tracking, and comprehensive security controls. Sessions can be managed across multiple devices with granular control over timeout policies and security constraints.
 
 ## Quick Start
 
 ### 1. Create Session After Authentication
 
 ```typescript
-import { plinto } from '@plinto/typescript-sdk'
+import { janua } from '@janua/typescript-sdk'
 
 // After successful authentication
-const { user, session } = await plinto.auth.signIn({
+const { user, session } = await janua.auth.signIn({
   email: 'user@example.com',
   password: 'userPassword',
   deviceInfo: {
@@ -34,7 +34,7 @@ console.log('Expires at:', session.expiresAt)
 
 ```typescript
 // Verify current session
-const currentSession = await plinto.auth.verifySession({
+const currentSession = await janua.auth.verifySession({
   token: accessToken
 })
 
@@ -51,7 +51,7 @@ if (currentSession.valid) {
 
 ```typescript
 // Refresh expired access token
-const { accessToken, refreshToken, expiresAt } = await plinto.auth.refreshToken({
+const { accessToken, refreshToken, expiresAt } = await janua.auth.refreshToken({
   refreshToken: currentRefreshToken
 })
 
@@ -66,7 +66,7 @@ if (refreshToken) { // New refresh token provided
 
 ```typescript
 // Get all user sessions
-const sessions = await plinto.auth.sessions.list({
+const sessions = await janua.auth.sessions.list({
   userId: currentUser.id
 })
 
@@ -78,12 +78,12 @@ sessions.forEach(session => {
 })
 
 // Revoke specific session
-await plinto.auth.sessions.revoke({
+await janua.auth.sessions.revoke({
   sessionId: 'session-id-to-revoke'
 })
 
 // Revoke all other sessions (keep current)
-await plinto.auth.sessions.revokeAll({
+await janua.auth.sessions.revokeAll({
   userId: currentUser.id,
   exceptCurrent: true
 })
@@ -98,11 +98,11 @@ await plinto.auth.sessions.revokeAll({
 ```javascript
 const express = require('express')
 const jwt = require('jsonwebtoken')
-const { Plinto } = require('@plinto/typescript-sdk')
+const { Janua } = require('@janua/typescript-sdk')
 
 const app = express()
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY,
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY,
   session: {
     accessTokenTTL: 15 * 60, // 15 minutes
     refreshTokenTTL: 30 * 24 * 60 * 60, // 30 days
@@ -122,7 +122,7 @@ const verifySession = async (req, res, next) => {
       return res.status(401).json({ error: 'No token provided' })
     }
 
-    const sessionInfo = await plinto.auth.verifySession({
+    const sessionInfo = await janua.auth.verifySession({
       token,
       ipAddress: req.ip,
       userAgent: req.headers['user-agent']
@@ -136,7 +136,7 @@ const verifySession = async (req, res, next) => {
     }
 
     // Update last activity
-    await plinto.auth.sessions.updateActivity({
+    await janua.auth.sessions.updateActivity({
       sessionId: sessionInfo.sessionId,
       ipAddress: req.ip,
       userAgent: req.headers['user-agent']
@@ -155,7 +155,7 @@ app.post('/auth/signin', async (req, res) => {
   const { email, password, rememberMe, deviceInfo } = req.body
 
   try {
-    const { user, session } = await plinto.auth.signIn({
+    const { user, session } = await janua.auth.signIn({
       email,
       password,
       deviceInfo: {
@@ -188,7 +188,7 @@ app.post('/auth/signin', async (req, res) => {
     res.cookie('refreshToken', session.refreshToken, cookieOptions)
 
     // Log session creation
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'session.created',
       userId: user.id,
       sessionId: session.id,
@@ -227,7 +227,7 @@ app.post('/auth/refresh', async (req, res) => {
       refreshToken: newRefreshToken,
       expiresAt,
       user
-    } = await plinto.auth.refreshToken({
+    } = await janua.auth.refreshToken({
       refreshToken,
       deviceInfo: {
         ip: req.ip,
@@ -271,7 +271,7 @@ app.post('/auth/refresh', async (req, res) => {
 // Get user sessions
 app.get('/auth/sessions', verifySession, async (req, res) => {
   try {
-    const sessions = await plinto.auth.sessions.list({
+    const sessions = await janua.auth.sessions.list({
       userId: req.user.id,
       includeExpired: false
     })
@@ -308,19 +308,19 @@ app.delete('/auth/sessions/:sessionId', verifySession, async (req, res) => {
     const { sessionId } = req.params
 
     // Verify user owns the session or is revoking their own current session
-    const session = await plinto.auth.sessions.get(sessionId)
+    const session = await janua.auth.sessions.get(sessionId)
 
     if (session.userId !== req.user.id) {
       return res.status(403).json({ error: 'Cannot revoke other user\'s session' })
     }
 
-    await plinto.auth.sessions.revoke({
+    await janua.auth.sessions.revoke({
       sessionId,
       reason: 'user_requested'
     })
 
     // Log session revocation
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'session.revoked',
       userId: req.user.id,
       sessionId,
@@ -336,14 +336,14 @@ app.delete('/auth/sessions/:sessionId', verifySession, async (req, res) => {
 // Revoke all sessions except current
 app.post('/auth/sessions/revoke-all', verifySession, async (req, res) => {
   try {
-    const revokedCount = await plinto.auth.sessions.revokeAll({
+    const revokedCount = await janua.auth.sessions.revokeAll({
       userId: req.user.id,
       exceptSessionId: req.sessionId,
       reason: 'user_requested_revoke_all'
     })
 
     // Log bulk revocation
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'sessions.revoked_all',
       userId: req.user.id,
       revokedCount,
@@ -363,7 +363,7 @@ app.post('/auth/sessions/revoke-all', verifySession, async (req, res) => {
 // Sign out (revoke current session)
 app.post('/auth/signout', verifySession, async (req, res) => {
   try {
-    await plinto.auth.sessions.revoke({
+    await janua.auth.sessions.revoke({
       sessionId: req.sessionId,
       reason: 'user_signout'
     })
@@ -373,7 +373,7 @@ app.post('/auth/signout', verifySession, async (req, res) => {
     res.clearCookie('refreshToken')
 
     // Log sign out
-    await plinto.audit.log({
+    await janua.audit.log({
       event: 'session.ended',
       userId: req.user.id,
       sessionId: req.sessionId,
@@ -389,7 +389,7 @@ app.post('/auth/signout', verifySession, async (req, res) => {
 // Session health check
 app.get('/auth/session/health', verifySession, async (req, res) => {
   try {
-    const health = await plinto.auth.sessions.getHealth({
+    const health = await janua.auth.sessions.getHealth({
       sessionId: req.sessionId
     })
 
@@ -413,7 +413,7 @@ app.put('/auth/session/security', verifySession, async (req, res) => {
   const { level } = req.body // standard, high, maximum
 
   try {
-    const updatedSession = await plinto.auth.sessions.updateSecurity({
+    const updatedSession = await janua.auth.sessions.updateSecurity({
       sessionId: req.sessionId,
       securityLevel: level,
       requireMfa: level === 'maximum'
@@ -435,13 +435,13 @@ app.put('/auth/session/security', verifySession, async (req, res) => {
 ```python
 from fastapi import FastAPI, HTTPException, Depends, Request, Response
 from fastapi.security import HTTPBearer
-from plinto import Plinto
+from janua import Janua
 import os
 from datetime import datetime, timedelta
 
 app = FastAPI()
-plinto = Plinto(
-    api_key=os.getenv("PLINTO_API_KEY"),
+janua = Janua(
+    api_key=os.getenv("JANUA_API_KEY"),
     session={
         "access_token_ttl": 900,  # 15 minutes
         "refresh_token_ttl": 2592000,  # 30 days
@@ -462,7 +462,7 @@ async def verify_session(request: Request):
         if not token:
             raise HTTPException(401, "Invalid token format")
 
-        session_info = await plinto.auth.verify_session(
+        session_info = await janua.auth.verify_session(
             token=token,
             ip_address=request.client.host,
             user_agent=request.headers.get("user-agent")
@@ -472,7 +472,7 @@ async def verify_session(request: Request):
             raise HTTPException(401, f"Invalid session: {session_info.reason}")
 
         # Update last activity
-        await plinto.auth.sessions.update_activity(
+        await janua.auth.sessions.update_activity(
             session_id=session_info.session_id,
             ip_address=request.client.host,
             user_agent=request.headers.get("user-agent")
@@ -495,7 +495,7 @@ async def signin(
     response: Response = None
 ):
     try:
-        result = await plinto.auth.sign_in(
+        result = await janua.auth.sign_in(
             email=email,
             password=password,
             device_info={
@@ -534,7 +534,7 @@ async def signin(
         )
 
         # Log session creation
-        await plinto.audit.log(
+        await janua.audit.log(
             event="session.created",
             user_id=result.user.id,
             session_id=result.session.id,
@@ -571,7 +571,7 @@ async def refresh_token(
         if not refresh_token:
             raise HTTPException(401, "No refresh token provided")
 
-        result = await plinto.auth.refresh_token(
+        result = await janua.auth.refresh_token(
             refresh_token=refresh_token,
             device_info={
                 "ip": request.client.host,
@@ -616,7 +616,7 @@ async def refresh_token(
 @app.get("/auth/sessions")
 async def list_sessions(session_info = Depends(verify_session)):
     try:
-        sessions = await plinto.auth.sessions.list(
+        sessions = await janua.auth.sessions.list(
             user_id=session_info["user"].id,
             include_expired=False
         )
@@ -654,17 +654,17 @@ async def revoke_session(
 ):
     try:
         # Verify ownership
-        session = await plinto.auth.sessions.get(session_id)
+        session = await janua.auth.sessions.get(session_id)
         if session.user_id != session_info["user"].id:
             raise HTTPException(403, "Cannot revoke other user's session")
 
-        await plinto.auth.sessions.revoke(
+        await janua.auth.sessions.revoke(
             session_id=session_id,
             reason="user_requested"
         )
 
         # Log revocation
-        await plinto.audit.log(
+        await janua.audit.log(
             event="session.revoked",
             user_id=session_info["user"].id,
             session_id=session_id,
@@ -681,7 +681,7 @@ async def signout(
     response: Response = None
 ):
     try:
-        await plinto.auth.sessions.revoke(
+        await janua.auth.sessions.revoke(
             session_id=session_info["session_id"],
             reason="user_signout"
         )
@@ -691,7 +691,7 @@ async def signout(
         response.delete_cookie("refreshToken")
 
         # Log sign out
-        await plinto.audit.log(
+        await janua.audit.log(
             event="session.ended",
             user_id=session_info["user"].id,
             session_id=session_info["session_id"],
@@ -709,12 +709,12 @@ async def signout(
 
 ```jsx
 import { createContext, useContext, useEffect, useState } from 'react'
-import { usePlinto } from '@plinto/react-sdk'
+import { useJanua } from '@janua/react-sdk'
 
 const SessionContext = createContext()
 
 export function SessionProvider({ children }) {
-  const { auth } = usePlinto()
+  const { auth } = useJanua()
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -829,7 +829,7 @@ export function useSession() {
 
 // Session management component
 function SessionManager() {
-  const { auth } = usePlinto()
+  const { auth } = useJanua()
   const [sessions, setSessions] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -943,10 +943,10 @@ function SessionManager() {
 ```typescript
 // middleware.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { Plinto } from '@plinto/typescript-sdk'
+import { Janua } from '@janua/typescript-sdk'
 
-const plinto = new Plinto({
-  apiKey: process.env.PLINTO_API_KEY!
+const janua = new Janua({
+  apiKey: process.env.JANUA_API_KEY!
 })
 
 export async function middleware(request: NextRequest) {
@@ -961,7 +961,7 @@ export async function middleware(request: NextRequest) {
       if (refreshToken) {
         // Try to refresh token
         try {
-          const refreshed = await plinto.auth.refreshToken({
+          const refreshed = await janua.auth.refreshToken({
             refreshToken
           })
 
@@ -996,7 +996,7 @@ export async function middleware(request: NextRequest) {
 
     // Verify access token
     try {
-      const sessionInfo = await plinto.auth.verifySession({
+      const sessionInfo = await janua.auth.verifySession({
         token: accessToken,
         ipAddress: request.ip,
         userAgent: request.headers.get('user-agent')
@@ -1005,7 +1005,7 @@ export async function middleware(request: NextRequest) {
       if (!sessionInfo.valid) {
         // Token invalid, try refresh
         if (refreshToken) {
-          const refreshed = await plinto.auth.refreshToken({ refreshToken })
+          const refreshed = await janua.auth.refreshToken({ refreshToken })
 
           const response = NextResponse.next()
           response.cookies.set('accessToken', refreshed.accessToken, {
@@ -1070,7 +1070,7 @@ const securityLevels = {
 }
 
 // Set session security level
-await plinto.auth.sessions.updateSecurity({
+await janua.auth.sessions.updateSecurity({
   sessionId,
   securityLevel: 'high',
   reason: 'admin_role_detected'
@@ -1083,7 +1083,7 @@ Track and manage trusted devices:
 
 ```typescript
 // Check device trust
-const deviceTrust = await plinto.auth.devices.checkTrust({
+const deviceTrust = await janua.auth.devices.checkTrust({
   userId,
   deviceFingerprint: 'unique-device-id',
   ipAddress: req.ip
@@ -1091,7 +1091,7 @@ const deviceTrust = await plinto.auth.devices.checkTrust({
 
 if (!deviceTrust.trusted) {
   // New or untrusted device
-  await plinto.auth.mfa.requireVerification({
+  await janua.auth.mfa.requireVerification({
     userId,
     reason: 'new_device',
     methods: ['totp', 'sms']
@@ -1099,7 +1099,7 @@ if (!deviceTrust.trusted) {
 }
 
 // Trust device after successful verification
-await plinto.auth.devices.trust({
+await janua.auth.devices.trust({
   userId,
   deviceFingerprint: 'unique-device-id',
   deviceInfo: {
@@ -1117,7 +1117,7 @@ Track session patterns and detect anomalies:
 
 ```typescript
 // Get session analytics
-const analytics = await plinto.auth.sessions.getAnalytics({
+const analytics = await janua.auth.sessions.getAnalytics({
   userId,
   timeRange: {
     start: new Date('2024-01-01'),
@@ -1134,7 +1134,7 @@ console.log('Session patterns:', {
 })
 
 // Detect anomalies
-const anomalies = await plinto.auth.sessions.detectAnomalies({
+const anomalies = await janua.auth.sessions.detectAnomalies({
   userId,
   currentSession: {
     ipAddress: req.ip,
@@ -1145,7 +1145,7 @@ const anomalies = await plinto.auth.sessions.detectAnomalies({
 
 if (anomalies.riskScore > 0.7) {
   // High risk session
-  await plinto.auth.sessions.requireVerification({
+  await janua.auth.sessions.requireVerification({
     sessionId,
     method: 'mfa',
     reason: 'anomaly_detected'
@@ -1325,7 +1325,7 @@ const apiCallWithRetry = async (apiCall, maxRetries = 3) => {
 ```typescript
 describe('Session Management', () => {
   it('should create session with correct expiry', async () => {
-    const { session } = await plinto.auth.signIn({
+    const { session } = await janua.auth.signIn({
       email: 'test@example.com',
       password: 'password123'
     })
@@ -1341,7 +1341,7 @@ describe('Session Management', () => {
   })
 
   it('should refresh tokens correctly', async () => {
-    const { session: originalSession } = await plinto.auth.signIn({
+    const { session: originalSession } = await janua.auth.signIn({
       email: 'test@example.com',
       password: 'password123'
     })
@@ -1349,7 +1349,7 @@ describe('Session Management', () => {
     // Wait a moment to ensure new tokens are different
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    const refreshed = await plinto.auth.refreshToken({
+    const refreshed = await janua.auth.refreshToken({
       refreshToken: originalSession.refreshToken
     })
 
@@ -1358,24 +1358,24 @@ describe('Session Management', () => {
   })
 
   it('should revoke sessions correctly', async () => {
-    const { session } = await plinto.auth.signIn({
+    const { session } = await janua.auth.signIn({
       email: 'test@example.com',
       password: 'password123'
     })
 
     // Verify session is valid
-    const verified = await plinto.auth.verifySession({
+    const verified = await janua.auth.verifySession({
       token: session.accessToken
     })
     expect(verified.valid).toBe(true)
 
     // Revoke session
-    await plinto.auth.sessions.revoke({
+    await janua.auth.sessions.revoke({
       sessionId: session.id
     })
 
     // Verify session is no longer valid
-    const revokedCheck = await plinto.auth.verifySession({
+    const revokedCheck = await janua.auth.verifySession({
       token: session.accessToken
     })
     expect(revokedCheck.valid).toBe(false)
@@ -1383,7 +1383,7 @@ describe('Session Management', () => {
   })
 
   it('should handle concurrent session limits', async () => {
-    const user = await plinto.users.create({
+    const user = await janua.users.create({
       email: 'concurrent@example.com',
       maxConcurrentSessions: 2
     })
@@ -1391,7 +1391,7 @@ describe('Session Management', () => {
     // Create maximum allowed sessions
     const sessions = []
     for (let i = 0; i < 2; i++) {
-      const { session } = await plinto.auth.signIn({
+      const { session } = await janua.auth.signIn({
         email: user.email,
         password: 'password123'
       })
@@ -1399,13 +1399,13 @@ describe('Session Management', () => {
     }
 
     // Try to create one more session (should fail or revoke oldest)
-    const { session: newSession } = await plinto.auth.signIn({
+    const { session: newSession } = await janua.auth.signIn({
       email: user.email,
       password: 'password123'
     })
 
     // Check that oldest session was revoked
-    const oldestSessionCheck = await plinto.auth.verifySession({
+    const oldestSessionCheck = await janua.auth.verifySession({
       token: sessions[0].accessToken
     })
     expect(oldestSessionCheck.valid).toBe(false)
@@ -1419,7 +1419,7 @@ describe('Session Management', () => {
 describe('Session Flow Integration', () => {
   it('should handle full authentication lifecycle', async () => {
     // 1. Sign in
-    const { user, session } = await plinto.auth.signIn({
+    const { user, session } = await janua.auth.signIn({
       email: 'lifecycle@example.com',
       password: 'password123'
     })
@@ -1428,32 +1428,32 @@ describe('Session Flow Integration', () => {
     expect(session.accessToken).toBeDefined()
 
     // 2. Verify session works
-    const verified = await plinto.auth.verifySession({
+    const verified = await janua.auth.verifySession({
       token: session.accessToken
     })
     expect(verified.valid).toBe(true)
     expect(verified.user.id).toBe(user.id)
 
     // 3. Refresh token
-    const refreshed = await plinto.auth.refreshToken({
+    const refreshed = await janua.auth.refreshToken({
       refreshToken: session.refreshToken
     })
     expect(refreshed.accessToken).toBeDefined()
 
     // 4. List sessions
-    const { sessions } = await plinto.auth.sessions.list({
+    const { sessions } = await janua.auth.sessions.list({
       userId: user.id
     })
     expect(sessions.length).toBe(1)
     expect(sessions[0].device.type).toBe('test')
 
     // 5. Sign out
-    await plinto.auth.sessions.revoke({
+    await janua.auth.sessions.revoke({
       sessionId: session.id
     })
 
     // 6. Verify session is revoked
-    const finalCheck = await plinto.auth.verifySession({
+    const finalCheck = await janua.auth.verifySession({
       token: refreshed.accessToken
     })
     expect(finalCheck.valid).toBe(false)
@@ -1477,13 +1477,13 @@ const token = jwt.sign(
 
 const verified = jwt.verify(token, process.env.JWT_SECRET)
 
-// After: Plinto session management
-const { session } = await plinto.auth.signIn({
+// After: Janua session management
+const { session } = await janua.auth.signIn({
   email: user.email,
   password: password
 })
 
-const sessionInfo = await plinto.auth.verifySession({
+const sessionInfo = await janua.auth.verifySession({
   token: session.accessToken
 })
 ```
@@ -1495,7 +1495,7 @@ const sessionInfo = await plinto.auth.verifySession({
 const migrateAuth0Sessions = async (auth0Users) => {
   for (const auth0User of auth0Users) {
     // Import user
-    const plintoUser = await plinto.auth.importUser({
+    const januaUser = await janua.auth.importUser({
       email: auth0User.email,
       auth0Id: auth0User.user_id
     })
@@ -1507,8 +1507,8 @@ const migrateAuth0Sessions = async (auth0Users) => {
 
       // If recent login, create equivalent session
       if (sessionAge < 24 * 60 * 60 * 1000) { // Less than 24 hours
-        await plinto.auth.createSession({
-          userId: plintoUser.id,
+        await janua.auth.createSession({
+          userId: januaUser.id,
           deviceInfo: {
             type: 'migrated',
             name: 'Migrated Session'

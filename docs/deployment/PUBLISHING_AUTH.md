@@ -39,7 +39,7 @@ Go to https://pypi.org/account/register/
 
 ### 2. Create API token
 1. Go to https://pypi.org/manage/account/token/
-2. Create a token with scope "Entire account" (or specific to plinto package after first publish)
+2. Create a token with scope "Entire account" (or specific to janua package after first publish)
 3. Copy the token
 
 ### 3. Configure .pypirc
@@ -94,7 +94,7 @@ git push origin v1.0.0
 ### 3. The module will be automatically available
 Users can get it with:
 ```bash
-go get github.com/madfam-io/plinto/go-sdk@v1.0.0
+go get github.com/madfam-io/janua/go-sdk@v1.0.0
 ```
 
 ## Current Authentication Status

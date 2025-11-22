@@ -189,7 +189,7 @@ class TestEmailService:
                 template="welcome_email",
                 context={
                     "user_name": "John Doe",
-                    "activation_link": "https://app.plinto.dev/activate/abc123"
+                    "activation_link": "https://app.janua.dev/activate/abc123"
                 }
             )
             assert result["sent"] is True
@@ -299,7 +299,7 @@ class TestStorageService:
             mock_upload.return_value = {
                 "uploaded": True,
                 "file_id": "file_123456789",
-                "file_url": "https://storage.plinto.dev/files/file_123456789.jpg",
+                "file_url": "https://storage.janua.dev/files/file_123456789.jpg",
                 "size_bytes": 1024000
             }
 
@@ -618,8 +618,8 @@ class TestJWTService:
             mock_claims.return_value = {
                 "sub": "user_123",
                 "role": "admin",
-                "iss": "plinto.dev",
-                "aud": "api.plinto.dev"
+                "iss": "janua.dev",
+                "aud": "api.janua.dev"
             }
 
             claims = self.service.get_token_claims("jwt_token")

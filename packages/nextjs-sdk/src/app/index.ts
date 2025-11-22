@@ -1,6 +1,6 @@
 // App Router exports
-export { PlintoProvider, usePlinto, useAuth, useUser, useOrganizations } from './provider';
-export type { PlintoProviderProps } from './provider';
+export { JanuaProvider, useJanua, useAuth, useUser, useOrganizations } from './provider';
+export type { JanuaProviderProps } from './provider';
 
 export {
   SignInForm,
@@ -23,7 +23,7 @@ export type {
 } from './components';
 
 export {
-  PlintoServerClient,
+  JanuaServerClient,
   getSession,
   requireAuth,
   validateRequest,

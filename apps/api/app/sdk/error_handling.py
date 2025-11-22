@@ -64,7 +64,7 @@ class SDKError(Exception, ABC):
 
 class APIError(SDKError):
     """
-    API-level errors from the Plinto service.
+    API-level errors from the Janua service.
 
     Represents errors returned by the API with HTTP status codes.
     """

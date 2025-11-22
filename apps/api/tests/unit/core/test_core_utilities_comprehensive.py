@@ -27,7 +27,7 @@ class TestConfiguration:
 
     def test_cors_origins_property(self):
         """Test CORS origins property handling."""
-        with patch.object(settings, 'CORS_ORIGINS', "http://localhost:3000,https://app.plinto.dev"):
+        with patch.object(settings, 'CORS_ORIGINS', "http://localhost:3000,https://app.janua.dev"):
             origins = settings.cors_origins_list
             assert isinstance(origins, list)
             assert len(origins) >= 1

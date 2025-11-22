@@ -7,8 +7,8 @@ import { DemoBanner } from '@/components/demo'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Plinto Auth - Secure Identity Platform',
-  description: 'Sign in to your Plinto account',
+  title: 'Janua Auth - Secure Identity Platform',
+  description: 'Sign in to your Janua account',
 }
 
 export default function RootLayout({

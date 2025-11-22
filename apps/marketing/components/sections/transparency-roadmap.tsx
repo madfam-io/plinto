@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircle2, Circle, AlertCircle, Clock, Users, Code2, Shield, Zap, TrendingUp, GitBranch } from 'lucide-react'
-import { Badge } from '@plinto/ui'
-import { Button } from '@plinto/ui'
+import { Badge } from '@janua/ui'
+import { Button } from '@janua/ui'
 import Link from 'next/link'
 
 interface RoadmapItem {
@@ -230,7 +230,7 @@ export function TransparencyRoadmap() {
             Full Transparency: Where We Are Today
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-            We believe in radical honesty. Here's exactly where Plinto stands today and where we're going.
+            We believe in radical honesty. Here's exactly where Janua stands today and where we're going.
             No marketing fluff, just facts.
           </p>
         </div>
@@ -412,13 +412,13 @@ export function TransparencyRoadmap() {
           </p>
           <div className="flex gap-4 justify-center">
             <Button asChild>
-              <Link href="https://github.com/plinto/plinto" target="_blank">
+              <Link href="https://github.com/janua/janua" target="_blank">
                 <GitBranch className="w-4 h-4 mr-2" />
                 View on GitHub
               </Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="https://github.com/plinto/plinto/issues">
+              <Link href="https://github.com/janua/janua/issues">
                 Report Issues
               </Link>
             </Button>

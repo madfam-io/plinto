@@ -1,5 +1,5 @@
 /**
- * Invitations module for the Plinto TypeScript SDK
+ * Invitations module for the Janua TypeScript SDK
  *
  * Provides organization invitation management capabilities.
  */

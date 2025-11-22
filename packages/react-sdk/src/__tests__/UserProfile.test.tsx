@@ -2,17 +2,17 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { UserProfile } from '../components/UserProfile'
-import { PlintoProvider } from '../provider'
-import { PlintoClient } from '@plinto/typescript-sdk'
+import { JanuaProvider } from '../provider'
+import { JanuaClient } from '@janua/typescript-sdk'
 
-// Mock the Plinto SDK
+// Mock the Janua SDK
 const mockUpdateUser = jest.fn()
 const mockGetCurrentUser = jest.fn()
 const mockSignOut = jest.fn()
 const mockSignIn = jest.fn()
 
-jest.mock('@plinto/typescript-sdk', () => ({
-  PlintoClient: jest.fn().mockImplementation(() => ({
+jest.mock('@janua/typescript-sdk', () => ({
+  JanuaClient: jest.fn().mockImplementation(() => ({
     updateUser: mockUpdateUser,
     getCurrentUser: mockGetCurrentUser,
     signOut: mockSignOut,
@@ -32,7 +32,7 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 const mockConfig = {
   apiKey: 'test-key',
   tenantId: 'test-tenant',
-  baseUrl: 'https://api.plinto.dev'
+  baseUrl: 'https://api.janua.dev'
 }
 
 const mockUser = {
@@ -62,19 +62,19 @@ describe('UserProfile Component', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     localStorageMock.getItem.mockReturnValue(null)
-    mockClient = new PlintoClient(mockConfig)
-    ;(PlintoClient as any).mockImplementation(() => mockClient)
+    mockClient = new JanuaClient(mockConfig)
+    ;(JanuaClient as any).mockImplementation(() => mockClient)
   })
 
   const renderUserProfile = (props = {}) => {
     return render(
-      React.createElement(PlintoProvider, { config: mockConfig },
+      React.createElement(JanuaProvider, { config: mockConfig },
         React.createElement(UserProfile, props)
       )
     )
   }
 
-  const createMockPlintoContext = (overrides = {}) => {
+  const createMockJanuaContext = (overrides = {}) => {
     return {
       user: mockUser,
       session: mockSession,
@@ -88,7 +88,7 @@ describe('UserProfile Component', () => {
   describe('Rendering', () => {
     it('should render user profile information', () => {
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -106,7 +106,7 @@ describe('UserProfile Component', () => {
 
     it('should render loading state', () => {
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext({ loading: true, user: null })
+        const mockContext = createMockJanuaContext({ loading: true, user: null })
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -121,7 +121,7 @@ describe('UserProfile Component', () => {
 
     it('should render no user state', () => {
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext({ user: null, loading: false })
+        const mockContext = createMockJanuaContext({ user: null, loading: false })
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -136,7 +136,7 @@ describe('UserProfile Component', () => {
 
     it('should apply custom className', () => {
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -154,7 +154,7 @@ describe('UserProfile Component', () => {
     it('should enter edit mode when edit button is clicked', async () => {
       const user = userEvent.setup()
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -177,7 +177,7 @@ describe('UserProfile Component', () => {
     it('should populate edit form with current user data', async () => {
       const user = userEvent.setup()
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -198,7 +198,7 @@ describe('UserProfile Component', () => {
     it('should exit edit mode when cancel button is clicked', async () => {
       const user = userEvent.setup()
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -223,7 +223,7 @@ describe('UserProfile Component', () => {
     it('should update form data when inputs change', async () => {
       const user = userEvent.setup()
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -267,7 +267,7 @@ describe('UserProfile Component', () => {
       })
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -321,7 +321,7 @@ describe('UserProfile Component', () => {
       })
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -354,7 +354,7 @@ describe('UserProfile Component', () => {
       const user = userEvent.setup()
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -386,7 +386,7 @@ describe('UserProfile Component', () => {
       mockUpdateUser.mockRejectedValueOnce(new Error('Update failed'))
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -416,7 +416,7 @@ describe('UserProfile Component', () => {
       mockUpdateUser.mockRejectedValueOnce('Unknown error')
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -446,7 +446,7 @@ describe('UserProfile Component', () => {
       mockUpdateUser.mockRejectedValueOnce(new Error('Update failed'))
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -498,7 +498,7 @@ describe('UserProfile Component', () => {
       )
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -529,7 +529,7 @@ describe('UserProfile Component', () => {
       const onSignOut = jest.fn()
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         mockContext.signOut = onSignOut
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
@@ -552,7 +552,7 @@ describe('UserProfile Component', () => {
       const user = userEvent.setup()
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -577,7 +577,7 @@ describe('UserProfile Component', () => {
       const user = userEvent.setup()
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -601,7 +601,7 @@ describe('UserProfile Component', () => {
       mockUpdateUser.mockRejectedValueOnce(new Error('Update failed'))
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -630,7 +630,7 @@ describe('UserProfile Component', () => {
       }
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext({ user: incompleteUser })
+        const mockContext = createMockJanuaContext({ user: incompleteUser })
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -656,7 +656,7 @@ describe('UserProfile Component', () => {
       })
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -690,7 +690,7 @@ describe('UserProfile Component', () => {
       })
 
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -726,7 +726,7 @@ describe('UserProfile Component', () => {
 
     it('should handle missing client gracefully', () => {
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext({ client: null })
+        const mockContext = createMockJanuaContext({ client: null })
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -744,7 +744,7 @@ describe('UserProfile Component', () => {
   describe('Session Information', () => {
     it('should display session information when available', () => {
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext()
+        const mockContext = createMockJanuaContext()
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 
@@ -760,7 +760,7 @@ describe('UserProfile Component', () => {
 
     it('should handle missing session information gracefully', () => {
       const MockProvider = ({ children }: { children: React.ReactNode }) => {
-        const mockContext = createMockPlintoContext({ session: null })
+        const mockContext = createMockJanuaContext({ session: null })
         return React.createElement('div', { 'data-testid': 'mock-provider' }, children)
       }
 

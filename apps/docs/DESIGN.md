@@ -1,7 +1,7 @@
-# Plinto Documentation Site Design
+# Janua Documentation Site Design
 
 ## Overview
-docs.plinto.dev - A modern, developer-focused documentation site for the Plinto identity platform
+docs.janua.dev - A modern, developer-focused documentation site for the Janua identity platform
 
 ## Design Principles
 1. **Developer-First**: Optimized for developers with code examples, API references, and interactive playgrounds
@@ -13,7 +13,7 @@ docs.plinto.dev - A modern, developer-focused documentation site for the Plinto 
 ## Information Architecture
 
 ```
-docs.plinto.dev/
+docs.janua.dev/
 ├── Getting Started
 │   ├── Quick Start
 │   ├── Installation
@@ -46,10 +46,10 @@ docs.plinto.dev/
 │   └── Admin
 ├── SDKs
 │   ├── JavaScript/TypeScript
-│   │   ├── @plinto/nextjs
-│   │   ├── @plinto/react-sdk
-│   │   ├── @plinto/node
-│   │   └── @plinto/edge
+│   │   ├── @janua/nextjs
+│   │   ├── @janua/react-sdk
+│   │   ├── @janua/node
+│   │   └── @janua/edge
 │   ├── Python
 │   ├── Go
 │   └── Ruby
@@ -69,12 +69,12 @@ docs.plinto.dev/
 
 ## Visual Design
 
-### Color Palette (extends Plinto theme)
+### Color Palette (extends Janua theme)
 ```typescript
 const docsTheme = {
-  ...plintoTheme,
+  ...januaTheme,
   colors: {
-    ...plintoTheme.colors,
+    ...januaTheme.colors,
     // Docs-specific
     codeBackground: '#1e293b',     // slate-800
     codeText: '#e2e8f0',           // slate-200
@@ -98,7 +98,7 @@ const docsTheme = {
 #### 1. Header/Navigation
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ [Logo] Plinto Docs    [Search...]    [v1.0] [GitHub] [Dark] │
+│ [Logo] Janua Docs    [Search...]    [v1.0] [GitHub] [Dark] │
 ├─────────────────────────────────────────────────────────────┤
 │ Getting Started │ Guides │ API Reference │ SDKs │ Examples  │
 └─────────────────────────────────────────────────────────────┘
@@ -251,7 +251,7 @@ interface ParameterTableProps {
 
 ### Stack
 - **Framework**: Next.js 14 with App Router
-- **Styling**: Tailwind CSS + @plinto/ui components
+- **Styling**: Tailwind CSS + @janua/ui components
 - **Content**: MDX for rich documentation
 - **Search**: Algolia DocSearch
 - **Code Highlighting**: Prism.js with custom theme
@@ -365,11 +365,11 @@ Docs > Guides > Authentication > Passkeys
 
 ### Environment Variables
 ```env
-NEXT_PUBLIC_DOCS_URL=https://docs.plinto.dev
-NEXT_PUBLIC_API_URL=https://api.plinto.dev
+NEXT_PUBLIC_DOCS_URL=https://docs.janua.dev
+NEXT_PUBLIC_API_URL=https://api.janua.dev
 NEXT_PUBLIC_ALGOLIA_APP_ID=xxx
 NEXT_PUBLIC_ALGOLIA_API_KEY=xxx
-NEXT_PUBLIC_ALGOLIA_INDEX=plinto-docs
+NEXT_PUBLIC_ALGOLIA_INDEX=janua-docs
 ```
 
 ### Build Configuration
@@ -378,7 +378,7 @@ NEXT_PUBLIC_ALGOLIA_INDEX=plinto-docs
 module.exports = {
   basePath: '',
   images: {
-    domains: ['plinto.dev', 'github.com'],
+    domains: ['janua.dev', 'github.com'],
   },
   async redirects() {
     return [

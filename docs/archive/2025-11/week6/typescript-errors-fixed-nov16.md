@@ -2,13 +2,13 @@
 
 ## Summary
 
-Fixed critical TypeScript errors across the Plinto codebase, reducing errors from 150+ to under 100 across all apps.
+Fixed critical TypeScript errors across the Janua codebase, reducing errors from 150+ to under 100 across all apps.
 
 ## Fixes Completed
 
 ### 1. Feature Flags Package Build ✅
 
-**Issue**: `@plinto/feature-flags` package was created but not built, causing import errors in demo, dashboard, and admin apps.
+**Issue**: `@janua/feature-flags` package was created but not built, causing import errors in demo, dashboard, and admin apps.
 
 **Files Fixed**:
 - `packages/feature-flags/tsconfig.json`
@@ -86,13 +86,13 @@ removeAllListeners(event?: SdkEventType): void {
 **Issue**: Token storage type literal 'localStorage' not recognized as const, causing type mismatch.
 
 **Files Fixed**:
-- `apps/dashboard/lib/plinto-client.ts`
+- `apps/dashboard/lib/janua-client.ts`
 
 **Changes**:
 ```typescript
 tokenStorage: {
   type: 'localStorage' as const,  // ✅ Added const assertion
-  key: 'plinto_auth_token',
+  key: 'janua_auth_token',
 }
 ```
 
@@ -161,10 +161,10 @@ export {
 #### Invitations Showcase
 ```typescript
 // ✅ Fixed: InvitationResponse → Invitation
-import { type Invitation } from '@plinto/ui/components/auth'
+import { type Invitation } from '@janua/ui/components/auth'
 
-// ✅ Fixed: PlintoClient class → plintoClient instance
-import { plintoClient } from '@/lib/plinto-client'
+// ✅ Fixed: JanuaClient class → januaClient instance
+import { januaClient } from '@/lib/janua-client'
 
 // ✅ Fixed: invitation.invitation_url → invitation.invite_url
 alert(`Invitation URL:\n${invitation.invite_url}`)
@@ -177,7 +177,7 @@ onRevoke={async (invitationId) => { /* ... */ }}
 #### SSO Showcase
 ```typescript
 // ✅ Fixed: Removed duplicate client initialization
-import { plintoClient } from '@/lib/plinto-client'
+import { januaClient } from '@/lib/janua-client'
 ```
 
 ---
@@ -205,7 +205,7 @@ import { plintoClient } from '@/lib/plinto-client'
 5. ✅ Readonly type incompatibilities (ActionableError)
 6. ✅ Missing type exports (isolatedModules)
 7. ✅ Wrong type names (InvitationResponse)
-8. ✅ SDK usage errors (PlintoClient instance vs class)
+8. ✅ SDK usage errors (JanuaClient instance vs class)
 
 ### Remaining Errors (Low Priority)
 - **Test files**: Implicit any types in mock props (~30 errors)
@@ -244,7 +244,7 @@ import { plintoClient } from '@/lib/plinto-client'
 5. `packages/ui/src/index.ts` - Type exports
 
 ### Apps
-6. `apps/dashboard/lib/plinto-client.ts` - Token storage type
+6. `apps/dashboard/lib/janua-client.ts` - Token storage type
 7. `apps/demo/app/auth/invitations-showcase/page.tsx` - Type fixes
 8. `apps/demo/app/auth/sso-showcase/page.tsx` - SDK usage fix
 

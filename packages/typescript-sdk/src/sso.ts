@@ -1,5 +1,5 @@
 /**
- * SSO/SAML module for the Plinto TypeScript SDK
+ * SSO/SAML module for the Janua TypeScript SDK
  *
  * Provides enterprise Single Sign-On capabilities with SAML 2.0 and OIDC support.
  */

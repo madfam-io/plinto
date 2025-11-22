@@ -2,9 +2,9 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Providers } from '@/components/providers'
 
-// Mock @plinto/react-sdk
-jest.mock('@plinto/react-sdk', () => ({
-  PlintoProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+// Mock @janua/react-sdk
+jest.mock('@janua/react-sdk', () => ({
+  JanuaProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }))
 
 // Mock hooks
@@ -18,9 +18,9 @@ jest.mock('@/hooks/useEnvironment', () => ({
   })
 }))
 
-// Mock PlintoClient
-jest.mock('@plinto/typescript-sdk', () => ({
-  PlintoClient: jest.fn().mockImplementation(() => ({
+// Mock JanuaClient
+jest.mock('@janua/typescript-sdk', () => ({
+  JanuaClient: jest.fn().mockImplementation(() => ({
     initialize: jest.fn()
   }))
 }))

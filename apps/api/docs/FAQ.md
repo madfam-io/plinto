@@ -1,13 +1,13 @@
 # Frequently Asked Questions
 
-> **Common questions and answers about the Plinto API**
+> **Common questions and answers about the Janua API**
 
-This FAQ addresses the most common questions about implementing, deploying, and using the Plinto authentication platform.
+This FAQ addresses the most common questions about implementing, deploying, and using the Janua authentication platform.
 
 ## 🚀 Getting Started
 
-### Q: What is Plinto API?
-**A:** Plinto API is a modern, enterprise-grade authentication and identity management platform built with FastAPI. It provides comprehensive authentication services including JWT tokens, WebAuthn/Passkeys, multi-factor authentication, and enterprise SSO.
+### Q: What is Janua API?
+**A:** Janua API is a modern, enterprise-grade authentication and identity management platform built with FastAPI. It provides comprehensive authentication services including JWT tokens, WebAuthn/Passkeys, multi-factor authentication, and enterprise SSO.
 
 ### Q: What are the system requirements?
 **A:**
@@ -27,12 +27,12 @@ This FAQ addresses the most common questions about implementing, deploying, and 
 6. Start the server with `uvicorn app.main:app --reload`
 
 ### Q: Is there a hosted version available?
-**A:** Yes! We offer a fully managed cloud service at [plinto.dev](https://plinto.dev). You can also self-host using our deployment guides.
+**A:** Yes! We offer a fully managed cloud service at [janua.dev](https://janua.dev). You can also self-host using our deployment guides.
 
 ## 🔐 Authentication & Security
 
 ### Q: What authentication methods are supported?
-**A:** Plinto supports multiple authentication methods:
+**A:** Janua supports multiple authentication methods:
 - **JWT Tokens** (RS256/HS256) for API access
 - **WebAuthn/Passkeys** for passwordless authentication
 - **Multi-Factor Authentication** (TOTP, SMS, email)
@@ -89,7 +89,7 @@ RATE_LIMIT_PER_HOUR=1000
 ### Q: How do I set up SAML SSO?
 **A:** Follow our [SSO Integration Guide](api/sso-integration.md):
 1. Configure your identity provider (IdP)
-2. Add SSO provider configuration in Plinto
+2. Add SSO provider configuration in Janua
 3. Test the SAML authentication flow
 4. Configure user attribute mapping
 5. Enable SSO for your organization
@@ -101,7 +101,7 @@ RATE_LIMIT_PER_HOUR=1000
 - Deactivate users when they're removed from your IdP
 
 ### Q: How does multi-tenancy work?
-**A:** Plinto provides organization-level isolation:
+**A:** Janua provides organization-level isolation:
 - Each organization has its own data space
 - Users can belong to multiple organizations
 - Row-level security ensures data isolation
@@ -278,7 +278,7 @@ async def reset_password(email: str, new_password: str):
 
 ## 📚 Development
 
-### Q: How do I contribute to Plinto?
+### Q: How do I contribute to Janua?
 **A:** We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md):
 1. Fork the repository
 2. Create a feature branch
@@ -359,8 +359,8 @@ async def reset_password(email: str, new_password: str):
 
 ### Q: How do I report security issues?
 **A:** For security issues:
-- **Email**: [security@plinto.dev](mailto:security@plinto.dev)
-- **PGP**: Use our [public key](https://plinto.dev/.well-known/security.txt)
+- **Email**: [security@janua.dev](mailto:security@janua.dev)
+- **PGP**: Use our [public key](https://janua.dev/.well-known/security.txt)
 - **Responsible disclosure**: Allow time for fixes before public disclosure
 - **Bug bounty**: We offer rewards for valid security reports
 
@@ -378,15 +378,15 @@ async def reset_password(email: str, new_password: str):
 Can't find what you're looking for? Here's how to get help:
 
 1. **Search Documentation**: Use the search function in our docs
-2. **Check Issues**: Look through [GitHub Issues](https://github.com/your-org/plinto/issues)
-3. **Ask Community**: Post in [GitHub Discussions](https://github.com/your-org/plinto/discussions)
-4. **Join Discord**: Real-time chat at [discord.gg/plinto-dev](https://discord.gg/plinto-dev)
-5. **Contact Support**: Email [support@plinto.dev](mailto:support@plinto.dev)
+2. **Check Issues**: Look through [GitHub Issues](https://github.com/your-org/janua/issues)
+3. **Ask Community**: Post in [GitHub Discussions](https://github.com/your-org/janua/discussions)
+4. **Join Discord**: Real-time chat at [discord.gg/janua-dev](https://discord.gg/janua-dev)
+5. **Contact Support**: Email [support@janua.dev](mailto:support@janua.dev)
 
 ---
 
 <div align="center">
 
-**[⬅️ Documentation Home](README.md)** • **[🚀 Getting Started](development/getting-started.md)** • **[📞 Support](mailto:support@plinto.dev)**
+**[⬅️ Documentation Home](README.md)** • **[🚀 Getting Started](development/getting-started.md)** • **[📞 Support](mailto:support@janua.dev)**
 
 </div>

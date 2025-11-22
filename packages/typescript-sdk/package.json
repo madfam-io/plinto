@@ -1,8 +1,8 @@
 {
-  "name": "@plinto/typescript-sdk",
+  "name": "@janua/typescript-sdk",
   "version": "0.1.0-beta.1",
   "type": "module",
-  "description": "Official TypeScript/JavaScript SDK for the Plinto authentication API",
+  "description": "Official TypeScript/JavaScript SDK for the Janua authentication API",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -37,7 +37,7 @@
     "docs": "typedoc src/index.ts"
   },
   "keywords": [
-    "plinto",
+    "janua",
     "authentication",
     "auth",
     "sdk",
@@ -48,21 +48,21 @@
     "passkeys",
     "webauthn"
   ],
-  "author": "Plinto Team",
+  "author": "Janua Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/madfam-io/plinto.git",
+    "url": "https://github.com/madfam-io/janua.git",
     "directory": "packages/typescript-sdk"
   },
   "bugs": {
-    "url": "https://github.com/madfam-io/plinto/issues"
+    "url": "https://github.com/madfam-io/janua/issues"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "homepage": "https://plinto.dev",
+  "homepage": "https://janua.dev",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",

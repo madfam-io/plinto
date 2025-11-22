@@ -6,7 +6,7 @@
 
 ## 📋 Executive Summary
 
-The Plinto platform contains **20 packages** under `/packages/`, with **13 active packages** containing `package.json` files and **15 packages** containing README documentation. The packages represent a comprehensive SDK ecosystem covering multiple programming languages and frameworks.
+The Janua platform contains **20 packages** under `/packages/`, with **13 active packages** containing `package.json` files and **15 packages** containing README documentation. The packages represent a comprehensive SDK ecosystem covering multiple programming languages and frameworks.
 
 ### 🎯 Key Findings
 
@@ -30,56 +30,56 @@ The Plinto platform contains **20 packages** under `/packages/`, with **13 activ
 
 ### 🟢 **Production Ready Packages**
 
-#### 1. **@plinto/core** - ✅ **Excellent**
+#### 1. **@janua/core** - ✅ **Excellent**
 - **Purpose**: Shared utilities and types for TypeScript packages
 - **Documentation**: ⭐⭐⭐⭐⭐ Comprehensive README with examples
 - **Dependencies**: Well-managed with TypeScript, validation, crypto utilities
 - **Usage**: Core package used by other TypeScript packages
 - **Status**: Production ready, actively maintained
 
-#### 2. **@plinto/python-sdk** - ✅ **Excellent**
-- **Purpose**: Official Python SDK for Plinto API
+#### 2. **@janua/python-sdk** - ✅ **Excellent**
+- **Purpose**: Official Python SDK for Janua API
 - **Documentation**: ⭐⭐⭐⭐⭐ Extensive documentation with full API coverage
 - **Dependencies**: No package.json (Python package)
 - **Usage**: Primary SDK for Python applications
 - **Status**: Production ready, comprehensive feature set
 
-#### 3. **@plinto/typescript-sdk** - ✅ **Excellent**
+#### 3. **@janua/typescript-sdk** - ✅ **Excellent**
 - **Purpose**: Official TypeScript/JavaScript SDK
 - **Documentation**: ⭐⭐⭐⭐⭐ Complete API reference with examples
 - **Dependencies**: Minimal dependencies (axios), proper build setup
 - **Usage**: Foundation for other framework-specific SDKs
 - **Status**: Production ready, well-architected
 
-#### 4. **@plinto/ui** - ✅ **Excellent**
+#### 4. **@janua/ui** - ✅ **Excellent**
 - **Purpose**: Shared design system and React components
 - **Documentation**: ⭐⭐⭐⭐⭐ Complete component documentation
 - **Dependencies**: Modern stack (Radix UI, Tailwind CSS)
 - **Usage**: Used by dashboard and other React applications
 - **Status**: Production ready, comprehensive component library
 
-#### 5. **@plinto/edge** - ✅ **Good**
+#### 5. **@janua/edge** - ✅ **Good**
 - **Purpose**: Edge-optimized JWT verification for Cloudflare Workers
 - **Documentation**: ⭐⭐⭐⭐ Good documentation with usage examples
 - **Dependencies**: Minimal (jose for JWT)
 - **Usage**: Specialized for edge computing environments
 - **Status**: Production ready, focused purpose
 
-#### 6. **@plinto/monitoring** - ✅ **Excellent**
+#### 6. **@janua/monitoring** - ✅ **Excellent**
 - **Purpose**: Comprehensive observability and monitoring
 - **Documentation**: ⭐⭐⭐⭐⭐ Extensive documentation with multiple backends
 - **Dependencies**: Modern monitoring stack (OpenTelemetry, Sentry)
 - **Usage**: Platform-wide monitoring and observability
 - **Status**: Production ready, enterprise-grade features
 
-#### 7. **@plinto/database** - ✅ **Excellent**
+#### 7. **@janua/database** - ✅ **Excellent**
 - **Purpose**: Unified database abstraction layer
 - **Documentation**: ⭐⭐⭐⭐⭐ Complete database documentation
 - **Dependencies**: No package.json (documented as 0.1.0)
 - **Usage**: Core database layer for all services
 - **Status**: Production ready, comprehensive database solution
 
-#### 8. **@plinto/jwt-utils** - ✅ **Good**
+#### 8. **@janua/jwt-utils** - ✅ **Good**
 - **Purpose**: JWT and JWKS utilities
 - **Documentation**: ⭐⭐⭐ Basic documentation (README missing)
 - **Dependencies**: Minimal (jose, zod)
@@ -88,35 +88,35 @@ The Plinto platform contains **20 packages** under `/packages/`, with **13 activ
 
 ### 🟡 **Development/Framework Packages**
 
-#### 9. **@plinto/vue-sdk** - 🔄 **Good**
+#### 9. **@janua/vue-sdk** - 🔄 **Good**
 - **Purpose**: Vue 3 SDK with composables
 - **Documentation**: ⭐⭐⭐ No README found
 - **Dependencies**: Depends on typescript-sdk
 - **Usage**: Vue.js applications
 - **Status**: Development, needs documentation
 
-#### 10. **@plinto/nextjs-sdk** - 🔄 **Good**
+#### 10. **@janua/nextjs-sdk** - 🔄 **Good**
 - **Purpose**: Next.js SDK with App/Pages Router support
 - **Documentation**: ⭐⭐⭐ No README found
 - **Dependencies**: Depends on typescript-sdk, jose
 - **Usage**: Next.js applications
 - **Status**: Development, needs documentation
 
-#### 11. **@plinto/react-native-sdk** - 🔄 **Good**
+#### 11. **@janua/react-native-sdk** - 🔄 **Good**
 - **Purpose**: React Native SDK with biometric support
 - **Documentation**: ⭐⭐⭐⭐ Good README documentation
 - **Dependencies**: React Native specific packages
 - **Usage**: Mobile React Native applications
 - **Status**: Development, comprehensive features
 
-#### 12. **@plinto/go-sdk** - 🔄 **Good**
+#### 12. **@janua/go-sdk** - 🔄 **Good**
 - **Purpose**: Official Go SDK
 - **Documentation**: ⭐⭐⭐⭐ Good README with examples
 - **Dependencies**: No package.json (Go module)
 - **Usage**: Go applications
 - **Status**: Development, basic feature set
 
-#### 13. **@plinto/flutter-sdk** - 🔄 **Excellent**
+#### 13. **@janua/flutter-sdk** - 🔄 **Excellent**
 - **Purpose**: Flutter SDK for multi-platform apps
 - **Documentation**: ⭐⭐⭐⭐⭐ Comprehensive Flutter documentation
 - **Dependencies**: No package.json (Flutter package)
@@ -125,14 +125,14 @@ The Plinto platform contains **20 packages** under `/packages/`, with **13 activ
 
 ### 🔴 **Issues and Deprecated Packages**
 
-#### 14. **@plinto/react-sdk** - ❌ **Deprecated**
+#### 14. **@janua/react-sdk** - ❌ **Deprecated**
 - **Purpose**: React SDK (deprecated)
 - **Documentation**: ⭐⭐⭐ Marked as deprecated in package.json
 - **Dependencies**: Depends on typescript-sdk
 - **Issue**: ⚠️ **Deprecated package should be removed or replaced**
 - **Action**: Remove or consolidate with other React solutions
 
-#### 15. **@plinto/mock-api** - 🔧 **Testing Only**
+#### 15. **@janua/mock-api** - 🔧 **Testing Only**
 - **Purpose**: Mock API server for development
 - **Documentation**: ⭐⭐⭐ No README found
 - **Dependencies**: Express-based server with JWT mocking
@@ -236,7 +236,7 @@ Standalone packages:
 
 | Aspect | Score | Notes |
 |--------|-------|-------|
-| **Naming Consistency** | 9/10 | Good @plinto/ namespace usage |
+| **Naming Consistency** | 9/10 | Good @janua/ namespace usage |
 | **Documentation** | 7/10 | Mix of excellent and missing docs |
 | **Dependency Management** | 6/10 | Some packages lack proper deps |
 | **Build Configuration** | 7/10 | Modern build tools where present |
@@ -353,7 +353,7 @@ Standalone packages:
 
 ## 🔚 Conclusion
 
-The Plinto packages ecosystem is **well-architected overall** with excellent documentation and comprehensive SDK coverage. The main issues are **organizational cleanup** needed for deprecated/empty packages and **completing documentation** for framework-specific SDKs.
+The Janua packages ecosystem is **well-architected overall** with excellent documentation and comprehensive SDK coverage. The main issues are **organizational cleanup** needed for deprecated/empty packages and **completing documentation** for framework-specific SDKs.
 
 **Priority Actions:**
 1. ✅ Remove deprecated `react-sdk` package

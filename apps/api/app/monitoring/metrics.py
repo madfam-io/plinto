@@ -32,7 +32,7 @@ except ImportError:
 if PROMETHEUS_AVAILABLE:
     # Request latency histogram
     request_latency = Histogram(
-        'plinto_request_latency_milliseconds',
+        'janua_request_latency_milliseconds',
         'Request latency in milliseconds',
         labelnames=['method', 'path', 'status'],
         buckets=(10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000)
@@ -40,40 +40,40 @@ if PROMETHEUS_AVAILABLE:
 
     # Database query counter
     db_queries_total = Counter(
-        'plinto_db_queries_total',
+        'janua_db_queries_total',
         'Total database queries executed',
         labelnames=['path']
     )
 
     # Cache hit rate gauge
     cache_hit_rate_gauge = Gauge(
-        'plinto_cache_hit_rate_percent',
+        'janua_cache_hit_rate_percent',
         'Cache hit rate percentage'
     )
 
     # Request counter
     requests_total = Counter(
-        'plinto_requests_total',
+        'janua_requests_total',
         'Total HTTP requests',
         labelnames=['method', 'path', 'status']
     )
 
     # Error counter
     errors_total = Counter(
-        'plinto_errors_total',
+        'janua_errors_total',
         'Total errors',
         labelnames=['error_type', 'path']
     )
 
     # Active sessions gauge
     active_sessions = Gauge(
-        'plinto_active_sessions',
+        'janua_active_sessions',
         'Number of active user sessions'
     )
 
     # Auth operation latency
     auth_operation_latency = Histogram(
-        'plinto_auth_operation_milliseconds',
+        'janua_auth_operation_milliseconds',
         'Authentication operation latency',
         labelnames=['operation'],
         buckets=(5, 10, 25, 50, 100, 250, 500, 1000)

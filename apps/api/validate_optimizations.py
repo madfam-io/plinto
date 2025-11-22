@@ -15,7 +15,7 @@ print("="*60)
 print("\n[Test 1] Organization List N+1 Fix")
 print("-" * 40)
 
-with open('/home/user/plinto/apps/api/app/routers/v1/organizations.py', 'r') as f:
+with open('/home/user/janua/apps/api/app/routers/v1/organizations.py', 'r') as f:
     org_content = f.read()
 
 # Check for subquery pattern
@@ -39,7 +39,7 @@ else:
 print("\n[Test 2] RBAC Service Caching")
 print("-" * 40)
 
-with open('/home/user/plinto/apps/api/app/services/rbac_service.py', 'r') as f:
+with open('/home/user/janua/apps/api/app/services/rbac_service.py', 'r') as f:
     rbac_content = f.read()
 
 # Check for role caching
@@ -66,7 +66,7 @@ else:
 print("\n[Test 3] User Lookup Caching")
 print("-" * 40)
 
-with open('/home/user/plinto/apps/api/app/dependencies.py', 'r') as f:
+with open('/home/user/janua/apps/api/app/dependencies.py', 'r') as f:
     deps_content = f.read()
 
 # Check for user validity caching

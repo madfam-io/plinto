@@ -34,7 +34,7 @@ export function initSentry(config: SentryConfig) {
     integrations: [
       new Sentry.BrowserTracing({
         // Set tracingOrigins to control what URLs are traced
-        tracingOrigins: ['localhost', 'plinto.dev', /^\//],
+        tracingOrigins: ['localhost', 'janua.dev', /^\//],
         // Route change tracking for Next.js
         routingInstrumentation: Sentry.nextRouterInstrumentation(),
       }),

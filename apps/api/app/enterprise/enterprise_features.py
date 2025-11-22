@@ -404,7 +404,7 @@ class WhiteLabelCustomization:
         <!DOCTYPE html>
         <html>
         <head>
-            <title>{branding.get('company_name', 'Plinto')} - Authentication</title>
+            <title>{branding.get('company_name', 'Janua')} - Authentication</title>
             <link rel="icon" href="{branding.get('favicon_url', '/favicon.ico')}">
             <style>
                 :root {{
@@ -424,7 +424,7 @@ class WhiteLabelCustomization:
         <body>
             <div class="container">
                 <div class="logo"></div>
-                <h1>Welcome to {branding.get('company_name', 'Plinto')}</h1>
+                <h1>Welcome to {branding.get('company_name', 'Janua')}</h1>
                 <!-- Login form -->
             </div>
         </body>

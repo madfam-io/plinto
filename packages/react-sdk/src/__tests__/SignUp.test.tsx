@@ -2,12 +2,12 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { SignUp } from '../components/SignUp'
-import { PlintoProvider } from '../provider'
-import { PlintoClient } from '@plinto/typescript-sdk'
+import { JanuaProvider } from '../provider'
+import { JanuaClient } from '@janua/typescript-sdk'
 
-// Mock the Plinto SDK
-jest.mock('@plinto/typescript-sdk', () => ({
-  PlintoClient: jest.fn().mockImplementation(() => ({
+// Mock the Janua SDK
+jest.mock('@janua/typescript-sdk', () => ({
+  JanuaClient: jest.fn().mockImplementation(() => ({
     signUp: jest.fn(),
     signIn: jest.fn(),
     getCurrentUser: jest.fn(),
@@ -34,7 +34,7 @@ Object.defineProperty(window, 'location', {
 const mockConfig = {
   apiKey: 'test-key',
   tenantId: 'test-tenant',
-  baseUrl: 'https://api.plinto.dev'
+  baseUrl: 'https://api.janua.dev'
 }
 
 describe('SignUp Component', () => {
@@ -44,13 +44,13 @@ describe('SignUp Component', () => {
     jest.clearAllMocks()
     localStorageMock.getItem.mockReturnValue(null)
     locationMock.href = ''
-    mockClient = new PlintoClient(mockConfig)
-    ;(PlintoClient as any).mockImplementation(() => mockClient)
+    mockClient = new JanuaClient(mockConfig)
+    ;(JanuaClient as any).mockImplementation(() => mockClient)
   })
 
   const renderSignUp = (props = {}) => {
     return render(
-      React.createElement(PlintoProvider, { config: mockConfig },
+      React.createElement(JanuaProvider, { config: mockConfig },
         React.createElement(SignUp, props)
       )
     )
@@ -70,7 +70,7 @@ describe('SignUp Component', () => {
     it('should apply custom className', () => {
       renderSignUp({ className: 'custom-signup-class' })
       
-      const container = screen.getByRole('button', { name: /create account/i }).closest('.plinto-signup')
+      const container = screen.getByRole('button', { name: /create account/i }).closest('.janua-signup')
       expect(container).toHaveClass('custom-signup-class')
     })
 

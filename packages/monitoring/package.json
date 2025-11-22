@@ -1,5 +1,5 @@
 {
-  "name": "@plinto/monitoring",
+  "name": "@janua/monitoring",
   "version": "1.0.0",
   "main": "./sentry.config.ts",
   "types": "./sentry.config.ts",

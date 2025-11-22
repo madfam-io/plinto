@@ -1,8 +1,8 @@
-# Plinto Database Design
+# Janua Database Design
 
 ## Overview
 
-Plinto uses a **multi-database strategy** optimized for different access patterns:
+Janua uses a **multi-database strategy** optimized for different access patterns:
 - **PostgreSQL**: Source of truth for transactional data
 - **Redis**: Session cache, rate limiting, hot data
 - **DynamoDB**: Global secondary indexes for edge reads
@@ -968,4 +968,4 @@ FROM sessions
 GROUP BY tenant_id, DATE(created_at);
 ```
 
-This database design provides a solid foundation for Plinto's identity platform with excellent performance, scalability, and maintainability characteristics.
+This database design provides a solid foundation for Janua's identity platform with excellent performance, scalability, and maintainability characteristics.

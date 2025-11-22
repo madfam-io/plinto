@@ -133,7 +133,7 @@ async def get_service_provider_config():
                 "name": "OAuth Bearer Token",
                 "description": "Authentication using OAuth 2.0 bearer token",
                 "specUri": "https://tools.ietf.org/html/rfc6750",
-                "documentationUri": "https://plinto.dev/docs/scim",
+                "documentationUri": "https://janua.dev/docs/scim",
                 "primary": True
             }
         ],

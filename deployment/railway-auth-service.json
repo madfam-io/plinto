@@ -1,5 +1,5 @@
 {
-  "name": "plinto-auth-service",
+  "name": "janua-auth-service",
   "source": "apps/auth-service",
   "build": {
     "builder": "DOCKERFILE",
@@ -12,17 +12,17 @@
   },
   "variables": {
     "PORT": "8001",
-    "PLINTO_ENV": "production",
-    "JWT_AUDIENCE": "plinto.dev",
-    "JWT_ISSUER": "https://plinto.dev"
+    "JANUA_ENV": "production",
+    "JWT_AUDIENCE": "janua.dev",
+    "JWT_ISSUER": "https://janua.dev"
   },
   "domains": [
     {
-      "domain": "auth.plinto.dev"
+      "domain": "auth.janua.dev"
     }
   ],
   "networking": {
-    "serviceName": "plinto-auth-service",
+    "serviceName": "janua-auth-service",
     "internalPort": 8001
   }
 }
